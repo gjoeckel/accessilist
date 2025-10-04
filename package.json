@@ -1,1 +1,24 @@
-{"name":"autonomous-assistant","version":"1.0.0","type":"module","scripts":{"start":"node src/index.js"},"dependencies":{"@anthropic-ai/sdk":"^0.30.0","@modelcontextprotocol/sdk":"^1.0.4","chokidar":"^3.6.0","dotenv":"^16.4.5"}}
+{
+  "name": "accessilist",
+  "version": "1.0.0",
+  "main": "js/main.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "concat:css": "concat -o global.css css/modal.css css/focus.css css/landing.css css/admin.css css/form-elements.css css/table.css css/section.css css/status.css css/side-panel.css css/header.css css/base.css",
+    "minify:css": "npx postcss global.css -o global.css",
+    "build:css": "npm-run-all concat:css minify:css",
+    "generate:user-stories": "node scripts/generate-user-stories.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "devDependencies": {
+    "concat": "^1.0.3",
+    "cssnano": "^7.0.6",
+    "eslint-plugin-sonarjs": "^3.0.5",
+    "npm-run-all": "^4.1.5",
+    "postcss": "^8.5.3",
+    "postcss-cli": "^11.0.1"
+  }
+}
