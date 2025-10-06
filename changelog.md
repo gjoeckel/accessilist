@@ -8,6 +8,38 @@
 
 ## Entries
 
+### 2025-10-06 22:05:00 UTC - Production Admin Button URL Fix
+
+**Summary:**
+- Fixed home page admin button to use correct production URL format
+- Updated admin button to dynamically use base path for both local and production environments
+- Ensured admin button works correctly on production server
+
+**Changes Made:**
+- **php/home.php**: Updated admin button URL to use dynamic base path
+  - Changed from hardcoded `/admin` to `<?php echo $basePath; ?>/admin`
+  - Ensures correct URL generation for both local and production environments
+  - Production URL: `https://webaim.org/training/online/accessilist/admin`
+
+**Technical Details:**
+- **Dynamic Path Resolution**: Uses PHP `$basePath` variable for environment-specific URLs
+- **Local Development**: `$basePath = ''` → Admin button points to `/admin`
+- **Production**: `$basePath = '/training/online/accessilist'` → Admin button points to `/training/online/accessilist/admin`
+- **Deployment Status**: Changes successfully deployed via GitHub Actions
+
+**Production Issues Resolved:**
+- ✅ **Admin Button URL**: Now correctly points to production admin page
+- ✅ **Environment Compatibility**: Works on both local and production environments
+- ✅ **Deployment**: Successfully deployed and tested on production
+
+**Files Modified:**
+- `php/home.php`: Updated admin button URL (+1 line, -1 line)
+
+**Impact:**
+- **User Experience**: Admin button now works correctly on production
+- **Environment Consistency**: Single codebase works in both local and production
+- **Production Ready**: Admin functionality fully restored
+
 ### 2025-10-06 22:00:00 UTC - Admin Routing Fix and Short URL Error Enhancement
 
 **Summary:**
