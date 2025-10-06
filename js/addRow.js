@@ -28,7 +28,7 @@ function createTableRow(rowData, tableType) {
         const taskCell = document.createElement('td');
         taskCell.className = 'task-cell';
         taskCell.setAttribute('role', 'cell');
-        
+
         if (rowData.isManual) {
             // Manual rows: editable textarea (matching notes textarea exactly)
             const taskTextarea = document.createElement('textarea');
@@ -136,11 +136,11 @@ window.createTableRow = createTableRow;
 function initializePrincipleAddRowButtons() {
     const principleButtons = document.querySelectorAll('button[data-principle^="checklist-"]');
     console.log(`Found ${principleButtons.length} principle add row buttons`);
-    
+
     principleButtons.forEach(button => {
         const principleId = button.getAttribute('data-principle');
         console.log(`Initializing button for ${principleId}`);
-        
+
         // Add event listener for the Add Row button
         button.addEventListener('click', (event) => {
             event.preventDefault();
@@ -151,10 +151,10 @@ function initializePrincipleAddRowButtons() {
                 console.error('handleAddPrincipleRow function not available');
             }
         });
-        
+
         console.log(`Event listener attached to button for ${principleId}`);
     });
-    
+
     console.log('All principle add row buttons initialized');
 }
 
@@ -168,4 +168,4 @@ function initializePrincipleAddRowButtons() {
 
 // Export the function(s) needed by other modules (if any)
 // Let's export the initializer for potential use by main.js.
-export { initializePrincipleAddRowButtons }; 
+export { initializePrincipleAddRowButtons };

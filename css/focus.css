@@ -190,9 +190,14 @@ h2:is(:hover, :focus-visible) .heading-content,
 /* Admin Delete column: match Checklist Restart shape (rounded corners) */
 .admin-delete-button:is(:hover, :focus-visible) {
   border-radius: 4px !important;
-  width: 60% !important;
+  width: 60px !important;
+  height: 60px !important;
+  min-width: 60px !important;
+  min-height: 60px !important;
+  max-width: 60px !important;
+  max-height: 60px !important;
   margin: 0 auto !important;
-  display: block !important;
+  display: flex !important;
 }
 
 /* Home button hover/focus ring matches Save button's hover ring */

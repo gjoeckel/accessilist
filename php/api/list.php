@@ -1,8 +1,8 @@
 <?php
 require_once __DIR__ . '/../includes/api-utils.php';
 
-// Get all JSON files from the saves directory
-$savesDir = '../../saves/';
+// Get all JSON files from the saves directory using the same path as other APIs
+$savesDir = dirname(saves_path_for('dummy')) . '/';
 $files = glob($savesDir . '*.json');
 
 if ($files === false) {
@@ -15,14 +15,14 @@ foreach ($files as $file) {
     // Read the JSON file
     $json = file_get_contents($file);
     $data = json_decode($json, true);
-    
+
     if ($data) {
         // Extract the session key from the filename
         $sessionKey = basename($file, '.json');
-        
+
         // Get file creation time
         $fileCreationTime = filemtime($file) * 1000; // Convert to milliseconds
-        
+
         // Add instance data to the array
         $instance = [
             'sessionKey' => $sessionKey,
@@ -35,13 +35,13 @@ foreach ($files as $file) {
                 'created' => $fileCreationTime
             ]
         ];
-        
+
         // Only include lastModified if the file has been saved (has a lastModified in metadata)
         // This ensures "Updated" column is empty until first save
         if (isset($data['metadata']['lastModified'])) {
             $instance['metadata']['lastModified'] = $data['metadata']['lastModified'];
         }
-        
+
         $instances[] = $instance;
     }
 }
@@ -52,4 +52,4 @@ usort($instances, function($a, $b) {
 });
 
 // Return the instances using standard response format
-send_success($instances); 
+send_success($instances);
