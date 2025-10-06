@@ -47,12 +47,9 @@
   cursor: pointer;
   font-size: 1rem;
   transition: background-color 0.2s ease;
+  box-shadow: none;
 }
 
-.modal-buttons .btn:focus {
-  outline: 2px solid #007cba;
-  outline-offset: 2px;
-}
 
 .modal-buttons .btn-primary {
   background-color: #007cba;
@@ -63,11 +60,23 @@
   background-color: #005a87;
 }
 
+/* Red buttons for destructive actions (Delete/Reset) - same styling as Cancel button */
+.modal-buttons .btn-danger {
+  background-color: #BF1712;
+  color: white;
+}
+
+.modal-buttons .btn-danger:hover,
+.modal-buttons .btn-danger:focus {
+  background-color: #a01410;
+}
+
 .modal-buttons .btn-secondary {
   background-color: #666;
   color: white;
 }
 
-.modal-buttons .btn-secondary:hover {
+.modal-buttons .btn-secondary:hover,
+.modal-buttons .btn-secondary:focus {
   background-color: #555;
 }

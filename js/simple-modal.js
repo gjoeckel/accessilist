@@ -39,21 +39,31 @@ class SimpleModal {
     this.modal = document.getElementById('simpleModal');
   }
 
-  show(title, message, onConfirm, onCancel, confirmText = 'Confirm', cancelText = 'Cancel') {
+  show(title, message, onConfirm, onCancel, confirmText = 'Confirm', cancelText = 'Cancel', isDestructive = false) {
     if (this.isOpen) return; // Prevent multiple modals
 
     this.isOpen = true;
     this.previousFocus = document.activeElement;
 
+    // Prevent body scroll when modal is open
+    document.body.classList.add('modal-open');
+
     // Update modal content
     document.getElementById('modalTitle').textContent = title;
-    document.getElementById('modalMessage').textContent = message;
+    document.getElementById('modalMessage').innerHTML = message;
 
     const confirmBtn = document.getElementById('modalConfirm');
     const cancelBtn = document.getElementById('modalCancel');
 
     confirmBtn.textContent = confirmText;
     cancelBtn.textContent = cancelText;
+
+    // Set button styling based on action type
+    if (isDestructive) {
+      confirmBtn.className = 'btn btn-danger';
+    } else {
+      confirmBtn.className = 'btn btn-primary';
+    }
 
     // Show modal
     this.modal.style.display = 'flex';
@@ -124,6 +134,9 @@ class SimpleModal {
     this.modal.style.display = 'none';
     this.modal.setAttribute('aria-hidden', 'true');
 
+    // Restore body scroll when modal is closed
+    document.body.classList.remove('modal-open');
+
     // Clean up event handlers
     if (this.escapeHandler) {
       document.removeEventListener('keydown', this.escapeHandler);
@@ -135,11 +148,8 @@ class SimpleModal {
       this.focusTrapHandler = null;
     }
 
-    // Restore focus to previous element
-    if (this.previousFocus) {
-      this.previousFocus.focus();
-    }
-
+    // Focus management will be handled by the callback functions
+    // No automatic focus restoration here
     this.previousFocus = null;
   }
 
@@ -149,11 +159,15 @@ class SimpleModal {
   }
 
   reset(title, message, onConfirm, onCancel) {
-    this.show(title, message, onConfirm, onCancel, 'Reset', 'Cancel');
+    // Make "Pending" bold in the message
+    const formattedMessage = message.replace(/\bPending\b/g, '<strong>Pending</strong>');
+    this.show(title, formattedMessage, onConfirm, onCancel, 'Reset', 'Cancel', true);
   }
 
   delete(title, message, onConfirm, onCancel) {
-    this.show(title, message, onConfirm, onCancel, 'Delete', 'Cancel');
+    // Make key value bold in the message (assumes format like "Do you want to delete "KEY"?")
+    const formattedMessage = message.replace(/"([^"]+)"/g, '"<strong>$1</strong>"');
+    this.show(title, formattedMessage, onConfirm, onCancel, 'Delete', 'Cancel', true);
   }
 
   info(title, message, onClose) {

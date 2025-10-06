@@ -245,19 +245,19 @@ th.task-cell { /* Ensure header alignment matches base th */
     cursor: default;
 }
 
-/* DRY: Report Delete Button - uses same styling as .delete-button */
+/* DRY: Report Delete Button - same size as Status buttons */
 .report-delete-button {
     background: none;
     border: none;
     cursor: pointer;
     padding: 0;
     transition: background-color 0.2s ease;
-    width: 70px;
-    height: 70px;
-    min-width: 70px;
-    min-height: 70px;
-    max-width: 70px;
-    max-height: 70px;
+    width: 75px;
+    height: 75px;
+    min-width: 75px;
+    min-height: 75px;
+    max-width: 75px;
+    max-height: 75px;
     box-sizing: border-box;
     display: flex;
     align-items: center;
@@ -311,7 +311,7 @@ th.task-cell { /* Ensure header alignment matches base th */
 }
 
 /* DRY Golden ring focus and hover styles for add row buttons */
-.principles-button:is(:hover, :focus-visible) {
+.principles-button:is(:hover, :focus) {
     outline: none;
     box-shadow: var(--golden-ring) !important;
 }
@@ -418,15 +418,7 @@ th.report-task-cell {
   max-height: 60px;
   box-sizing: border-box;
 }
-.delete-button {
-  width: 70px;
-  height: 70px;
-  min-width: 70px;
-  min-height: 70px;
-  max-width: 70px;
-  max-height: 70px;
-  box-sizing: border-box;
-}
+/* Legacy .delete-button removed - not used in codebase */
 .completed-status {
   width: 75px !important;
   height: 75px !important;

@@ -12,7 +12,7 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Admin</title>
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/simple-modal.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/focus.css">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/focus.css?v=<?php echo time(); ?>">
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/landing.css">
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/admin.css">
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/form-elements.css">
@@ -130,6 +130,7 @@ function createInstanceLink(instanceId, typeSlug) {
 }
 
 function createDeleteButton(instanceId) {
+    // COMPLETELY FRESH - Based on working Status button pattern
     const button = document.createElement('button');
     button.className = 'admin-delete-button';
     button.setAttribute('aria-label', `Delete checklist ${instanceId}`);
@@ -139,21 +140,36 @@ function createDeleteButton(instanceId) {
     img.alt = 'Delete';
     button.appendChild(img);
 
+    // Simple click handler - no debugging, no complex logic
     button.onclick = () => showDeleteModal(instanceId);
     return button;
 }
 
 function showDeleteModal(instanceId) {
-    // Show SimpleModal confirmation
+    // Store the triggering button for focus restoration
+    const triggeringButton = document.activeElement;
+
+    // Show SimpleModal confirmation with proper focus management
     window.simpleModal.delete(
         'Delete Checklist',
         `Are you sure you want to delete checklist ${instanceId}?`,
-        () => deleteInstance(instanceId),
-        () => console.log('Delete cancelled')
+        () => {
+            // Delete confirmed - focus on delete button above or Home
+            deleteInstance(instanceId, triggeringButton);
+        },
+        () => {
+            // Delete cancelled - restore focus to triggering button
+            setTimeout(() => {
+                if (triggeringButton && triggeringButton.classList.contains('admin-delete-button')) {
+                    triggeringButton.focus();
+                    console.log('Admin: Focus restored to triggering delete button after cancel');
+                }
+            }, 100);
+        }
     );
 }
 
-async function deleteInstance(instanceId) {
+async function deleteInstance(instanceId, triggeringButton) {
     try {
         const apiPath = window.getAPIPath('delete.php');
         const response = await fetch(apiPath + '?session=' + instanceId, {
@@ -161,13 +177,65 @@ async function deleteInstance(instanceId) {
         });
 
         if (response.ok) {
-            loadInstances();
+            // Find the row being deleted
+            const currentRow = document.querySelector(`tr[data-instance="${instanceId}"]`);
+            if (currentRow) {
+                // Remove the row immediately for better UX
+                currentRow.remove();
+
+                // Focus management after deletion
+                setTimeout(() => {
+                    const tableBody = document.querySelector('.admin-table tbody');
+                    if (tableBody) {
+                        const allRows = Array.from(tableBody.querySelectorAll('tr'));
+                        const remainingDeleteButtons = tableBody.querySelectorAll('.admin-delete-button');
+
+                        if (remainingDeleteButtons.length > 0) {
+                            // Focus on the delete button above the deleted row (if any)
+                            // Since we removed the row, focus on the first available delete button
+                            const firstDeleteButton = remainingDeleteButtons[0];
+                            firstDeleteButton.focus();
+                            console.log('Admin: Focused on remaining delete button after deletion');
+                        } else {
+                            // No more rows - focus on Home button
+                            const homeButton = document.getElementById('homeButton');
+                            if (homeButton) {
+                                homeButton.focus();
+                                console.log('Admin: Focused on Home button after deletion (no more rows)');
+                            }
+                        }
+                    } else {
+                        // Fallback: focus on Home button
+                        const homeButton = document.getElementById('homeButton');
+                        if (homeButton) {
+                            homeButton.focus();
+                            console.log('Admin: Focused on Home button after deletion (fallback)');
+                        }
+                    }
+                }, 100);
+            } else {
+                // Row not found - reload table and focus Home
+                loadInstances();
+                setTimeout(() => {
+                    const homeButton = document.getElementById('homeButton');
+                    if (homeButton) {
+                        homeButton.focus();
+                        console.log('Admin: Focused on Home button after deletion (row not found)');
+                    }
+                }, 100);
+            }
         } else {
             // Use DRY modal for error messages too
             window.simpleModal.error(
                 'Delete Failed',
                 'Failed to delete checklist. Please try again.',
-                () => console.log('Error modal closed')
+                () => {
+                    // Restore focus to triggering button on error
+                    if (triggeringButton && triggeringButton.classList.contains('admin-delete-button')) {
+                        triggeringButton.focus();
+                        console.log('Admin: Focus restored to triggering button after delete error');
+                    }
+                }
             );
         }
     } catch (error) {
@@ -175,7 +243,13 @@ async function deleteInstance(instanceId) {
         window.simpleModal.error(
             'Delete Error',
             'An error occurred while deleting the checklist.',
-            () => console.log('Error modal closed')
+            () => {
+                // Restore focus to triggering button on error
+                if (triggeringButton && triggeringButton.classList.contains('admin-delete-button')) {
+                    triggeringButton.focus();
+                    console.log('Admin: Focus restored to triggering button after delete error');
+                }
+            }
         );
     }
 }
@@ -227,6 +301,7 @@ async function loadInstances() {
                     : '—'; // Em dash for "not yet saved"
 
                 const row = document.createElement('tr');
+                row.setAttribute('data-instance', instance.sessionKey); // Add data attribute for focus management
 
                 // Format type using TypeManager
                 const typeText = instance.type || 'Unknown';

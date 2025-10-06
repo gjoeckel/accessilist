@@ -32,6 +32,7 @@
     border-collapse: collapse;
     margin-top: 20px;
     max-width: none;
+    table-layout: fixed; /* Prevent table from reflowing on content changes */
 }
 
 .admin-table caption {
@@ -115,42 +116,38 @@
     vertical-align: middle;
 }
 
-/* Delete Button Styles (using admin-delete-button from multiple.css block) */
+/* Admin Delete Button - Based on working Status button pattern */
 .admin-delete-button {
     background: none;
     border: none;
+    cursor: pointer;
     padding: 0;
-    margin: 0;
-    width: 60px;
-    height: 60px;
-    min-width: 60px;
-    min-height: 60px;
-    max-width: 60px;
-    max-height: 60px;
+    transition: background-color 0.2s ease;
+    width: 75px;
+    height: 75px;
+    min-width: 75px;
+    min-height: 75px;
+    max-width: 75px;
+    max-height: 75px;
+    box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    cursor: pointer;
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%);
-    transition: transform 0.2s ease;
-    box-sizing: border-box;
+    margin-top: -37.5px; /* Half of 75px height */
+    margin-left: -37.5px; /* Half of 75px width */
 }
 
 .admin-delete-button img {
-    width: 60px;
-    height: 60px;
-    object-fit: contain;
-    padding: 4px;
-    display: block;
-    box-sizing: border-box;
-    transition: transform 0.2s ease;
+    width: 100%; /* Scale image to button width */
+    height: 100%; /* Scale image to button height */
+    object-fit: contain; /* Ensure aspect ratio is maintained */
+    padding: 4px; /* Padding around the icon */
 }
 
-/* Older delete button style - keep or remove? Keeping admin-delete-button for consistency */
-/* .delete-button { ... } */
+/* Legacy delete button styles removed */
 
 /* Instance Link Styles */
 .instance-link {
@@ -181,7 +178,8 @@
 /* Removed focus/hover styles - Handled by focus.css */
 
 .admin-container {
-    width: 80%;
+    width: 1200px; /* Fixed width to prevent responsive shifting */
     max-width: 1500px;
     margin: 0 auto;
+    min-width: 800px; /* Ensure minimum usable width */
 }

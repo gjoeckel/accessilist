@@ -1,10 +1,10 @@
 /* focus.css - Consolidated from focus-refactor.css block */
 
-/* Remove default outline on focusable elements when focused via keyboard */
-textarea:focus-visible,
-button:focus-visible,
-input:focus-visible,
-select:focus-visible {
+/* Remove default outline on focusable elements when focused */
+textarea:focus,
+button:focus,
+input:focus,
+select:focus {
     outline: none;
 }
 
@@ -17,6 +17,7 @@ select:focus-visible {
   .principles-table .info-link,
   .principles-table .notes-textarea,
   .principles-table .status-button,
+  .admin-delete-button, /* Admin delete button - same as status buttons */
   .principles-table .restart-button,
   .principles-button,
   .modal-button,
@@ -29,8 +30,8 @@ select:focus-visible {
   /* #refreshButton, */
   .toggle-strip,
   .show-button,
-  .delete-button, /* Admin table */
-  .admin-delete-button,
+  /* .delete-button, */ /* Legacy admin table - removed */
+  /* .admin-delete-button, */ /* EXCLUDED - no transitions to prevent visual shifts */
   /* .clear-data-button, */
   .camtasia-button,
   /* .checklist-button, */
@@ -71,6 +72,7 @@ select:focus-visible {
 :is(
   .principles-table .status-button,
   .principles-table .restart-button,
+  .admin-delete-button, /* Admin delete button - same as status buttons */
   .modal-button,
   #cancelRestart,
   #confirmRestartYes,
@@ -84,8 +86,8 @@ select:focus-visible {
   /* #refreshButton, */
   .toggle-strip,
   .show-button,
-  .delete-button, /* Admin table */
-  .admin-delete-button,
+  /* .delete-button, */ /* Legacy admin table - removed */
+  /* .admin-delete-button, */ /* EXCLUDED - no transitions to prevent visual shifts */
   /* .clear-data-button, */
   .camtasia-button,
   /* .checklist-button */
@@ -98,13 +100,13 @@ select:focus-visible {
 
 
 /* Unified green hover/focus background for key action buttons (remove from .checklist-button) */
-:is(#yesButton, #refreshButton):is(:hover, :focus-visible) {
+:is(#yesButton, #refreshButton):is(:hover, :focus) {
     background-color: #478F00;
 }
 
 /* Home button background hover/focus (color only) */
 #homeButton:hover,
-#homeButton:focus-visible {
+#homeButton:focus {
   background-color: #4482c1; /* Apply button-blue hover */
 }
 
@@ -120,18 +122,18 @@ select:focus-visible {
 /* Custom circle styles removed - now using DRY golden ring */
 
 /* Side panel toggle button hover/focus - match Save ring */
-.toggle-strip:is(:hover, :focus-visible) {
+.toggle-strip:is(:hover, :focus) {
   box-shadow: var(--golden-ring) !important;
 }
 
-.side-panel a:focus-visible img {
+.side-panel a:focus img {
   outline: none !important;
 }
 
 /* (covered by unified rule above) */
 
 /* Unified red hover/focus background for destructive actions */
-:is(.button-red, .clear-data-button):is(:hover, :focus-visible) {
+:is(.button-red, .clear-data-button):is(:hover, :focus) {
     background-color: #db1b14;
 }
 
@@ -141,39 +143,38 @@ button.info-link:focus {
   border-radius: 5px; /* Adjust value as needed */
 }
 
-.side-panel a:focus-visible {
+.side-panel a:focus {
   outline: none;
 }
 
 /* === Add Row Button Base Styles (Moved to table.css) === */
 
 /* === Standard Blue Outline for Key Action Buttons (exclude .checklist-button) === */
-#yesButton:focus-visible, #yesButton:hover,
-#refreshButton:focus-visible, #refreshButton:hover,
-.clear-data-button:focus-visible, .clear-data-button:hover,
-#adminButton:focus-visible, #adminButton:hover,
-#cancelButton:focus-visible, #cancelButton:hover {
+#yesButton:focus, #yesButton:hover,
+#refreshButton:focus, #refreshButton:hover,
+.clear-data-button:focus, .clear-data-button:hover,
+#adminButton:focus, #adminButton:hover,
+#cancelButton:focus, #cancelButton:hover {
   box-shadow: var(--golden-ring) !important;
 }
 
 /* Apply Home-like ring (white gap, #333 border, gold outer) to interactive elements */
-#saveButton:is(:hover, :focus-visible),
-.checklist-button:is(:hover, :focus-visible),
-.toggle-strip:is(:hover, :focus-visible),
-:is(button, input, select, textarea):is(:hover, :focus-visible),
-.instance-link:is(:hover, :focus-visible),
-.admin-delete-button:is(:hover, :focus-visible) {
+#saveButton:is(:hover, :focus),
+.checklist-button:is(:hover, :focus),
+.toggle-strip:is(:hover, :focus),
+:is(button, input, select, textarea):is(:hover, :focus),
+.instance-link:is(:hover, :focus) {
   box-shadow: var(--golden-ring) !important;
 }
 
 /* Checklist Info column: rounded hover/focus shape */
-.principles-table .info-link:is(:hover, :focus-visible) {
+.principles-table .info-link:is(:hover, :focus) {
   border-radius: 6px !important;
   box-shadow: var(--golden-ring) !important;
 }
 
 /* Admin Instance column: match Checklist Info rounded style */
-.instance-link:is(:hover, :focus-visible) {
+.instance-link:is(:hover, :focus) {
   border-radius: 6px !important;
   width: 30% !important;
   margin: 0 auto !important;
@@ -181,32 +182,21 @@ button.info-link:focus {
 }
 
 /* Focused section headings ring wraps the inner .heading-content for stable layout */
-h2:is(:hover, :focus-visible) .heading-content,
-.heading-content:is(:hover, :focus-visible) {
+h2:is(:hover, :focus) .heading-content,
+.heading-content:is(:hover, :focus) {
   border-radius: 6px !important;
   box-shadow: var(--golden-ring) !important;
 }
 
-/* Admin Delete column: match Checklist Restart shape (rounded corners) */
-.admin-delete-button:is(:hover, :focus-visible) {
-  border-radius: 4px !important;
-  width: 60px !important;
-  height: 60px !important;
-  min-width: 60px !important;
-  min-height: 60px !important;
-  max-width: 60px !important;
-  max-height: 60px !important;
-  margin: 0 auto !important;
-  display: flex !important;
-}
+/* Admin Delete column - DELETED - Will be rebuilt using Status button pattern */
 
 /* Home button hover/focus ring matches Save button's hover ring */
-#homeButton:is(:hover, :focus-visible) {
+#homeButton:is(:hover, :focus) {
   box-shadow: var(--golden-ring) !important;
 }
 
 /* Unified gray hover/focus background for neutral header buttons */
-:is(#adminButton, #cancelButton):is(:hover, :focus-visible) {
+:is(#adminButton, #cancelButton):is(:hover, :focus) {
     background-color: #666666;
 }
 

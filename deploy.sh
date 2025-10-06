@@ -21,22 +21,16 @@ SERVER_USER="user@server"  # Update with actual server details
 BASE_URL="https://webaim.org/training/online/accessilist"
 
 # Check if we're in the right directory
-if [ ! -f "package.json" ] || [ ! -f "global.css" ]; then
+if [ ! -f "package.json" ]; then
     echo -e "${RED}❌ Error: Must be run from accessilist root directory${NC}"
-    echo "Required files: package.json, global.css"
+    echo "Required files: package.json"
     exit 1
 fi
 
 echo -e "${BLUE}📦 Pre-deployment Steps${NC}"
 
-# 1. Build CSS if needed
-if [ ! -f "global.css" ] || [ "package.json" -nt "global.css" ]; then
-    echo "Building CSS..."
-    npm run build:css
-    echo -e "${GREEN}✅ CSS built successfully${NC}"
-else
-    echo -e "${GREEN}✅ CSS is up to date${NC}"
-fi
+# 1. CSS files are loaded individually - no build needed
+echo -e "${GREEN}✅ Individual CSS files ready${NC}"
 
 # 2. Create deployment package
 echo "Creating deployment package..."

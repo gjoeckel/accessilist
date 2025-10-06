@@ -91,7 +91,7 @@
 
 /* Save Button hover state */
 #saveButton:hover,
-#saveButton:focus-visible {
+#saveButton:focus {
     background-color: #3a7a00; /* Slightly darker green for hover */
 }
 
@@ -113,4 +113,4 @@
     color: white;
 }
 
-/* Removed focus/hover styles - Handled by focus.css */ 
+/* Removed focus/hover styles - Handled by focus.css */

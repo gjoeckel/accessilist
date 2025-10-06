@@ -117,7 +117,7 @@ Exceptions:
 }
 
 .button-red:hover,
-.button-red:focus-visible {
+.button-red:focus {
     background-color: #db1b14;
 }
 
@@ -127,7 +127,7 @@ Exceptions:
 }
 
 .button-green:hover,
-.button-green:focus-visible {
+.button-green:focus {
     background-color: #478F00;
 }
 
@@ -137,7 +137,7 @@ Exceptions:
 }
 
 .button-blue:hover,
-.button-blue:focus-visible {
+.button-blue:focus {
     background-color: #4482c1;
 }
 

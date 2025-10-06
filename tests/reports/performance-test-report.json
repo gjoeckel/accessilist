@@ -1,5 +1,5 @@
 {
-  "timestamp": "2025-10-06T16:17:36.696Z",
+  "timestamp": "2025-10-06T21:11:49.781Z",
   "testSuite": "Performance Tests",
   "thresholds": {
     "LCP": 2500,
@@ -11,23 +11,23 @@
   },
   "summary": {
     "total": 15,
-    "passed": 12,
-    "failed": 3,
-    "performanceScore": "80.00%"
+    "passed": 14,
+    "failed": 1,
+    "performanceScore": "93.33%"
   },
   "results": [
     {
       "test": "Largest Contentful Paint (LCP)",
       "status": "PASSED",
-      "value": 1899,
+      "value": 2253,
       "threshold": 2500,
       "unit": "ms",
       "description": "Loading performance - largest content element"
     },
     {
       "test": "First Input Delay (FID)",
-      "status": "FAILED",
-      "value": 102,
+      "status": "PASSED",
+      "value": 58,
       "threshold": 100,
       "unit": "ms",
       "description": "Interactivity - time to first user interaction"
@@ -42,24 +42,24 @@
     },
     {
       "test": "First Contentful Paint (FCP)",
-      "status": "FAILED",
-      "value": 2081,
+      "status": "PASSED",
+      "value": 1459,
       "threshold": 1800,
       "unit": "ms",
       "description": "Time to first content render"
     },
     {
       "test": "Time to First Byte (TTFB)",
-      "status": "FAILED",
-      "value": 723,
+      "status": "PASSED",
+      "value": 589,
       "threshold": 600,
       "unit": "ms",
       "description": "Server response time"
     },
     {
       "test": "Time to Interactive (TTI)",
-      "status": "PASSED",
-      "value": 3590,
+      "status": "FAILED",
+      "value": 4330,
       "threshold": 3800,
       "unit": "ms",
       "description": "Time until page is fully interactive"

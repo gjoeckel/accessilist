@@ -249,7 +249,7 @@ function buildTable(rows, principleId) {
         const restartButton = document.createElement('button');
         restartButton.className = 'restart-button';
         restartButton.type = 'button';
-        restartButton.setAttribute('aria-label', 'Reset task to pending');
+        restartButton.setAttribute('aria-label', 'Reset task to Pending');
         restartButton.setAttribute('data-id', row.id);
         restartButton.id = `restart-${row.id}`;
         const restartImgPath = window.getImagePath('restart.svg');
@@ -369,6 +369,12 @@ async function buildContent(data) {
         console.log('Creating principle sections');
         Object.entries(data).forEach(([principleId, principleData]) => {
             if (principleId !== 'report' && principleId !== 'type' && principleId !== 'showRobust') {  // Skip report section, type field, and showRobust flag
+                // Skip checklist-4 if showRobust is false (incomplete checklist)
+                if (principleId === 'checklist-4' && !data.showRobust) {
+                    console.log(`Skipping ${principleId} - showRobust is false (incomplete checklist)`);
+                    return;
+                }
+
                 console.log(`Creating section for principle: ${principleId}`);
                 const section = createPrincipleSection(principleId, principleData);
                 if (section) {

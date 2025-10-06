@@ -8,6 +8,69 @@
 
 ## Entries
 
+### 2025-10-06 15:32:04 UTC - Dynamic Checklist Hiding Based on JSON Configuration
+
+**Summary:**
+- Implemented dynamic hiding of incomplete checklist sections in main content
+- Leveraged existing side panel hiding pattern for consistency
+- Enhanced buildContent() to skip checklist-4 when showRobust is false
+- Maintained flexible architecture that supports any number of checklists (1-4)
+- Tested with Camtasia (3 checklists) and Word (4 checklists) configurations
+
+**Changes Made:**
+- **js/buildPrinciples.js**: Added logic in buildContent() to skip checklist-4 section creation when data.showRobust is false
+- **JSON Configuration**: Confirmed existing pattern where complete checklists have "showRobust": true and incomplete ones omit this property
+- **Side Panel Integration**: Leveraged existing hiding logic in js/main.js that manages checklist-4-section visibility
+- **Testing**: Verified Camtasia shows 3 sections (hides checklist-4) and Word shows all 4 sections
+
+**Technical Details:**
+- Uses Object.entries(data) iteration to dynamically handle any number of checklists
+- Skips 'report', 'type', and 'showRobust' properties during iteration
+- Specifically skips checklist-4 when showRobust is false (incomplete checklists)
+- Maintains backward compatibility with existing JSON structures
+- Architecture supports flexible checklist counts (1-4 checklists) without code changes
+
+### 2025-01-27 15:30:00 UTC - Complete Removal of Global.css Build Process
+
+**Summary:**
+- Completely removed all global.css build process code and dependencies
+- Cleaned up package.json scripts and dependencies
+- Updated deployment workflows to remove CSS build steps
+- Removed global.css file and deploy-temp directory
+- Confirmed individual CSS file loading architecture is working correctly
+
+**Changes Made:**
+- **package.json**: Removed `concat:css`, `minify:css`, `build:css` scripts
+- **package.json**: Removed `concat`, `cssnano`, `npm-run-all`, `postcss`, `postcss-cli` dependencies
+- **package.json**: Updated `deploy:simple` script to remove `npm run build:css`
+- **deploy.sh**: Removed global.css requirement check and CSS build step
+- **GitHub Workflows**: Removed CSS build steps from both `deploy.yml` and `deploy-simple.yml`
+- **Files Deleted**: Removed `global.css` and `deploy-temp/` directory
+
+**Architecture Confirmed:**
+- ✅ Individual CSS files loaded directly in PHP templates (mychecklist.php, admin.php, home.php)
+- ✅ No build process required for CSS changes
+- ✅ Immediate CSS updates without compilation
+- ✅ Better maintainability with individual file management
+
+**Files Modified:**
+- `package.json`: -5 scripts, -5 dependencies
+- `deploy.sh`: Removed CSS build logic
+- `.github/workflows/deploy.yml`: Removed CSS build step
+- `.github/workflows/deploy-simple.yml`: Removed CSS build step
+- `changelog.md`: Documentation of cleanup
+
+**Files Deleted:**
+- `global.css`: No longer needed
+- `deploy-temp/`: Temporary build artifacts removed
+
+**Result:**
+- ✅ Simplified deployment process
+- ✅ No CSS build dependencies
+- ✅ Individual CSS file architecture confirmed working
+- ✅ Faster development workflow
+- ✅ Cleaner codebase
+
 ### 2025-10-06 14:06:12 UTC - Critical Initialization Fixes: Status Button Logic Restored + Root Cause Analysis
 
 **Summary:**
@@ -34,7 +97,7 @@
 - **StateManager Enhancement**: Added `initializeModalActions()` method called during initialization
 - **StateEvents Update**: Updated to handle new `data-target` attribute for side-panel navigation
 - **mychecklist.php Fix**: Updated initialization timing and dependency checking with detailed error logging
-- **CSS Rebuild**: Applied all changes to global.css for immediate effect
+- **CSS Updates**: Applied all changes to individual CSS files for immediate effect
 
 **Functionality Restored:**
 - ✅ **Status Buttons Clickable**: Event delegation properly initialized and working
@@ -54,7 +117,7 @@
 - `js/StateManager.js`: +10 lines (ModalActions initialization method)
 - `js/StateEvents.js`: +1 line (data-target attribute support)
 - `php/mychecklist.php`: +10 lines (improved initialization timing and error logging)
-- `global.css`: Rebuilt with all latest changes
+- Individual CSS files: Updated with all latest changes
 
 **Testing Results:**
 - ✅ **7KH Instance**: `http://localhost:8000/?=7KH` now works correctly

@@ -45,12 +45,55 @@ function createDeleteButton(keyId) {
 
 // Function to show delete confirmation modal (using DRY modal manager)
 function showDeleteModal(keyId) {
+    // Store the triggering button for cancel focus restoration
+    const triggeringButton = document.activeElement;
+
     // Show SimpleModal confirmation
     window.simpleModal.delete(
         'Delete Checklist',
         'Do you want to delete this list?',
-        () => deleteKey(keyId),
-        () => console.log('Delete cancelled')
+        () => {
+            deleteKey(keyId);
+
+            // Focus on the nearest interactive element after delete
+            setTimeout(() => {
+                // Try to focus on delete button above the deleted row
+                const currentRow = document.querySelector(`tr[data-key="${keyId}"]`);
+                const tableBody = currentRow?.closest('tbody');
+
+                if (tableBody) {
+                    const allRows = Array.from(tableBody.querySelectorAll('tr'));
+                    const currentRowIndex = allRows.indexOf(currentRow);
+
+                    // Look for delete button in row above
+                    if (currentRowIndex > 0) {
+                        const rowAbove = allRows[currentRowIndex - 1];
+                        const deleteButtonAbove = rowAbove.querySelector('.admin-delete-button');
+                        if (deleteButtonAbove) {
+                            deleteButtonAbove.focus();
+                            console.log('Admin: Focused on delete button above after deletion');
+                            return;
+                        }
+                    }
+                }
+
+                // Fallback: Focus on Home button if no more rows or no delete button above
+                const homeButton = document.getElementById('homeButton');
+                if (homeButton) {
+                    homeButton.focus();
+                    console.log('Admin: Focused on Home button after deletion (no more rows)');
+                }
+            }, 100);
+        },
+        () => {
+            // Cancel - restore focus to triggering button
+            setTimeout(() => {
+                if (triggeringButton) {
+                    triggeringButton.focus();
+                    console.log('Admin: Restored focus to triggering button after cancel');
+                }
+            }, 100);
+        }
     );
 }
 
