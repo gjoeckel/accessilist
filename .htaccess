@@ -11,6 +11,9 @@ Options -MultiViews
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
+  # --- Admin routing: /admin → /php/admin.php ---
+  RewriteRule ^admin/?$ php/admin.php [L]
+
   # --- API: extensionless to .php (preserve method) ---
   # Matches /php/api/save → /php/api/save.php (and similarly for restore, list, delete, health)
   RewriteRule ^php/api/([^/.]+)$ php/api/$1.php [L]
@@ -30,9 +33,6 @@ Options -MultiViews
   </FilesMatch>
 </IfModule>
 
-RewriteEngine On
-RewriteRule ^admin/?$ php/admin.php [L]
-
 # Disable caching for all files
 <IfModule mod_headers.c>
     Header set Cache-Control "no-cache, no-store, must-revalidate"
@@ -46,4 +46,4 @@ RewriteRule ^admin/?$ php/admin.php [L]
 <IfModule mod_expires.c>
     ExpiresActive On
     ExpiresDefault "access"
-</IfModule> 
+</IfModule>
