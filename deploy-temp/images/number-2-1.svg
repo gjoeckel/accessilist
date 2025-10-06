@@ -1,0 +1,7 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Circle - thicker stroke -->
+  <circle cx="50" cy="50" r="40" fill="none" stroke="#5C9732" stroke-width="8" />
+  
+  <!-- Number 2 - same size as number 1 -->
+  <text x="50" y="68" font-family="Arial, sans-serif" font-size="60" text-anchor="middle" fill="#5C9732" font-weight="bold">2</text>
+</svg>

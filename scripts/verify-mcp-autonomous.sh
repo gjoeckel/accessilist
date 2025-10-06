@@ -7,7 +7,7 @@ set -euo pipefail
 echo "🔍 VERIFYING MCP AUTONOMOUS OPERATION"
 echo "====================================="
 
-PROJECT_ROOT="/Users/a00288946/Desktop/template"
+PROJECT_ROOT="/Users/a00288946/Desktop/accessilist"
 
 # Check if MCP configuration exists
 if [ -f "$PROJECT_ROOT/.cursor/mcp.json" ]; then
@@ -22,20 +22,20 @@ echo "🔍 Checking MCP server status..."
 servers_running=0
 total_servers=0
 
-for server in filesystem memory puppeteer sequential-thinking everything; do
+for server in filesystem memory puppeteer-minimal sequential-thinking-minimal everything-minimal github-minimal; do
     total_servers=$((total_servers + 1))
     pid_file="$PROJECT_ROOT/.cursor/${server}.pid"
-    
-    if [ -f "$pid_file" ]; then
-        pid=$(cat "$pid_file")
-        if kill -0 "$pid" 2>/dev/null; then
-            echo "✅ $server MCP server running (PID: $pid)"
-            servers_running=$((servers_running + 1))
-        else
-            echo "❌ $server MCP server not running"
-        fi
+
+    if [ -f "$pid_file" ] && kill -0 "$(cat "$pid_file")" 2>/dev/null; then
+        echo "✅ $server MCP server running (PID: $(cat "$pid_file"))"
+        servers_running=$((servers_running + 1))
+    elif pgrep -f "$server" >/dev/null 2>&1; then
+        pid=$(pgrep -f "$server" | head -1)
+        echo "$pid" > "$pid_file"
+        echo "✅ $server MCP server running (PID: $pid)"
+        servers_running=$((servers_running + 1))
     else
-        echo "❌ $server MCP server PID file missing"
+        echo "❌ $server MCP server NOT running"
     fi
 done
 

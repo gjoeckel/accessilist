@@ -18,6 +18,7 @@
     "cssnano": "^7.0.6",
     "eslint-plugin-sonarjs": "^3.0.5",
     "npm-run-all": "^4.1.5",
+    "playwright": "^1.56.0",
     "postcss": "^8.5.3",
     "postcss-cli": "^11.0.1"
   }

@@ -1,0 +1,7 @@
+<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+  <!-- Circle - thicker stroke -->
+  <circle cx="50" cy="50" r="40" fill="none" stroke="#0C2336" stroke-width="8" />
+  
+  <!-- Number 4 - same size as previous numbers -->
+  <text x="50" y="68" font-family="Arial, sans-serif" font-size="60" text-anchor="middle" fill="#0C2336" font-weight="bold">4</text>
+</svg>

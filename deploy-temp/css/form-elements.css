@@ -1,0 +1,117 @@
+/* Form Element Styles - DRY Consolidated */
+
+/* ====================================================================
+   UNIFIED INPUT STYLES
+   Used by: Manual principle rows (.task-input)
+   ==================================================================== */
+.task-input {
+    width: 100%;
+    min-height: 75px;
+    height: auto;
+    box-sizing: border-box;
+    resize: none;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 2; /* User preference: all multiline text line-height of 2 */
+    color: #333;
+    background-color: #fff;
+}
+
+.task-input:focus {
+    outline: none;
+    border-color: #007cba;
+    box-shadow: 0 0 0 2px rgba(0, 124, 186, 0.2);
+}
+
+/* ====================================================================
+   UNIFIED TEXTAREA STYLES
+   Used by: Principle tables (.notes-textarea)
+            Report tables (.report-task-textarea, .report-notes-textarea)
+   ==================================================================== */
+textarea,
+.notes-textarea,
+.report-task-textarea,
+.report-notes-textarea {
+    width: 100%;
+    min-height: 75px;
+    height: auto;
+    box-sizing: border-box;
+    resize: none;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 2; /* User preference: all multiline text line-height of 2 */
+    color: #333;
+    background-color: #fff;
+}
+
+/* ====================================================================
+   UNIFIED NOTES CELL STYLES
+   Used by: Principle tables (.notes-cell)
+            Report tables (.report-notes-cell, .report-task-cell)
+   ==================================================================== */
+.notes-cell,
+.report-notes-cell,
+.report-task-cell {
+    text-align: left;
+    vertical-align: top;
+    position: relative; /* Needed for absolute positioning of overlay */
+}
+
+/* Center the 'Notes' header text in principles tables */
+.principles-table th.notes-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Legacy text overlay styles removed - overlays no longer used */
+
+/* ====================================================================
+   AUTOMATIC ROW TEXT CONTAINERS
+   Used by: Automatic (completed task) rows in Report table
+   Purpose: Match visual appearance of textareas but read-only
+   ==================================================================== */
+.report-task-text,
+.report-notes-text {
+    width: 100%;
+    min-height: 75px;
+    box-sizing: border-box;
+    padding: 8px;
+    border: 1px solid #e0e0e0; /* Lighter border for read-only */
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 2; /* User preference: all multiline text line-height of 2 */
+    color: #555; /* Slightly muted for read-only */
+    background-color: #f9f9f9; /* Light background to indicate read-only */
+    white-space: pre-wrap;
+    word-wrap: break-word;
+    overflow-y: auto;
+}
+
+/* Notes cell specific (if needed for report tables) */
+.report-notes-cell {
+    text-align: left;
+    vertical-align: top;
+    position: relative;
+}
+
+.report-table th.report-notes-cell {
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Legacy report overlay styles removed - overlays no longer used */
+
+.report-task-cell {
+    text-align: left;
+    vertical-align: top;
+    position: relative;
+}
+
+/* Legacy report task overlay styles removed - overlays no longer used */ 

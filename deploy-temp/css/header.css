@@ -1,0 +1,116 @@
+/* Header Styles - Consolidated from multiple-side-test.css block */
+.sticky-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 70px;
+    background-color: var(--color-header-bg);
+    border-bottom: 1px solid var(--color-border);
+    z-index: 100;
+    display: flex;
+    align-items: center;
+}
+.header-content {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    padding: 0 1rem;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+.sticky-header h1 {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    margin: 0;
+    font-size: 1.5rem;
+    color: var(--text-color);
+}
+/* Header Button Styles */
+.header-buttons {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-left: 0;
+    margin-right: 0;
+    padding-left: 3rem;
+    padding-right: 3rem;
+}
+
+.home-button {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    background-color: #336699;
+}
+
+.header-button {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    background-color: #333;
+}
+
+/* Save Button - Exact match to Home button except color */
+#saveButton {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    background-color: #478F00;
+}
+
+/* Save Button hover state */
+#saveButton:hover,
+#saveButton:focus-visible {
+    background-color: #3a7a00; /* Slightly darker green for hover */
+}
+
+/* Other primary action buttons (Start/Yes) */
+#startButton,
+#yesButton {
+    background-color: #336600;
+    color: white;
+}
+/* Secondary action button (Test) */
+#testButton {
+    color: #222222;
+    background-color: #888888;
+}
+/* Admin button */
+#adminButton,
+#cancelButton {
+    background-color: #333;
+    color: white;
+}
+
+/* Removed focus/hover styles - Handled by focus.css */ 

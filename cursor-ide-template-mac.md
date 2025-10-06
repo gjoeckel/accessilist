@@ -38,6 +38,7 @@ For developers who need a working environment immediately:
 
 ## Overview
 
+
 macOS Tahoe represents Apple's most developer-friendly release yet, with **enhanced performance optimizations on Apple Silicon**, integrated AI capabilities, and refined security features that require developers to understand new workflows. This comprehensive guide covers essential setup practices for professional development on macOS 16, drawing from official Apple documentation, community best practices, and real-world developer experiences in 2025.
 
 The most critical setup decisions involve choosing zsh as your default shell, installing Homebrew at the correct architecture-specific path, understanding APFS filesystem characteristics, and configuring security permissions that won't impede development velocity. Additionally, the emergence of Model Context Protocol servers in late 2024 has created new possibilities for AI-assisted development workflows specifically optimized for macOS.
@@ -150,42 +151,8 @@ launchd serves as macOS's initialization and service management framework, start
 
 Property list files reside in standardized locations: `/Library/LaunchDaemons/` for administrator-installed system services, `/Library/LaunchAgents/` for global user services, and `~/Library/LaunchAgents/` for user-specific services. System directories under `/System/Library/` contain Apple-provided services that should never be modified.
 
-A minimal LaunchAgent for running a database looks like:
 
-```xml
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
-  "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
-<plist version="1.0">
-<dict>
-    <key>Label</key>
-    <string>local.postgresql</string>
-    
-    <key>ProgramArguments</key>
-    <array>
-        <string>/usr/local/bin/postgres</string>
-        <string>-D</string>
-        <string>/usr/local/var/postgres</string>
-    </array>
-    
-    <key>RunAtLoad</key>
-    <true/>
-    
-    <key>KeepAlive</key>
-    <true/>
-    
-    <key>StandardOutPath</key>
-    <string>/usr/local/var/log/postgres.log</string>
-    
-    <key>StandardErrorPath</key>
-    <string>/usr/local/var/log/postgres.err</string>
-</dict>
-</plist>
-```
 
-The `Label` serves as a unique identifier, `ProgramArguments` specifies the command and arguments, `RunAtLoad` starts the service on boot/login, `KeepAlive` restarts the process if it crashes, and logging paths capture output. **Never configure your program to daemonize itself**—launchd handles backgrounding and process supervision.
-
-Modern launchctl syntax changed significantly in macOS 10.10+ but legacy commands still work. Use `launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/local.postgresql.plist` to load a user agent or `launchctl bootout gui/$(id -u)/local.postgresql` to unload. Start services manually with `launchctl kickstart gui/$(id -u)/local.postgresql` and stop with `launchctl kill SIGTERM gui/$(id -u)/local.postgresql`. Check status with `launchctl list | grep local.postgresql` or detailed information with `launchctl print gui/$(id -u)/local.postgresql`.
 
 For periodic tasks, use `StartInterval` (run every N seconds) or `StartCalendarInterval` (run at specific times). Calendar intervals support complex schedules:
 
@@ -322,22 +289,6 @@ Create reproducible development environments using Docker Compose:
 # docker-compose.dev.yml
 version: '3.8'
 services:
-  postgres:
-    image: postgres:15
-    environment:
-      POSTGRES_DB: myapp_dev
-      POSTGRES_USER: developer
-      POSTGRES_PASSWORD: password
-    ports:
-      - "5432:5432"
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U developer"]
-      interval: 10s
-      timeout: 5s
-      retries: 5
-
   redis:
     image: redis:7-alpine
     ports:
@@ -358,17 +309,13 @@ services:
       - .:/app
       - /app/node_modules
     depends_on:
-      postgres:
-        condition: service_healthy
       redis:
         condition: service_healthy
     environment:
       - NODE_ENV=development
-      - DATABASE_URL=postgresql://developer:password@postgres:5432/myapp_dev
       - REDIS_URL=redis://redis:6379
 
 volumes:
-  postgres_data:
   redis_data:
 ```
 
@@ -427,7 +374,6 @@ eval "$(direnv hook zsh)"
 
 # Create .envrc in project directory
 echo "export NODE_ENV=development" > .envrc
-echo "export DATABASE_URL=postgresql://localhost:5432/myapp_dev" >> .envrc
 echo "asdf local nodejs 18.17.0" >> .envrc
 
 # Allow direnv to load the environment

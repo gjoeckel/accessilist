@@ -1,0 +1,102 @@
+/* Section Styles - Consolidated */
+
+/* Main Content Layout */
+main {
+    grid-area: main;
+    max-width: 90%;
+    margin-left: 100px;
+    /* min-height: 3000px; /* From multiple.css block - Keep or remove? Keeping checklist.css version */
+    padding-bottom: 100vh; /* From checklist.css block */
+}
+
+/* Section Styles */
+section {
+    padding-top: 100px;
+    color: var(--theme-color);
+    position: relative;
+    z-index: 1;
+    margin-bottom: 2rem;
+}
+
+/* Principle Section Specific Styles */
+.principle-section {
+    position: relative;
+    z-index: 1;
+}
+
+/* Report Section Specific Styles */
+.report-section {
+    position: relative;
+    z-index: 1;
+    --theme-color: #666666; /* Updated for report section */
+    --header-fill-color: #F0F9FF;
+}
+
+/* Principle Color Variables */
+.principle-section.checklist-1 {
+    --theme-color: #005192;
+    --header-fill-color: #F0F9FF;
+}
+.principle-section.checklist-2 {
+    --theme-color: #5E850F;
+    --header-fill-color: #F7FDED;
+}
+.principle-section.checklist-3 {
+    --theme-color: #AC6628;
+    --header-fill-color: #F7E7D9;
+}
+.principle-section.checklist-4 {
+    --theme-color: #0C2336;
+    --header-fill-color: #E7ECF0;
+}
+
+/* Section Headers - Prioritizing 1.3rem font-size from multiple.css */
+.principle-section h2, .report-section h2 {
+    color: var(--theme-color); /* Use section's principle color */
+    /* color: var(--h2-color); /* This variable seems undefined/unused */
+    font-size: 1.3rem; /* From multiple.css block */
+    text-align: center;
+    margin-bottom: 2rem;
+    z-index: 1;
+    background-color: transparent;
+    padding: 4px;
+}
+
+/* Simplified Checklist Caption Styles */
+.checklist-caption {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: calc(0.5rem + 4px) calc(1rem + 4px);
+    transition: box-shadow 0.2s ease;
+    max-width: fit-content;
+    white-space: nowrap;
+    margin: 0 auto; /* Center the heading above the table */
+}
+
+.checklist-caption img {
+    flex-shrink: 0;
+}
+
+/* DRY Golden ring focus and hover styles - uses CSS custom property */
+.checklist-caption:focus,
+.checklist-caption:hover {
+    outline: none;
+    box-shadow: var(--golden-ring) !important;
+}
+
+/* Screen Reader Only Class (Included as it was in section blocks) */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}

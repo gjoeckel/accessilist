@@ -1,0 +1,202 @@
+{
+  "type": "Excel",
+  "showRobust": true,
+  "checklist-1": {
+    "caption": "Students can access information, regardless of their sensory abilities.",
+    "table": [
+      {
+        "id": "1.1",
+        "task": "Include alternative text for all images, graphics, shapes, and PivotTables.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.2",
+        "task": "Ensure alt-text for images of text includes the text content from that image.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.3",
+        "task": "Provide transcripts for pre-recorded, externally linked audio content.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.4",
+        "task": "Include captions for pre-recorded, externally linked video content.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.5",
+        "task": "Use a simple structure with column headers and avoid blank, merged, or split cells.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.6",
+        "task": "Avoid blank rows or columns, and nested tables to preserve information relationships.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.7",
+        "task": "Never rely solely on color, shape, size, or visual location to convey information.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.8",
+        "task": "Use a contrast ratio of at least 4.5:1 for text to ensure readability.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.9",
+        "task": "Present all text in actual text format rather than as images of text.",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "checklist-2": {
+    "caption": "Students can easily navigate and use the spreadsheet regardless of how they interact with computers.",
+    "table": [
+      {
+        "id": "2.1",
+        "task": "Ensure all functionality is accessible using only the keyboard.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.2",
+        "task": "Confirm that focus can be moved to and away from all elements using only the keyboard.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.3",
+        "task": "Avoid content that flashes more than three times per second to prevent seizures.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.4",
+        "task": "Give each sheet tab a unique, descriptive name to make content easily identifiable.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.5",
+        "task": "Remove blank sheets to improve navigation and searchability.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.6",
+        "task": "Use descriptive text for hyperlinks instead of phrases like 'click here'.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.7",
+        "task": "Add ScreenTips to hyperlinks to provide additional context.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.8",
+        "task": "Provide multiple ways to locate or navigate to content (e.g., custom menu sheet).",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.9",
+        "task": "Deactivate floating toolbars before sharing to make data more accessible.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.10",
+        "task": "Avoid using 'freeze pane', 'hide columns' features, or text boxes when possible.",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "checklist-3": {
+    "caption": "Students can easily understand how to use a spreadsheet, and comprehend its information.",
+    "table": [
+      {
+        "id": "3.1",
+        "task": "Use consistency in formatting across all sheets and content.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.2",
+        "task": "Apply consistent naming conventions throughout the spreadsheet.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.3",
+        "task": "Ensure sheets that serve parallel functions follow the same basic structure.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.4",
+        "task": "Define acronyms and abbreviations the first time they appear.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.5",
+        "task": "Use clear, simple language in all labels, instructions, and content.",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "checklist-4": {
+    "caption": "Students can access the spreadsheet using different technologies and tools that help them learn.",
+    "table": [
+      {
+        "id": "4.1",
+        "task": "Run the Excel Accessibility Checker tool to find and fix problems.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.2",
+        "task": "Run the checker again after making changes to catch any new issues.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.3",
+        "task": "Consider sharing as a .csv file if the spreadsheet contains only data.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.4",
+        "task": "Add document properties like title, author, and tags for better identification.",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "report": {
+    "caption": "Report",
+    "table": [
+      {
+        "date": "00-00-00",
+        "tasks": "Tasks",
+        "notes": "Notes"
+      }
+    ]
+  }
+}

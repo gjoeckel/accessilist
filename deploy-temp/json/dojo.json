@@ -1,0 +1,148 @@
+{
+  "type": "Dojo",
+  "showRobust": true,
+  "checklist-1": {
+    "caption": "Perceivable Questions",
+    "table": [
+      {
+        "id": "1.1",
+        "task": "Are all images/photo posts/videos in \"Stories\" or \"Portfolios\" accompanied by alt text or descriptive captions/labels?",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.2",
+        "task": "If there are prerecorded videos, can you add captions, and are they correct?",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.3",
+        "task": "Is there a transcript alternative where needed (especially for audio content)?",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.4",
+        "task": "Can color contrast be checked (text vs background, non-text elements)?",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.5",
+        "task": "Can text be resized (browser zoom, device settings) without breaking layout or cutting off important content?",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "checklist-2": {
+    "caption": "Operable Questions",
+    "table": [
+      {
+        "id": "2.1",
+        "task": "Can all main features (instructor feedback, messaging, navigating between classes/stories/events) be done via keyboard only?",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.2",
+        "task": "Are UI elements (buttons, links, menus) reachable and usable via keyboard or switch devices?",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.3",
+        "task": "Does focus move in logical order (when tabbing)?",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.4",
+        "task": "Are touch targets / buttons large enough (on mobile) for users with motor impairments?",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.5",
+        "task": "Are there orientation issues (does the app force portrait or landscape in ways that disable user's preferred orientation)?",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "checklist-3": {
+    "caption": "Understandable Questions",
+    "table": [
+      {
+        "id": "3.1",
+        "task": "Are instructions, labels, and feedback messages clear and consistently placed?",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.2",
+        "task": "Are error states or input problems clearly identified and described in text?",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.3",
+        "task": "Does changing language / translation preserve meaning and clarity?",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.4",
+        "task": "Are pop-ups, dialogs, or context changes triggered only when the user expects them (not surprising on focus etc.)?",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "checklist-4": {
+    "caption": "Robust Questions",
+    "table": [
+      {
+        "id": "4.1",
+        "task": "Works well with common screen readers (NVDA, JAWS, VoiceOver, TalkBack)?",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.2",
+        "task": "Do exported or posted materials (e.g. messages, images) remain accessible when accessed through your LMS or school-provided devices?",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.3",
+        "task": "Is the HTML semantically correct (headings, lists)?",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.4",
+        "task": "Are accessible name, role, and states programmatically exposed?",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.5",
+        "task": "Are keyboard / assistive tech users able to opt into alternate input methods?",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "report": {
+    "caption": "Report",
+    "table": [
+      {
+        "date": "00-00-00",
+        "tasks": "Tasks",
+        "notes": "Notes"
+      }
+    ]
+  }
+}

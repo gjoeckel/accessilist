@@ -11,12 +11,17 @@ echo "=================================================="
 echo "📦 Using remote repository: https://github.com/gjoeckel/my-mcp-servers"
 
 # Set environment variables
-export PROJECT_ROOT="/Users/a00288946/Desktop/template"
+export PROJECT_ROOT="/Users/a00288946/Desktop/accessilist"
 export CURSOR_MCP_ENV=1
 
 # Load environment variables if .env exists
 if [ -f "$PROJECT_ROOT/.env" ]; then
     export $(grep -v '^#' "$PROJECT_ROOT/.env" | xargs)
+fi
+
+# Normalize GitHub token name for servers expecting GITHUB_TOKEN
+if [ -z "${GITHUB_TOKEN:-}" ] && [ -n "${GITHUB_PERSONAL_ACCESS_TOKEN:-}" ]; then
+    export GITHUB_TOKEN="$GITHUB_PERSONAL_ACCESS_TOKEN"
 fi
 
 # Create necessary directories
@@ -47,61 +52,115 @@ start_mcp_server() {
     echo "✅ $server_name MCP server started (PID: $pid)"
 }
 
-# Stop any existing MCP servers
-echo "🛑 Stopping existing MCP servers..."
-for pid_file in "$PROJECT_ROOT/.cursor"/*.pid; do
-    if [ -f "$pid_file" ]; then
-        pid=$(cat "$pid_file")
-        if kill -0 "$pid" 2>/dev/null; then
-            echo "Stopping process $pid..."
-            kill "$pid" 2>/dev/null || true
-        fi
-        rm -f "$pid_file"
-    fi
+# Concurrency lock to prevent duplicate startups
+LOCK_FILE="$PROJECT_ROOT/.cursor/mcp-start.lock"
+if [ -f "$LOCK_FILE" ]; then
+  if find "$LOCK_FILE" -mmin +5 >/dev/null 2>&1; then
+    echo "⚠️  Stale lock detected, removing..."
+    rm -f "$LOCK_FILE"
+  else
+    echo "⏳ Another MCP startup is in progress. Skipping."
+    exit 0
+  fi
+fi
+
+trap 'rm -f "$LOCK_FILE"' EXIT
+: > "$LOCK_FILE"
+
+# Determine which servers need starting (skip running)
+servers=("github-minimal" "puppeteer-minimal" "sequential-thinking-minimal" "everything-minimal" "filesystem" "memory")
+needs_start=()
+for s in "${servers[@]}"; do
+  pid_file="$PROJECT_ROOT/.cursor/${s}.pid"
+  if [ -f "$pid_file" ] && kill -0 "$(cat "$pid_file")" 2>/dev/null; then
+    continue
+  elif pgrep -f "$s" >/dev/null 2>&1; then
+    pgrep -f "$s" | head -1 > "$pid_file"
+    continue
+  else
+    needs_start+=("$s")
+  fi
 done
 
-# Wait for cleanup
-sleep 2
+# Safe helper to check membership in array (avoids unbound warnings)
+array_contains() {
+  local needle="$1"
+  shift || true
+  for item in "$@"; do
+    [ "$item" = "$needle" ] && return 0
+  done
+  return 1
+}
+
+if [ ${#needs_start[@]} -eq 0 ]; then
+  echo "✅ All MCP servers already running"
+else
+  echo "🔧 Starting missing servers: ${needs_start[*]}"
+fi
 
 # Start optimized MCP servers (39 tools total - just under 40 limit)
 echo "🚀 Starting optimized MCP servers..."
 
 # GitHub Minimal MCP (4 tools - essential GitHub operations only)
-if [ -n "${GITHUB_TOKEN:-}" ]; then
+if [ ${#needs_start[@]} -gt 0 ] && array_contains "github-minimal" "${needs_start[@]}"; then
+  if [ -n "${GITHUB_TOKEN:-}" ]; then
     start_mcp_server "github-minimal" \
-        "npx" \
-        "-y git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/github-minimal" \
-        "GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_TOKEN}"
-else
+      "npx" \
+      "-y git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/github-minimal" \
+      "GITHUB_PERSONAL_ACCESS_TOKEN=${GITHUB_TOKEN}"
+  else
     echo "⚠️  GitHub Minimal MCP skipped - no GITHUB_TOKEN available"
+  fi
+else
+  echo "⏭️  github-minimal already running"
 fi
 
 # Puppeteer Minimal MCP (4 tools - essential browser automation)
-start_mcp_server "puppeteer-minimal" \
+if [ ${#needs_start[@]} -gt 0 ] && array_contains "puppeteer-minimal" "${needs_start[@]}"; then
+  start_mcp_server "puppeteer-minimal" \
     "npx" \
     "-y git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/puppeteer-minimal"
+else
+  echo "⏭️  puppeteer-minimal already running"
+fi
 
 # Sequential Thinking Minimal MCP (4 tools - essential problem solving)
-start_mcp_server "sequential-thinking-minimal" \
+if [ ${#needs_start[@]} -gt 0 ] && array_contains "sequential-thinking-minimal" "${needs_start[@]}"; then
+  start_mcp_server "sequential-thinking-minimal" \
     "npx" \
     "-y git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/sequential-thinking-minimal"
+else
+  echo "⏭️  sequential-thinking-minimal already running"
+fi
 
 # Everything Minimal MCP (4 tools - essential protocol validation)
-start_mcp_server "everything-minimal" \
+if [ ${#needs_start[@]} -gt 0 ] && array_contains "everything-minimal" "${needs_start[@]}"; then
+  start_mcp_server "everything-minimal" \
     "npx" \
     "-y git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/everything-minimal"
+else
+  echo "⏭️  everything-minimal already running"
+fi
 
 # Filesystem MCP (15 tools - file operations, directory navigation)
-start_mcp_server "filesystem" \
+if [ ${#needs_start[@]} -gt 0 ] && array_contains "filesystem" "${needs_start[@]}"; then
+  start_mcp_server "filesystem" \
     "npx" \
-    "-y @modelcontextprotocol/server-filesystem /Users/a00288946/Desktop/template" \
-    "ALLOWED_PATHS=/Users/a00288946/Desktop/template:/Users/a00288946/.cursor:/Users/a00288946/.config/mcp
+    "-y @modelcontextprotocol/server-filesystem /Users/a00288946/Desktop/accessilist" \
+    "ALLOWED_PATHS=/Users/a00288946/Desktop/accessilist:/Users/a00288946/.cursor:/Users/a00288946/.config/mcp
 READ_ONLY=false"
+else
+  echo "⏭️  filesystem already running"
+fi
 
 # Memory MCP (8 tools - knowledge storage, entity management)
-start_mcp_server "memory" \
+if [ ${#needs_start[@]} -gt 0 ] && array_contains "memory" "${needs_start[@]}"; then
+  start_mcp_server "memory" \
     "npx" \
     "-y @modelcontextprotocol/server-memory"
+else
+  echo "⏭️  memory already running"
+fi
 
 echo "📊 Tool count optimization:"
 echo "   ✅ GitHub Minimal: 4 tools (essential GitHub operations)"

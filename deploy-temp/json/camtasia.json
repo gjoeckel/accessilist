@@ -1,0 +1,94 @@
+{
+  "type": "Camtasia",
+  "checklist-1": {
+    "caption": "Students have equivalent access to what is seen and heard",
+    "table": [
+      {
+        "id": "1.1",
+        "task": "Students have a transcript for pre-recorded audio.",
+        "show": "",
+        "notes": "Task for First criterion"
+      },
+      {
+        "id": "1.2",
+        "task": "Students have captions for a pre-recorded video that are complete, accurate, and synchronized.",
+        "show": "",
+        "notes": "Task for Second criterion"
+      },
+      {
+        "id": "1.3",
+        "task": "Students can listen to audio descriptions or read text alternatives for all visual-only or uncaptioned information (e.g., math problems written on a whiteboard, children laughing together).",
+        "show": "",
+        "notes": "Task for Third criterion"
+      },
+      {
+        "id": "1.4",
+        "task": "Students do not have to rely on color alone to receive information, take an action, give a response, or see a visual element.",
+        "show": "",
+        "notes": "Task for First criterion"
+      },
+      {
+        "id": "1.5",
+        "task": "Students can see text clearly because there is sufficient contrast between the text color and any background color(s).",
+        "show": "",
+        "notes": "Task for Second criterion"
+      }
+    ]
+  },
+  "checklist-2": {
+    "caption": "Students can interact with the video and any added elements (e.g., a quiz) with their choice of device.",
+    "table": [
+      {
+        "id": "2.1",
+        "task": "Students keyboard interactions are optimized.",
+        "show": "",
+        "notes": "Task for First criterion"
+      },
+      {
+        "id": "2.2",
+        "task": "Students using a keyboard will be able to close any interface element that opens (e.g., a pop-up window).",
+        "show": "",
+        "notes": "Task for Second criterion"
+      },
+      {
+        "id": "2.3",
+        "task": "Students will have enough time to complete tasks.",
+        "show": "",
+        "notes": "Task for First criterion"
+      }
+    ]
+  },
+  "checklist-3": {
+    "caption": "Students can determine the language of digital text and predict how controls will work.",
+    "table": [
+      {
+        "id": "3.1",
+        "task": "Students that use a screen reader can determine the language of a transcript (or other electronic document).",
+        "show": "",
+        "notes": "Task for First criterion"
+      },
+      {
+        "id": "3.2",
+        "task": "Students that use a screen reader can determine the language of passages in a foreign language.",
+        "show": "",
+        "notes": "Task for Second criterion"
+      },
+      {
+        "id": "3.3",
+        "task": "Students can hover over an interactive element, or tab to it with a keyboard, without triggering an action.",
+        "show": "",
+        "notes": "Task for First criterion"
+      }
+    ]
+  },
+  "checklist-4": {
+    "caption": "Report",
+    "table": [
+      {
+        "date": "00-00-00",
+        "tasks": "Tasks",
+        "notes": "Notes"
+      }
+    ]
+  }
+} 
