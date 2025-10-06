@@ -99,7 +99,7 @@ EOF
 - Integrate with MCP memory for persistent storage
 
 ## 📊 **Active Configurations**
-- **MCP Servers**: memory, github, filesystem, sequential-thinking, everything, puppeteer, postgres
+- **MCP Servers**: memory, github, filesystem, sequential-thinking, everything, puppeteer
 - **SRD Tools**: ESLint, Prettier, Jest with SRD-specific rules
 - **GitHub Push Gate**: Requires token "push to github"
 
@@ -108,7 +108,7 @@ EOF
 - **Testing**: Jest with 80% coverage requirements
 - **Analysis**: Complexity, duplication, and dependency analysis
 - **Automation**: Browser automation via Puppeteer
-- **Database**: PostgreSQL operations via MCP
+- **Database**: (none configured via MCP in this project)
 - **Memory**: Persistent context storage via MCP memory
 
 ---

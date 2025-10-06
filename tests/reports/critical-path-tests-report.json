@@ -1,6 +1,6 @@
 {
   "testName": "critical-path-tests",
-  "timestamp": "2025-10-02T21:57:39.290Z",
+  "timestamp": "2025-10-06T16:13:03.596Z",
   "results": [
     {
       "test": "API Health Check",
@@ -32,14 +32,14 @@
     }
   ],
   "screenshots": [
-    "/Users/a00288946/Desktop/template/tests/screenshots/home-page-loaded_2025-10-02T21-56-08-637Z.png",
-    "/Users/a00288946/Desktop/template/tests/screenshots/home-to-checklist-error_2025-10-02T21-56-08-698Z.png",
-    "/Users/a00288946/Desktop/template/tests/screenshots/checklist-interaction-start_2025-10-02T21-56-28-809Z.png",
-    "/Users/a00288946/Desktop/template/tests/screenshots/checklist-interaction-error_2025-10-02T21-56-38-887Z.png",
-    "/Users/a00288946/Desktop/template/tests/screenshots/save-restore-start_2025-10-02T21-56-59-001Z.png",
-    "/Users/a00288946/Desktop/template/tests/screenshots/save-restore-error_2025-10-02T21-56-59-061Z.png",
-    "/Users/a00288946/Desktop/template/tests/screenshots/reports-page-loaded_2025-10-02T21-57-19-149Z.png",
-    "/Users/a00288946/Desktop/template/tests/screenshots/admin-page-loaded_2025-10-02T21-57-39-206Z.png"
+    "/Users/a00288946/Desktop/accessilist/tests/screenshots/home-page-loaded_2025-10-06T16-11-32-821Z.png",
+    "/Users/a00288946/Desktop/accessilist/tests/screenshots/home-to-checklist-error_2025-10-06T16-11-32-881Z.png",
+    "/Users/a00288946/Desktop/accessilist/tests/screenshots/checklist-interaction-start_2025-10-06T16-11-53-091Z.png",
+    "/Users/a00288946/Desktop/accessilist/tests/screenshots/checklist-interaction-error_2025-10-06T16-12-03-169Z.png",
+    "/Users/a00288946/Desktop/accessilist/tests/screenshots/save-restore-start_2025-10-06T16-12-23-295Z.png",
+    "/Users/a00288946/Desktop/accessilist/tests/screenshots/save-restore-error_2025-10-06T16-12-23-352Z.png",
+    "/Users/a00288946/Desktop/accessilist/tests/screenshots/reports-page-loaded_2025-10-06T16-12-43-435Z.png",
+    "/Users/a00288946/Desktop/accessilist/tests/screenshots/admin-page-loaded_2025-10-06T16-13-03-509Z.png"
   ],
   "summary": {
     "total": 6,

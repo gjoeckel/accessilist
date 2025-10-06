@@ -145,7 +145,7 @@ fi
 # Display MCP tools status
 echo -e "${GREEN}🤖 MCP Tools Status:${NC}"
 echo "=================================="
-MCP_TOOLS=("mcp-server-memory" "mcp-server-github" "mcp-server-filesystem" "mcp-server-sequential-thinking" "mcp-server-everything" "mcp-server-puppeteer" "enhanced-postgres-mcp-server")
+MCP_TOOLS=("mcp-server-memory" "mcp-server-github" "mcp-server-filesystem" "mcp-server-sequential-thinking" "mcp-server-everything" "mcp-server-puppeteer")
 
 for tool in "${MCP_TOOLS[@]}"; do
     if command -v "$tool" &> /dev/null; then
@@ -170,4 +170,12 @@ echo ""
 echo -e "${YELLOW}💡 Ready for AI session with full context!${NC}"
 echo -e "${BLUE}🔧 Remember to run session-end.sh at the end of this session${NC}"
 
+# SRD hook: ensure MCP servers are started for autonomous operation
+if [ -x "./scripts/start-mcp-servers.sh" ]; then
+  echo -e "${BLUE}🧩 Ensuring MCP servers are running...${NC}"
+  ./scripts/start-mcp-servers.sh || true
+  if [ -x "./scripts/check-mcp-simple.sh" ]; then
+    ./scripts/check-mcp-simple.sh || true
+  fi
+fi
 

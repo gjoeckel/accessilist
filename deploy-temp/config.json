@@ -1,0 +1,10 @@
+{
+  "environment": "production",
+  "comment": "Set to 'local' for development, 'production' for deployment",
+  "deployment": {
+    "username": "george",
+    "hostname": "ec2-3-20-59-76.us-east-2.compute.amazonaws.com",
+    "key": "C:\\Users\\George\\.ssh\\GeorgeWebAIMServerKey.pem",
+    "targetPath": "/var/websites/webaim/htdocs/training/online/accessilist/"
+  }
+}

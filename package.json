@@ -4,9 +4,16 @@
   "main": "js/main.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
+    "test:all": "npm run test:accessibility && npm run test:performance && npm run test:mcp",
+    "test:accessibility": "echo '🧪 Running accessibility tests...' && node tests/puppeteer/accessibility_tests.js",
+    "test:performance": "echo '⚡ Running performance tests...' && node tests/puppeteer/performance_tests.js",
+    "test:mcp": "echo '🔧 Running MCP validation...' && ./scripts/verify-mcp-autonomous.sh",
     "concat:css": "concat -o global.css css/modal.css css/focus.css css/landing.css css/admin.css css/form-elements.css css/table.css css/section.css css/status.css css/side-panel.css css/header.css css/base.css",
     "minify:css": "npx postcss global.css -o global.css",
     "build:css": "npm-run-all concat:css minify:css",
+    "validate": "npm run test:mcp && echo '✅ Validation complete'",
+    "deploy:preview": "echo '📦 Creating deployment preview...' && ./deploy.sh --preview",
+    "deploy:production": "echo '🚀 Deploying to production...' && ./deploy.sh",
     "generate:user-stories": "node scripts/generate-user-stories.js"
   },
   "keywords": [],
@@ -18,6 +25,7 @@
     "cssnano": "^7.0.6",
     "eslint-plugin-sonarjs": "^3.0.5",
     "npm-run-all": "^4.1.5",
+    "playwright": "^1.56.0",
     "postcss": "^8.5.3",
     "postcss-cli": "^11.0.1"
   }

@@ -1,0 +1,178 @@
+{
+  "type": "Docs",
+  "showRobust": true,
+  "checklist-1": {
+    "caption": "Students can access document content, regardless of their sensory abilities.",
+    "table": [
+      {
+        "id": "1.1",
+        "task": "Apply heading styles (Heading 1, Heading 2, etc.) for document structure instead of manually formatted text.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.2",
+        "task": "Add alternative text to all images to describe important visual content.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.3",
+        "task": "Ensure sufficient color contrast between text and background.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.4",
+        "task": "Avoid using color alone to convey information or meaning.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.5",
+        "task": "Include descriptive header rows in tables and label them clearly.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.6",
+        "task": "Use meaningful link text instead of generic phrases like 'Click here'.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.7",
+        "task": "Provide captions or additional context for important images and diagrams.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.8",
+        "task": "Avoid using tables for layout purposes.",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "checklist-2": {
+    "caption": "Students can navigate and interact with documents regardless of how they use computers.",
+    "table": [
+      {
+        "id": "2.1",
+        "task": "Maintain logical document structure using headings in proper hierarchical order.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.2",
+        "task": "Use built-in bulleted and numbered lists instead of manually typed symbols.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.3",
+        "task": "Avoid excessive indentation or manual spacing for layout purposes.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.4",
+        "task": "Support visuals with text descriptions or context so meaning isn't conveyed by visuals alone.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.5",
+        "task": "Create a table of contents for longer documents to help with navigation.",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "checklist-3": {
+    "caption": "Students can easily understand the content and navigate through documents.",
+    "table": [
+      {
+        "id": "3.1",
+        "task": "Write in clear, concise language appropriate to students' reading level.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.2",
+        "task": "Define new or difficult vocabulary when first introduced.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.3",
+        "task": "Maintain consistent formatting with uniform font sizes and styles throughout the document.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.4",
+        "task": "Avoid mixing colors or fonts excessively.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.5",
+        "task": "Label assignments, steps, or sections clearly with consistent formatting.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.6",
+        "task": "Keep sentences short and age-appropriate for the intended audience.",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "checklist-4": {
+    "caption": "Students can access documents using different technologies and tools that help them learn.",
+    "table": [
+      {
+        "id": "4.1",
+        "task": "Run an accessibility checker like Grackle Docs to identify and fix issues.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.2",
+        "task": "Export and share documents in accessible formats like Google Docs, tagged PDFs, or HTML.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.3",
+        "task": "Simplify table structures and provide summaries for complex tables if needed.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.4",
+        "task": "Avoid complex nested layouts that may confuse screen readers.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.5",
+        "task": "Ensure document properties like title are properly set for easier identification.",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "report": {
+    "caption": "Report",
+    "table": [
+      {
+        "date": "00-00-00",
+        "tasks": "Tasks",
+        "notes": "Notes"
+      }
+    ]
+  }
+}

@@ -1,0 +1,190 @@
+{
+  "type": "PowerPoint",
+  "showRobust": true,
+  "checklist-1": {
+    "caption": "Students can access presentation information regardless of their sensory abilities.",
+    "table": [
+      {
+        "id": "1.1",
+        "task": "Add alternative text to images, charts, SmartArt, and other visual elements. (distributed files only)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.2",
+        "task": "Use actual text instead of images of text or text in logos. (distributed files only)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.3",
+        "task": "Create accessible data tables with proper headers and avoid merged cells. (both presentations & distributed files)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.4",
+        "task": "Add closed captions to embedded video content. (both)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.5",
+        "task": "Provide transcripts for audio elements. (distributed files only)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.6",
+        "task": "Use high contrast color combinations for text and backgrounds. (both)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.7",
+        "task": "Don't rely solely on sensory inputs such as color, shape, size, visual location, or orientation to convey meaning. (both)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.8",
+        "task": "Use readable fonts with appropriate size. (both)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.9",
+        "task": "Use PowerPoint's built-in slide layouts and heading styles. (both)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.10",
+        "task": "Include speaker notes with descriptions of visual content for screen reader users. (distributed files only)",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "checklist-2": {
+    "caption": "Students can navigate and use the presentation regardless of their physical abilities.",
+    "table": [
+      {
+        "id": "2.1",
+        "task": "Ensure all interactive elements can be accessed with keyboard navigation. (distributed files only)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.2",
+        "task": "Create a logical reading order for slide content using the Selection Pane. (distributed files only)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.3",
+        "task": "Avoid using automatic slide timings that can't be adjusted. (distributed files only)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.4",
+        "task": "Add descriptive hyperlink text so that the link's funciton can be understood the first time it is read or heard. (distributed files only)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.5",
+        "task": "Consider including a table of contents or agenda slide with links to sections when more than X slides. (distributed files only)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.6",
+        "task": "Avoid content that flashes more than three times per second. (distributed files only)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.7",
+        "task": "Make interactive buttons and controls large enough for those with motor difficulties. (distributed files only)",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "checklist-3": {
+    "caption": "Students can easily understand presentation content and predict how to use controls. ",
+    "table": [
+      {
+        "id": "3.1",
+        "task": "Set the presentation language in the properties panel. (distributed files only)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.2",
+        "task": "Mark foreign language phrases when they appear in content. (both presentations & distributed files)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.3",
+        "task": "Use consistent navigation and layout across slides. (both)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.4",
+        "task": "Keep slide content concise with one main idea per slide. (both)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.5",
+        "task": "Use simple language and define technical terms or acronyms. (both)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.6",
+        "task": "Provide clear instructions for any interactive elements. (distributed files only)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.7",
+        "task": "Create a slide title for each slide that describes its content. (both)",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "checklist-4": {
+    "caption": "Students can access the presentation using different technologies and tools that help them learn.",
+    "table": [
+      {
+        "id": "4.1",
+        "task": "Run the Accessibility Checker before finalizing the presentation. (presentations & distributed files)",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.2",
+        "task": "Consider providing presentations in alternative formats (e.g., PDF, HTML). (distributed files only)",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "report": {
+    "caption": "Report",
+    "table": [
+      {
+        "date": "00-00-00",
+        "tasks": "",
+        "notes": ""
+      }
+    ]
+  }
+}

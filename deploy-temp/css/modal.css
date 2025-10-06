@@ -1,0 +1,243 @@
+/* Modal Styles - Consolidated */
+
+.modal {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    width: 90%;
+    max-width: 500px;
+}
+
+.modal[aria-hidden="false"] {
+    display: block;
+}
+
+.modal-overlay {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+}
+
+.modal-overlay[aria-hidden="false"] {
+    display: block;
+}
+
+.modal-content {
+    position: relative;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.modal-header h2 {
+    margin: 0;
+    font-size: 1.5rem;
+}
+
+.close-modal {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    padding: 0;
+    line-height: 1;
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+}
+
+/* Base Modal Button Style */
+.modal-button,
+#cancelButton,
+#yesButton {
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+/* Specific Modal Buttons from checklist.css section */
+#cancelRestart {
+    background-color: #f0f0f0;
+    /* Match font style from save-restore.css section */
+    font-size: 0.75rem;
+    font-weight: bold;
+    border: 1px solid #ccc;
+    color: #333;
+}
+
+#deleteNotes {
+    background-color: #ff4444;
+    color: white;
+}
+
+#saveNotes {
+    background-color: #4CAF50;
+    color: white;
+}
+
+/* Specific Modal Buttons from multiple.css section */
+#cancelDeleteInstance {
+    background-color: #f0f0f0;
+}
+
+#confirmDeleteInstance {
+    background-color: #ff4444;
+    color: white;
+}
+
+/* Specific Modal Buttons from report context */
+#confirmDeleteReportRow {
+    background-color: #ff4444; /* Match #deleteNotes & #confirmDeleteInstance */
+    color: white; /* Match #deleteNotes & #confirmDeleteInstance */
+}
+
+/* Specific Modal Buttons from save-restore.css section */
+.button-confirm {
+  background-color: #4CAF50;
+  color: white;
+  /* Remove font-size and font-weight here to inherit from .modal-button */
+  margin: 4px 2px;
+}
+
+#confirmRestartYes {
+    /* Uses .button-confirm */
+    /* Additional style from global.css */
+    background-color: var(--positive-color);
+}
+
+#cancelDeleteReportRow {
+    /* Match font style from save-restore.css section */
+    font-size: 0.75rem;
+    font-weight: bold;
+    /* Assuming default modal button styles for background, border, color */
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    color: #333;
+    margin: 4px 2px; /* Retained from save-restore.css */
+}
+
+/* Removed focus/hover styles - Handled by focus.css */ 
+
+/* --- Appended Unassigned Styles --- */
+
+/* Loading overlay styles (from global.css lines ~1627-1639) */
+#loadingOverlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(255, 255, 255, 0.8);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+#loadingSpinner {
+    width: 50px;
+    height: 50px;
+    border: 5px solid #f3f3f3;
+    border-top: 5px solid #3498db;
+    border-radius: 50%;
+    margin-bottom: 20px;
+}
+
+#loadingText {
+    font-size: 18px;
+    color: #333;
+}
+
+/* Message Footer Styles (from global.css lines ~1713-1734) */
+.message-footer {
+    position: fixed;
+    bottom: -100px;
+    left: 0;
+    right: 0;
+    background-color: var(--success-color); /* Assuming --success-color is defined, check base.css */
+    color: white;
+    text-align: center;
+    padding: 1rem;
+    transition: bottom 0.3s ease-in-out;
+    z-index: 1000;
+    opacity: 0;
+}
+
+.message-footer.show {
+    bottom: 0;
+    opacity: 1;
+}
+
+.message-footer p {
+    margin: 0;
+    font-size: 1rem;
+    font-weight: bold;
+}
+
+/* DRY Modal Button Styles */
+.modal-cancel-button,
+.modal-confirm-button {
+    min-width: 120px; /* Standardized width */
+    min-height: 44px; /* WCAG minimum touch target */
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    transition: background-color 0.2s;
+}
+
+.modal-cancel-button {
+    background-color: #333;
+    color: white;
+}
+
+.modal-confirm-button {
+    background-color: #336600; /* Green for confirm actions */
+    color: white;
+}
+
+.modal-confirm-button.red {
+    background-color: #bf1712; /* Red for destructive actions */
+}
+
+/* Legacy button IDs for backward compatibility */
+#cancelButton {
+    background-color: #333;
+    color: white;
+    border: none;
+}
+
+#yesButton {
+    background-color: #336600;
+    color: white;
+    border: none;
+} 

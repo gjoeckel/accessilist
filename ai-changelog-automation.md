@@ -73,7 +73,7 @@ cat > "$SUMMARY_FILE" << EOF
 $(ls -t $CHANGELOG_DIR/session-*.md | head -5 | xargs grep -h "## 🔧" | head -10)
 
 ## 📊 **Active Configurations**
-- **MCP Servers**: memory, github, filesystem, sequential-thinking, everything, puppeteer, postgres
+- **MCP Servers**: memory, github, filesystem, sequential-thinking, everything, puppeteer
 - **SRD Tools**: ESLint, Prettier, Jest with SRD-specific rules
 - **GitHub Push Gate**: Requires token "push to github"
 

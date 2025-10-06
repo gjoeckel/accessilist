@@ -1,0 +1,63 @@
+name: Cursor IDE Integration
+
+on:
+  workflow_dispatch:
+    inputs:
+      action:
+        description: 'Action to perform'
+        required: true
+        type: choice
+        options:
+        - deploy
+        - test
+        - validate
+        - rollback
+      environment:
+        description: 'Target environment'
+        required: true
+        default: 'production'
+        type: choice
+        options:
+        - production
+        - staging
+        - development
+
+jobs:
+  cursor-action:
+    name: Execute Cursor Action
+    runs-on: ubuntu-latest
+    
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+      
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: '18'
+        
+    - name: Execute action
+      run: |
+        case "${{ inputs.action }}" in
+          "deploy")
+            echo "🚀 Triggering deployment to ${{ inputs.environment }}"
+            gh workflow run deploy.yml --ref ${{ github.ref }} --field environment=${{ inputs.environment }}
+            ;;
+          "test")
+            echo "🧪 Running test suite"
+            npm ci
+            npm run test:all
+            ;;
+          "validate")
+            echo "🔍 Running validation checks"
+            npm run validate
+            ;;
+          "rollback")
+            echo "⏪ Initiating rollback for ${{ inputs.environment }}"
+            # Add rollback logic here
+            ;;
+        esac
+        
+    - name: Report status
+      run: |
+        echo "✅ Cursor IDE action '${{ inputs.action }}' completed for ${{ inputs.environment }}"

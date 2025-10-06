@@ -235,9 +235,6 @@ npx depcheck
     },
     "puppeteer": {
       "command": "mcp-server-puppeteer"
-    },
-    "postgres": {
-      "command": "enhanced-postgres-mcp-server"
     }
   }
 }

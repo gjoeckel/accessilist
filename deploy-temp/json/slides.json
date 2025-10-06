@@ -1,0 +1,184 @@
+{
+  "type": "Slides",
+  "showRobust": true,
+  "checklist-1": {
+    "caption": "Students can access presentation content, regardless of their sensory abilities.",
+    "table": [
+      {
+        "id": "1.1",
+        "task": "Use Google Slides' built-in slide layouts to ensure proper reading order.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.2",
+        "task": "Provide unique and descriptive slide titles for each slide.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.3",
+        "task": "Add alternative text to all images, charts, and graphics.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.4",
+        "task": "Include detailed explanations of complex visuals in speaker notes.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.5",
+        "task": "Ensure sufficient color contrast between text and background.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.6",
+        "task": "Avoid using color alone to convey information or meaning.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.7",
+        "task": "Use legible sans-serif fonts (like Arial or Verdana) at 24pt or larger for body text.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.8",
+        "task": "Include accurate captions for videos embedded in slides.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "1.9",
+        "task": "Provide transcripts for audio content or describe it in speaker notes.",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "checklist-2": {
+    "caption": "Students can navigate and interact with presentations regardless of how they use computers.",
+    "table": [
+      {
+        "id": "2.1",
+        "task": "Maintain logical reading order by using built-in layouts and avoiding overlapping elements.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.2",
+        "task": "Use descriptive link text instead of generic phrases like 'Click here'.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.3",
+        "task": "Minimize or avoid automatic transitions and animations.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.4",
+        "task": "Allow students to control pacing when viewing slides.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "2.5",
+        "task": "Avoid creating custom text boxes that may disrupt reading order.",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "checklist-3": {
+    "caption": "Students can easily understand the content and navigate through presentations.",
+    "table": [
+      {
+        "id": "3.1",
+        "task": "Use clear and concise language appropriate to students' reading level.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.2",
+        "task": "Define unfamiliar terms and abbreviations when first introduced.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.3",
+        "task": "Structure content with bulleted or numbered lists for clarity.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.4",
+        "task": "Organize sections with clear, descriptive headings.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.5",
+        "task": "Provide context for visual elements and avoid vague references.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "3.6",
+        "task": "Use sequential labels (like 'Part 1 of 3') when covering the same topic across multiple slides.",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "checklist-4": {
+    "caption": "Students can access presentations using different technologies and tools that help them learn.",
+    "table": [
+      {
+        "id": "4.1",
+        "task": "Use accessibility checkers like Grackle Slides to scan for issues.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.2",
+        "task": "Share presentations in accessible formats such as publishing to the web.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.3",
+        "task": "Provide alternative formats of the presentation content when needed.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.4",
+        "task": "Use simple tables and describe their content clearly.",
+        "show": "",
+        "notes": ""
+      },
+      {
+        "id": "4.5",
+        "task": "Convert complex visuals into simpler images with comprehensive alternative text.",
+        "show": "",
+        "notes": ""
+      }
+    ]
+  },
+  "report": {
+    "caption": "Report",
+    "table": [
+      {
+        "date": "00-00-00",
+        "tasks": "Tasks",
+        "notes": "Notes"
+      }
+    ]
+  }
+}

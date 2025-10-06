@@ -1,0 +1,49 @@
+Options -MultiViews
+
+<IfModule mod_rewrite.c>
+  RewriteEngine On
+
+  # Ensure the base is the directory this file lives in
+  RewriteBase /
+
+  # Allow direct access to existing files and directories
+  RewriteCond %{REQUEST_FILENAME} -f [OR]
+  RewriteCond %{REQUEST_FILENAME} -d
+  RewriteRule ^ - [L]
+
+  # --- API: extensionless to .php (preserve method) ---
+  # Matches /php/api/save → /php/api/save.php (and similarly for restore, list, delete, health)
+  RewriteRule ^php/api/([^/.]+)$ php/api/$1.php [L]
+
+  # --- General PHP: extensionless to .php for files under /php ---
+  RewriteRule ^php/([^/.]+)$ php/$1.php [L]
+
+  # Fallback: do nothing special; rely on actual files or above rules
+</IfModule>
+
+<IfModule mod_headers.c>
+  # Disable caching for dynamic content during development
+  <FilesMatch "\.(php)$">
+    Header set Cache-Control "no-store, no-cache, must-revalidate, max-age=0"
+    Header set Pragma "no-cache"
+    Header set Expires "0"
+  </FilesMatch>
+</IfModule>
+
+RewriteEngine On
+RewriteRule ^admin/?$ php/admin.php [L]
+
+# Disable caching for all files
+<IfModule mod_headers.c>
+    Header set Cache-Control "no-cache, no-store, must-revalidate"
+    Header set Pragma "no-cache"
+    Header set Expires 0
+    Header unset ETag
+    FileETag None
+</IfModule>
+
+# Force browsers to revalidate
+<IfModule mod_expires.c>
+    ExpiresActive On
+    ExpiresDefault "access"
+</IfModule> 

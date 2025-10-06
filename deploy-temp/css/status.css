@@ -1,0 +1,85 @@
+/**
+ * status.css - Consolidated
+ * Styles for status messages (#statusMessageContainer)
+ * and the status footer (.status-footer)
+ */
+
+/* Status Message Container (from save-restore.css block) */
+#statusMessageContainer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1000;
+    min-width: 200px;
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+#statusMessageContainer:empty {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#statusMessageContainer[role="alert"] {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+#statusMessageContainer[role="status"] {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+/* Ensure status container is visible in high contrast mode */
+@media (forced-colors: active) {
+    #statusMessageContainer {
+        border: 2px solid ButtonText;
+        background-color: ButtonFace;
+        color: ButtonText;
+    }
+}
+
+/* Status Footer (from status.css block) */
+.status-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 30px;
+  background: #f0f0f0; /* Temporary background to see the footer */
+  border-top: 1px solid #dee2e6;
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 30px;
+  padding-right: 30px;
+}
+
+.status-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  line-height: 30px;
+}
+
+.status-content img {
+  width: 16px;
+  height: 16px;
+}
+
+/* High contrast mode support for footer */
+@media (forced-colors: active) {
+  .status-footer {
+    border-top: 2px solid ButtonText;
+    background: ButtonFace;
+  }
+} 

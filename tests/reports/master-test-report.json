@@ -1,9 +1,9 @@
 {
-  "timestamp": "2025-10-02T22:02:21.633Z",
+  "timestamp": "2025-10-06T16:17:36.696Z",
   "testRun": {
-    "startTime": "2025-10-02T21:55:58.279Z",
-    "endTime": "2025-10-02T22:02:21.632Z",
-    "duration": 383353
+    "startTime": "2025-10-06T16:11:17.483Z",
+    "endTime": "2025-10-06T16:17:36.696Z",
+    "duration": 379213
   },
   "summary": {
     "totalSuites": 6,
@@ -19,7 +19,7 @@
     {
       "suite": "Critical Path Tests",
       "status": "FAILED",
-      "duration": 101013,
+      "duration": 106114,
       "summary": {
         "total": 6,
         "passed": 2,
@@ -59,7 +59,7 @@
     {
       "suite": "Checklist Functionality Tests",
       "status": "FAILED",
-      "duration": 281862,
+      "duration": 272599,
       "summary": {
         "total": 13,
         "passed": 10,
@@ -128,7 +128,7 @@
     {
       "suite": "API Integration Tests",
       "status": "FAILED",
-      "duration": 473,
+      "duration": 494,
       "summary": {
         "total": 14,
         "passed": 7,
@@ -143,7 +143,7 @@
         {
           "test": "API List Endpoint",
           "status": "PASSED",
-          "note": "Found 22 saved checklists"
+          "note": "Found 60 saved checklists"
         },
         {
           "test": "API Instantiate Endpoint",
@@ -198,7 +198,7 @@
         {
           "test": "API Performance - List Performance",
           "status": "PASSED",
-          "note": "Response time: 4ms"
+          "note": "Response time: 8ms"
         }
       ]
     },
