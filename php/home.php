@@ -86,7 +86,7 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
 
         try {
           // First, create the session with the correct checklist type
-          const response = await fetch('api/instantiate.php', {
+          const response = await fetch('<?php echo $basePath; ?>/php/api/instantiate.php', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({
@@ -101,12 +101,12 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
           } else {
             console.error('Failed to create session');
             // Fallback to old method if instantiate fails
-            window.location.href = `mychecklist.php?session=${sessionId}&type=${checklistType}`;
+            window.location.href = `<?php echo $basePath; ?>/php/mychecklist.php?session=${sessionId}&type=${checklistType}`;
           }
         } catch (error) {
           console.error('Error creating session:', error);
           // Fallback to old method if instantiate fails
-          window.location.href = `mychecklist.php?session=${sessionId}&type=${checklistType}`;
+          window.location.href = `<?php echo $basePath; ?>/php/mychecklist.php?session=${sessionId}&type=${checklistType}`;
         }
       });
     });
@@ -115,7 +115,7 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
     const adminButton = document.getElementById('adminButton');
     if (adminButton) {
       adminButton.addEventListener('click', function() {
-        window.location.href = 'admin.php';
+        window.location.href = '<?php echo $basePath; ?>/php/admin.php';
       });
     }
 
