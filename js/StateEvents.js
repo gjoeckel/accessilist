@@ -336,7 +336,7 @@ class StateEvents {
   handleSidePanelNavigation(link, event) {
     event.preventDefault();
 
-    const targetId = link.getAttribute('href').substring(1);
+    const targetId = link.getAttribute('data-target') || link.getAttribute('href')?.substring(1);
     const targetSection = document.getElementById(targetId);
     if (!targetSection) {
       console.warn(`StateEvents: Target section ${targetId} not found`);
