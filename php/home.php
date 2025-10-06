@@ -111,11 +111,11 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
       });
     });
 
-    // Connect Admin button to redirect to /admin (short URL)
+    // Connect Admin button to redirect to admin (short URL)
     const adminButton = document.getElementById('adminButton');
     if (adminButton) {
       adminButton.addEventListener('click', function() {
-        window.location.href = '/admin';
+        window.location.href = '<?php echo $basePath; ?>/admin';
       });
     }
 
