@@ -1,4 +1,4 @@
-name: Deploy to Production
+name: Deploy to Production (SRD Simple)
 
 on:
   push:
@@ -10,7 +10,7 @@ env:
 
 jobs:
   deploy:
-    name: Deploy to Production
+    name: SRD Simple Deployment
     runs-on: ubuntu-latest
     environment: production
 
@@ -56,7 +56,7 @@ jobs:
 
     - name: Deploy files
       run: |
-        rsync -avz --delete --no-times \
+        rsync -avz --delete --no-times --no-perms --no-group \
           -e "ssh -o StrictHostKeyChecking=no" \
           deploy-temp/ \
           ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/

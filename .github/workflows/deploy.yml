@@ -147,8 +147,8 @@ jobs:
         ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
           "cp -r ${{ secrets.DEPLOY_PATH }} ${{ secrets.DEPLOY_PATH }}.backup.$(date +%Y%m%d_%H%M%S)"
 
-        # Deploy files (skip time preservation to avoid permission issues)
-        rsync -avz --delete --no-times \
+        # Deploy files (skip time preservation and permissions to avoid errors)
+        rsync -avz --delete --no-times --no-perms --no-group \
           -e "ssh -o StrictHostKeyChecking=no" \
           deploy-temp/ \
           ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/
