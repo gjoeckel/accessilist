@@ -141,18 +141,16 @@ jobs:
         ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
           "cp -r ${{ secrets.DEPLOY_PATH }} ${{ secrets.DEPLOY_PATH }}.backup.$(date +%Y%m%d_%H%M%S)"
 
-        # Deploy files
-        rsync -avz --delete \
+        # Deploy files (skip time preservation to avoid permission issues)
+        rsync -avz --delete --no-times \
           -e "ssh -o StrictHostKeyChecking=no" \
           deploy-temp/ \
           ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/
 
-        # Set permissions
+        # Set permissions (only on files we own)
         ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
-          "chmod -R 755 ${{ secrets.DEPLOY_PATH }} && \
-           chmod 644 ${{ secrets.DEPLOY_PATH }}/*.php && \
-           chmod 644 ${{ secrets.DEPLOY_PATH }}/*.css && \
-           chmod 644 ${{ secrets.DEPLOY_PATH }}/*.js"
+          "find ${{ secrets.DEPLOY_PATH }} -user george -type f -exec chmod 644 {} \; && \
+           find ${{ secrets.DEPLOY_PATH }} -user george -type d -exec chmod 755 {} \;"
 
     - name: Health check
       run: |

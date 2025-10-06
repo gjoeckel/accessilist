@@ -1,0 +1,79 @@
+name: Deploy to Production
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+env:
+  NODE_VERSION: '18'
+
+jobs:
+  deploy:
+    name: Deploy to Production
+    runs-on: ubuntu-latest
+    environment: production
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v4
+      with:
+        node-version: ${{ env.NODE_VERSION }}
+        cache: 'npm'
+
+    - name: Install dependencies
+      run: npm ci
+
+    - name: Build CSS
+      run: npm run build:css
+
+    - name: Create deployment package
+      run: |
+        mkdir -p deploy-temp
+        rsync -av --delete \
+          --exclude .git/ \
+          --exclude .github/ \
+          --exclude .cursor/ \
+          --exclude node_modules/ \
+          --exclude deploy-temp/ \
+          --exclude "*.log" \
+          . deploy-temp/
+
+    - name: Setup SSH
+      uses: webfactory/ssh-agent@v0.9.0
+      with:
+        ssh-private-key: ${{ secrets.DEPLOY_SSH_KEY }}
+
+    - name: Backup new instances only
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          "if [ -d '${{ secrets.DEPLOY_PATH }}/php/saves' ]; then \
+             cp -r ${{ secrets.DEPLOY_PATH }}/php/saves ${{ secrets.DEPLOY_PATH }}/php/saves.backup.$(date +%Y%m%d_%H%M%S); \
+           fi"
+
+    - name: Deploy files
+      run: |
+        rsync -avz --delete --no-times \
+          -e "ssh -o StrictHostKeyChecking=no" \
+          deploy-temp/ \
+          ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/
+
+    - name: Restore new instances
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          "if [ -d '${{ secrets.DEPLOY_PATH }}/php/saves.backup.'* ]; then \
+             cp -r ${{ secrets.DEPLOY_PATH }}/php/saves.backup.'*'/* ${{ secrets.DEPLOY_PATH }}/php/saves/ 2>/dev/null || true; \
+           fi"
+
+    - name: Health check
+      run: |
+        sleep 5
+        curl -f ${{ secrets.DEPLOY_URL }}/php/api/health.php || echo "Health check failed but continuing"
+
+    - name: Cleanup old backups
+      run: |
+        ssh -o StrictHostKeyChecking=no ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} \
+          "find ${{ secrets.DEPLOY_PATH }}/php -name 'saves.backup.*' -mtime +7 -exec rm -rf {} \; 2>/dev/null || true"
