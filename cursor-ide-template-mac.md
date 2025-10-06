@@ -34,7 +34,7 @@ For developers who need a working environment immediately:
 - Some third-party tools may require updates for full compatibility
 - Model Context Protocol servers continue to evolve with macOS 16 enhancements
 
----
+
 
 ## Overview
 
@@ -516,32 +516,32 @@ Create persistent development services using launchd:
 ```xml
 <!-- ~/Library/LaunchAgents/local.postgresql.plist -->
 <?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
   "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
     <key>Label</key>
     <string>local.postgresql</string>
-    
+
     <key>ProgramArguments</key>
     <array>
         <string>/opt/homebrew/bin/postgres</string>
         <string>-D</string>
         <string>/opt/homebrew/var/postgres</string>
     </array>
-    
+
     <key>RunAtLoad</key>
     <true/>
-    
+
     <key>KeepAlive</key>
     <true/>
-    
+
     <key>StandardOutPath</key>
     <string>/opt/homebrew/var/log/postgres.log</string>
-    
+
     <key>StandardErrorPath</key>
     <string>/opt/homebrew/var/log/postgres.err</string>
-    
+
     <key>ProcessType</key>
     <string>Background</string>
 </dict>

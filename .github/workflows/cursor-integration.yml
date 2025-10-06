@@ -26,16 +26,16 @@ jobs:
   cursor-action:
     name: Execute Cursor Action
     runs-on: ubuntu-latest
-    
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v4
-      
+
     - name: Setup Node.js
       uses: actions/setup-node@v4
       with:
         node-version: '18'
-        
+
     - name: Execute action
       run: |
         case "${{ inputs.action }}" in
@@ -57,7 +57,7 @@ jobs:
             # Add rollback logic here
             ;;
         esac
-        
+
     - name: Report status
       run: |
         echo "✅ Cursor IDE action '${{ inputs.action }}' completed for ${{ inputs.environment }}"
