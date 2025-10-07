@@ -8,6 +8,28 @@
 
 ## Entries
 
+### 2025-10-07 22:33:20 UTC - WCAG Footer Status + Admin typeSlug alignment
+
+**Summary:**
+- Added WCAG-compliant footer announcements for Save and Restore
+- Right-aligned, rounded, white bubble hidden when empty
+- Admin page renders Type from `typeSlug`; API paths standardized
+- Production `.env` externalized (`/training/online/etc/.env`) and protected from deploys
+
+**Changes:**
+- `js/StatusManager.js`: announce() supports Nodes; back-compat showMessage
+- `js/StateManager.js`: Save → “Saved at HH:MM.”, Restore → “Restored using key <strong>KEY</strong>.”
+- `css/status.css`: bubble styling, `:empty` auto-hide, right alignment
+- `php/admin.php`: use `getAPIPath('list'|'delete')`, display via `typeSlug`
+- `php/api/list.php`: normalize missing `typeSlug` from legacy `type`
+- `php/includes/config.php`: prefer external etc/.env then project .env
+- `github-push-gate.sh`: protect `.env` via rsync filter
+
+**Validation:**
+- Docker parity server: routes OK, save/restore OK, footer announces messages
+- Production: Admin list shows correct Types; external .env read
+
+
 ### 2025-10-07 21:44:17 UTC - Docker Parity Server + Route & Save/Restore Validation
 
 **Summary:**

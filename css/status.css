@@ -69,6 +69,16 @@
   gap: 8px;
   font-size: 0.875rem;
   line-height: 30px;
+  margin-left: auto; /* push to right side */
+  padding: 6px 10px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+}
+
+/* Hide bubble when there is no content */
+.status-content:empty {
+  display: none;
 }
 
 .status-content img {

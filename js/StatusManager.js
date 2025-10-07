@@ -13,7 +13,6 @@ class StatusManager {
     if (StatusManager.instance) {
       return StatusManager.instance;
     }
-    // Wait for DOM to be ready
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', () => this.initContainer());
     } else {
@@ -28,7 +27,6 @@ class StatusManager {
       console.error('Status footer not found in DOM');
       return;
     }
-    // Create the content container if it doesn't exist
     let content = this.container.querySelector('.status-content');
     if (!content) {
       content = document.createElement('div');
@@ -36,50 +34,47 @@ class StatusManager {
       this.container.appendChild(content);
     }
     this.contentContainer = content;
-    console.log('Status manager initialized with container:', this.container);
   }
 
   announce(message, options = {}) {
-    console.log('Announcing message:', message, 'with options:', options);
     if (!this.contentContainer) {
-      console.error('Cannot announce - container not found');
       return;
     }
-    
-    const {
-      type = 'status',
-      timeout = 2000,
-      isPersistent = false
-    } = options;
-
-    // Clear any existing content
+    const { type = 'status', timeout = 2000, isPersistent = false } = options;
     this.contentContainer.textContent = '';
-    console.log('Cleared existing content');
-    
-    // Add icon based on type if needed
     if (type === 'error' || type === 'success') {
       const icon = document.createElement('img');
       const filename = (type === 'error') ? 'error.svg' : 'completed.svg';
       icon.src = window.getImagePath(filename);
-      icon.alt = '';  // Decorative only, message is already in text
+      icon.alt = '';
       icon.setAttribute('aria-hidden', 'true');
       this.contentContainer.appendChild(icon);
-      console.log('Added icon for type:', type);
     }
-
-    // Add message
-    this.contentContainer.appendChild(document.createTextNode(message));
-    console.log('Added message text');
-
-    // Clear after timeout if not persistent
+    // Support string, Node, or Node[] messages
+    if (message instanceof Node) {
+      this.contentContainer.appendChild(message);
+    } else if (Array.isArray(message)) {
+      message.forEach(node => {
+        if (node instanceof Node) {
+          this.contentContainer.appendChild(node);
+        } else if (typeof node === 'string') {
+          this.contentContainer.appendChild(document.createTextNode(node));
+        }
+      });
+    } else {
+      this.contentContainer.appendChild(document.createTextNode(String(message)));
+    }
     if (!isPersistent) {
       setTimeout(() => {
-        this.contentContainer.textContent = '';
-        console.log('Cleared message after timeout');
+        if (this.contentContainer) this.contentContainer.textContent = '';
       }, timeout);
     }
   }
+
+  // Back-compat shim used by existing code paths
+  showMessage(message, type = 'status', timeout = 2000, isPersistent = false) {
+    this.announce(message, { type, timeout, isPersistent });
+  }
 }
 
-// Export singleton instance
 window.statusManager = new StatusManager(); 

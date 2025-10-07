@@ -352,7 +352,18 @@ class UnifiedStateManager {
 
         // Apply state to DOM
         this.applyState(stateData);
-        this.showStatusMessage('Data restored', 'success');
+        const key = this.sessionKey || (window.sessionKeyFromPHP || '');
+        if (window.statusManager && typeof window.statusManager.announce === 'function') {
+          const frag = document.createDocumentFragment();
+          frag.append(document.createTextNode('Restored using key '));
+          const strong = document.createElement('strong');
+          strong.textContent = key;
+          frag.append(strong);
+          frag.append(document.createTextNode('.'));
+          window.statusManager.announce(frag, { type: 'success', timeout: 3000 });
+        } else {
+          this.showStatusMessage(`Restored using key ${key}.`, 'success');
+        }
       }
     } catch (error) {
       console.error('Restore error:', error);
@@ -624,9 +635,15 @@ class UnifiedStateManager {
 
       const result = await response.json();
       if (result.success) {
-        this.showStatusMessage('Saved', 'success');
+        const ts = new Date();
+        const timeString = ts.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+        const msg = `Saved at ${timeString}.`;
+        if (window.statusManager && typeof window.statusManager.announce === 'function') {
+          window.statusManager.announce(msg, { type: 'success', timeout: 3000 });
+        } else {
+          this.showStatusMessage(msg, 'success');
+        }
 
-        // Mark manual save as verified to enable auto-save
         if (operation === 'manual') {
           this.markManualSaveVerified();
         }
