@@ -52,7 +52,7 @@
   bottom: 0;
   left: 0;
   width: 100%;
-  height: 30px;
+  height: 75px;
   background: #f0f0f0; /* Temporary background to see the footer */
   border-top: 1px solid #dee2e6;
   z-index: 1000;
@@ -76,10 +76,55 @@
   height: 16px;
 }
 
+/* Standard Footer */
+footer[role="contentinfo"] {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 75px;
+  background: #f0f0f0;
+  border-top: 1px solid #dee2e6;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+}
+
+footer[role="contentinfo"] p {
+  margin: 0;
+  display: flex;
+  align-items: center;
+}
+
+/* Creative Commons License Styling */
+.cc-license {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: 12px;
+}
+
+.cc-icon {
+  display: inline-flex;
+  align-items: center;
+}
+
+.cc-icon svg {
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
+}
+
+.cc-text {
+  font-size: 0.875rem;
+  margin-left: 4px;
+}
+
 /* High contrast mode support for footer */
 @media (forced-colors: active) {
   .status-footer {
     border-top: 2px solid ButtonText;
     background: ButtonFace;
   }
-} 
+}
