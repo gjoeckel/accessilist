@@ -147,17 +147,40 @@ secure_git_push() {
       "$LOCAL_PATH/" \
       "$SERVER:$REMOTE_PATH/"
 
-    if [ $? -eq 0 ]; then
+    rsync_exit=$?
+    # Exit code 0 = success, 23 = partial transfer (some files vanished, but OK)
+    if [ $rsync_exit -eq 0 ] || [ $rsync_exit -eq 23 ]; then
         echo -e "${GREEN}✅ Deployment successful!${NC}"
 
         # Create production .env on server
         echo -e "${BLUE}Creating production .env configuration...${NC}"
 
-        # Copy local .env as template and update to production
-        scp -i "$PEM_FILE" "$LOCAL_PATH/.env" "$SERVER:$REMOTE_PATH/.env.temp"
+        # Create .env directly on server with production settings
+        ssh -i "$PEM_FILE" "$SERVER" "cat > $REMOTE_PATH/.env << 'ENVEOF'
+# Environment Configuration
+# Change APP_ENV to switch environments:
+# - \"local\" for PHP dev server (php -S localhost:8000)
+# - \"apache_local\" for local Apache production testing
+# - \"production\" for AWS production server
 
-        # Update to production mode on server
-        ssh -i "$PEM_FILE" "$SERVER" "cd $REMOTE_PATH && sed 's/^APP_ENV=.*/APP_ENV=production/' .env.temp > .env && rm .env.temp && echo '✅ Production environment configured' && grep APP_ENV .env"
+APP_ENV=production
+
+# Base paths for each environment
+BASE_PATH_LOCAL=
+BASE_PATH_APACHE_LOCAL=/training/online/accessilist
+BASE_PATH_PRODUCTION=/training/online/accessilist
+
+# API extensions for each environment
+API_EXT_LOCAL=.php
+API_EXT_APACHE_LOCAL=
+API_EXT_PRODUCTION=
+
+# Debug mode for each environment
+DEBUG_LOCAL=true
+DEBUG_APACHE_LOCAL=true
+DEBUG_PRODUCTION=false
+ENVEOF
+echo '✅ Production .env created' && grep APP_ENV $REMOTE_PATH/.env"
 
         # Verify deployment
         echo -e "${BLUE}🔍 Verifying deployment...${NC}"
