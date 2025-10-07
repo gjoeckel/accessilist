@@ -10,17 +10,38 @@ An accessibility checklist app built with PHP and vanilla JavaScript (ES modules
 
 ### Quick Start
 
-1) Start the local server (Git Bash):
+#### 1. Environment Setup
+
+This project uses `.env` file for environment configuration (SRD approach):
+
+```bash
+# Copy environment template
+cp .env.example .env
+
+# .env will have APP_ENV=local by default
+# No changes needed for local development
+```
+
+The `.env` file controls:
+- Environment (local, production, staging)
+- Base paths for assets and URLs
+- API endpoint extensions
+- Debug mode
+
+See **[SRD-ENVIRONMENT-PROPOSAL.md](SRD-ENVIRONMENT-PROPOSAL.md)** for full details.
+
+#### 2. Start Local Server (Git Bash)
 
 ```bash
 ./tests/start_server.sh
 ```
 
-2) Minimal verification (constrained agents):
+#### 3. Minimal Verification (Constrained Agents)
+
 - Prefer MCP tools. If Chrome MCP is available, navigate to `http://localhost:8000/index.php` and confirm it loads; optionally request a simple health URL if one is provided.
 - Fallback: curl `http://localhost:8000/index.php` and expect HTTP 200.
 
-3) Optional: Docker
+#### 4. Optional: Docker
 
 ```bash
 docker compose up --build -d

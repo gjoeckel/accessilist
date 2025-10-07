@@ -9,7 +9,7 @@
  * @param bool $includeLoadingStyles - Whether to include loading overlay styles (default: false)
  */
 function renderHTMLHead($pageTitle = 'Accessibility Checklists', $includeLoadingStyles = false) {
-    global $basePath;
+    global $basePath, $envConfig;
     ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -18,6 +18,13 @@ function renderHTMLHead($pageTitle = 'Accessibility Checklists', $includeLoading
 <!-- Added viewport meta for responsiveness -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php echo htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8'); ?></title>
+
+<!-- Environment Configuration (Injected from PHP .env) -->
+<script>
+window.ENV = <?php echo json_encode($envConfig); ?>;
+window.basePath = window.ENV.basePath;
+</script>
+
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/simple-modal.css<?php echo $includeLoadingStyles ? '' : '?v=' . time(); ?>">
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/focus.css?v=<?php echo time(); ?>">
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/landing.css<?php echo $includeLoadingStyles ? '' : '?v=' . time(); ?>">

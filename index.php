@@ -1,4 +1,5 @@
 <?php
+require_once 'php/includes/config.php';
 require_once 'php/includes/session-utils.php';
 require_once 'php/includes/type-manager.php';
 
@@ -6,8 +7,14 @@ require_once 'php/includes/type-manager.php';
 $requestUri = $_SERVER['REQUEST_URI'] ?? '';
 $sessionKey = null;
 
-// Check for minimal URL format: ?=EDF (3-character session key)
-if (preg_match('/\?=([A-Z0-9]{3})$/', $requestUri, $matches)) {
+// Remove base path from URI for routing (environment-aware)
+// Example: /training/online/accessilist/?=ABC becomes /?=ABC
+$routePath = $basePath && $basePath !== ''
+    ? str_replace($basePath, '', $requestUri)
+    : $requestUri;
+
+// Check for minimal URL format: ?=EDF or /?=EDF (3-character session key)
+if (preg_match('/\/?\?=([A-Z0-9]{3})$/', $routePath, $matches)) {
     $sessionKey = $matches[1];
 
     // Get the checklist type from the session file (validated slug or error)

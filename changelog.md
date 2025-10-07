@@ -8,6 +8,117 @@
 
 ## Entries
 
+### 2025-10-07 09:36:35 UTC - SRD Environment Configuration Implementation
+
+**Summary:**
+- Implemented .env-based configuration eliminating auto-detection (Simple, Reliable, DRY)
+- Added API extension configuration per environment
+- Fixed index.php routing with base path removal
+- Enhanced security with .env exclusion from git
+- Created comprehensive migration and documentation
+
+**Environment Configuration (.env Method):**
+- ✅ **Single Source of Truth**: `.env` file controls all environment settings
+- ✅ **Explicit Configuration**: `APP_ENV` (local, production, staging)
+- ✅ **API Extension Support**: Configurable `.php` extension per environment
+- ✅ **Debug Mode**: Environment-specific debug configuration
+- ✅ **Backwards Compatible**: Fallback to auto-detection if .env missing
+
+**Files Created:**
+- `.env.example` - Template with all environment configurations
+- `.env` - Local development environment file (NOT in git)
+- `SRD-ENVIRONMENT-PROPOSAL.md` - Complete proposal with 3 methods and 6 enhancements
+- `MIGRATION-CHECKLIST.md` - Step-by-step migration guide with testing
+- `URL-CREATION-ANALYSIS.md` - Complete URL creation analysis
+
+**PHP Configuration Updates:**
+- `php/includes/config.php`:
+  - Added `loadEnv()` function to parse .env file
+  - Replaced auto-detection with .env-based configuration
+  - Added `$apiExtension` variable for API paths
+  - Added `$envConfig` array for JavaScript injection
+  - Kept fallback to auto-detection (backwards compatibility)
+
+**JavaScript Updates:**
+- `php/includes/html-head.php`:
+  - Inject `window.ENV` with configuration from PHP
+  - Inject `window.basePath` for immediate access
+- `js/path-utils.js`:
+  - Use `window.ENV.basePath` from injected config
+  - Use `window.ENV.apiExtension` for API paths
+  - Add `getAPIExtension()` function
+  - Add debug logging when debug mode enabled
+  - Keep fallback to auto-detection
+
+**Routing Fixes:**
+- `index.php`:
+  - Load `config.php` first for environment variables
+  - Remove base path from REQUEST_URI before pattern matching
+  - Updated regex to handle both `?=ABC` and `/?=ABC`
+  - Ensures minimal URLs work in all environments
+
+**Security Enhancements:**
+- `.gitignore`:
+  - Added `.env` (excluded from git)
+  - Added `!.env.example` (template IS in git)
+  - Clear documentation of environment file handling
+
+**Documentation:**
+- `README.md`: Added environment setup section with quick start
+- `SRD-ENVIRONMENT-PROPOSAL.md`:
+  - 3 proposed methods (env, build-time, PHP+JSON)
+  - 6 critical enhancements from code review
+  - Complete implementation guide
+  - Comparison tables and recommendations
+- `MIGRATION-CHECKLIST.md`:
+  - 4-phase migration plan (2-3 hours total)
+  - Testing procedures for all environments
+  - Rollback plan with restore instructions
+  - Production deployment checklist
+- `URL-CREATION-ANALYSIS.md`: Updated with .env method note
+
+**Configuration Example:**
+```bash
+# .env
+APP_ENV=local
+BASE_PATH_LOCAL=
+BASE_PATH_PRODUCTION=/training/online/accessilist
+API_EXT_LOCAL=.php
+API_EXT_PRODUCTION=
+DEBUG_LOCAL=true
+DEBUG_PRODUCTION=false
+```
+
+**Key Improvements:**
+- **DRY**: Single .env file instead of duplicate detection logic
+- **Simple**: One file change switches entire environment
+- **Reliable**: Explicit configuration, no hostname/port guessing
+- **Flexible**: Easy to add staging or other environments
+- **Secure**: .env excluded from git, server env vars supported
+
+**Eliminated Problems:**
+- ❌ Duplicate detection logic (PHP + JS) → ✅ Single .env config
+- ❌ Hostname/port-based guessing → ✅ Explicit APP_ENV setting
+- ❌ 48 duplicate $basePath usages → ✅ One source of truth
+- ❌ API extension inconsistency → ✅ Configurable per environment
+- ❌ No staging support → ✅ Any environment supported
+
+**Testing Status:**
+- ✅ Local environment configuration working
+- ✅ All path helpers using injected config
+- ✅ API extension configurable and working
+- ✅ Backwards compatible fallback tested
+- ✅ Debug mode logging functional
+- ⏳ Production deployment pending
+
+**Impact:**
+- **Code Quality**: Eliminated auto-detection complexity and DRY violations
+- **Maintainability**: Single .env file controls all environments
+- **Security**: .env excluded from git, best practices documented
+- **Flexibility**: Easy to add new environments (staging, dev, test)
+- **Developer Experience**: Simple setup (cp .env.example .env)
+- **Production Ready**: Clear deployment process with rollback plan
+
 ### 2025-10-07 09:17:42 UTC - Footer Consolidation and Semantic HTML Improvements
 
 **Summary:**
