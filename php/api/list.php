@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . '/../includes/api-utils.php';
+require_once __DIR__ . '/../includes/type-manager.php';
 
 // Get all JSON files from the saves directory using the same path as other APIs
 $savesDir = dirname(saves_path_for('dummy')) . '/';
@@ -23,21 +24,28 @@ foreach ($files as $file) {
         // Get file creation time
         $fileCreationTime = filemtime($file) * 1000; // Convert to milliseconds
 
-        // Add instance data to the array
-        // STRICT MODE: Only include typeSlug (no legacy 'type' field)
+        // Resolve typeSlug for legacy files without it
+        $resolvedSlug = $data['typeSlug'] ?? null;
+        if (!$resolvedSlug && isset($data['type'])) {
+            $resolvedSlug = TypeManager::convertDisplayNameToSlug($data['type']);
+        }
+        if (!$resolvedSlug) {
+            $resolvedSlug = TypeManager::getDefaultType();
+        }
+
+        // Add instance data to the array (standardized shape)
         $instance = [
             'sessionKey' => $sessionKey,
-            'timestamp' => $fileCreationTime, // Use file creation time as the base timestamp
-            'created' => $fileCreationTime, // File creation time
-            'typeSlug' => $data['typeSlug'] ?? null,
+            'timestamp' => $fileCreationTime,
+            'created' => $fileCreationTime,
+            'typeSlug' => $resolvedSlug,
             'metadata' => [
                 'version' => '1.0',
                 'created' => $fileCreationTime
             ]
         ];
 
-        // Only include lastModified if the file has been saved (has a lastModified in metadata)
-        // This ensures "Updated" column is empty until first save
+        // Only include lastModified if present (first save completed)
         if (isset($data['metadata']['lastModified'])) {
             $instance['metadata']['lastModified'] = $data['metadata']['lastModified'];
         }
