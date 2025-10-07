@@ -8,6 +8,44 @@
 
 ## Entries
 
+### 2025-10-07 17:06:08 UTC - Root directory cleanup and organization
+
+**Summary:**
+- Organized root directory by archiving 49 historical documents and deleting 8 obsolete files
+- Created structured archive in `docs/historical/` with categorized subdirectories
+- Implemented SRD-compliant cleanup analysis and execution scripts
+
+**Changes:**
+- Created `scripts/analyze-root-cleanup.sh` - Scans and categorizes root directory files
+- Created `scripts/execute-root-cleanup.sh` - Intelligent DELETE vs ARCHIVE recommendations
+- Created `docs/historical/` directory structure:
+  - `reports/` - 14 completed implementation reports
+  - `analysis/` - 9 analysis and evaluation documents
+  - `deployment/` - 5 deployment and migration records
+  - `configuration/` - 21 setup and configuration documents
+- Created `docs/historical/README.md` - Explains archive purpose and structure
+
+**Files Deleted (8):**
+- Test/debug artifacts: `debug_before_click.png`, `test.html`, `deployment-test.md`
+- Quick fix notes: `env-fix.md`, `fixes.md`
+- Time-specific tests: `autonomous-execution-verification.md`, `autonomy-test-results.md`, `test-deploy.md`
+
+**Files Archived (49):**
+- Moved historical documentation from root to organized archive
+- Preserved all completed reports, analysis docs, and configuration guides
+- Maintained historical context for future reference
+
+**Root Directory After Cleanup:**
+- 6 active documentation files remain in root
+- 14 root-level scripts (to be reviewed in future cleanup)
+- Clear separation between current and historical documentation
+
+**Benefits:**
+- Improved navigation and file discovery
+- SRD-compliant organization (Simple, Reliable, DRY)
+- Preserved historical context while reducing clutter
+- Easier onboarding for new contributors
+
 ### 2025-10-07 16:52:43 UTC - Scroll offset fix + Footer message improvements
 
 **Summary:**
@@ -15,7 +53,7 @@
 - Updated footer status messages for better clarity and visibility
 
 **Changes:**
-- `js/StateManager.js`: 
+- `js/StateManager.js`:
   - `jumpToSection()` offset changed from 90px to 255px (230px header + 25px padding) to align with side panel viewing area
   - Footer messages now persist for 5 seconds (up from 3 seconds)
   - Removed periods from success messages: "Saved at 10:30 AM" and "Restored using KEY"
