@@ -145,7 +145,7 @@ function showDeleteModal(instanceId) {
 
 async function deleteInstance(instanceId, triggeringButton) {
     try {
-        const apiPath = window.getAPIPath('delete.php');
+        const apiPath = window.getAPIPath('delete');
         const response = await fetch(apiPath + '?session=' + instanceId, {
             method: 'DELETE'
         });
@@ -232,7 +232,7 @@ async function loadInstances() {
     console.log('Loading instances...');
 
     try {
-        const apiPath = window.getAPIPath('list.php');
+        const apiPath = window.getAPIPath('list');
         console.log('Fetching from:', apiPath);
 
         const response = await fetch(apiPath);
@@ -277,9 +277,9 @@ async function loadInstances() {
                 const row = document.createElement('tr');
                 row.setAttribute('data-instance', instance.sessionKey); // Add data attribute for focus management
 
-                // Format type using TypeManager
-                const typeText = instance.type || 'Unknown';
-                const formattedType = await TypeManager.formatDisplayName(typeText);
+                // Format type using TypeManager (use slug)
+                const slug = instance.typeSlug || 'unknown';
+                const formattedType = await TypeManager.formatDisplayName(slug);
 
                 row.innerHTML = `
                     <td>${formattedType}</td>
