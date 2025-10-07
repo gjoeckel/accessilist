@@ -152,39 +152,8 @@ secure_git_push() {
     if [ $rsync_exit -eq 0 ] || [ $rsync_exit -eq 23 ]; then
         echo -e "${GREEN}✅ Deployment successful!${NC}"
 
-        # Create production .env on server
-        echo -e "${BLUE}Creating production .env configuration...${NC}"
-
-        # Create .env directly on server with production settings
-        ssh -i "$PEM_FILE" "$SERVER" "cat > $REMOTE_PATH/.env << 'ENVEOF'
-# Environment Configuration
-# Change APP_ENV to switch environments:
-# - \"local\" for PHP dev server (php -S localhost:8000)
-# - \"apache_local\" for local Apache production testing
-# - \"production\" for AWS production server
-
-APP_ENV=production
-
-# Base paths for each environment
-BASE_PATH_LOCAL=
-BASE_PATH_APACHE_LOCAL=/training/online/accessilist
-BASE_PATH_PRODUCTION=/training/online/accessilist
-
-# API extensions for each environment
-API_EXT_LOCAL=.php
-API_EXT_APACHE_LOCAL=
-API_EXT_PRODUCTION=
-
-# Debug mode for each environment
-DEBUG_LOCAL=true
-DEBUG_APACHE_LOCAL=true
-DEBUG_PRODUCTION=false
-ENVEOF
-echo '✅ Production .env created' && grep APP_ENV $REMOTE_PATH/.env"
-
-        # Fix saves directory permissions for Apache write access
-        echo -e "${BLUE}Setting saves directory permissions...${NC}"
-        ssh -i "$PEM_FILE" "$SERVER" "chmod g+w $REMOTE_PATH/saves && echo '✅ Saves directory permissions configured'"
+        # Note: Production .env is set once via SSH (APP_ENV=production)
+        # It's excluded from deployment and never changes
 
         # Verify deployment
         echo -e "${BLUE}🔍 Verifying deployment...${NC}"
