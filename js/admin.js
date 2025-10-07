@@ -202,7 +202,7 @@ async function loadKeys() {
                 // Instance ID cell
                 const instanceCell = document.createElement('td');
                 instanceCell.className = 'admin-instance-cell';
-                instanceCell.appendChild(createInstanceLink(instance.sessionKey, typeSlug));
+                instanceCell.appendChild(createKeyLink(instance.sessionKey, typeSlug));
 
                 // Updated date cell
                 const updatedCell = document.createElement('td');
