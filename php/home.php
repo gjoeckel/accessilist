@@ -60,7 +60,9 @@ renderHTMLHead('Accessibility Checklists');
         const sessionId = generateAlphanumericSessionId();
 
         // Create session and redirect to minimal URL
-        const response = await fetch('<?php echo $basePath; ?>/php/api/instantiate.php', {
+        // STRICT MODE: Use path helper (handles environment-specific API extension)
+        const apiPath = window.getAPIPath('instantiate');
+        const response = await fetch(apiPath, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({

@@ -99,12 +99,10 @@ secure_git_push() {
         return 1
     fi
 
-    # Token is valid, prepare for production deployment
-    echo -e "${BLUE}📋 Preparing for production deployment...${NC}"
+    # Token is valid, proceed with deployment
+    echo -e "${BLUE}📋 Deploying to production...${NC}"
 
-    # Note: .env stays as "local" in git - production .env created on server
-
-    # Step 2: Push to GitHub
+    # Push to GitHub
     echo -e "${GREEN}🚀 Pushing to GitHub repository...${NC}"
 
     # Set upstream if not configured
@@ -131,7 +129,7 @@ secure_git_push() {
     local REMOTE_PATH="/var/websites/webaim/htdocs/training/online/accessilist"
     local LOCAL_PATH="$(pwd)"
 
-    # Deploy files to AWS (exclude .env - will be created separately)
+    # Deploy files to AWS
     rsync -avz --progress \
       --exclude .git/ \
       --exclude .gitignore \
@@ -152,9 +150,6 @@ secure_git_push() {
     if [ $rsync_exit -eq 0 ] || [ $rsync_exit -eq 23 ]; then
         echo -e "${GREEN}✅ Deployment successful!${NC}"
 
-        # Note: Production .env is set once via SSH (APP_ENV=production)
-        # It's excluded from deployment and never changes
-
         # Verify deployment
         echo -e "${BLUE}🔍 Verifying deployment...${NC}"
         sleep 2
@@ -169,8 +164,6 @@ secure_git_push() {
     fi
 
     echo -e "${GREEN}✅ GitHub push and deployment complete!${NC}"
-    echo -e "${BLUE}Local .env remains: APP_ENV=local${NC}"
-    echo -e "${BLUE}Production .env set to: APP_ENV=production${NC}"
     return 0
 }
 
