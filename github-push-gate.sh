@@ -131,6 +131,8 @@ secure_git_push() {
 
     # Deploy files to AWS
     rsync -avz --progress \
+      --filter='P .env' \
+      --filter='P .env.*' \
       --exclude .git/ \
       --exclude .gitignore \
       --exclude .cursor/ \
