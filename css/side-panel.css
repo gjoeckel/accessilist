@@ -10,7 +10,7 @@
 /* Side Panel Navigation */
 .side-panel {
     position: fixed;
-    top: 230px;
+    top: 70px;
     left: 0;
     height: 400px;
     width: var(--side-panel-collapsed-width);

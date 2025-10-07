@@ -414,9 +414,9 @@ class UnifiedStateManager {
   jumpToSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
-      const headerOffset = 230; // align with side panel viewing area (side-panel top position)
-      const extraPadding = 25; // additional spacing for visual alignment
-      const y = section.getBoundingClientRect().top + window.pageYOffset - headerOffset - extraPadding;
+      const headerOffset = 70; // sticky header height - align just below header
+      const sectionPadding = 20; // section padding-top from section.css
+      const y = section.getBoundingClientRect().top + window.pageYOffset - headerOffset - sectionPadding;
       window.scrollTo({ top: y, behavior: 'instant' });
     }
   }

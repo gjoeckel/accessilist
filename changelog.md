@@ -8,6 +8,29 @@
 
 ## Entries
 
+### 2025-10-07 17:34:31 UTC - Fix scroll alignment - side panel and sections
+
+**Summary:**
+- Fixed side panel positioning to align with sticky header
+- Corrected scroll offset to prevent sections scrolling under header
+- Used MCP tools to diagnose CSS/JavaScript mismatch
+
+**Root Cause:**
+- Side panel was positioned at `top: 230px` instead of `top: 70px`
+- JavaScript scroll offset was using incorrect value (230px vs 70px)
+- Sections were scrolling 160px too high, hidden under UI elements
+
+**Changes:**
+- `css/side-panel.css`: Changed `.side-panel` from `top: 230px` to `top: 70px`
+- `js/StateManager.js`: Changed `jumpToSection()` offset from 230px to 70px (header height)
+- Renamed variables for clarity: `headerOffset` = 70px, `sectionPadding` = 20px
+
+**Result:**
+- Side panel now positioned directly below sticky header
+- Sections scroll to correct position (just below 70px header)
+- Total offset: 90px (70px header + 20px section padding)
+- No more content hidden under sticky elements
+
 ### 2025-10-07 17:15:14 UTC - Root directory file reorganization
 
 **Summary:**
