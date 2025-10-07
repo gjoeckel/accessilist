@@ -265,8 +265,8 @@ case "${1:-}" in
         fi
 
         if [ -d ".git" ]; then
-            local remote_url
-            if remote_url=$(get_remote_url 2>/dev/null); then
+            remote_url=$(get_remote_url 2>/dev/null)
+            if [ $? -eq 0 ]; then
                 echo -e "${BLUE}Current remote: $remote_url${NC}"
                 if is_github_repo "$remote_url"; then
                     echo -e "${YELLOW}⚠️  This is a GitHub repository - push token required${NC}"

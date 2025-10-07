@@ -8,6 +8,82 @@
 
 ## Entries
 
+### 2025-10-07 12:59:15 UTC - Single .env Deployment Workflow
+
+**Summary:**
+- Simplified to single .env file (version controlled) as ONE source of truth
+- Integrated deployment directly into GitHub push workflow
+- Removed all .env variations and standalone deployment scripts
+- Automatic environment switching: local → production → local
+
+**Single .env Approach:**
+- ✅ **Version Controlled**: .env now in git (no sensitive data)
+- ✅ **Three Environments**: local, apache-local, production
+- ✅ **Automatic Switching**: GitHub push sets production, then restores local
+- ✅ **ONE Source of Truth**: Deleted .env.example and all variations
+- ✅ **Hyphen Normalization**: apache-local → APACHE_LOCAL for key lookups
+
+**GitHub Push Integration:**
+- ✅ **Deployment Trigger**: `./github-push-gate.sh secure-push 'push to github'`
+- ✅ **Automatic Flow**:
+  1. Save current environment (e.g., local)
+  2. Set APP_ENV=production and commit
+  3. Push to GitHub
+  4. Deploy to AWS via rsync
+  5. Configure production .env on server
+  6. Verify site responds (200 OK)
+  7. Restore local environment and commit
+  8. Push restoration
+- ✅ **Security**: Push gate enforces 'push to github' token
+- ✅ **Single Method**: Removed standalone deploy-to-aws.sh
+
+**Environment Configurations:**
+- **local**: PHP dev server (php -S localhost:8000 router.php)
+  - Base path: `` (empty)
+  - API extension: `.php`
+  - Debug: true
+- **apache-local**: Local Apache production testing
+  - Base path: `/training/online/accessilist`
+  - API extension: `` (extensionless via .htaccess)
+  - Debug: true
+- **production**: AWS production server
+  - Base path: `/training/online/accessilist`
+  - API extension: `` (extensionless)
+  - Debug: false
+
+**Files Created:**
+- `.env` - Single environment configuration (now in git)
+- `SINGLE-ENV-DEPLOYMENT.md` - Complete workflow documentation
+
+**Files Modified:**
+- `.gitignore` - Removed .env exclusion, only exclude .env.local
+- `php/includes/config.php` - Added hyphen-to-underscore normalization
+- `github-push-gate.sh` - Integrated full deployment workflow
+
+**Files Deleted:**
+- `.env.example` - No longer needed (single source of truth)
+- `scripts/deploy-to-aws.sh` - Deployment now via GitHub push only
+
+**Validation:**
+- ✅ **Local Environment**: Works (empty path, .php extension)
+- ✅ **Apache-Local Environment**: Works (production path, no extension)
+- ✅ **Deployment Workflow**: Ready (awaiting first deployment)
+- ✅ **Production Fix**: Will deploy .env file to resolve 500 error
+
+**Benefits:**
+- **Simplicity**: ONE file, ONE command, ONE workflow
+- **Reliability**: Automatic environment management, no manual steps
+- **Safety**: Can't deploy wrong environment, automatic restoration
+- **Visibility**: All config changes tracked in git
+- **Auditability**: Deployment commits show environment switches
+
+**Impact:**
+- Eliminated confusion from multiple .env files
+- Removed risk of missing .env on production
+- Single deployment path (GitHub push only)
+- Full local-to-production workflow automation
+- Clear audit trail of all deployments
+
 ### 2025-10-07 12:34:59 UTC - Strict Mode Implementation + Production Testing Complete
 
 **Summary:**
