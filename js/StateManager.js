@@ -414,9 +414,13 @@ class UnifiedStateManager {
   jumpToSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
-      const headerOffset = 70; // sticky header height - align just below header
-      const sectionPadding = 20; // section padding-top from section.css
-      const y = section.getBoundingClientRect().top + window.pageYOffset - headerOffset - sectionPadding;
+      // Side panel is at 70px from viewport top
+      // Section has padding-top: 20px, so to align content with side panel top (70px),
+      // we need to position section element at 50px (70px - 20px padding)
+      const sidePanelTop = 70; // side panel position from viewport top
+      const sectionPaddingTop = 20; // section padding-top from section.css
+      const targetPosition = sidePanelTop - sectionPaddingTop; // section element should be at 50px
+      const y = section.getBoundingClientRect().top + window.pageYOffset - targetPosition;
       window.scrollTo({ top: y, behavior: 'instant' });
     }
   }

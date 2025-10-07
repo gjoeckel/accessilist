@@ -8,28 +8,32 @@
 
 ## Entries
 
-### 2025-10-07 17:34:31 UTC - Fix scroll alignment - side panel and sections
+### 2025-10-07 17:44:40 UTC - Fix scroll alignment - table content aligns with side panel
 
 **Summary:**
-- Fixed side panel positioning to align with sticky header
-- Corrected scroll offset to prevent sections scrolling under header
+- Fixed side panel positioning from 230px to 70px (below sticky header)
+- Corrected scroll offset so table content aligns with side panel top
 - Used MCP tools to diagnose CSS/JavaScript mismatch
+- Verified no duplicate CSS or JavaScript code
 
 **Root Cause:**
 - Side panel was positioned at `top: 230px` instead of `top: 70px`
-- JavaScript scroll offset was using incorrect value (230px vs 70px)
-- Sections were scrolling 160px too high, hidden under UI elements
+- JavaScript scroll calculation didn't account for section padding
+- Sections were scrolling too high, with content misaligned
 
 **Changes:**
 - `css/side-panel.css`: Changed `.side-panel` from `top: 230px` to `top: 70px`
-- `js/StateManager.js`: Changed `jumpToSection()` offset from 230px to 70px (header height)
-- Renamed variables for clarity: `headerOffset` = 70px, `sectionPadding` = 20px
+- `js/StateManager.js`: Fixed `jumpToSection()` to align table content with side panel top
+  - Side panel at 70px from viewport
+  - Section has padding-top: 20px
+  - Target position: 50px (70px - 20px padding)
+  - Section at 50px + 20px padding = content at 70px ✓
 
 **Result:**
-- Side panel now positioned directly below sticky header
-- Sections scroll to correct position (just below 70px header)
-- Total offset: 90px (70px header + 20px section padding)
-- No more content hidden under sticky elements
+- Side panel positioned at 70px (directly below sticky header)
+- Table content scrolls to align with side panel top (70px)
+- Section element positioned at 50px to account for 20px padding
+- Perfect alignment between side panel and section content
 
 ### 2025-10-07 17:15:14 UTC - Root directory file reorganization
 
