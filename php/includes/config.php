@@ -64,10 +64,11 @@ if ($envLoaded) {
 
 } else {
     // FALLBACK: Old auto-detection method (backwards compatibility)
-    $isLocal = $_SERVER['HTTP_HOST'] === 'localhost' ||
-               $_SERVER['HTTP_HOST'] === '127.0.0.1' ||
-               strpos($_SERVER['HTTP_HOST'], 'local') !== false;
-
+    $httpHost = $_SERVER['HTTP_HOST'] ?? '';
+    $isLocal = $httpHost === 'localhost' ||
+               $httpHost === '127.0.0.1' ||
+               strpos($httpHost, 'local') !== false;
+    
     $environment = $isLocal ? 'local' : 'production';
     $basePath = $isLocal ? '' : '/training/online/accessilist';
     $apiExtension = $isLocal ? '.php' : '';

@@ -54,6 +54,47 @@ php tests/run_comprehensive_tests.php
 ./ai-changelog-master.sh update
 ```
 
+### **4. Environment Configuration (.env)**
+
+This project uses `.env` file for environment configuration (SRD approach):
+
+```bash
+# Local Development:
+# 1. Copy template
+cp .env.example .env
+
+# 2. Verify local configuration
+cat .env | grep APP_ENV
+# Should show: APP_ENV=local
+
+# 3. Set permissions
+chmod 600 .env
+
+# Production Deployment:
+# 1. Copy .env.example to server
+scp .env.example user@server:/path/to/accessilist/
+
+# 2. Configure on server
+ssh user@server
+cd /path/to/accessilist
+cp .env.example .env
+nano .env  # Change APP_ENV=production
+
+# 3. Set permissions
+chmod 640 .env  # Owner rw, group r
+
+# 4. Verify configuration
+php -r "require 'php/includes/config.php'; print_r(\$envConfig);"
+```
+
+**Environment Variables:**
+- `APP_ENV` - Environment (local, production, staging)
+- `BASE_PATH_*` - Base paths for each environment
+- `API_EXT_*` - API extensions (.php for local, empty for production)
+- `DEBUG_*` - Debug mode per environment
+
+See **[SRD-ENVIRONMENT-PROPOSAL.md](SRD-ENVIRONMENT-PROPOSAL.md)** and **[MIGRATION-CHECKLIST.md](MIGRATION-CHECKLIST.md)** for complete details.
+
 ## 🎯 **Deployment Methods**
 
 ### **Method 1: AI-Autonomous Deployment (Recommended)**

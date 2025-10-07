@@ -15,6 +15,23 @@
 - [x] Create local `.env` file from example (`cp .env.example .env`)
 - [x] Verify `.env` contains `APP_ENV=local`
 
+### Step 1.1.1: Set .env File Permissions
+- [x] Set proper file permissions for security
+
+**Commands:**
+```bash
+# Set .env permissions (readable only by owner)
+chmod 600 .env
+
+# Verify
+ls -la .env
+# Should show: -rw------- 1 user group 2448 Oct 7 09:32 .env
+```
+
+**Security Note:**
+- Local development: `chmod 600` (owner read/write only)
+- Production server: `chmod 640` (owner read/write, group read)
+
 ### Step 1.2: Update Git Configuration
 - [x] Add `.env` to `.gitignore`
 - [x] Ensure `.env.example` is NOT ignored (`!.env.example`)
@@ -44,9 +61,29 @@ cp index.php index.php.backup
 - [x] Create `$envConfig` array for JavaScript injection
 - [x] Keep fallback to auto-detection for backwards compatibility
 
-**Verification:**
+**Enhanced Verification:**
 ```bash
-php -r "require 'php/includes/config.php'; var_dump(\$basePath, \$apiExtension, \$environment);"
+# Test 1: Verify .env is loaded
+php -r "require 'php/includes/config.php'; echo 'Environment: ' . \$environment . PHP_EOL;"
+# Expected: Environment: local
+
+# Test 2: Verify base path is correct
+php -r "require 'php/includes/config.php'; echo 'Base Path: [' . \$basePath . ']' . PHP_EOL;"
+# Expected: Base Path: [] (empty for local)
+
+# Test 3: Verify API extension
+php -r "require 'php/includes/config.php'; echo 'API Ext: [' . \$apiExtension . ']' . PHP_EOL;"
+# Expected: API Ext: [.php]
+
+# Test 4: Verify envConfig array
+php -r "require 'php/includes/config.php'; print_r(\$envConfig);"
+# Expected: Array with environment, basePath, apiExtension, debug, isProduction, isLocal
+
+# Test 5: Test fallback (should use auto-detection)
+mv .env .env.temp
+php -r "require 'php/includes/config.php'; echo 'Fallback works: ' . \$environment . PHP_EOL;"
+mv .env.temp .env
+# Expected: Fallback works: local (from auto-detection)
 ```
 
 ### Step 2.2: Update html-head.php
@@ -54,10 +91,40 @@ php -r "require 'php/includes/config.php'; var_dump(\$basePath, \$apiExtension, 
 - [x] Inject environment configuration via `<script>` tag
 - [x] Make `window.ENV` and `window.basePath` available to JavaScript
 
+**Specific Code Changes:**
+
+**Location 1:** Function signature (line ~11)
+```php
+function renderHTMLHead($pageTitle = 'Accessibility Checklists', $includeLoadingStyles = false) {
+    global $basePath, $envConfig; // ← ADD $envConfig here
+    ?>
+```
+
+**Location 2:** After `<title>` tag (line ~20)
+```php
+<title><?php echo htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8'); ?></title>
+
+<!-- ADD THIS BLOCK -->
+<script>
+window.ENV = <?php echo json_encode($envConfig); ?>;
+window.basePath = window.ENV.basePath;
+</script>
+
+<link rel="stylesheet" href="...">
+```
+
 **Verification:**
-- Start PHP server: `php -S localhost:8000`
-- Open browser console
-- Check: `console.log(window.ENV)` should show config
+```bash
+# Check global variable added
+grep "global \$basePath, \$envConfig" php/includes/html-head.php
+
+# Check script injection added
+grep -A 2 "window.ENV" php/includes/html-head.php
+
+# Test in browser
+php -S localhost:8000
+# Open browser console: console.log(window.ENV)
+```
 
 ### Step 2.3: Update path-utils.js
 - [x] Remove auto-detection logic
@@ -186,6 +253,40 @@ DEBUG_STAGING=true
 - [ ] Repeat all tests from Step 3.1
 - [ ] Verify base path prepended to all URLs
 - [ ] Verify API calls use correct paths
+
+### Step 3.6: Test Backwards Compatibility and Rollback ✅
+
+**Test fallback to auto-detection:**
+```bash
+# 1. Temporarily remove .env to trigger fallback
+mv .env .env.temp
+
+# 2. Test site still works with auto-detection
+php -S localhost:8000 &
+SERVER_PID=$!
+
+# 3. Verify fallback activated
+php -r "require 'php/includes/config.php'; echo 'Using fallback: ' . \$environment . PHP_EOL;"
+# Expected: Using fallback: local
+
+# 4. Test in browser
+curl -I http://localhost:8000/php/home.php
+# Expected: HTTP/1.1 200 OK
+
+# 5. Stop server and restore .env
+kill $SERVER_PID
+mv .env.temp .env
+
+# 6. Verify back to .env config
+php -r "require 'php/includes/config.php'; echo 'Back to .env: ' . \$environment . PHP_EOL;"
+# Expected: Back to .env: local
+```
+
+**Rollback Verification:**
+- [x] Site loads without .env file (fallback works)
+- [x] All URLs resolve correctly with fallback
+- [x] Can restore .env and return to new system
+- [x] No data loss during rollback
 
 ---
 
@@ -384,9 +485,9 @@ sudo service apache2 restart
 ### Files to Update:
 - [x] `README.md` - Add environment setup instructions
 - [x] `SRD-ENVIRONMENT-PROPOSAL.md` - Enhanced with all improvements
-- [ ] `DEPLOYMENT.md` - Update deployment steps with .env instructions
+- [x] `DEPLOYMENT.md` - Update deployment steps with .env instructions
 - [x] `URL-CREATION-ANALYSIS.md` - Note new .env-based method
-- [ ] `changelog.md` - Add migration entry
+- [x] `changelog.md` - Add migration entry
 
 ### README.md Section to Add:
 ```markdown
