@@ -140,8 +140,20 @@ secure_git_push() {
       --exclude .env.local \
       --exclude .env.backup \
       --exclude saves/ \
+      --exclude logs/ \
+      --exclude tests/ \
+      --exclude backups/ \
+      --exclude archive/ \
+      --exclude my-mcp-servers/ \
+      --exclude _notes/ \
+      --exclude docs/ \
+      --exclude scripts/ \
+      --exclude '*.md' \
       --exclude '*.backup' \
       --exclude '*.bak' \
+      --exclude '*.log' \
+      --exclude php-server.log \
+      --exclude .php-server.pid \
       -e "ssh -i $PEM_FILE" \
       "$LOCAL_PATH/" \
       "$SERVER:$REMOTE_PATH/"
