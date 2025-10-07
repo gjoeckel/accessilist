@@ -30,36 +30,29 @@ The `.env` file controls:
 
 See **[SRD-ENVIRONMENT-PROPOSAL.md](SRD-ENVIRONMENT-PROPOSAL.md)** for full details.
 
-#### 2. Start Local Server (Git Bash)
-
-**Option A: With Clean URL Support (Recommended)**
-```bash
-# Start with router.php for clean URL testing
-php -S localhost:8000 router.php
-```
-
-**Option B: Standard PHP Server**
-```bash
-./tests/start_server.sh
-```
-
-**What's the Difference?**
-- `router.php`: Supports clean URLs (`/home`, `/admin`) - **Recommended for testing**
-- `start_server.sh`: Standard PHP server - Clean URLs won't work
-
-#### 3. Minimal Verification (Constrained Agents)
-
-- Prefer MCP tools. If Chrome MCP is available, navigate to `http://localhost:8000/index.php` and confirm it loads; optionally request a simple health URL if one is provided.
-- Fallback: curl `http://localhost:8000/index.php` and expect HTTP 200.
-
-#### 4. Docker (Recommended parity testing)
+#### 2. Start Local Server (Docker - Default)
 
 ```bash
 npm run docker:up           # start containerized Apache+PHP (port 8080)
+npm run verify:routes       # sanity-check routes
 npm run docker:logs         # tail logs
 npm run docker:rebuild      # rebuild and restart
 npm run docker:down         # stop and remove
 ```
+
+#### 3. Alternative (PHP Router)
+
+```bash
+php -S localhost:8000 router.php
+```
+
+- `router.php` mirrors `.htaccess` rewrites for clean URLs; fastest iteration.
+- Use when Docker isn’t available.
+
+#### 4. Minimal Verification (Constrained Agents)
+
+- Prefer MCP tools. If Chrome MCP is available, check `http://127.0.0.1:8080/home` and `/php/api/list`.
+- Fallback for PHP router: `http://localhost:8000/index.php` expecting 200.
 
 Ports and config:
 
