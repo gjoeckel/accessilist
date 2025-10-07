@@ -42,13 +42,11 @@ class StatusManager {
     }
     const { type = 'status', timeout = 2000, isPersistent = false } = options;
     this.contentContainer.textContent = '';
-    if (type === 'error' || type === 'success') {
-      const icon = document.createElement('img');
-      const filename = (type === 'error') ? 'error.svg' : 'completed.svg';
-      icon.src = window.getImagePath(filename);
-      icon.alt = '';
-      icon.setAttribute('aria-hidden', 'true');
-      this.contentContainer.appendChild(icon);
+    // Apply type-based styling
+    if (this.contentContainer) {
+      this.contentContainer.classList.remove('status-success', 'status-error');
+      if (type === 'success') this.contentContainer.classList.add('status-success');
+      if (type === 'error') this.contentContainer.classList.add('status-error');
     }
     // Support string, Node, or Node[] messages
     if (message instanceof Node) {

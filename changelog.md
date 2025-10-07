@@ -8,6 +8,22 @@
 
 ## Entries
 
+### 2025-10-07 22:44:37 UTC - Section padding + Scroll offset; Footer message tweaks
+
+**Summary:**
+- Reduced section padding to 20px and aligned scroll offsets with sticky header
+- Footer status bubble: no icons; color-coded success/error; WCAG announcements with bold key
+
+**Changes:**
+- `css/section.css`, `css/admin.css`: `padding-top: 20px`
+- `js/StateManager.js`: adjusted `jumpToSection` offset; messages (Saved/Restored/Error) per spec
+- `css/status.css`: right-aligned bubble; `:empty` hide; success `#478F00`, error `#BF1712`
+- `js/StatusManager.js`: supports Node fragments; type-based classes
+
+**Validation:**
+- Verified scroll alignment and message visibility in Docker environment
+
+
 ### 2025-10-07 22:33:20 UTC - WCAG Footer Status + Admin typeSlug alignment
 
 **Summary:**

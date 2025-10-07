@@ -352,22 +352,31 @@ class UnifiedStateManager {
 
         // Apply state to DOM
         this.applyState(stateData);
-        const key = this.sessionKey || (window.sessionKeyFromPHP || '');
+        const key = this.sessionKey || (window.sessionKeyFromPHP || '--no key');
         if (window.statusManager && typeof window.statusManager.announce === 'function') {
           const frag = document.createDocumentFragment();
-          frag.append(document.createTextNode('Restored using key '));
+          frag.append(document.createTextNode('Restored using '));
           const strong = document.createElement('strong');
           strong.textContent = key;
           frag.append(strong);
-          frag.append(document.createTextNode('.'));
           window.statusManager.announce(frag, { type: 'success', timeout: 3000 });
         } else {
-          this.showStatusMessage(`Restored using key ${key}.`, 'success');
+          this.showStatusMessage(`Restored using ${key}.`, 'success');
         }
       }
     } catch (error) {
       console.error('Restore error:', error);
-      this.showStatusMessage('Error restoring data', 'error');
+      const key = this.sessionKey || window.sessionKeyFromPHP || '--no key';
+      if (window.statusManager && typeof window.statusManager.announce === 'function') {
+        const frag = document.createDocumentFragment();
+        frag.append(document.createTextNode('Error restoring '));
+        const strong = document.createElement('strong');
+        strong.textContent = key;
+        frag.append(strong);
+        window.statusManager.announce(frag, { type: 'error', timeout: 4000 });
+      } else {
+        this.showStatusMessage(`Error restoring ${key}`, 'error');
+      }
     } finally {
       // Calculate remaining time before hiding overlay
       const elapsedTime = Date.now() - startTime;
@@ -405,8 +414,10 @@ class UnifiedStateManager {
   jumpToSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
-      console.log('Jumping to section:', sectionId);
-      window.scrollTo(0, section.offsetTop);
+      const headerOffset = 70; // sticky header height
+      const extraPadding = 20; // section padding-top
+      const y = section.getBoundingClientRect().top + window.pageYOffset - headerOffset - extraPadding;
+      window.scrollTo({ top: y, behavior: 'instant' });
     }
   }
 
@@ -655,7 +666,17 @@ class UnifiedStateManager {
       }
     } catch (error) {
       console.error('Save error:', error);
-      this.showStatusMessage('Error saving changes', 'error');
+      const key = this.sessionKey || window.sessionKeyFromPHP || '--no key';
+      if (window.statusManager && typeof window.statusManager.announce === 'function') {
+        const frag = document.createDocumentFragment();
+        frag.append(document.createTextNode('Error saving '));
+        const strong = document.createElement('strong');
+        strong.textContent = key;
+        frag.append(strong);
+        window.statusManager.announce(frag, { type: 'error', timeout: 4000 });
+      } else {
+        this.showStatusMessage(`Error saving ${key}`, 'error');
+      }
       return false;
     } finally {
       this.isSaving = false;

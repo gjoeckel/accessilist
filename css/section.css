@@ -11,7 +11,7 @@ main {
 
 /* Section Styles */
 section {
-    padding-top: 100px;
+    padding-top: 20px;
     color: var(--theme-color);
     position: relative;
     z-index: 1;

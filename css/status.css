@@ -81,9 +81,14 @@
   display: none;
 }
 
-.status-content img {
-  width: 16px;
-  height: 16px;
+/* Color states for messages */
+.status-content.status-success {
+  color: #478F00;
+  border-color: #478F00;
+}
+.status-content.status-error {
+  color: #BF1712;
+  border-color: #BF1712;
 }
 
 /* Standard Footer */

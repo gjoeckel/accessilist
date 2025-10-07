@@ -4,7 +4,7 @@
 .admin-section {
     --theme-color: #666666; /* Added from multiple.css block */
     --header-fill-color: #F7E7D9; /* Added from multiple.css block */
-    padding-top: 100px; /* Added from multiple.css block */
+    padding-top: 20px; /* reduced for consistency */
     color: var(--theme-color); /* Added from multiple.css block */
     position: relative; /* Added from multiple.css block */
     z-index: 1; /* Added from multiple.css block */
