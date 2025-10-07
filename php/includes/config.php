@@ -43,37 +43,29 @@ function loadEnv($filePath) {
     return true;
 }
 
-// Try to load .env file
+// Load .env file (REQUIRED - no fallback)
 $envLoaded = loadEnv(__DIR__ . '/../../.env');
 
-if ($envLoaded) {
-    // NEW METHOD: Use .env configuration
-    $environment = $_ENV['APP_ENV'] ?? 'local';
-
-    // Get base path from environment-specific variable
-    $basePathKey = 'BASE_PATH_' . strtoupper($environment);
-    $basePath = $_ENV[$basePathKey] ?? '';
-
-    // Get API extension from environment-specific variable
-    $apiExtKey = 'API_EXT_' . strtoupper($environment);
-    $apiExtension = $_ENV[$apiExtKey] ?? '';
-
-    // Get debug mode
-    $debugKey = 'DEBUG_' . strtoupper($environment);
-    $debugMode = ($_ENV[$debugKey] ?? 'false') === 'true';
-
-} else {
-    // FALLBACK: Old auto-detection method (backwards compatibility)
-    $httpHost = $_SERVER['HTTP_HOST'] ?? '';
-    $isLocal = $httpHost === 'localhost' ||
-               $httpHost === '127.0.0.1' ||
-               strpos($httpHost, 'local') !== false;
-
-    $environment = $isLocal ? 'local' : 'production';
-    $basePath = $isLocal ? '' : '/training/online/accessilist';
-    $apiExtension = $isLocal ? '.php' : '';
-    $debugMode = $isLocal;
+if (!$envLoaded) {
+    // STRICT MODE: .env file is required
+    http_response_code(500);
+    die('Configuration Error: .env file not found. Copy .env.example to .env and configure.');
 }
+
+// Use .env configuration (no auto-detection fallback)
+$environment = $_ENV['APP_ENV'] ?? 'local';
+
+// Get base path from environment-specific variable
+$basePathKey = 'BASE_PATH_' . strtoupper($environment);
+$basePath = $_ENV[$basePathKey] ?? '';
+
+// Get API extension from environment-specific variable
+$apiExtKey = 'API_EXT_' . strtoupper($environment);
+$apiExtension = $_ENV[$apiExtKey] ?? '';
+
+// Get debug mode
+$debugKey = 'DEBUG_' . strtoupper($environment);
+$debugMode = ($_ENV[$debugKey] ?? 'false') === 'true';
 
 // Export configuration for JavaScript injection
 $envConfig = [

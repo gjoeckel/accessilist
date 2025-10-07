@@ -3,9 +3,10 @@ require_once __DIR__ . '/../includes/api-utils.php';
 require_once __DIR__ . '/../includes/type-formatter.php';
 require_once __DIR__ . '/../includes/type-manager.php';
 
-// Ensure saves directory exists
-if (!file_exists('../saves') && !mkdir('../saves', 0755, true)) {
-    send_error('Failed to create saves directory', 500);
+// Verify saves directory exists (must be created during setup)
+$savesDir = __DIR__ . '/../../saves';
+if (!file_exists($savesDir)) {
+    send_error('Saves directory not found - check deployment configuration', 500);
 }
 
 // Get POST data
@@ -40,23 +41,17 @@ if ($existingData && isset($existingData['metadata'])) {
     $data['metadata'] = array_merge($existingData['metadata'], $data['metadata']);
 }
 
-// Normalize and validate type fields
-if (isset($data['typeSlug'])) {
-    $validated = TypeManager::validateType($data['typeSlug']);
-    if ($validated === null) {
-        send_error('Invalid checklist type', 400);
-    }
-    $data['typeSlug'] = $validated;
-} elseif (isset($data['type'])) {
-    $converted = TypeManager::convertDisplayNameToSlug($data['type']);
-    $validated = TypeManager::validateType($converted);
-    if ($validated === null) {
-        send_error('Invalid checklist type', 400);
-    }
-    $data['typeSlug'] = $validated;
-} else {
-    send_error('Missing checklist type', 400);
+// Validate type field (STRICT MODE: require typeSlug only)
+if (!isset($data['typeSlug'])) {
+    send_error('Missing typeSlug parameter (type display name not accepted)', 400);
 }
+
+$validated = TypeManager::validateType($data['typeSlug']);
+if ($validated === null) {
+    send_error('Invalid checklist type', 400);
+}
+
+$data['typeSlug'] = $validated;
 $data['type'] = TypeManager::formatDisplayName($data['typeSlug']);
 
 // Update lastModified timestamp

@@ -45,7 +45,7 @@ if (preg_match('/\/?\?=([A-Z0-9]{3})$/', $routePath, $matches)) {
             The checklist with ID "<strong>' . htmlspecialchars($sessionKey) . '</strong>" could not be found.<br>
             This may be because the checklist was deleted or the link is incorrect.
         </p>
-        <a href="/" class="home-link">← Return to Home</a>
+        <a href="' . $basePath . '/home" class="home-link">← Return to Home</a>
     </div>
 </body>
 </html>';
@@ -62,6 +62,6 @@ if (preg_match('/\/?\?=([A-Z0-9]{3})$/', $routePath, $matches)) {
     exit;
 }
 
-// Default behavior - redirect to home
-header('Location: php/home.php');
+// Default behavior - redirect to home (clean URL)
+header('Location: ' . $basePath . '/home');
 exit;

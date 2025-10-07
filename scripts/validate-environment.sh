@@ -71,11 +71,11 @@ check_file_permissions() {
         TOTAL_ISSUES=$((TOTAL_ISSUES + 1))
     fi
 
-    # Check if php/saves directory is writable
-    if [ -d "php/saves" ] && [ -w "php/saves" ]; then
-        echo "  ✅ php/saves/ directory is writable"
+    # Check if saves directory (at root) is writable
+    if [ -d "saves" ] && [ -w "saves" ]; then
+        echo "  ✅ saves/ directory is writable"
     else
-        echo "  ❌ php/saves/ directory is not writable"
+        echo "  ❌ saves/ directory is not writable or missing"
         TOTAL_ISSUES=$((TOTAL_ISSUES + 1))
     fi
 

@@ -3,22 +3,29 @@ Options -MultiViews
 <IfModule mod_rewrite.c>
   RewriteEngine On
 
-  # Ensure the base is the directory this file lives in
-  RewriteBase /
+  # No RewriteBase - Apache auto-determines from .htaccess location
+  # Works for both root (/) and subdirectory (/training/online/accessilist/) deployments
 
   # Allow direct access to existing files and directories
   RewriteCond %{REQUEST_FILENAME} -f [OR]
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
-  # --- Admin routing: /admin → /php/admin.php ---
+  # --- Clean URL Routes (IMPORTANT: Specific routes must come before general patterns) ---
+  # These provide user-friendly URLs without /php/ prefix or .php extension
+
+  # Home page: /home → /php/home.php
+  RewriteRule ^home/?$ php/home.php [L]
+
+  # Admin page: /admin → /php/admin.php
   RewriteRule ^admin/?$ php/admin.php [L]
 
-  # --- API: extensionless to .php (preserve method) ---
+  # --- API Routes: extensionless to .php (preserve method) ---
   # Matches /php/api/save → /php/api/save.php (and similarly for restore, list, delete, health)
   RewriteRule ^php/api/([^/.]+)$ php/api/$1.php [L]
 
-  # --- General PHP: extensionless to .php for files under /php ---
+  # --- General PHP Routes: extensionless to .php for files under /php ---
+  # This is the catch-all pattern and must come LAST
   RewriteRule ^php/([^/.]+)$ php/$1.php [L]
 
   # Fallback: do nothing special; rely on actual files or above rules

@@ -28,19 +28,26 @@ Successfully implemented SRD (Simple, Reliable, DRY) environment configuration u
 - **DO NOT COMMIT** to git (in .gitignore)
 - Created from .env.example template
 
-### 3. `SRD-ENVIRONMENT-PROPOSAL.md`
+### 3. `router.php` (PHP Dev Server Router)
+- Enables clean URL routing for PHP built-in server
+- Mimics Apache .htaccess rewrite rules locally
+- Allows full local testing including clean URLs
+- No Apache configuration required
+- **DO COMMIT** to git
+
+### 4. `SRD-ENVIRONMENT-PROPOSAL.md`
 - Complete analysis of 3 proposed methods
 - 6 critical enhancements from code review
 - Comparison tables and recommendations
 - Full implementation guide
 
-### 4. `MIGRATION-CHECKLIST.md`
+### 5. `MIGRATION-CHECKLIST.md`
 - 4-phase migration plan (2-3 hours)
 - Testing procedures for all environments
 - Rollback plan with restore instructions
 - Production deployment checklist
 
-### 5. `URL-CREATION-ANALYSIS.md`
+### 6. `URL-CREATION-ANALYSIS.md`
 - Complete URL creation analysis
 - Local vs production flow diagrams
 - All URL patterns documented
@@ -188,11 +195,20 @@ API_EXT_LOCAL=.php
 DEBUG_LOCAL=true
 ```
 
-**URLs:**
-- Home: `http://localhost:8000/php/home.php`
-- Admin: `http://localhost:8000/admin`
-- Checklist: `http://localhost:8000/?=ABC`
-- API: `http://localhost:8000/php/api/save.php`
+**Server Command:**
+```bash
+# With router.php (supports clean URLs)
+php -S localhost:8000 router.php
+
+# Or use npm script
+npm run local-start
+```
+
+**URLs (with router.php):**
+- Home: `http://localhost:8000/home` ✅ (clean URL)
+- Admin: `http://localhost:8000/admin` ✅ (clean URL)
+- Checklist: `http://localhost:8000/?=ABC` ✅
+- API: `http://localhost:8000/php/api/save` ✅ (extensionless)
 
 ### Production Server:
 ```bash
@@ -219,7 +235,15 @@ DEBUG_PRODUCTION=false
 - [x] All path helpers use injected config
 - [x] API extension configurable (`.php`)
 - [x] Debug mode shows config in console
+- [x] router.php enables clean URLs locally
 - [x] No linter errors
+
+### Clean URL Testing (with router.php) ✅
+- [x] `/home` routes to `php/home.php`
+- [x] `/admin` routes to `php/admin.php`
+- [x] `/php/api/save` routes to `php/api/save.php`
+- [x] Static files served correctly
+- [x] Mimics Apache .htaccess behavior
 
 ### Code Quality ✅
 - [x] Single source of truth (.env)

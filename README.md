@@ -32,9 +32,20 @@ See **[SRD-ENVIRONMENT-PROPOSAL.md](SRD-ENVIRONMENT-PROPOSAL.md)** for full deta
 
 #### 2. Start Local Server (Git Bash)
 
+**Option A: With Clean URL Support (Recommended)**
+```bash
+# Start with router.php for clean URL testing
+php -S localhost:8000 router.php
+```
+
+**Option B: Standard PHP Server**
 ```bash
 ./tests/start_server.sh
 ```
+
+**What's the Difference?**
+- `router.php`: Supports clean URLs (`/home`, `/admin`) - **Recommended for testing**
+- `start_server.sh`: Standard PHP server - Clean URLs won't work
 
 #### 3. Minimal Verification (Constrained Agents)
 
@@ -105,6 +116,11 @@ CSS is organized into individual files for maintainability and follows the Singl
 All PHP files include these CSS files individually in the correct order for proper cascading.
 
 ### Testing (MCP-first)
+
+- **Clean URL Testing (Recommended)**:
+  - Start server with `php -S localhost:8000 router.php`
+  - Test clean URLs: `http://localhost:8000/home`, `http://localhost:8000/admin`
+  - `router.php` mimics Apache .htaccess for local testing
 
 - Minimal (preferred default for constrained agents):
   - Start server with `./tests/start_server.sh`

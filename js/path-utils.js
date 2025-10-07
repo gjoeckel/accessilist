@@ -1,62 +1,47 @@
 /**
  * SRD Path Utilities
  *
- * Uses environment configuration injected from PHP (window.ENV)
- * No auto-detection - relies on .env file configuration
- *
- * Fallback: If window.ENV not available, use legacy auto-detection
+ * STRICT MODE: Requires environment configuration injected from PHP (window.ENV)
+ * .env file must be configured - NO auto-detection fallbacks
+ * Throws errors if configuration is missing
  */
 (function() {
     'use strict';
 
     /**
      * Get base path from environment configuration
-     * Priority:
-     * 1. window.ENV.basePath (from PHP .env config)
-     * 2. window.basePath (direct injection)
-     * 3. window.pathConfig.basePath (legacy)
-     * 4. Auto-detection fallback (backwards compatibility)
+     * STRICT MODE: Requires window.ENV to be injected from PHP
+     * No auto-detection fallback
      */
     function getBasePath() {
-        // NEW: Use injected environment config (preferred)
+        // Check for injected environment config
         if (window.ENV && typeof window.ENV.basePath === 'string') {
             return window.ENV.basePath;
         }
 
-        // Direct injection
+        // Direct injection (alternative)
         if (window.basePath && typeof window.basePath === 'string') {
             return window.basePath;
         }
 
-        // Legacy pathConfig
-        try {
-            if (window.pathConfig && typeof window.pathConfig.basePath === 'string') {
-                return window.pathConfig.basePath;
-            }
-        } catch (e) {}
-
-        // FALLBACK: Auto-detection (backwards compatibility)
-        const isLocal = window.location.hostname === 'localhost' ||
-                       window.location.hostname === '127.0.0.1' ||
-                       window.location.hostname.includes('local') ||
-                       window.location.port === '8000';
-
-        return isLocal ? '' : '/training/online/accessilist';
+        // STRICT MODE: No fallback - fail with error
+        console.error('Configuration Error: window.ENV not found. Check that .env is configured and PHP is injecting environment.');
+        throw new Error('Environment configuration missing - window.ENV required');
     }
 
     /**
      * Get API extension from environment configuration
-     * Local typically uses '.php', production uses '' (handled by .htaccess)
+     * STRICT MODE: Requires window.ENV.apiExtension
      */
     function getAPIExtension() {
-        // NEW: Use injected environment config (preferred)
+        // Check for injected environment config
         if (window.ENV && typeof window.ENV.apiExtension !== 'undefined') {
             return window.ENV.apiExtension;
         }
 
-        // FALLBACK: Auto-detect based on base path
-        const basePath = getBasePath();
-        return basePath === '' ? '.php' : '';
+        // STRICT MODE: No fallback - fail with error
+        console.error('Configuration Error: window.ENV.apiExtension not found');
+        throw new Error('API extension configuration missing');
     }
 
     // Image paths
@@ -107,6 +92,18 @@
             const effective = hasPhpExtension ? filename : filename + apiExtension;
 
             return basePath + '/php/api/' + effective;
+        };
+    }
+
+    // Clean URL paths (for modern routing)
+    if (typeof window.getCleanPath !== 'function') {
+        window.getCleanPath = function(page) {
+            const basePath = getBasePath();
+            const cleanPages = {
+                'home': '/home',
+                'admin': '/admin'
+            };
+            return basePath + (cleanPages[page] || '/php/' + page);
         };
     }
 
