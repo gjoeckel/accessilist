@@ -12,21 +12,7 @@ import { buildContent } from './buildPrinciples.js';
 // buildReportsSection import removed - reports now handled on separate page
 import { initializePrincipleAddRowButtons } from './addRow.js';
 
-// --- Legacy Focus Management Helpers - DEPRECATED ---
-// These functions are deprecated in favor of SimpleModal
-// Keeping for backward compatibility but they should not be used
-// Legacy focus management functions removed - using SimpleModal system
-
-// Side panel functions removed - now handled by StateEvents.js
-// Legacy functions kept for backward compatibility
-
-function handleSidePanelToggle(event) {
-    console.warn('handleSidePanelToggle called - this is now handled by StateEvents.js');
-}
-
-function handlePrincipleSelection(event) {
-    console.warn('handlePrincipleSelection called - this is now handled by StateEvents.js');
-}
+// Legacy functions completely removed - StateEvents.js handles all interactions
 
 // Function to handle report row delete button clicks
 // Already expects the button as an argument
@@ -83,28 +69,18 @@ function handleTaskCompletion(event) {
 
 // Function to get checklist type using TypeManager
 async function getChecklistType() {
-    try {
-        const type = await TypeManager.getTypeFromSources();
-        console.log('Checklist type from TypeManager:', type);
-        return type;
-    } catch (error) {
-        console.warn('Error getting checklist type, using fallback:', error);
-        return 'camtasia';
+    // STRICT MODE: No fallback - fail if type can't be determined
+    const type = await TypeManager.getTypeFromSources();
+
+    if (!type) {
+        throw new Error('Failed to determine checklist type - check URL parameters and session data');
     }
+
+    console.log('Checklist type from TypeManager:', type);
+    return type;
 }
 
-// === REPORT TABLE EVENT DELEGATION ===
-// Note: Event delegation now handled by StateEvents.js
-// This function remains for backward compatibility but is no longer needed
-
-function setupReportTableEventDelegation() {
-    console.log('Report table event delegation now handled by StateEvents.js - skipping local setup');
-    // Event listeners removed - handled globally by StateEvents.js
-}
-
-// Report table state removed - reports now handled on separate page
-
-// Report table rendering removed - reports now handled on separate page
+// Report table delegation removed - StateEvents.js handles all interactions
 
 // Function to initialize the application
 async function initializeApp() {
@@ -200,34 +176,4 @@ document.addEventListener('contentBuilt', () => {
 // Export initializeApp for potential use elsewhere (e.g., testing)
 window.initializeApp = initializeApp;
 
-// === Report Status Change Delegation & Overlay Logic ===
-// Functions removed - now handled by StateEvents.js
-
-// Legacy functions kept for backward compatibility (but not used)
-function handleReportStatusChange(statusButton) {
-    console.warn('handleReportStatusChange called - this is now handled by StateEvents.js');
-}
-
-function handleDeleteReportRow(deleteButton) {
-    console.warn('handleDeleteReportRow called - this is now handled by StateEvents.js');
-}
-
-function processCompletedRowTextareas(statusButton) {
-    console.warn('processCompletedRowTextareas called - this is now handled by StateEvents.js');
-}
-
-function observeReportTableMutations() {
-    const tbody = document.querySelector('.report-table tbody');
-    if (!tbody) return;
-    const observer = new MutationObserver(() => {
-        // No-op: event delegation covers new rows
-    });
-    observer.observe(tbody, { childList: true, subtree: false });
-}
-
-// Legacy global exports removed - functions now in StateEvents.js
-// Kept for backward compatibility but will show warnings if called
-
-// === Report Table Data-Driven Actions ===
-// Add Row button handler
-// Removed local initializeAddRowButton to avoid duplicate declaration
+// All report table and status management now in StateEvents.js

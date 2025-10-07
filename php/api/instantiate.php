@@ -31,18 +31,20 @@ if (file_exists($filename)) {
   return;
 }
 
-// Canonicalize and validate type slug
-$rawTypeInput = $data['typeSlug'] ?? ($data['type'] ?? null);
-$converted = $rawTypeInput ? TypeManager::convertDisplayNameToSlug($rawTypeInput) : null;
-$validatedSlug = TypeManager::validateType($converted);
+// STRICT MODE: Only accept typeSlug (no legacy 'type' field)
+if (!isset($data['typeSlug'])) {
+  send_error('Missing typeSlug parameter (display name not accepted)', 400);
+}
+
+$validatedSlug = TypeManager::validateType($data['typeSlug']);
 if ($validatedSlug === null) {
-  send_error('Invalid or missing checklist type', 400);
+  send_error('Invalid checklist type', 400);
 }
 
 // Build minimal placeholder content WITHOUT 'timestamp' so Updated remains blank in Admin
+// STRICT MODE: Only save typeSlug (no legacy 'type' field)
 $placeholder = [
   'sessionKey' => $sessionKey,
-  'type' => TypeManager::formatDisplayName($validatedSlug),
   'typeSlug' => $validatedSlug,
   'metadata' => [
     'version' => '1.0',

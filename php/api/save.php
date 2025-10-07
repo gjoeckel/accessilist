@@ -51,8 +51,9 @@ if ($validated === null) {
     send_error('Invalid checklist type', 400);
 }
 
+// STRICT MODE: Only save typeSlug (no legacy 'type' field)
 $data['typeSlug'] = $validated;
-$data['type'] = TypeManager::formatDisplayName($data['typeSlug']);
+unset($data['type']); // Remove if sent by client
 
 // Update lastModified timestamp
 $data['metadata']['lastModified'] = round(microtime(true) * 1000);

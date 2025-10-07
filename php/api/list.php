@@ -24,11 +24,11 @@ foreach ($files as $file) {
         $fileCreationTime = filemtime($file) * 1000; // Convert to milliseconds
 
         // Add instance data to the array
+        // STRICT MODE: Only include typeSlug (no legacy 'type' field)
         $instance = [
             'sessionKey' => $sessionKey,
             'timestamp' => $fileCreationTime, // Use file creation time as the base timestamp
             'created' => $fileCreationTime, // File creation time
-            'type' => $data['type'] ?? 'Unknown', // Keep type at top level for easier access
             'typeSlug' => $data['typeSlug'] ?? null,
             'metadata' => [
                 'version' => '1.0',

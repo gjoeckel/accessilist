@@ -22,7 +22,7 @@
  */
 function loadEnv($filePath) {
     if (!file_exists($filePath)) {
-        // Fallback to old auto-detection if .env doesn't exist (backwards compatibility)
+        // STRICT MODE: .env is required - no fallback
         return false;
     }
 

@@ -59,30 +59,24 @@ renderHTMLHead('Accessibility Checklists');
         // Generate a 3-character session ID using numbers and capital letters
         const sessionId = generateAlphanumericSessionId();
 
-        try {
-          // First, create the session with the correct checklist type
-          const response = await fetch('<?php echo $basePath; ?>/php/api/instantiate.php', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({
-              sessionKey: sessionId,
-              typeSlug: checklistType
-            })
-          });
+        // Create session and redirect to minimal URL
+        const response = await fetch('<?php echo $basePath; ?>/php/api/instantiate.php', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionKey: sessionId,
+            typeSlug: checklistType
+          })
+        });
 
-          if (response.ok) {
-            // Then redirect to minimal URL format (?=EDF)
-            window.location.href = `<?php echo $basePath; ?>/?=${sessionId}`;
-          } else {
-            console.error('Failed to create session');
-            // Fallback to old method if instantiate fails
-            window.location.href = `<?php echo $basePath; ?>/php/mychecklist.php?session=${sessionId}&type=${checklistType}`;
-          }
-        } catch (error) {
-          console.error('Error creating session:', error);
-          // Fallback to old method if instantiate fails
-          window.location.href = `<?php echo $basePath; ?>/php/mychecklist.php?session=${sessionId}&type=${checklistType}`;
+        if (!response.ok) {
+          console.error('Failed to create session:', await response.text());
+          alert('Failed to create checklist session. Please try again.');
+          return;
         }
+
+        // Redirect to minimal URL format (?=ABC)
+        window.location.href = `<?php echo $basePath; ?>/?=${sessionId}`;
       });
     });
 

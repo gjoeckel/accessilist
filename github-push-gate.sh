@@ -182,6 +182,10 @@ DEBUG_PRODUCTION=false
 ENVEOF
 echo '✅ Production .env created' && grep APP_ENV $REMOTE_PATH/.env"
 
+        # Fix saves directory permissions for Apache write access
+        echo -e "${BLUE}Setting saves directory permissions...${NC}"
+        ssh -i "$PEM_FILE" "$SERVER" "chmod g+w $REMOTE_PATH/saves && echo '✅ Saves directory permissions configured'"
+
         # Verify deployment
         echo -e "${BLUE}🔍 Verifying deployment...${NC}"
         sleep 2

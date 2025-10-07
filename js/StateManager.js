@@ -104,7 +104,12 @@ class UnifiedStateManager {
 
   async ensureInstanceExists() {
     try {
-      const apiPath = window.getAPIPath ? window.getAPIPath('instantiate') : '/php/api/instantiate.php';
+      // STRICT MODE: getAPIPath must be available (no fallback)
+      if (!window.getAPIPath) {
+        throw new Error('path-utils.js not loaded - getAPIPath function missing');
+      }
+
+      const apiPath = window.getAPIPath('instantiate');
       const typeSlug = await TypeManager.getTypeFromSources();
       const payload = {
         sessionKey: this.sessionKey,
@@ -308,7 +313,12 @@ class UnifiedStateManager {
     const MIN_LOADING_TIME = 2000; // 2 seconds minimum
 
     try {
-      const apiPath = window.getAPIPath ? window.getAPIPath('restore') : '/php/api/restore.php';
+      // STRICT MODE: getAPIPath must be available (no fallback)
+      if (!window.getAPIPath) {
+        throw new Error('path-utils.js not loaded - getAPIPath function missing');
+      }
+
+      const apiPath = window.getAPIPath('restore');
       const response = await fetch(`${apiPath}?sessionKey=${this.sessionKey}`);
 
       if (response.status === 404) {
@@ -578,18 +588,22 @@ class UnifiedStateManager {
     const state = this.collectCurrentState();
 
     const typeSlug = await TypeManager.getTypeFromSources();
-    const displayName = await TypeManager.formatDisplayName(typeSlug);
+
+    // STRICT MODE: Only send typeSlug (no legacy 'type' field)
     const saveData = {
       sessionKey: this.sessionKey,
       timestamp: Date.now(),
-      // Use TypeManager for consistent type handling
-      type: displayName,
       typeSlug: typeSlug,
       state: state
     };
 
     try {
-      const apiPath = window.getAPIPath ? window.getAPIPath('save') : '/php/api/save.php';
+      // STRICT MODE: getAPIPath must be available (no fallback)
+      if (!window.getAPIPath) {
+        throw new Error('path-utils.js not loaded - getAPIPath function missing');
+      }
+
+      const apiPath = window.getAPIPath('save');
       const response = await fetch(apiPath, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

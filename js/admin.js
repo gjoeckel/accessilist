@@ -186,12 +186,12 @@ async function loadKeys() {
                 const row = document.createElement('tr');
                 row.setAttribute('data-instance', instance.sessionKey);
 
-                // Type cell
+                // Type cell - STRICT MODE: Use typeSlug only
                 const typeCell = document.createElement('td');
                 typeCell.className = 'admin-type-cell';
-                const typeText = instance.metadata?.type || 'Unknown';
+                const typeSlug = instance.typeSlug || 'unknown';
                 // Use TypeManager for consistent formatting
-                const formattedType = await TypeManager.formatDisplayName(typeText);
+                const formattedType = await TypeManager.formatDisplayName(typeSlug);
                 typeCell.textContent = formattedType;
 
                 // Created date cell
@@ -202,9 +202,6 @@ async function loadKeys() {
                 // Instance ID cell
                 const instanceCell = document.createElement('td');
                 instanceCell.className = 'admin-instance-cell';
-                const typeSlug = (instance.metadata && instance.metadata.typeSlug)
-                  ? instance.metadata.typeSlug
-                  : ((instance.metadata && instance.metadata.type) ? instance.metadata.type.toLowerCase().replace(/\s+/g, '_') : '');
                 instanceCell.appendChild(createInstanceLink(instance.sessionKey, typeSlug));
 
                 // Updated date cell
@@ -257,63 +254,4 @@ document.addEventListener('DOMContentLoaded', function() {
     initializeAdmin();
 });
 
-function createTableRow(instance) {
-    const row = document.createElement('tr');
-    row.className = 'admin-row';
-
-    // Session Key cell
-    const sessionCell = document.createElement('td');
-    sessionCell.className = 'admin-session-cell';
-    sessionCell.textContent = instance.sessionKey;
-    row.appendChild(sessionCell);
-
-    // Type cell
-    const typeCell = document.createElement('td');
-    typeCell.className = 'admin-type-cell';
-    // Capitalize the first letter of the type
-    typeCell.textContent = instance.metadata.type.charAt(0).toUpperCase() + instance.metadata.type.slice(1);
-    row.appendChild(typeCell);
-
-    // Version cell
-    const versionCell = document.createElement('td');
-    versionCell.className = 'admin-version-cell';
-    versionCell.textContent = instance.metadata.version;
-    row.appendChild(versionCell);
-
-    // Last Modified cell
-    const lastModifiedCell = document.createElement('td');
-    lastModifiedCell.className = 'admin-last-modified-cell';
-    lastModifiedCell.textContent = formatDate(instance.metadata.lastModified);
-    row.appendChild(lastModifiedCell);
-
-    // Actions cell
-    const actionsCell = document.createElement('td');
-    actionsCell.className = 'admin-actions-cell';
-
-    // View button
-    const viewButton = document.createElement('button');
-    viewButton.className = 'admin-view-button';
-    viewButton.setAttribute('aria-label', `View checklist ${instance.sessionKey}`);
-    const viewImgPath = window.getImagePath('view.svg');
-    viewButton.innerHTML = `<img src="${viewImgPath}" alt="">`;
-    viewButton.onclick = () => {
-        const phpPath = (typeof window.getPHPPath === 'function')
-            ? window.getPHPPath('mychecklist.php')
-            : '/php/mychecklist.php';
-        window.location.href = `${phpPath}?session=${instance.sessionKey}`;
-    };
-    actionsCell.appendChild(viewButton);
-
-    // Delete button
-    const deleteButton = document.createElement('button');
-    deleteButton.className = 'admin-delete-button';
-    deleteButton.setAttribute('aria-label', `Delete checklist ${instance.sessionKey}`);
-    const deleteImgPath = window.getImagePath('delete.svg');
-    deleteButton.innerHTML = `<img src="${deleteImgPath}" alt="">`;
-    deleteButton.onclick = () => deleteChecklist(instance.sessionKey);
-    actionsCell.appendChild(deleteButton);
-
-    row.appendChild(actionsCell);
-
-    return row;
-}
+// Legacy createTableRow function removed - replaced by inline row creation with TypeManager
