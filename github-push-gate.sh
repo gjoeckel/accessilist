@@ -119,13 +119,28 @@ secure_git_push() {
 
     # Step 2: Push to GitHub
     echo -e "${GREEN}🚀 Pushing to GitHub repository...${NC}"
-    if ! git push $git_args; then
-        # Restore environment on push failure
-        if [ -f .env.backup ]; then
-            mv .env.backup .env
+    
+    # Set upstream if not configured
+    local current_branch=$(git branch --show-current)
+    if ! git rev-parse --abbrev-ref --symbolic-full-name @{u} >/dev/null 2>&1; then
+        echo -e "${BLUE}Setting upstream for branch $current_branch...${NC}"
+        if ! git push --set-upstream origin "$current_branch" $git_args; then
+            # Restore environment on push failure
+            if [ -f .env.backup ]; then
+                mv .env.backup .env
+            fi
+            echo -e "${RED}❌ Push failed, environment restored${NC}"
+            return 1
         fi
-        echo -e "${RED}❌ Push failed, environment restored${NC}"
-        return 1
+    else
+        if ! git push $git_args; then
+            # Restore environment on push failure
+            if [ -f .env.backup ]; then
+                mv .env.backup .env
+            fi
+            echo -e "${RED}❌ Push failed, environment restored${NC}"
+            return 1
+        fi
     fi
 
     # Step 3: Deploy to AWS production
