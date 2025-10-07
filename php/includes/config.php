@@ -46,13 +46,21 @@ function loadEnv($filePath) {
     return true;
 }
 
-// Load .env file (REQUIRED - no fallback)
-$envLoaded = loadEnv(__DIR__ . '/../../.env');
+// Load .env file (REQUIRED) - prefer external production path if present
+$externalEnvPath = '/var/websites/webaim/htdocs/training/online/etc/.env';
+$envLoaded = false;
+
+if (file_exists($externalEnvPath)) {
+    $envLoaded = loadEnv($externalEnvPath);
+}
 
 if (!$envLoaded) {
-    // STRICT MODE: .env file is required
+    $envLoaded = loadEnv(__DIR__ . '/../../.env');
+}
+
+if (!$envLoaded) {
     http_response_code(500);
-    die('Configuration Error: .env file not found. Copy .env.example to .env and configure.');
+    die('Configuration Error: .env file not found. Expected external etc/.env or project .env.');
 }
 
 // Use .env configuration (no auto-detection fallback)
