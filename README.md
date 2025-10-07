@@ -154,3 +154,4 @@ BASE_URL="http://${HOST}:${PORT}"
 - If ES modules fail to load (e.g., `Unexpected token 'export'`), confirm `<script type="module">` usage where applicable
 - Verify Chrome remote debugging if using Chrome MCP
 # Deployment exclusion test
+# Test 1759867669
