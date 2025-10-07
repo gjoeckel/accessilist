@@ -6,9 +6,12 @@
  * Eliminates auto-detection and provides explicit environment control.
  *
  * Setup:
- * 1. Copy .env.example to .env
- * 2. Set APP_ENV to 'local', 'production', or 'staging'
- * 3. Configure base paths for each environment
+ * - Change APP_ENV in .env to switch environments:
+ *   - 'local' = PHP dev server (php -S localhost:8000)
+ *   - 'apache-local' = Local Apache production testing
+ *   - 'production' = AWS production server
+ * - .env file is version controlled (no sensitive data)
+ * - Hyphens in APP_ENV are normalized to underscores for key lookups
  */
 
 /**
@@ -55,16 +58,19 @@ if (!$envLoaded) {
 // Use .env configuration (no auto-detection fallback)
 $environment = $_ENV['APP_ENV'] ?? 'local';
 
+// Normalize environment name for key lookups (convert hyphens to underscores)
+$envKey = str_replace('-', '_', strtoupper($environment));
+
 // Get base path from environment-specific variable
-$basePathKey = 'BASE_PATH_' . strtoupper($environment);
+$basePathKey = 'BASE_PATH_' . $envKey;
 $basePath = $_ENV[$basePathKey] ?? '';
 
 // Get API extension from environment-specific variable
-$apiExtKey = 'API_EXT_' . strtoupper($environment);
+$apiExtKey = 'API_EXT_' . $envKey;
 $apiExtension = $_ENV[$apiExtKey] ?? '';
 
 // Get debug mode
-$debugKey = 'DEBUG_' . strtoupper($environment);
+$debugKey = 'DEBUG_' . $envKey;
 $debugMode = ($_ENV[$debugKey] ?? 'false') === 'true';
 
 // Export configuration for JavaScript injection

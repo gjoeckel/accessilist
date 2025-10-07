@@ -30,7 +30,7 @@ check_push_gate_enabled() {
 # Function to validate push token
 validate_push_token() {
     local provided_token="$1"
-    
+
     if [ "$provided_token" = "$REQUIRED_TOKEN" ]; then
         echo -e "${GREEN}✅ GitHub push token validated successfully${NC}"
         return 0
@@ -45,7 +45,7 @@ validate_push_token() {
 # Function to check if repository is a GitHub remote
 is_github_repo() {
     local repo_url="$1"
-    
+
     if [[ "$repo_url" =~ github\.com ]]; then
         return 0
     else
@@ -56,7 +56,7 @@ is_github_repo() {
 # Function to get remote URL
 get_remote_url() {
     local remote_name="${1:-origin}"
-    
+
     if git remote get-url "$remote_name" 2>/dev/null; then
         return 0
     else
@@ -70,50 +70,130 @@ secure_git_push() {
     local push_token="$1"
     shift
     local git_args="$@"
-    
+
     # Check if push gate is enabled
     if ! check_push_gate_enabled; then
         echo -e "${YELLOW}⚠️  GitHub push gate not enabled, proceeding with push...${NC}"
         git push $git_args
         return $?
     fi
-    
+
     # Get current remote URL
     local remote_url
     if ! remote_url=$(get_remote_url); then
         echo -e "${RED}❌ Cannot determine remote repository URL${NC}"
         return 1
     fi
-    
+
     # Check if it's a GitHub repository
     if ! is_github_repo "$remote_url"; then
         echo -e "${BLUE}ℹ️  Not a GitHub repository, proceeding with push...${NC}"
         git push $git_args
         return $?
     fi
-    
+
     # Validate push token
     if ! validate_push_token "$push_token"; then
         echo -e "${RED}🚫 Push to GitHub repository blocked - invalid token${NC}"
         echo -e "${YELLOW}To push to GitHub, you must provide the exact token: '$REQUIRED_TOKEN'${NC}"
         return 1
     fi
-    
-    # Token is valid, proceed with push
-    echo -e "${GREEN}🚀 Proceeding with push to GitHub repository...${NC}"
-    git push $git_args
-    return $?
+
+    # Token is valid, prepare for production deployment
+    echo -e "${BLUE}📋 Preparing for production deployment...${NC}"
+
+    # Step 1: Set environment to production
+    local current_env=$(grep "^APP_ENV=" .env | cut -d'=' -f2)
+    echo -e "${BLUE}Current environment: $current_env${NC}"
+
+    if [ "$current_env" != "production" ]; then
+        echo -e "${YELLOW}Setting APP_ENV=production...${NC}"
+        sed -i.backup 's/^APP_ENV=.*/APP_ENV=production/' .env
+        git add .env
+
+        # Create deployment commit if .env changed
+        if ! git diff --cached --quiet; then
+            git commit -m "Deploy: Set environment to production"
+        fi
+    fi
+
+    # Step 2: Push to GitHub
+    echo -e "${GREEN}🚀 Pushing to GitHub repository...${NC}"
+    if ! git push $git_args; then
+        # Restore environment on push failure
+        if [ -f .env.backup ]; then
+            mv .env.backup .env
+        fi
+        echo -e "${RED}❌ Push failed, environment restored${NC}"
+        return 1
+    fi
+
+    # Step 3: Deploy to AWS production
+    echo -e "${BLUE}🚀 Deploying to AWS production...${NC}"
+
+    # AWS deployment configuration
+    local PEM_FILE="/Users/a00288946/Developer/projects/GeorgeWebAIMServerKey.pem"
+    local SERVER="george@ec2-3-20-59-76.us-east-2.compute.amazonaws.com"
+    local REMOTE_PATH="/var/websites/webaim/htdocs/training/online/accessilist"
+    local LOCAL_PATH="$(pwd)"
+
+    # Deploy files to AWS
+    rsync -avz --progress \
+      --exclude .git/ \
+      --exclude .gitignore \
+      --exclude .cursor/ \
+      --exclude node_modules/ \
+      --exclude .DS_Store \
+      --exclude .env.local \
+      --exclude .env.backup \
+      --exclude '*.backup' \
+      --exclude '*.bak' \
+      -e "ssh -i $PEM_FILE" \
+      "$LOCAL_PATH/" \
+      "$SERVER:$REMOTE_PATH/"
+
+    if [ $? -eq 0 ]; then
+        echo -e "${GREEN}✅ Deployment successful!${NC}"
+
+        # Update .env on server to production
+        ssh -i "$PEM_FILE" "$SERVER" "cd $REMOTE_PATH && sed -i 's/^APP_ENV=.*/APP_ENV=production/' .env && echo '✅ Production environment configured'"
+
+        # Verify deployment
+        echo -e "${BLUE}🔍 Verifying deployment...${NC}"
+        sleep 2
+
+        if curl -s -o /dev/null -w "%{http_code}" "https://webaim.org/training/online/accessilist/home" | grep -q "200"; then
+            echo -e "${GREEN}✅ Production site is responding${NC}"
+        else
+            echo -e "${YELLOW}⚠️  Production site check returned non-200 status${NC}"
+        fi
+    else
+        echo -e "${RED}❌ Deployment failed${NC}"
+    fi
+
+    # Step 4: Restore local environment
+    if [ "$current_env" != "production" ]; then
+        echo -e "${BLUE}Restoring local environment to $current_env...${NC}"
+        sed -i '' "s/^APP_ENV=.*/APP_ENV=$current_env/" .env
+        git add .env
+        git commit -m "Restore: Set environment to $current_env" || true
+        git push $git_args || echo -e "${YELLOW}⚠️  Failed to push environment restoration${NC}"
+        rm -f .env.backup
+    fi
+
+    echo -e "${GREEN}✅ GitHub push and deployment complete!${NC}"
+    return 0
 }
 
 # Function to create git alias for secure push
 setup_secure_git_alias() {
     local script_path="$1"
-    
+
     echo -e "${BLUE}🔧 Setting up secure git push alias...${NC}"
-    
+
     # Create alias that uses this script
     git config --global alias.push-secure "!bash '$script_path' secure-push"
-    
+
     echo -e "${GREEN}✅ Secure git push alias configured${NC}"
     echo -e "${YELLOW}Usage: git push-secure '<token>' [additional git push arguments]${NC}"
 }
@@ -121,9 +201,9 @@ setup_secure_git_alias() {
 # Function to create pre-push hook
 create_pre_push_hook() {
     local script_path="$1"
-    
+
     echo -e "${BLUE}🪝 Creating pre-push hook for GitHub security...${NC}"
-    
+
     # Create pre-push hook script
     cat > .git/hooks/pre-push << EOF
 #!/bin/bash
@@ -183,7 +263,7 @@ case "${1:-}" in
         else
             echo -e "${RED}❌ Push gate is DISABLED${NC}"
         fi
-        
+
         if [ -d ".git" ]; then
             local remote_url
             if remote_url=$(get_remote_url 2>/dev/null); then

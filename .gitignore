@@ -18,9 +18,8 @@ desktop.ini
 *.log
 *.log.*
 
-# Environment files - SRD Configuration
-.env
+# Note: .env is version controlled (no sensitive data)
+# Only exclude local override files
 .env.local
 .env.*.local
-!.env.example
 
