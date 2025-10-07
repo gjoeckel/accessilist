@@ -18,8 +18,8 @@ desktop.ini
 *.log
 *.log.*
 
-# Note: .env is version controlled (no sensitive data)
-# Only exclude local override files
+# Environment files - not version controlled
+.env
 .env.local
 .env.*.local
 
