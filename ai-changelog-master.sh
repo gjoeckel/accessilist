@@ -118,9 +118,9 @@ EOF
     echo -e "${GREEN}✅ Created initial context summary${NC}"
 
     # Create aliases for easy access
-    cat > "$HOME/.ai-changelog-aliases" << EOF
-# AI Changelog Aliases
-alias ai-start='$SCRIPT_DIR/ai-changelog-master.sh start'
+    cat > "$HOME/.ai-aliases" << EOF
+# AI Aliases - All AI-related command shortcuts
+alias ai-start='$SCRIPT_DIR/session-start.sh'
 alias ai-end='$SCRIPT_DIR/ai-changelog-master.sh end'
 alias ai-repeat='$SCRIPT_DIR/ai-changelog-master.sh repeat'
 alias ai-repeat-full='$SCRIPT_DIR/ai-changelog-master.sh repeat-full'
@@ -128,15 +128,16 @@ alias ai-repeat-questions='$SCRIPT_DIR/ai-changelog-master.sh repeat-questions'
 alias ai-compress='$SCRIPT_DIR/ai-changelog-master.sh compress'
 alias ai-status='$SCRIPT_DIR/ai-changelog-master.sh status'
 alias ai-clean='$SCRIPT_DIR/ai-changelog-master.sh clean'
+alias ai-dry='$SCRIPT_DIR/scripts/ai-dry.sh'
 EOF
 
     echo -e "${GREEN}✅ Created aliases file${NC}"
-    echo -e "${YELLOW}💡 Add 'source ~/.ai-changelog-aliases' to your shell profile${NC}"
+    echo -e "${YELLOW}💡 Add 'source ~/.ai-aliases' to your shell profile${NC}"
 
     echo ""
     echo -e "${BLUE}🎉 AI Changelog System setup complete!${NC}"
     echo -e "${YELLOW}📋 Next steps:${NC}"
-    echo "   1. Add aliases to your shell: source ~/.ai-changelog-aliases"
+    echo "   1. Add aliases to your shell: source ~/.ai-aliases"
     echo "   2. Start your first session: ai-start"
     echo "   3. End your session: ai-end"
     echo "   4. Compress context: ai-compress"

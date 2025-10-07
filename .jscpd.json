@@ -1,0 +1,32 @@
+{
+  "threshold": 5,
+  "reporters": ["html", "console", "json"],
+  "ignore": [
+    "node_modules/**",
+    "**/node_modules/**",
+    "vendor/**",
+    "**/vendor/**",
+    "tests/reports/**",
+    "saves/**",
+    "logs/**",
+    "backups/**",
+    "archive/**",
+    "my-mcp-servers/**",
+    "**/build/**",
+    "**/dist/**",
+    "**/*.min.js",
+    "**/*.min.css"
+  ],
+  "format": [
+    "javascript",
+    "php",
+    "css",
+    "markdown"
+  ],
+  "minLines": 5,
+  "minTokens": 50,
+  "output": "./tests/reports/duplication",
+  "absolute": true,
+  "verbose": true
+}
+

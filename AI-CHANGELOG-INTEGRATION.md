@@ -19,7 +19,7 @@
 /Users/a00288946/Desktop/template/ai-changelog-master.sh setup
 
 # Add aliases to your shell profile
-echo "source ~/.ai-changelog-aliases" >> ~/.zshrc
+echo "source ~/.ai-aliases" >> ~/.zshrc
 source ~/.zshrc
 ```
 
