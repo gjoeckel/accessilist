@@ -1,0 +1,509 @@
+{
+  "analysis_date": "2025-10-07 23:09:17 UTC",
+  "total_files": 34,
+  "recommendations": {
+    "keep": [
+      {
+        "file": "APACHE-SETUP-GUIDE.md",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Active setup/reference guide",
+        "priority": "high"
+      },
+      {
+        "file": "DEPLOYMENT-SETUP.md",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Active setup/reference guide",
+        "priority": "high"
+      },
+      {
+        "file": "README.md",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential active documentation",
+        "priority": "high"
+      },
+      {
+        "file": "SERVER-COMMANDS.md",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Active setup/reference guide",
+        "priority": "high"
+      },
+      {
+        "file": "changelog.md",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential active documentation",
+        "priority": "high"
+      },
+      {
+        "file": "cursor-settings.json",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Active Cursor IDE configuration",
+        "priority": "high"
+      },
+      {
+        "file": "docker-compose.yml",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential Docker configuration",
+        "priority": "critical"
+      },
+      {
+        "file": "index.php",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential entry point",
+        "priority": "critical"
+      },
+      {
+        "file": "jest.config.srd.js",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential test configuration",
+        "priority": "high"
+      },
+      {
+        "file": "package-lock.json",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential npm configuration",
+        "priority": "critical"
+      },
+      {
+        "file": "package.json",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential npm configuration",
+        "priority": "critical"
+      },
+      {
+        "file": "router.php",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential entry point",
+        "priority": "critical"
+      },
+      {
+        "file": "template.md",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential active documentation",
+        "priority": "high"
+      }
+    ],
+    "move": [
+      {
+        "file": "ai-changelog-master.sh",
+        "action": "MOVE",
+        "destination": "scripts/changelog/",
+        "reason": "Changelog automation - belongs in scripts/changelog/",
+        "priority": "low"
+      },
+      {
+        "file": "compress-context.sh",
+        "action": "MOVE",
+        "destination": "scripts/utils/",
+        "reason": "Utility script - belongs in scripts/utils/",
+        "priority": "medium"
+      },
+      {
+        "file": "configure-cursor-autonomy.sh",
+        "action": "MOVE",
+        "destination": "scripts/utils/",
+        "reason": "Utility script - belongs in scripts/utils/",
+        "priority": "medium"
+      },
+      {
+        "file": "github-push-gate.sh",
+        "action": "MOVE",
+        "destination": "scripts/",
+        "reason": "Already has scripts/ directory, should be organized there",
+        "priority": "medium"
+      },
+      {
+        "file": "php-server.log",
+        "action": "MOVE",
+        "destination": "logs/",
+        "reason": "Log file - belongs in logs/ directory",
+        "priority": "high"
+      },
+      {
+        "file": "rollback-apache-setup.sh",
+        "action": "MOVE",
+        "destination": "scripts/apache/",
+        "reason": "Apache-specific script - belongs in scripts/apache/",
+        "priority": "low"
+      },
+      {
+        "file": "session-end.sh",
+        "action": "MOVE",
+        "destination": "scripts/session/",
+        "reason": "Session management - belongs in scripts/session/",
+        "priority": "medium"
+      },
+      {
+        "file": "session-local.sh",
+        "action": "MOVE",
+        "destination": "scripts/session/",
+        "reason": "Session management - belongs in scripts/session/",
+        "priority": "medium"
+      },
+      {
+        "file": "session-start.sh",
+        "action": "MOVE",
+        "destination": "scripts/session/",
+        "reason": "Session management - belongs in scripts/session/",
+        "priority": "medium"
+      },
+      {
+        "file": "session-update.sh",
+        "action": "MOVE",
+        "destination": "scripts/session/",
+        "reason": "Session management - belongs in scripts/session/",
+        "priority": "medium"
+      },
+      {
+        "file": "setup-mcp-servers.sh",
+        "action": "MOVE",
+        "destination": "scripts/setup/",
+        "reason": "Setup script - belongs in scripts/setup/",
+        "priority": "medium"
+      },
+      {
+        "file": "setup-mcp-simple.sh",
+        "action": "MOVE",
+        "destination": "scripts/setup/",
+        "reason": "Setup script - belongs in scripts/setup/",
+        "priority": "medium"
+      },
+      {
+        "file": "setup-production-env.sh",
+        "action": "MOVE",
+        "destination": "scripts/setup/",
+        "reason": "Setup script - belongs in scripts/setup/",
+        "priority": "medium"
+      },
+      {
+        "file": "srd-dev-setup.sh",
+        "action": "MOVE",
+        "destination": "scripts/setup/",
+        "reason": "Setup script - belongs in scripts/setup/",
+        "priority": "medium"
+      },
+      {
+        "file": "start.sh",
+        "action": "MOVE",
+        "destination": "scripts/",
+        "reason": "Already has scripts/ directory, should be organized there",
+        "priority": "medium"
+      }
+    ],
+    "delete": [
+      {
+        "file": "cleanup-analysis.json",
+        "action": "DELETE",
+        "destination": "",
+        "reason": "Temporary analysis files - task complete",
+        "priority": "medium"
+      },
+      {
+        "file": "cleanup-recommendations.json",
+        "action": "DELETE",
+        "destination": "",
+        "reason": "Temporary analysis files - task complete",
+        "priority": "medium"
+      },
+      {
+        "file": "cursor-settings-optimized.json",
+        "action": "DELETE",
+        "destination": "",
+        "reason": "Duplicate - cursor-settings.json is active",
+        "priority": "high"
+      },
+      {
+        "file": "test_url_parameter.php",
+        "action": "DELETE",
+        "destination": "",
+        "reason": "Test file - no longer needed",
+        "priority": "high"
+      }
+    ],
+    "archive": [
+      {
+        "file": "ROOT-CLEANUP-SUMMARY.md",
+        "action": "ARCHIVE",
+        "destination": "docs/historical/reports/",
+        "reason": "Cleanup report - historical record",
+        "priority": "medium"
+      }
+    ],
+    "review": [
+      {
+        "file": "root-files-analysis.json",
+        "action": "REVIEW",
+        "destination": "",
+        "reason": "Configuration file - needs manual review",
+        "priority": "medium"
+      }
+    ]
+  },
+  "by_priority": {
+    "critical": [
+      {
+        "file": "docker-compose.yml",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential Docker configuration",
+        "priority": "critical"
+      },
+      {
+        "file": "index.php",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential entry point",
+        "priority": "critical"
+      },
+      {
+        "file": "package-lock.json",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential npm configuration",
+        "priority": "critical"
+      },
+      {
+        "file": "package.json",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential npm configuration",
+        "priority": "critical"
+      },
+      {
+        "file": "router.php",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential entry point",
+        "priority": "critical"
+      }
+    ],
+    "high": [
+      {
+        "file": "APACHE-SETUP-GUIDE.md",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Active setup/reference guide",
+        "priority": "high"
+      },
+      {
+        "file": "DEPLOYMENT-SETUP.md",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Active setup/reference guide",
+        "priority": "high"
+      },
+      {
+        "file": "README.md",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential active documentation",
+        "priority": "high"
+      },
+      {
+        "file": "SERVER-COMMANDS.md",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Active setup/reference guide",
+        "priority": "high"
+      },
+      {
+        "file": "changelog.md",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential active documentation",
+        "priority": "high"
+      },
+      {
+        "file": "cursor-settings-optimized.json",
+        "action": "DELETE",
+        "destination": "",
+        "reason": "Duplicate - cursor-settings.json is active",
+        "priority": "high"
+      },
+      {
+        "file": "cursor-settings.json",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Active Cursor IDE configuration",
+        "priority": "high"
+      },
+      {
+        "file": "jest.config.srd.js",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential test configuration",
+        "priority": "high"
+      },
+      {
+        "file": "php-server.log",
+        "action": "MOVE",
+        "destination": "logs/",
+        "reason": "Log file - belongs in logs/ directory",
+        "priority": "high"
+      },
+      {
+        "file": "template.md",
+        "action": "KEEP",
+        "destination": "root",
+        "reason": "Essential active documentation",
+        "priority": "high"
+      },
+      {
+        "file": "test_url_parameter.php",
+        "action": "DELETE",
+        "destination": "",
+        "reason": "Test file - no longer needed",
+        "priority": "high"
+      }
+    ],
+    "medium": [
+      {
+        "file": "ROOT-CLEANUP-SUMMARY.md",
+        "action": "ARCHIVE",
+        "destination": "docs/historical/reports/",
+        "reason": "Cleanup report - historical record",
+        "priority": "medium"
+      },
+      {
+        "file": "cleanup-analysis.json",
+        "action": "DELETE",
+        "destination": "",
+        "reason": "Temporary analysis files - task complete",
+        "priority": "medium"
+      },
+      {
+        "file": "cleanup-recommendations.json",
+        "action": "DELETE",
+        "destination": "",
+        "reason": "Temporary analysis files - task complete",
+        "priority": "medium"
+      },
+      {
+        "file": "compress-context.sh",
+        "action": "MOVE",
+        "destination": "scripts/utils/",
+        "reason": "Utility script - belongs in scripts/utils/",
+        "priority": "medium"
+      },
+      {
+        "file": "configure-cursor-autonomy.sh",
+        "action": "MOVE",
+        "destination": "scripts/utils/",
+        "reason": "Utility script - belongs in scripts/utils/",
+        "priority": "medium"
+      },
+      {
+        "file": "github-push-gate.sh",
+        "action": "MOVE",
+        "destination": "scripts/",
+        "reason": "Already has scripts/ directory, should be organized there",
+        "priority": "medium"
+      },
+      {
+        "file": "root-files-analysis.json",
+        "action": "REVIEW",
+        "destination": "",
+        "reason": "Configuration file - needs manual review",
+        "priority": "medium"
+      },
+      {
+        "file": "session-end.sh",
+        "action": "MOVE",
+        "destination": "scripts/session/",
+        "reason": "Session management - belongs in scripts/session/",
+        "priority": "medium"
+      },
+      {
+        "file": "session-local.sh",
+        "action": "MOVE",
+        "destination": "scripts/session/",
+        "reason": "Session management - belongs in scripts/session/",
+        "priority": "medium"
+      },
+      {
+        "file": "session-start.sh",
+        "action": "MOVE",
+        "destination": "scripts/session/",
+        "reason": "Session management - belongs in scripts/session/",
+        "priority": "medium"
+      },
+      {
+        "file": "session-update.sh",
+        "action": "MOVE",
+        "destination": "scripts/session/",
+        "reason": "Session management - belongs in scripts/session/",
+        "priority": "medium"
+      },
+      {
+        "file": "setup-mcp-servers.sh",
+        "action": "MOVE",
+        "destination": "scripts/setup/",
+        "reason": "Setup script - belongs in scripts/setup/",
+        "priority": "medium"
+      },
+      {
+        "file": "setup-mcp-simple.sh",
+        "action": "MOVE",
+        "destination": "scripts/setup/",
+        "reason": "Setup script - belongs in scripts/setup/",
+        "priority": "medium"
+      },
+      {
+        "file": "setup-production-env.sh",
+        "action": "MOVE",
+        "destination": "scripts/setup/",
+        "reason": "Setup script - belongs in scripts/setup/",
+        "priority": "medium"
+      },
+      {
+        "file": "srd-dev-setup.sh",
+        "action": "MOVE",
+        "destination": "scripts/setup/",
+        "reason": "Setup script - belongs in scripts/setup/",
+        "priority": "medium"
+      },
+      {
+        "file": "start.sh",
+        "action": "MOVE",
+        "destination": "scripts/",
+        "reason": "Already has scripts/ directory, should be organized there",
+        "priority": "medium"
+      }
+    ],
+    "low": [
+      {
+        "file": "ai-changelog-master.sh",
+        "action": "MOVE",
+        "destination": "scripts/changelog/",
+        "reason": "Changelog automation - belongs in scripts/changelog/",
+        "priority": "low"
+      },
+      {
+        "file": "rollback-apache-setup.sh",
+        "action": "MOVE",
+        "destination": "scripts/apache/",
+        "reason": "Apache-specific script - belongs in scripts/apache/",
+        "priority": "low"
+      }
+    ]
+  },
+  "summary": {
+    "keep_count": 13,
+    "move_count": 15,
+    "delete_count": 4,
+    "archive_count": 1,
+    "review_count": 1
+  }
+}
