@@ -153,3 +153,4 @@ BASE_URL="http://${HOST}:${PORT}"
 - Ensure port 8000 is free before starting the server
 - If ES modules fail to load (e.g., `Unexpected token 'export'`), confirm `<script type="module">` usage where applicable
 - Verify Chrome remote debugging if using Chrome MCP
+# Deployment exclusion test
