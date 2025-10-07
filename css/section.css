@@ -11,7 +11,7 @@ main {
 
 /* Section Styles */
 section {
-    padding-top: 20px;
+    padding-top: 90px;  /* 70px sticky header + 20px breathing room */
     color: var(--theme-color);
     position: relative;
     z-index: 1;

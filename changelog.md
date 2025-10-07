@@ -8,6 +8,38 @@
 
 ## Entries
 
+### 2025-10-07 17:52:54 UTC - Fix section headings hidden under sticky header
+
+**Summary:**
+- Fixed section h2 headings being hidden under 70px sticky header
+- Increased section padding-top from 20px to 90px
+- Simplified scroll logic to position sections at viewport top
+- Used MCP tools to diagnose production site issues
+
+**Root Cause:**
+- Sections only had 20px padding-top
+- H2 headings appeared at ~24px from viewport top
+- Sticky header is 70px tall, completely hiding section headings
+- Issue identified on production site: https://webaim.org/training/online/accessilist/?=VBA
+
+**Changes:**
+- `css/section.css`: Changed `padding-top` from 20px to 90px (70px header + 20px breathing room)
+- `css/admin.css`: Changed `.admin-section` `padding-top` from 20px to 90px
+- `js/StateManager.js`: Simplified `jumpToSection()` to position section at viewport top (0px)
+  - Section at 0px with 90px padding = content starts at 90px
+  - H2 headings now at 90px (20px below 70px header) ✓
+
+**Result:**
+- All section h2 headings now visible below sticky header
+- Section content starts at 90px from viewport top
+- Clean 20px gap between header bottom (70px) and content top (90px)
+- Sections scroll to viewport top, content naturally appears below header
+
+**Verification:**
+- No linter errors
+- No CSS or JavaScript duplicates
+- Side panel remains at 70px (correct)
+
 ### 2025-10-07 17:44:40 UTC - Fix scroll alignment - table content aligns with side panel
 
 **Summary:**

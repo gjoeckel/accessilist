@@ -415,11 +415,10 @@ class UnifiedStateManager {
     const section = document.getElementById(sectionId);
     if (section) {
       // Side panel is at 70px from viewport top
-      // Section has padding-top: 20px, so to align content with side panel top (70px),
-      // we need to position section element at 50px (70px - 20px padding)
-      const sidePanelTop = 70; // side panel position from viewport top
-      const sectionPaddingTop = 20; // section padding-top from section.css
-      const targetPosition = sidePanelTop - sectionPaddingTop; // section element should be at 50px
+      // Section has padding-top: 90px (70px header + 20px breathing room)
+      // To align section content with side panel, position section at viewport top (0px)
+      // Content will appear at 90px (section padding), which aligns with side panel area
+      const targetPosition = 0; // Position section element at viewport top
       const y = section.getBoundingClientRect().top + window.pageYOffset - targetPosition;
       window.scrollTo({ top: y, behavior: 'instant' });
     }
