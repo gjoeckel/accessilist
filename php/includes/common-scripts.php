@@ -12,8 +12,9 @@ function renderCommonScripts($scriptSet = 'basic') {
     $version = time();
 
     // CRITICAL: path-utils.js must load first (provides getAPIPath, getImagePath, etc.)
+    // Load synchronously (no type="module") to ensure it's ready before type-manager.js
     echo "<!-- Path configuration handled by path-utils.js -->\n";
-    echo "<script type=\"module\" src=\"{$basePath}/js/path-utils.js?v={$version}\"></script>\n";
+    echo "<script src=\"{$basePath}/js/path-utils.js?v={$version}\"></script>\n";
 
     // Type manager (used by admin and some other pages)
     if (in_array($scriptSet, ['admin', 'checklist'])) {

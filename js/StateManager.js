@@ -51,13 +51,13 @@ class UnifiedStateManager {
   // INITIALIZATION
   // ============================================================
 
-  initialize() {
+  async initialize() {
     if (this.initialized) return;
 
     console.log('Initializing Unified State Manager');
 
-    // Get session ID from URL
-    this.sessionKey = this.getSessionId();
+    // Get session ID from URL or server
+    this.sessionKey = await this.getSessionId();
 
     // Initialize global state objects
     this.initializeGlobalStateObjects();
@@ -78,7 +78,7 @@ class UnifiedStateManager {
       .catch((e) => console.warn('Instantiate skipped or failed:', e));
 
     // Setup state restoration
-    this.setupStateRestoration();
+    await this.setupStateRestoration();
 
     // Enable auto-save immediately
     this.enableAutoSave();
@@ -162,7 +162,7 @@ class UnifiedStateManager {
   // SESSION MANAGEMENT
   // ============================================================
 
-  getSessionId() {
+  async getSessionId() {
     if (this.sessionKey) {
       return this.sessionKey;
     }
@@ -172,31 +172,39 @@ class UnifiedStateManager {
       this.sessionKey = window.sessionKeyFromPHP;
       return this.sessionKey;
     }
+
     // Parse minimal URL pattern: ?=XYZ
     const minimalMatch = (window.location.search || '').match(/^\?=([A-Z0-9]{3})$/);
     if (minimalMatch) {
       this.sessionKey = minimalMatch[1];
       return this.sessionKey;
     }
+
     const urlParams = new URLSearchParams(window.location.search);
     let sessionKey = urlParams.get('session');
 
-    // Validate session key (3-10 alphanumeric characters)
-    if (!sessionKey || !/^[A-Z0-9]{3,10}$/.test(sessionKey)) {
-      sessionKey = this.generateSessionId();
+    // Validate existing session key (3-character alphanumeric)
+    if (sessionKey && /^[A-Z0-9]{3}$/.test(sessionKey)) {
+      this.sessionKey = sessionKey;
+      return sessionKey;
     }
 
-    this.sessionKey = sessionKey;
-    return sessionKey;
-  }
+    // Request new unique key from server
+    try {
+      const apiPath = window.getAPIPath('generate-key');
+      const response = await fetch(apiPath);
+      const result = await response.json();
 
-  generateSessionId() {
-    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    let result = '';
-    for (let i = 0; i < 3; i++) {
-      result += chars.charAt(Math.floor(Math.random() * chars.length));
+      if (result.success && result.data && result.data.sessionKey) {
+        this.sessionKey = result.data.sessionKey;
+        return this.sessionKey;
+      }
+
+      throw new Error('Server failed to generate key');
+    } catch (error) {
+      console.error('Failed to get session key from server:', error);
+      throw new Error('Unable to initialize session - server key generation failed');
     }
-    return result;
   }
 
   // ============================================================
@@ -287,9 +295,9 @@ class UnifiedStateManager {
   // STATE RESTORATION
   // ============================================================
 
-  setupStateRestoration() {
-    // Use the proper session key detection method
-    const sessionKey = this.getSessionId();
+  async setupStateRestoration() {
+    // Session key is already set in initialize()
+    const sessionKey = this.sessionKey;
 
     if (!sessionKey) {
       console.log('No session key found, skipping restoration');

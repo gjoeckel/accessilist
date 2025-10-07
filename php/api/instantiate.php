@@ -4,20 +4,21 @@ require_once __DIR__ . '/../includes/type-formatter.php';
 require_once __DIR__ . '/../includes/type-manager.php';
 
 // Ensure saves directory exists
-if (!file_exists('../saves') && !mkdir('../saves', 0755, true)) {
-  send_error('Failed to create saves directory', 500);
+$savesDir = __DIR__ . '/../../saves';
+if (!file_exists($savesDir) && !mkdir($savesDir, 0755, true)) {
+    send_error('Failed to create saves directory', 500);
 }
 
 // Only accept POST
 if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-  send_error('Method not allowed', 405);
+    send_error('Method not allowed', 405);
 }
 
 $rawData = file_get_contents('php://input');
 $data = json_decode($rawData, true);
 
 if (!$data || !isset($data['sessionKey'])) {
-  send_error('Invalid data format', 400);
+    send_error('Invalid data format', 400);
 }
 
 $sessionKey = $data['sessionKey'];
@@ -25,46 +26,52 @@ validate_session_key($sessionKey);
 
 $filename = saves_path_for($sessionKey);
 
-// If file already exists, treat as success (idempotent)
-if (file_exists($filename)) {
-  send_success(['message' => 'Instance already exists']);
-  return;
-}
-
-// STRICT MODE: Only accept typeSlug (no legacy 'type' field)
+// Validate type
 if (!isset($data['typeSlug'])) {
-  send_error('Missing typeSlug parameter (display name not accepted)', 400);
+    send_error('Missing typeSlug parameter', 400);
 }
 
 $validatedSlug = TypeManager::validateType($data['typeSlug']);
 if ($validatedSlug === null) {
-  send_error('Invalid checklist type', 400);
+    send_error('Invalid checklist type', 400);
 }
 
-// Build minimal placeholder content WITHOUT 'timestamp' so Updated remains blank in Admin
-// STRICT MODE: Only save typeSlug (no legacy 'type' field)
+// Build placeholder content
 $placeholder = [
-  'sessionKey' => $sessionKey,
-  'typeSlug' => $validatedSlug,
-  'metadata' => [
-    'version' => '1.0',
-    // Admin prefers file mtime as created; we also store a created value for readability
-    'created' => round(microtime(true) * 1000)
-  ],
-  // Optional initial state
-  'state' => isset($data['state']) ? $data['state'] : new stdClass()
+    'sessionKey' => $sessionKey,
+    'typeSlug' => $validatedSlug,
+    'metadata' => [
+        'version' => '1.0',
+        'created' => round(microtime(true) * 1000)
+    ],
+    'state' => isset($data['state']) ? $data['state'] : new stdClass()
 ];
 
 $json = json_encode($placeholder, JSON_UNESCAPED_SLASHES);
-if ($json === false) {
-  send_error('Failed to encode placeholder JSON', 500);
+
+// Atomic write with exclusive lock
+$fp = fopen($filename, 'c');
+if (!$fp) {
+    send_error('Failed to open file', 500);
 }
 
-$result = file_put_contents($filename, $json);
-if ($result === false) {
-  send_error('Failed to write placeholder file', 500);
+if (!flock($fp, LOCK_EX)) {
+    fclose($fp);
+    send_error('Failed to acquire file lock', 500);
 }
+
+// Check if already exists (idempotent operation)
+$fileSize = filesize($filename);
+if ($fileSize > 0) {
+    flock($fp, LOCK_UN);
+    fclose($fp);
+    send_success(['message' => 'Instance already exists']);
+    return;
+}
+
+// Write new file
+fwrite($fp, $json);
+flock($fp, LOCK_UN);
+fclose($fp);
 
 send_success(['message' => 'Instance created']);
-
-

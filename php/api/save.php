@@ -3,10 +3,10 @@ require_once __DIR__ . '/../includes/api-utils.php';
 require_once __DIR__ . '/../includes/type-formatter.php';
 require_once __DIR__ . '/../includes/type-manager.php';
 
-// Verify saves directory exists (must be created during setup)
+// Verify saves directory exists
 $savesDir = __DIR__ . '/../../saves';
 if (!file_exists($savesDir)) {
-    send_error('Saves directory not found - check deployment configuration', 500);
+    send_error('Saves directory not found', 500);
 }
 
 // Get POST data
@@ -15,35 +15,15 @@ $data = json_decode($rawData, true);
 
 // Validate data
 if (!$data || !isset($data['sessionKey'])) {
-  send_error('Invalid data format', 400);
+    send_error('Invalid data format', 400);
 }
 
 $sessionKey = $data['sessionKey'];
-
-// Validate session key format (3 alphanumeric characters)
 validate_session_key($sessionKey);
 
-// Load existing data to preserve metadata
-$filename = saves_path_for($sessionKey);
-$existingData = null;
-if (file_exists($filename)) {
-    $existingContent = file_get_contents($filename);
-    $existingData = json_decode($existingContent, true);
-}
-
-// Ensure metadata exists and update lastModified timestamp
-if (!isset($data['metadata'])) {
-    $data['metadata'] = [];
-}
-
-// Preserve existing metadata if it exists
-if ($existingData && isset($existingData['metadata'])) {
-    $data['metadata'] = array_merge($existingData['metadata'], $data['metadata']);
-}
-
-// Validate type field (STRICT MODE: require typeSlug only)
+// Validate type
 if (!isset($data['typeSlug'])) {
-    send_error('Missing typeSlug parameter (type display name not accepted)', 400);
+    send_error('Missing typeSlug parameter', 400);
 }
 
 $validated = TypeManager::validateType($data['typeSlug']);
@@ -51,19 +31,54 @@ if ($validated === null) {
     send_error('Invalid checklist type', 400);
 }
 
-// STRICT MODE: Only save typeSlug (no legacy 'type' field)
 $data['typeSlug'] = $validated;
-unset($data['type']); // Remove if sent by client
+unset($data['type']); // Remove legacy field
 
-// Update lastModified timestamp
+// Atomic save with file locking
+$filename = saves_path_for($sessionKey);
+
+$fp = fopen($filename, 'c+');
+if (!$fp) {
+    send_error('Failed to open file', 500);
+}
+
+if (!flock($fp, LOCK_EX)) {
+    fclose($fp);
+    send_error('Failed to acquire file lock', 500);
+}
+
+// Read existing data
+$existingContent = '';
+$fileSize = filesize($filename);
+if ($fileSize > 0) {
+    $existingContent = fread($fp, $fileSize);
+}
+
+$existingData = null;
+if ($existingContent) {
+    $existingData = json_decode($existingContent, true);
+}
+
+// Merge metadata
+if (!isset($data['metadata'])) {
+    $data['metadata'] = [];
+}
+
+if ($existingData && isset($existingData['metadata'])) {
+    $data['metadata'] = array_merge($existingData['metadata'], $data['metadata']);
+}
+
+// Update timestamp
 $data['metadata']['lastModified'] = round(microtime(true) * 1000);
 
-// Save to file system
-$updatedRawData = json_encode($data, JSON_UNESCAPED_SLASHES);
-$result = file_put_contents($filename, $updatedRawData);
+// Write atomically
+$updatedContent = json_encode($data, JSON_UNESCAPED_SLASHES);
 
-if ($result === false) {
-  send_error('Failed to save data', 500);
-}
+ftruncate($fp, 0);
+rewind($fp);
+fwrite($fp, $updatedContent);
+
+flock($fp, LOCK_UN);
+fclose($fp);
 
 send_success(['message' => '']);
