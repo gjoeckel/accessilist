@@ -68,7 +68,7 @@ if ($envLoaded) {
     $isLocal = $httpHost === 'localhost' ||
                $httpHost === '127.0.0.1' ||
                strpos($httpHost, 'local') !== false;
-    
+
     $environment = $isLocal ? 'local' : 'production';
     $basePath = $isLocal ? '' : '/training/online/accessilist';
     $apiExtension = $isLocal ? '.php' : '';
