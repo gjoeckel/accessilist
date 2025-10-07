@@ -8,6 +8,29 @@
 
 ## Entries
 
+### 2025-10-07 16:52:43 UTC - Scroll offset fix + Footer message improvements
+
+**Summary:**
+- Fixed section scroll positioning (sections were scrolling 165px too high)
+- Updated footer status messages for better clarity and visibility
+
+**Changes:**
+- `js/StateManager.js`: 
+  - `jumpToSection()` offset changed from 90px to 255px (230px header + 25px padding) to align with side panel viewing area
+  - Footer messages now persist for 5 seconds (up from 3 seconds)
+  - Removed periods from success messages: "Saved at 10:30 AM" and "Restored using KEY"
+  - Fixed spacing in "Restored using" message
+
+**Root Cause:**
+- Side panel navigation starts at 230px from viewport top
+- Previous offset only accounted for 70px header + 20px padding = 90px
+- Difference of 165px caused sections to scroll under UI elements
+
+**Validation:**
+- Sections now scroll to correct position aligned with side panel
+- Footer messages display cleanly without trailing punctuation
+- Messages remain visible for 5 seconds for comfortable reading
+
 ### 2025-10-07 22:44:37 UTC - Section padding + Scroll offset; Footer message tweaks
 
 **Summary:**

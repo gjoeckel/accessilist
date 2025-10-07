@@ -359,9 +359,9 @@ class UnifiedStateManager {
           const strong = document.createElement('strong');
           strong.textContent = key;
           frag.append(strong);
-          window.statusManager.announce(frag, { type: 'success', timeout: 3000 });
+          window.statusManager.announce(frag, { type: 'success', timeout: 5000 });
         } else {
-          this.showStatusMessage(`Restored using ${key}.`, 'success');
+          this.showStatusMessage(`Restored using ${key}`, 'success');
         }
       }
     } catch (error) {
@@ -414,8 +414,8 @@ class UnifiedStateManager {
   jumpToSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
-      const headerOffset = 70; // sticky header height
-      const extraPadding = 20; // section padding-top
+      const headerOffset = 230; // align with side panel viewing area (side-panel top position)
+      const extraPadding = 25; // additional spacing for visual alignment
       const y = section.getBoundingClientRect().top + window.pageYOffset - headerOffset - extraPadding;
       window.scrollTo({ top: y, behavior: 'instant' });
     }
@@ -648,9 +648,9 @@ class UnifiedStateManager {
       if (result.success) {
         const ts = new Date();
         const timeString = ts.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-        const msg = `Saved at ${timeString}.`;
+        const msg = `Saved at ${timeString}`;
         if (window.statusManager && typeof window.statusManager.announce === 'function') {
-          window.statusManager.announce(msg, { type: 'success', timeout: 3000 });
+          window.statusManager.announce(msg, { type: 'success', timeout: 5000 });
         } else {
           this.showStatusMessage(msg, 'success');
         }
