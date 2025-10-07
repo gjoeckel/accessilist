@@ -89,8 +89,9 @@ function formatDate(timestamp) {
 
 function createInstanceLink(instanceId, typeSlug) {
     const link = document.createElement('a');
-    // Use minimal URL format instead of full URL
-    link.href = `/?=${instanceId}`;
+    // Use minimal URL format with base path
+    const basePath = window.ENV?.basePath || '';
+    link.href = `${basePath}/?=${instanceId}`;
     link.textContent = instanceId;
     link.className = 'instance-link';
 
