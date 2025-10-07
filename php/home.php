@@ -17,7 +17,7 @@ renderHTMLHead('Accessibility Checklists');
 </header>
 
 <!-- Main Content -->
-<main>
+<main role="main">
     <div class="landing-content checklist-groups-container">
       <div class="checklist-group">
         <h2>Microsoft</h2>

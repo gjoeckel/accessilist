@@ -23,7 +23,7 @@ renderHTMLHead('Admin');
 </header>
 
 <!-- Main Content -->
-<main>
+<main role="main">
     <section id="admin" class="admin-section">
         <h2 id="admin-caption" tabindex="-1">Checklists</h2>
         <div class="admin-container">
