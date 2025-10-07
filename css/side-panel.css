@@ -10,7 +10,7 @@
 /* Side Panel Navigation */
 .side-panel {
     position: fixed;
-    top: 70px;
+    top: 165px;
     left: 0;
     height: 400px;
     width: var(--side-panel-collapsed-width);
@@ -102,7 +102,7 @@ body.loaded .side-panel {
         width: var(--side-panel-collapsed-width); /* Keep collapsed width */
         height: 40vh; /* Adjusted height for smaller screens */
         z-index: 90; /* Ensure proper layering */
-        top: 70px; /* Align with sticky header height */
+        top: 165px; /* Position below header and section content area */
     }
     .side-panel[aria-expanded="false"] {
         transform: translateX(calc(-1 * var(--side-panel-collapsed-width))); /* Keep collapse transform */
