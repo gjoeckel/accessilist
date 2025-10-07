@@ -102,43 +102,22 @@ secure_git_push() {
     # Token is valid, prepare for production deployment
     echo -e "${BLUE}📋 Preparing for production deployment...${NC}"
 
-    # Step 1: Set environment to production
-    local current_env=$(grep "^APP_ENV=" .env | cut -d'=' -f2)
-    echo -e "${BLUE}Current environment: $current_env${NC}"
-
-    if [ "$current_env" != "production" ]; then
-        echo -e "${YELLOW}Setting APP_ENV=production...${NC}"
-        sed -i.backup 's/^APP_ENV=.*/APP_ENV=production/' .env
-        git add .env
-
-        # Create deployment commit if .env changed
-        if ! git diff --cached --quiet; then
-            git commit -m "Deploy: Set environment to production"
-        fi
-    fi
+    # Note: .env stays as "local" in git - production .env created on server
 
     # Step 2: Push to GitHub
     echo -e "${GREEN}🚀 Pushing to GitHub repository...${NC}"
-    
+
     # Set upstream if not configured
     local current_branch=$(git branch --show-current)
     if ! git rev-parse --abbrev-ref --symbolic-full-name @{u} >/dev/null 2>&1; then
         echo -e "${BLUE}Setting upstream for branch $current_branch...${NC}"
         if ! git push --set-upstream origin "$current_branch" $git_args; then
-            # Restore environment on push failure
-            if [ -f .env.backup ]; then
-                mv .env.backup .env
-            fi
-            echo -e "${RED}❌ Push failed, environment restored${NC}"
+            echo -e "${RED}❌ Push failed${NC}"
             return 1
         fi
     else
         if ! git push $git_args; then
-            # Restore environment on push failure
-            if [ -f .env.backup ]; then
-                mv .env.backup .env
-            fi
-            echo -e "${RED}❌ Push failed, environment restored${NC}"
+            echo -e "${RED}❌ Push failed${NC}"
             return 1
         fi
     fi
@@ -152,13 +131,14 @@ secure_git_push() {
     local REMOTE_PATH="/var/websites/webaim/htdocs/training/online/accessilist"
     local LOCAL_PATH="$(pwd)"
 
-    # Deploy files to AWS
+    # Deploy files to AWS (exclude .env - will be created separately)
     rsync -avz --progress \
       --exclude .git/ \
       --exclude .gitignore \
       --exclude .cursor/ \
       --exclude node_modules/ \
       --exclude .DS_Store \
+      --exclude .env \
       --exclude .env.local \
       --exclude .env.backup \
       --exclude '*.backup' \
@@ -170,8 +150,14 @@ secure_git_push() {
     if [ $? -eq 0 ]; then
         echo -e "${GREEN}✅ Deployment successful!${NC}"
 
-        # Update .env on server to production
-        ssh -i "$PEM_FILE" "$SERVER" "cd $REMOTE_PATH && sed -i 's/^APP_ENV=.*/APP_ENV=production/' .env && echo '✅ Production environment configured'"
+        # Create production .env on server
+        echo -e "${BLUE}Creating production .env configuration...${NC}"
+
+        # Copy local .env as template and update to production
+        scp -i "$PEM_FILE" "$LOCAL_PATH/.env" "$SERVER:$REMOTE_PATH/.env.temp"
+
+        # Update to production mode on server
+        ssh -i "$PEM_FILE" "$SERVER" "cd $REMOTE_PATH && sed 's/^APP_ENV=.*/APP_ENV=production/' .env.temp > .env && rm .env.temp && echo '✅ Production environment configured' && grep APP_ENV .env"
 
         # Verify deployment
         echo -e "${BLUE}🔍 Verifying deployment...${NC}"
@@ -186,17 +172,9 @@ secure_git_push() {
         echo -e "${RED}❌ Deployment failed${NC}"
     fi
 
-    # Step 4: Restore local environment
-    if [ "$current_env" != "production" ]; then
-        echo -e "${BLUE}Restoring local environment to $current_env...${NC}"
-        sed -i '' "s/^APP_ENV=.*/APP_ENV=$current_env/" .env
-        git add .env
-        git commit -m "Restore: Set environment to $current_env" || true
-        git push $git_args || echo -e "${YELLOW}⚠️  Failed to push environment restoration${NC}"
-        rm -f .env.backup
-    fi
-
     echo -e "${GREEN}✅ GitHub push and deployment complete!${NC}"
+    echo -e "${BLUE}Local .env remains: APP_ENV=local${NC}"
+    echo -e "${BLUE}Production .env set to: APP_ENV=production${NC}"
     return 0
 }
 
