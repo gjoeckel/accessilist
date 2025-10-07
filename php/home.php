@@ -72,7 +72,7 @@ renderHTMLHead('Accessibility Checklists');
 
           if (response.ok) {
             // Then redirect to minimal URL format (?=EDF)
-            window.location.href = `/?=${sessionId}`;
+            window.location.href = `<?php echo $basePath; ?>/?=${sessionId}`;
           } else {
             console.error('Failed to create session');
             // Fallback to old method if instantiate fails
