@@ -103,6 +103,18 @@ footer[role="contentinfo"] p {
   align-items: center;
   gap: 6px;
   margin-left: 12px;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 4px;
+  padding: 4px 8px;
+  transition: box-shadow 0.2s ease;
+}
+
+/* Golden ring focus and hover styles for CC license link */
+.cc-license:focus,
+.cc-license:hover {
+  box-shadow: var(--golden-ring) !important;
+  outline: none;
 }
 
 .cc-icon {
