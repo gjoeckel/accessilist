@@ -1,0 +1,201 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+MODE=""
+MINIMAL=${STARTUP_MINIMAL:-0}
+REQUIRE_MCP=0
+NO_CHROME=0
+
+for arg in "$@"; do
+  case "$arg" in
+    quick|new|full)
+      MODE="$arg"
+      ;;
+    --mode)
+      shift
+      MODE="${1:-}"
+      ;;
+    --minimal|--quiet)
+      MINIMAL=1
+      ;;
+    --require-mcp)
+      REQUIRE_MCP=1
+      ;;
+    --no-chrome)
+      NO_CHROME=1
+      ;;
+    -h|--help)
+      echo "Usage: $0 [quick|new|full] [--minimal]"; exit 0
+      ;;
+  esac
+  shift || true
+done
+
+if [[ -z "$MODE" ]]; then
+  echo "Usage: $0 [quick|new|full] [--minimal]"; exit 1
+fi
+
+if [[ "$MINIMAL" == "1" ]]; then
+  exec 1>/dev/null
+fi
+
+ensure_git_bash() {
+  if [[ -z "${SHELL:-}" ]] || [[ "${SHELL##*/}" != "bash" ]]; then
+    echo "⚠️  Not running under Bash. Please run this script from Git Bash on Windows." >&2
+  fi
+}
+
+timestamp() { date '+%Y-%m-%d_%H-%M-%S'; }
+
+LOG_DIR="logs"
+REPORT_DIR="tests/reports"
+SCREENSHOT_DIR="tests/screenshots"
+mkdir -p "$LOG_DIR" "$REPORT_DIR" "$SCREENSHOT_DIR"
+
+LOG_FILE="$LOG_DIR/startup-runbook.log"
+REPORT_FILE="$REPORT_DIR/startup-$MODE-$(timestamp).md"
+
+BASE_URL="http://localhost:8000"
+
+start_server_bg() {
+  echo "🌐 Starting local server..." | tee -a "$LOG_FILE"
+  ./tests/start_server.sh > "$LOG_DIR/server-$(timestamp).log" 2>&1 &
+  SERVER_PID=$!
+  trap cleanup EXIT INT TERM
+}
+
+cleanup() {
+  if [[ -n "${SERVER_PID:-}" ]]; then
+    echo "🛑 Stopping server (PID: $SERVER_PID)" | tee -a "$LOG_FILE"
+    kill "$SERVER_PID" 2>/dev/null || true
+  fi
+}
+
+wait_for_ready() {
+  local url="$1"
+  for i in {1..40}; do
+    if curl -sSf "$url" >/dev/null 2>&1; then
+      READY=1; break
+    fi
+    sleep 0.25
+  done
+  if [[ -z "${READY:-}" ]]; then
+    echo "❌ Server did not become ready at $BASE_URL" | tee -a "$LOG_FILE"
+    return 1
+  fi
+  echo "✅ Server ready: $BASE_URL" | tee -a "$LOG_FILE"
+}
+
+curl_health() {
+  local health_url="$BASE_URL/php/api/health.php"
+  if curl -sSf "$health_url" >/dev/null 2>&1; then
+    local body
+    body=$(curl -s "$health_url" || true)
+    if echo "$body" | grep -q '"status"\s*:\s*"ok"'; then
+      echo "✅ Health endpoint ok" | tee -a "$LOG_FILE"
+      return 0
+    fi
+  fi
+  echo "⚠️  Health endpoint not available or not ok" | tee -a "$LOG_FILE"
+  return 1
+}
+
+write_report() {
+  {
+    echo "# Startup ($MODE) Report"
+    echo "- Timestamp: $(date)"
+    echo "- Base URL: $BASE_URL"
+    echo "- Minimal: $([[ "$MINIMAL" == "1" ]] && echo yes || echo no)"
+    echo "- Require MCP: $([[ "$REQUIRE_MCP" == "1" ]] && echo yes || echo no)"
+    echo "- Chrome: $([[ "$NO_CHROME" == "1" ]] && echo skipped || echo enabled)"
+  } > "$REPORT_FILE"
+  echo "🧾 Report written: $REPORT_FILE" | tee -a "$LOG_FILE"
+}
+
+quick_start() {
+  echo "🚀 QUICK START" | tee -a "$LOG_FILE"
+  ensure_git_bash
+  [[ -x ./scripts/validate-environment.sh ]] && ./scripts/validate-environment.sh >>"$LOG_FILE" 2>&1 || true
+  start_server_bg
+  wait_for_ready "$BASE_URL/index.php"
+  curl -sSf "$BASE_URL/index.php" >/dev/null 2>&1 && echo "✅ Index reachable" | tee -a "$LOG_FILE"
+  curl_health || true
+  write_report
+}
+
+new_start() {
+  echo "🚀 NEW START" | tee -a "$LOG_FILE"
+  ensure_git_bash
+  [[ -x ./scripts/validate-environment.sh ]] && ./scripts/validate-environment.sh >>"$LOG_FILE" 2>&1 || true
+  [[ -x ./scripts/check-mcp-health.sh ]] && ./scripts/check-mcp-health.sh >>"$LOG_FILE" 2>&1 || true
+  if [[ "$NO_CHROME" -ne 1 ]]; then
+    [[ -x ./scripts/start-chrome-debug.sh ]] && ./scripts/start-chrome-debug.sh >>"$LOG_FILE" 2>&1 || true
+  else
+    echo "ℹ️  Skipping Chrome startup (--no-chrome)" | tee -a "$LOG_FILE"
+  fi
+  start_server_bg
+  wait_for_ready "$BASE_URL/index.php"
+  curl -sSf "$BASE_URL/index.php" >/dev/null 2>&1 && echo "✅ Index reachable" | tee -a "$LOG_FILE"
+  curl_health || true
+  # Optional MCP verification (navigate + evaluate health) if required
+  if [[ "$REQUIRE_MCP" -eq 1 ]]; then
+    if node tests/puppeteer/run-all-tests.js >>"$LOG_FILE" 2>&1; then
+      echo "✅ Puppeteer MCP health verified" | tee -a "$LOG_FILE"
+    else
+      echo "❌ Puppeteer MCP health verification failed" | tee -a "$LOG_FILE"
+      exit 1
+    fi
+  fi
+  write_report
+}
+
+full_start() {
+  echo "🚀 FULL START" | tee -a "$LOG_FILE"
+  ensure_git_bash
+  [[ -x ./scripts/validate-environment.sh ]] && ./scripts/validate-environment.sh >>"$LOG_FILE" 2>&1 || true
+  [[ -x ./scripts/check-mcp-health.sh ]] && ./scripts/check-mcp-health.sh >>"$LOG_FILE" 2>&1 || true
+  if [[ "$NO_CHROME" -ne 1 ]]; then
+    [[ -x ./scripts/start-chrome-debug.sh ]] && ./scripts/start-chrome-debug.sh >>"$LOG_FILE" 2>&1 || true
+  else
+    echo "ℹ️  Skipping Chrome startup (--no-chrome)" | tee -a "$LOG_FILE"
+  fi
+  start_server_bg
+  wait_for_ready "$BASE_URL/index.php"
+  curl -sSf "$BASE_URL/index.php" >/dev/null 2>&1 && echo "✅ Index reachable" | tee -a "$LOG_FILE"
+  curl_health || true
+  # Optional MCP verification (navigate + evaluate health) if required
+  if [[ "$REQUIRE_MCP" -eq 1 ]]; then
+    if node tests/puppeteer/run-all-tests.js >>"$LOG_FILE" 2>&1; then
+      echo "✅ Puppeteer MCP health verified" | tee -a "$LOG_FILE"
+    else
+      echo "❌ Puppeteer MCP health verification failed" | tee -a "$LOG_FILE"
+      exit 1
+    fi
+  fi
+  # Context: git summary and changelog excerpt
+  {
+    echo "\n## Context"
+    echo "### Git (last 10 commits)"
+    git --no-pager log --oneline -n 10 2>/dev/null || echo "(git not available)"
+    echo "\n### Git Status"
+    git status -s 2>/dev/null || echo "(git not available)"
+    echo "\n### changelog.md (head)"
+    if [[ -f changelog.md ]]; then
+      head -n 80 changelog.md
+    else
+      echo "(no changelog.md)"
+    fi
+  } >> "$REPORT_FILE" 2>/dev/null || true
+  echo "📚 Context appended to report" | tee -a "$LOG_FILE"
+}
+
+case "$MODE" in
+  quick) quick_start ;;
+  new)   new_start ;;
+  full)  full_start ;;
+  *) echo "Unknown mode: $MODE"; exit 1 ;;
+esac
+
+exit 0
+
+

@@ -12,7 +12,15 @@
     "deploy:preview": "echo '📦 Creating deployment preview...' && ./deploy.sh --preview",
     "deploy:production": "echo '🚀 Deploying to production...' && ./deploy.sh",
     "deploy:simple": "echo '🚀 Simple SRD deployment...' && rsync -av --delete --exclude .git/ --exclude .github/ --exclude node_modules/ . /tmp/deploy/",
-    "generate:user-stories": "node scripts/generate-user-stories.js"
+    "generate:user-stories": "node scripts/generate-user-stories.js",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f web",
+    "docker:rebuild": "docker compose up -d --build",
+    "verify:routes": "bash scripts/verify-routes.sh all",
+    "verify:routes:php": "bash scripts/verify-routes.sh php",
+    "verify:routes:docker": "bash scripts/verify-routes.sh docker",
+    "verify:routes:apache": "bash scripts/verify-routes.sh apache"
   },
   "keywords": [],
   "author": "",

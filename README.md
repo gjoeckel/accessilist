@@ -52,16 +52,25 @@ php -S localhost:8000 router.php
 - Prefer MCP tools. If Chrome MCP is available, navigate to `http://localhost:8000/index.php` and confirm it loads; optionally request a simple health URL if one is provided.
 - Fallback: curl `http://localhost:8000/index.php` and expect HTTP 200.
 
-#### 4. Optional: Docker
+#### 4. Docker (Recommended parity testing)
 
 ```bash
-docker compose up --build -d
+npm run docker:up           # start containerized Apache+PHP (port 8080)
+npm run docker:logs         # tail logs
+npm run docker:rebuild      # rebuild and restart
+npm run docker:down         # stop and remove
 ```
 
-Port mapping (host 8000 → container 80):
+Ports and config:
 
-```7:8:docker-compose.yml
-      - "127.0.0.1:8000:80"
+```7:16:docker-compose.yml
+  web:
+    ports:
+      - "127.0.0.1:8080:80"
+    command: >
+      bash -lc "a2enmod rewrite && \
+                sed -ri 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf && \
+                apache2-foreground"
 ```
 
 ### Entrypoints and Pages

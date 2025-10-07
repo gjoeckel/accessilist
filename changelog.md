@@ -8,6 +8,24 @@
 
 ## Entries
 
+### 2025-10-07 21:44:17 UTC - Docker Parity Server + Route & Save/Restore Validation
+
+**Summary:**
+- Added Docker Compose php:8.1-apache service with `mod_rewrite` and `AllowOverride All` (port 8080)
+- Added route verification script and npm scripts to manage Docker lifecycle
+- Validated clean URLs and API lifecycle under containerized server
+
+**Changes:**
+- `docker-compose.yml` [NEW]
+- `scripts/verify-routes.sh` [NEW]
+- `package.json` scripts: `docker:up`, `docker:down`, `docker:logs`, `docker:rebuild`, `verify:routes*`
+- `README.md` updated with Docker usage
+
+**Validation:**
+- Routes: `/home`, `/admin`, `/php/api/list` → 200 OK
+- API lifecycle: `instantiate` → `save` → `restore` → `list` → `delete` → all succeeded (`typeSlug=word`, `sessionKey=TST`)
+
+
 ### 2025-10-07 20:55:00 UTC - Scalability & Admin Type Column Fixes
 
 **Summary:**
