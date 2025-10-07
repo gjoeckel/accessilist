@@ -139,6 +139,7 @@ secure_git_push() {
       --exclude .env \
       --exclude .env.local \
       --exclude .env.backup \
+      --exclude saves/ \
       --exclude '*.backup' \
       --exclude '*.bak' \
       -e "ssh -i $PEM_FILE" \
