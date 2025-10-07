@@ -1,34 +1,12 @@
 <?php
-// Determine base path for assets
-$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' ||
-           $_SERVER['HTTP_HOST'] === '127.0.0.1' ||
-           strpos($_SERVER['HTTP_HOST'], 'local') !== false;
-$basePath = $isLocal ? '' : '/training/online/accessilist';
+require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/includes/html-head.php';
+require_once __DIR__ . '/includes/footer.php';
+
+renderHTMLHead('Accessibility Checklists');
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<!-- Added viewport meta for responsiveness -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accessibility Checklists</title>
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/simple-modal.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/focus.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/landing.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/admin.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/form-elements.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/table.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/section.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/status.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/side-panel.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/header.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/base.css?v=<?php echo time(); ?>">
-</head>
 <body>
-<!-- NoScript fallback to notify users that JavaScript is required -->
-<noscript>
-<p>This application requires JavaScript to function properly. Please enable JavaScript in your browser settings.</p>
-</noscript>
+<?php require __DIR__ . '/includes/noscript.php'; ?>
 
 <!-- Sticky Header -->
 <header class="sticky-header">
@@ -66,10 +44,7 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
     </div>
 </main>
 
-<!-- Footer -->
-<footer>
-    <p>© 2025 NCADEMI. All rights reserved.</p>
-</footer>
+<?php renderFooter('standard'); ?>
 
 <!-- Scripts -->
 <script type="module" src="<?php echo $basePath; ?>/js/path-utils.js?v=<?php echo time(); ?>"></script>

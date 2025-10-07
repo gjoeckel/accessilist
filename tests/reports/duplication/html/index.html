@@ -1,138 +1,82 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Copy/Paste Detector Report</title><link href="styles/tailwind.css" rel="stylesheet"><link href="styles/prism.css" rel="stylesheet"></head><body class="bg-gray-100"><header class="bg-white shadow py-4"><div class="container mx-auto px-4"><h1 class="text-3xl font-semibold text-gray-800">jscpd - copy/paste report</h1></div></header><main class="container mx-auto my-8 p-4 bg-white shadow rounded"><section class="mb-8" id="dashboard"><h2 class="text-2xl font-semibold text-gray-700 mb-4">Dashboard</h2><div class="grid grid-cols-4 gap-4"><div class="bg-blue-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-blue-800 mb-2">Total Files</h3><span class="text-4xl font-bold text-blue-800">130</span></div><div class="bg-green-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-green-800 mb-2">Total Lines of Code</h3><span class="text-4xl font-bold text-green-800">25371</span></div><div class="bg-yellow-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-yellow-800 mb-2">Number of Clones</h3><span class="text-4xl font-bold text-yellow-800">54</span></div><div class="bg-red-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-red-800 mb-2">Duplicated Lines</h3><span class="text-4xl font-bold text-red-800">823 (3.24%)</span></div></div></section><section class="mb-8" id="formats"><h2 class="text-2xl font-semibold text-gray-700 mb-4">Formats with Duplications</h2><table class="w-full table-auto"><thead><tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal"><th class="py-3 px-6 text-left">Format</th><th class="py-3 px-6 text-left">Files</th><th class="py-3 px-6 text-left">Lines</th><th class="py-3 px-6 text-left">Clones</th><th class="py-3 px-6 text-left">Duplicated Lines</th><th class="py-3 px-6 text-left">Duplicated Tokens</th></tr></thead><tbody><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#javascript-clones">javascript</a></td><td class="py-3 px-6">37</td><td class="py-3 px-6">7617</td><td class="py-3 px-6">25</td><td class="py-3 px-6">379</td><td class="py-3 px-6">3114</td></tr><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#php-clones">php</a></td><td class="py-3 px-6">23</td><td class="py-3 px-6">3795</td><td class="py-3 px-6">23</td><td class="py-3 px-6">350</td><td class="py-3 px-6">3100</td></tr><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#markdown-clones">markdown</a></td><td class="py-3 px-6">58</td><td class="py-3 px-6">12030</td><td class="py-3 px-6">1</td><td class="py-3 px-6">16</td><td class="py-3 px-6">126</td></tr><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#css-clones">css</a></td><td class="py-3 px-6">12</td><td class="py-3 px-6">1929</td><td class="py-3 px-6">5</td><td class="py-3 px-6">78</td><td class="py-3 px-6">566</td></tr></tbody></table></section><section class="mb-8" id="txt-clones"><a name="javascript-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">javascript</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/puppeteer-minimal/build/index.js (Line 122:20 - Line 138:11), /Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js (Line 117:30 - Line 133:14)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn0" onclick="toggleCodeBlock('cloneGroup0', 'expandBtn0', 'collapseBtn0')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn0" onclick="toggleCodeBlock('cloneGroup0', 'expandBtn0', 'collapseBtn0')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup0"><code class="language-javascript text-sm text-gray-800">,
-    version: &quot;1.0.0&quot;,
-}, {
-    capabilities: {
-        tools: {},
-    },
-});
-// List tools handler
-server.setRequestHandler(ListToolsRequestSchema, async () =&gt; ({
-    tools,
-}));
-// Call tool handler
-server.setRequestHandler(CallToolRequestSchema, async (request) =&gt; {
-    const { name, arguments: args } = request.params;
-    try {
-        switch (name) {
-            case &quot;navigate&quot;</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/puppeteer-minimal/build/index.js (Line 176:9 - Line 202:21), /Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js (Line 171:13 - Line 197:16)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn1" onclick="toggleCodeBlock('cloneGroup1', 'expandBtn1', 'collapseBtn1')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn1" onclick="toggleCodeBlock('cloneGroup1', 'expandBtn1', 'collapseBtn1')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup1"><code class="language-javascript text-sm text-gray-800">);
-                return {
-                    content: [
-                        {
-                            type: &quot;text&quot;,
-                            text: JSON.stringify(result, null, 2),
-                        },
-                    ],
-                };
-            }
-            default:
-                throw new Error(`Unknown tool: ${name}`);
-        }
-    }
-    catch (error) {
-        return {
-            content: [
-                {
-                    type: &quot;text&quot;,
-                    text: `Error: ${error instanceof Error ? error.message : String(error)}`,
-                },
-            ],
-            isError: true,
-        };
-    }
-});
-// Graceful shutdown</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/github-minimal/build/index.js (Line 125:17 - Line 141:20), /Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js (Line 117:30 - Line 133:14)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn2" onclick="toggleCodeBlock('cloneGroup2', 'expandBtn2', 'collapseBtn2')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn2" onclick="toggleCodeBlock('cloneGroup2', 'expandBtn2', 'collapseBtn2')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup2"><code class="language-javascript text-sm text-gray-800">,
-    version: &quot;1.0.0&quot;,
-}, {
-    capabilities: {
-        tools: {},
-    },
-});
-// List tools handler
-server.setRequestHandler(ListToolsRequestSchema, async () =&gt; ({
-    tools,
-}));
-// Call tool handler
-server.setRequestHandler(CallToolRequestSchema, async (request) =&gt; {
-    const { name, arguments: args } = request.params;
-    try {
-        switch (name) {
-            case &quot;get_file_contents&quot;</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/github-minimal/build/index.js (Line 179:6 - Line 209:45), /Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js (Line 171:13 - Line 201:58)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn3" onclick="toggleCodeBlock('cloneGroup3', 'expandBtn3', 'collapseBtn3')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn3" onclick="toggleCodeBlock('cloneGroup3', 'expandBtn3', 'collapseBtn3')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup3"><code class="language-javascript text-sm text-gray-800">);
-                return {
-                    content: [
-                        {
-                            type: &quot;text&quot;,
-                            text: JSON.stringify(result, null, 2),
-                        },
-                    ],
-                };
-            }
-            default:
-                throw new Error(`Unknown tool: ${name}`);
-        }
-    }
-    catch (error) {
-        return {
-            content: [
-                {
-                    type: &quot;text&quot;,
-                    text: `Error: ${error instanceof Error ? error.message : String(error)}`,
-                },
-            ],
-            isError: true,
-        };
-    }
-});
-// Start server
-async function main() {
-    const transport = new StdioServerTransport();
-    await server.connect(transport);
-    console.error(&quot;GitHub Minimal MCP Server running on stdio&quot;</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/everything-minimal/build/index.js (Line 129:21 - Line 145:20), /Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js (Line 117:30 - Line 133:14)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn4" onclick="toggleCodeBlock('cloneGroup4', 'expandBtn4', 'collapseBtn4')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn4" onclick="toggleCodeBlock('cloneGroup4', 'expandBtn4', 'collapseBtn4')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup4"><code class="language-javascript text-sm text-gray-800">,
-    version: &quot;1.0.0&quot;,
-}, {
-    capabilities: {
-        tools: {},
-    },
-});
-// List tools handler
-server.setRequestHandler(ListToolsRequestSchema, async () =&gt; ({
-    tools,
-}));
-// Call tool handler
-server.setRequestHandler(CallToolRequestSchema, async (request) =&gt; {
-    const { name, arguments: args } = request.params;
-    try {
-        switch (name) {
-            case &quot;validate_protocol&quot;</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/everything-minimal/build/index.js (Line 181:2 - Line 211:49), /Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js (Line 171:13 - Line 201:58)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn5" onclick="toggleCodeBlock('cloneGroup5', 'expandBtn5', 'collapseBtn5')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn5" onclick="toggleCodeBlock('cloneGroup5', 'expandBtn5', 'collapseBtn5')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup5"><code class="language-javascript text-sm text-gray-800">);
-                return {
-                    content: [
-                        {
-                            type: &quot;text&quot;,
-                            text: JSON.stringify(result, null, 2),
-                        },
-                    ],
-                };
-            }
-            default:
-                throw new Error(`Unknown tool: ${name}`);
-        }
-    }
-    catch (error) {
-        return {
-            content: [
-                {
-                    type: &quot;text&quot;,
-                    text: `Error: ${error instanceof Error ? error.message : String(error)}`,
-                },
-            ],
-            isError: true,
-        };
-    }
-});
-// Start server
-async function main() {
-    const transport = new StdioServerTransport();
-    await server.connect(transport);
-    console.error(&quot;Everything Minimal MCP Server running on stdio&quot;</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 195:9 - Line 211:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 136:5 - Line 152:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn6" onclick="toggleCodeBlock('cloneGroup6', 'expandBtn6', 'collapseBtn6')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn6" onclick="toggleCodeBlock('cloneGroup6', 'expandBtn6', 'collapseBtn6')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup6"><code class="language-javascript text-sm text-gray-800">,
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Copy/Paste Detector Report</title><link href="styles/tailwind.css" rel="stylesheet"><link href="styles/prism.css" rel="stylesheet"></head><body class="bg-gray-100"><header class="bg-white shadow py-4"><div class="container mx-auto px-4"><h1 class="text-3xl font-semibold text-gray-800">jscpd - copy/paste report</h1></div></header><main class="container mx-auto my-8 p-4 bg-white shadow rounded"><section class="mb-8" id="dashboard"><h2 class="text-2xl font-semibold text-gray-700 mb-4">Dashboard</h2><div class="grid grid-cols-4 gap-4"><div class="bg-blue-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-blue-800 mb-2">Total Files</h3><span class="text-4xl font-bold text-blue-800">132</span></div><div class="bg-green-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-green-800 mb-2">Total Lines of Code</h3><span class="text-4xl font-bold text-green-800">24292</span></div><div class="bg-yellow-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-yellow-800 mb-2">Number of Clones</h3><span class="text-4xl font-bold text-yellow-800">38</span></div><div class="bg-red-200 p-4 rounded text-center"><h3 class="text-lg font-semibold text-red-800 mb-2">Duplicated Lines</h3><span class="text-4xl font-bold text-red-800">557 (2.29%)</span></div></div></section><section class="mb-8" id="formats"><h2 class="text-2xl font-semibold text-gray-700 mb-4">Formats with Duplications</h2><table class="w-full table-auto"><thead><tr class="bg-gray-200 text-gray-600 uppercase text-sm leading-normal"><th class="py-3 px-6 text-left">Format</th><th class="py-3 px-6 text-left">Files</th><th class="py-3 px-6 text-left">Lines</th><th class="py-3 px-6 text-left">Clones</th><th class="py-3 px-6 text-left">Duplicated Lines</th><th class="py-3 px-6 text-left">Duplicated Tokens</th></tr></thead><tbody><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#css-clones">css</a></td><td class="py-3 px-6">13</td><td class="py-3 px-6">1936</td><td class="py-3 px-6">5</td><td class="py-3 px-6">78</td><td class="py-3 px-6">566</td></tr><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#javascript-clones">javascript</a></td><td class="py-3 px-6">33</td><td class="py-3 px-6">6547</td><td class="py-3 px-6">19</td><td class="py-3 px-6">245</td><td class="py-3 px-6">2175</td></tr><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#php-clones">php</a></td><td class="py-3 px-6">28</td><td class="py-3 px-6">3779</td><td class="py-3 px-6">13</td><td class="py-3 px-6">218</td><td class="py-3 px-6">1899</td></tr><tr class="bg-white border-b border-gray-200 text-gray-800 text-sm"><td class="py-3 px-6"><a class="text-blue-600 hover:underline" href="#markdown-clones">markdown</a></td><td class="py-3 px-6">58</td><td class="py-3 px-6">12030</td><td class="py-3 px-6">1</td><td class="py-3 px-6">16</td><td class="py-3 px-6">126</td></tr></tbody></table></section><section class="mb-8" id="txt-clones"><a name="css-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">css</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/css/table.css (Line 249:2 - Line 266:4), /Users/a00288946/Desktop/accessilist/css/table.css (Line 161:2 - Line 177:42)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn32" onclick="toggleCodeBlock('cloneGroup32', 'expandBtn32', 'collapseBtn32')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn32" onclick="toggleCodeBlock('cloneGroup32', 'expandBtn32', 'collapseBtn32')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup32"><code class="language-css text-sm text-gray-800">{
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.2s ease;
+    width: 75px;
+    height: 75px;
+    min-width: 75px;
+    min-height: 75px;
+    max-width: 75px;
+    max-height: 75px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/css/header.css (Line 61:6 - Line 72:5), /Users/a00288946/Desktop/accessilist/css/header.css (Line 45:5 - Line 56:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn33" onclick="toggleCodeBlock('cloneGroup33', 'expandBtn33', 'collapseBtn33')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn33" onclick="toggleCodeBlock('cloneGroup33', 'expandBtn33', 'collapseBtn33')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup33"><code class="language-css text-sm text-gray-800">: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    background-color: #333</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/css/header.css (Line 76:2 - Line 89:8), /Users/a00288946/Desktop/accessilist/css/header.css (Line 59:2 - Line 56:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn34" onclick="toggleCodeBlock('cloneGroup34', 'expandBtn34', 'collapseBtn34')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn34" onclick="toggleCodeBlock('cloneGroup34', 'expandBtn34', 'collapseBtn34')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup34"><code class="language-css text-sm text-gray-800">{
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    color: white;
+    font-weight: bold;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    background-color: #478F00</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/css/form-elements.css (Line 37:2 - Line 57:75), /Users/a00288946/Desktop/accessilist/css/form-elements.css (Line 7:2 - Line 23:18)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn35" onclick="toggleCodeBlock('cloneGroup35', 'expandBtn35', 'collapseBtn35')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn35" onclick="toggleCodeBlock('cloneGroup35', 'expandBtn35', 'collapseBtn35')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup35"><code class="language-css text-sm text-gray-800">{
+    width: 100%;
+    min-height: 75px;
+    height: auto;
+    box-sizing: border-box;
+    resize: none;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 3px;
+    font-family: inherit;
+    font-size: 1rem;
+    line-height: 2; /* User preference: all multiline text line-height of 2 */
+    color: #333;
+    background-color: #fff;
+}
+
+/* ====================================================================
+   UNIFIED NOTES CELL STYLES
+   Used by: Principle tables (.notes-cell)
+            Report tables (.report-notes-cell, .report-task-cell)
+   ==================================================================== */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/css/admin.css (Line 120:2 - Line 137:4), /Users/a00288946/Desktop/accessilist/css/table.css (Line 161:2 - Line 266:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn36" onclick="toggleCodeBlock('cloneGroup36', 'expandBtn36', 'collapseBtn36')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn36" onclick="toggleCodeBlock('cloneGroup36', 'expandBtn36', 'collapseBtn36')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup36"><code class="language-css text-sm text-gray-800">{
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.2s ease;
+    width: 75px;
+    height: 75px;
+    min-width: 75px;
+    min-height: 75px;
+    max-width: 75px;
+    max-height: 75px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    top: 50%</code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div><a name="javascript-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">javascript</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 195:9 - Line 211:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 136:5 - Line 152:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn0" onclick="toggleCodeBlock('cloneGroup0', 'expandBtn0', 'collapseBtn0')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn0" onclick="toggleCodeBlock('cloneGroup0', 'expandBtn0', 'collapseBtn0')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup0"><code class="language-javascript text-sm text-gray-800">,
                     description: test.description
                 });
             } catch (error) {
@@ -148,7 +92,7 @@ async function main() {
 
     /**
      * Test mobile performance
-     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 246:17 - Line 265:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 192:17 - Line 152:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn7" onclick="toggleCodeBlock('cloneGroup7', 'expandBtn7', 'collapseBtn7')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn7" onclick="toggleCodeBlock('cloneGroup7', 'expandBtn7', 'collapseBtn7')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup7"><code class="language-javascript text-sm text-gray-800">console.log(`   ✅ ${test.name} - ${test.description}`);
+     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 246:17 - Line 265:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 192:17 - Line 152:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn1" onclick="toggleCodeBlock('cloneGroup1', 'expandBtn1', 'collapseBtn1')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn1" onclick="toggleCodeBlock('cloneGroup1', 'expandBtn1', 'collapseBtn1')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup1"><code class="language-javascript text-sm text-gray-800">console.log(`   ✅ ${test.name} - ${test.description}`);
                 this.testResults.push({ 
                     test: test.name, 
                     status: 'PASSED',
@@ -167,7 +111,7 @@ async function main() {
 
     /**
      * Simulate performance metric (for testing purposes)
-     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 54:2 - Line 64:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 138:17 - Line 152:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn8" onclick="toggleCodeBlock('cloneGroup8', 'expandBtn8', 'collapseBtn8')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn8" onclick="toggleCodeBlock('cloneGroup8', 'expandBtn8', 'collapseBtn8')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup8"><code class="language-javascript text-sm text-gray-800">});
+     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 54:2 - Line 64:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 138:17 - Line 152:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn2" onclick="toggleCodeBlock('cloneGroup2', 'expandBtn2', 'collapseBtn2')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn2" onclick="toggleCodeBlock('cloneGroup2', 'expandBtn2', 'collapseBtn2')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup2"><code class="language-javascript text-sm text-gray-800">});
             } catch (error) {
                 console.log(`   ❌ ${test.name} - ${error.message}`);
                 this.testResults.push({ test: test.name, status: 'FAILED', error: error.message });
@@ -177,7 +121,7 @@ async function main() {
 
     /**
      * Test dynamic content updates
-     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 92:28 - Line 103:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 53:29 - Line 152:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn9" onclick="toggleCodeBlock('cloneGroup9', 'expandBtn9', 'collapseBtn9')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn9" onclick="toggleCodeBlock('cloneGroup9', 'expandBtn9', 'collapseBtn9')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup9"><code class="language-javascript text-sm text-gray-800">);
+     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 92:28 - Line 103:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 53:29 - Line 152:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn3" onclick="toggleCodeBlock('cloneGroup3', 'expandBtn3', 'collapseBtn3')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn3" onclick="toggleCodeBlock('cloneGroup3', 'expandBtn3', 'collapseBtn3')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup3"><code class="language-javascript text-sm text-gray-800">);
                 this.testResults.push({ test: test.name, status: 'PASSED' });
             } catch (error) {
                 console.log(`   ❌ ${test.name} - ${error.message}`);
@@ -188,7 +132,7 @@ async function main() {
 
     /**
      * Test responsive design
-     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 160:27 - Line 171:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 53:29 - Line 152:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn10" onclick="toggleCodeBlock('cloneGroup10', 'expandBtn10', 'collapseBtn10')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn10" onclick="toggleCodeBlock('cloneGroup10', 'expandBtn10', 'collapseBtn10')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup10"><code class="language-javascript text-sm text-gray-800">);
+     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 160:27 - Line 171:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 53:29 - Line 152:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn4" onclick="toggleCodeBlock('cloneGroup4', 'expandBtn4', 'collapseBtn4')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn4" onclick="toggleCodeBlock('cloneGroup4', 'expandBtn4', 'collapseBtn4')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup4"><code class="language-javascript text-sm text-gray-800">);
                 this.testResults.push({ test: test.name, status: 'PASSED' });
             } catch (error) {
                 console.log(`   ❌ ${test.name} - ${error.message}`);
@@ -199,18 +143,18 @@ async function main() {
 
     /**
      * Run all frontend tests
-     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 187:5 - Line 193:27), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 314:5 - Line 320:30)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn11" onclick="toggleCodeBlock('cloneGroup11', 'expandBtn11', 'collapseBtn11')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn11" onclick="toggleCodeBlock('cloneGroup11', 'expandBtn11', 'collapseBtn11')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup11"><code class="language-javascript text-sm text-gray-800">generateReport() {
+     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 187:5 - Line 193:27), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 314:5 - Line 320:30)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn5" onclick="toggleCodeBlock('cloneGroup5', 'expandBtn5', 'collapseBtn5')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn5" onclick="toggleCodeBlock('cloneGroup5', 'expandBtn5', 'collapseBtn5')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup5"><code class="language-javascript text-sm text-gray-800">generateReport() {
         const passed = this.testResults.filter(r =&gt; r.status === 'PASSED').length;
         const failed = this.testResults.filter(r =&gt; r.status === 'FAILED').length;
         const total = this.testResults.length;
 
         console.log('\n' + '=' .repeat(50));
-        console.log('📊 FRONTEND TEST RESULTS'</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 193:27 - Line 198:16), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 320:30 - Line 325:21)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn12" onclick="toggleCodeBlock('cloneGroup12', 'expandBtn12', 'collapseBtn12')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn12" onclick="toggleCodeBlock('cloneGroup12', 'expandBtn12', 'collapseBtn12')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup12"><code class="language-javascript text-sm text-gray-800">);
+        console.log('📊 FRONTEND TEST RESULTS'</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 193:27 - Line 198:16), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 320:30 - Line 325:21)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn6" onclick="toggleCodeBlock('cloneGroup6', 'expandBtn6', 'collapseBtn6')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn6" onclick="toggleCodeBlock('cloneGroup6', 'expandBtn6', 'collapseBtn6')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup6"><code class="language-javascript text-sm text-gray-800">);
         console.log('=' .repeat(50));
         console.log(`Total Tests: ${total}`);
         console.log(`Passed: ${passed}`);
         console.log(`Failed: ${failed}`);
-        console.log(`Success Rate: </code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 209:39 - Line 219:18), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 352:42 - Line 362:21)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn13" onclick="toggleCodeBlock('cloneGroup13', 'expandBtn13', 'collapseBtn13')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn13" onclick="toggleCodeBlock('cloneGroup13', 'expandBtn13', 'collapseBtn13')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup13"><code class="language-javascript text-sm text-gray-800">);
+        console.log(`Success Rate: </code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/frontend_tests.js (Line 209:39 - Line 219:18), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 352:42 - Line 362:21)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn7" onclick="toggleCodeBlock('cloneGroup7', 'expandBtn7', 'collapseBtn7')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn7" onclick="toggleCodeBlock('cloneGroup7', 'expandBtn7', 'collapseBtn7')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup7"><code class="language-javascript text-sm text-gray-800">);
         fs.mkdirSync(path.dirname(reportPath), { recursive: true });
         fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
 
@@ -220,7 +164,7 @@ async function main() {
 
 // Run tests if this file is executed directly
 if (require.main === module) {
-    const testSuite = new FrontendTestSuite</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/checklist-functionality-tests.js (Line 12:2 - Line 28:6), /Users/a00288946/Desktop/accessilist/tests/puppeteer/critical-path-tests.js (Line 12:2 - Line 28:16)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn14" onclick="toggleCodeBlock('cloneGroup14', 'expandBtn14', 'collapseBtn14')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn14" onclick="toggleCodeBlock('cloneGroup14', 'expandBtn14', 'collapseBtn14')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup14"><code class="language-javascript text-sm text-gray-800">{
+    const testSuite = new FrontendTestSuite</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/checklist-functionality-tests.js (Line 12:2 - Line 28:6), /Users/a00288946/Desktop/accessilist/tests/puppeteer/critical-path-tests.js (Line 12:2 - Line 28:16)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn8" onclick="toggleCodeBlock('cloneGroup8', 'expandBtn8', 'collapseBtn8')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn8" onclick="toggleCodeBlock('cloneGroup8', 'expandBtn8', 'collapseBtn8')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup8"><code class="language-javascript text-sm text-gray-800">{
     constructor() {
         this.browser = null;
         this.page = null;
@@ -236,7 +180,7 @@ if (require.main === module) {
         this.page = await this.browser.newPage();
         this.utils = new TestUtils(this.page);
 
-        await</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/checklist-functionality-tests.js (Line 456:42 - Line 464:7), /Users/a00288946/Desktop/accessilist/tests/puppeteer/critical-path-tests.js (Line 310:32 - Line 318:21)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn15" onclick="toggleCodeBlock('cloneGroup15', 'expandBtn15', 'collapseBtn15')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn15" onclick="toggleCodeBlock('cloneGroup15', 'expandBtn15', 'collapseBtn15')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup15"><code class="language-javascript text-sm text-gray-800">);
+        await</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/checklist-functionality-tests.js (Line 456:42 - Line 464:7), /Users/a00288946/Desktop/accessilist/tests/puppeteer/critical-path-tests.js (Line 310:32 - Line 318:21)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn9" onclick="toggleCodeBlock('cloneGroup9', 'expandBtn9', 'collapseBtn9')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn9" onclick="toggleCodeBlock('cloneGroup9', 'expandBtn9', 'collapseBtn9')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup9"><code class="language-javascript text-sm text-gray-800">);
         console.log('=' .repeat(60));
         console.log(`Total Tests: ${report.summary.total}`);
         console.log(`Passed: ${report.summary.passed}`);
@@ -244,7 +188,7 @@ if (require.main === module) {
         console.log(`Success Rate: ${((report.summary.passed / report.summary.total) * 100).toFixed(2)}%`);
         console.log('=' .repeat(60));
 
-        return</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/api-integration-tests.js (Line 12:2 - Line 43:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/critical-path-tests.js (Line 12:2 - Line 43:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn16" onclick="toggleCodeBlock('cloneGroup16', 'expandBtn16', 'collapseBtn16')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn16" onclick="toggleCodeBlock('cloneGroup16', 'expandBtn16', 'collapseBtn16')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup16"><code class="language-javascript text-sm text-gray-800">{
+        return</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/api-integration-tests.js (Line 12:2 - Line 43:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/critical-path-tests.js (Line 12:2 - Line 43:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn10" onclick="toggleCodeBlock('cloneGroup10', 'expandBtn10', 'collapseBtn10')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn10" onclick="toggleCodeBlock('cloneGroup10', 'expandBtn10', 'collapseBtn10')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup10"><code class="language-javascript text-sm text-gray-800">{
     constructor() {
         this.browser = null;
         this.page = null;
@@ -275,7 +219,7 @@ if (require.main === module) {
 
     /**
      * Test API health endpoint
-     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/api-integration-tests.js (Line 484:34 - Line 498:20), /Users/a00288946/Desktop/accessilist/tests/puppeteer/critical-path-tests.js (Line 310:32 - Line 470:28)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn17" onclick="toggleCodeBlock('cloneGroup17', 'expandBtn17', 'collapseBtn17')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn17" onclick="toggleCodeBlock('cloneGroup17', 'expandBtn17', 'collapseBtn17')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup17"><code class="language-javascript text-sm text-gray-800">);
+     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/api-integration-tests.js (Line 484:34 - Line 498:20), /Users/a00288946/Desktop/accessilist/tests/puppeteer/critical-path-tests.js (Line 310:32 - Line 470:28)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn11" onclick="toggleCodeBlock('cloneGroup11', 'expandBtn11', 'collapseBtn11')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn11" onclick="toggleCodeBlock('cloneGroup11', 'expandBtn11', 'collapseBtn11')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup11"><code class="language-javascript text-sm text-gray-800">);
         console.log('=' .repeat(60));
         console.log(`Total Tests: ${report.summary.total}`);
         console.log(`Passed: ${report.summary.passed}`);
@@ -289,20 +233,20 @@ if (require.main === module) {
 
 // Run tests if this file is executed directly
 if (require.main === module) {
-    const testSuite = new ApiIntegrationTests</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 63:17 - Line 69:2), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 138:17 - Line 145:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn18" onclick="toggleCodeBlock('cloneGroup18', 'expandBtn18', 'collapseBtn18')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn18" onclick="toggleCodeBlock('cloneGroup18', 'expandBtn18', 'collapseBtn18')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup18"><code class="language-javascript text-sm text-gray-800">});
+    const testSuite = new ApiIntegrationTests</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 63:17 - Line 69:2), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 138:17 - Line 145:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn12" onclick="toggleCodeBlock('cloneGroup12', 'expandBtn12', 'collapseBtn12')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn12" onclick="toggleCodeBlock('cloneGroup12', 'expandBtn12', 'collapseBtn12')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup12"><code class="language-javascript text-sm text-gray-800">});
             } catch (error) {
                 console.log(`   ❌ ${test.name} - ${error.message}`);
                 this.testResults.push({ 
                     test: test.name, 
                     status: 'FAILED', 
-                    error: error.message,</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 114:17 - Line 121:5), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 138:17 - Line 70:20)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn19" onclick="toggleCodeBlock('cloneGroup19', 'expandBtn19', 'collapseBtn19')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn19" onclick="toggleCodeBlock('cloneGroup19', 'expandBtn19', 'collapseBtn19')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup19"><code class="language-javascript text-sm text-gray-800">});
+                    error: error.message,</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 114:17 - Line 121:5), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 138:17 - Line 70:20)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn13" onclick="toggleCodeBlock('cloneGroup13', 'expandBtn13', 'collapseBtn13')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn13" onclick="toggleCodeBlock('cloneGroup13', 'expandBtn13', 'collapseBtn13')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup13"><code class="language-javascript text-sm text-gray-800">});
             } catch (error) {
                 console.log(`   ❌ ${test.name} - ${error.message}`);
                 this.testResults.push({ 
                     test: test.name, 
                     status: 'FAILED', 
                     error: error.message,
-                    wcagCriteria: test</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 167:17 - Line 187:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 109:17 - Line 129:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn20" onclick="toggleCodeBlock('cloneGroup20', 'expandBtn20', 'collapseBtn20')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn20" onclick="toggleCodeBlock('cloneGroup20', 'expandBtn20', 'collapseBtn20')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup20"><code class="language-javascript text-sm text-gray-800">console.log(`   ✅ ${test.name} - ${test.description}`);
+                    wcagCriteria: test</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 167:17 - Line 187:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 109:17 - Line 129:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn14" onclick="toggleCodeBlock('cloneGroup14', 'expandBtn14', 'collapseBtn14')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn14" onclick="toggleCodeBlock('cloneGroup14', 'expandBtn14', 'collapseBtn14')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup14"><code class="language-javascript text-sm text-gray-800">console.log(`   ✅ ${test.name} - ${test.description}`);
                 this.testResults.push({ 
                     test: test.name, 
                     status: 'PASSED',
@@ -322,7 +266,7 @@ if (require.main === module) {
 
     /**
      * Test motion and animation
-     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 212:17 - Line 232:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 109:17 - Line 129:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn21" onclick="toggleCodeBlock('cloneGroup21', 'expandBtn21', 'collapseBtn21')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn21" onclick="toggleCodeBlock('cloneGroup21', 'expandBtn21', 'collapseBtn21')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup21"><code class="language-javascript text-sm text-gray-800">console.log(`   ✅ ${test.name} - ${test.description}`);
+     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 212:17 - Line 232:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 109:17 - Line 129:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn15" onclick="toggleCodeBlock('cloneGroup15', 'expandBtn15', 'collapseBtn15')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn15" onclick="toggleCodeBlock('cloneGroup15', 'expandBtn15', 'collapseBtn15')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup15"><code class="language-javascript text-sm text-gray-800">console.log(`   ✅ ${test.name} - ${test.description}`);
                 this.testResults.push({ 
                     test: test.name, 
                     status: 'PASSED',
@@ -342,7 +286,7 @@ if (require.main === module) {
 
     /**
      * Test error handling and feedback
-     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 263:17 - Line 283:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 109:17 - Line 129:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn22" onclick="toggleCodeBlock('cloneGroup22', 'expandBtn22', 'collapseBtn22')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn22" onclick="toggleCodeBlock('cloneGroup22', 'expandBtn22', 'collapseBtn22')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup22"><code class="language-javascript text-sm text-gray-800">console.log(`   ✅ ${test.name} - ${test.description}`);
+     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 263:17 - Line 283:8), /Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 109:17 - Line 129:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn16" onclick="toggleCodeBlock('cloneGroup16', 'expandBtn16', 'collapseBtn16')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn16" onclick="toggleCodeBlock('cloneGroup16', 'expandBtn16', 'collapseBtn16')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup16"><code class="language-javascript text-sm text-gray-800">console.log(`   ✅ ${test.name} - ${test.description}`);
                 this.testResults.push({ 
                     test: test.name, 
                     status: 'PASSED',
@@ -362,12 +306,12 @@ if (require.main === module) {
 
     /**
      * Run all accessibility tests
-     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 300:5 - Line 305:3), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 314:5 - Line 319:3)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn23" onclick="toggleCodeBlock('cloneGroup23', 'expandBtn23', 'collapseBtn23')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn23" onclick="toggleCodeBlock('cloneGroup23', 'expandBtn23', 'collapseBtn23')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup23"><code class="language-javascript text-sm text-gray-800">generateReport() {
+     */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 300:5 - Line 305:3), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 314:5 - Line 319:3)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn17" onclick="toggleCodeBlock('cloneGroup17', 'expandBtn17', 'collapseBtn17')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn17" onclick="toggleCodeBlock('cloneGroup17', 'expandBtn17', 'collapseBtn17')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup17"><code class="language-javascript text-sm text-gray-800">generateReport() {
         const passed = this.testResults.filter(r =&gt; r.status === 'PASSED').length;
         const failed = this.testResults.filter(r =&gt; r.status === 'FAILED').length;
         const total = this.testResults.length;
 
-        console.log('\n' + '=' .repeat(60</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 338:44 - Line 348:23), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 352:42 - Line 362:21)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn24" onclick="toggleCodeBlock('cloneGroup24', 'expandBtn24', 'collapseBtn24')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn24" onclick="toggleCodeBlock('cloneGroup24', 'expandBtn24', 'collapseBtn24')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup24"><code class="language-javascript text-sm text-gray-800">);
+        console.log('\n' + '=' .repeat(60</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/puppeteer/accessibility_tests.js (Line 338:44 - Line 348:23), /Users/a00288946/Desktop/accessilist/tests/puppeteer/performance_tests.js (Line 352:42 - Line 362:21)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn18" onclick="toggleCodeBlock('cloneGroup18', 'expandBtn18', 'collapseBtn18')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn18" onclick="toggleCodeBlock('cloneGroup18', 'expandBtn18', 'collapseBtn18')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup18"><code class="language-javascript text-sm text-gray-800">);
         fs.mkdirSync(path.dirname(reportPath), { recursive: true });
         fs.writeFileSync(reportPath, JSON.stringify(report, null, 2));
 
@@ -377,7 +321,7 @@ if (require.main === module) {
 
 // Run tests if this file is executed directly
 if (require.main === module) {
-    const testSuite = new AccessibilityTestSuite</code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div><a name="php-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">php</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/integration/save_restore_test.php (Line 234:15 - Line 265:32), /Users/a00288946/Desktop/accessilist/tests/unit/path_management_test.php (Line 177:14 - Line 208:35)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn25" onclick="toggleCodeBlock('cloneGroup25', 'expandBtn25', 'collapseBtn25')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn25" onclick="toggleCodeBlock('cloneGroup25', 'expandBtn25', 'collapseBtn25')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup25"><code class="language-php text-sm text-gray-800"> = file_get_contents($checklistFile);
+    const testSuite = new AccessibilityTestSuite</code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div><a name="php-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">php</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/integration/save_restore_test.php (Line 234:15 - Line 265:32), /Users/a00288946/Desktop/accessilist/tests/unit/path_management_test.php (Line 177:14 - Line 208:35)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn19" onclick="toggleCodeBlock('cloneGroup19', 'expandBtn19', 'collapseBtn19')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn19" onclick="toggleCodeBlock('cloneGroup19', 'expandBtn19', 'collapseBtn19')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup19"><code class="language-php text-sm text-gray-800"> = file_get_contents($checklistFile);
                 if (strpos($content, '$_GET[\'session\']') !== false || strpos($content, '$_GET[&quot;session&quot;]') !== false) {
                     $results-&gt;addResult('session_management', 'url_persistence', 'passed', 'Session URL parameter handling found');
                 } else {
@@ -392,7 +336,7 @@ if (require.main === module) {
     
     private function generateReport(TestResults $results) {
         echo &quot;\n📊 Save/Restore Integration Test Results\n&quot;;
-        echo</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/e2e/accessilist_user_journey_test.php (Line 235:12 - Line 251:5), /Users/a00288946/Desktop/accessilist/tests/performance/accessilist_performance_test.php (Line 260:9 - Line 277:31)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn26" onclick="toggleCodeBlock('cloneGroup26', 'expandBtn26', 'collapseBtn26')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn26" onclick="toggleCodeBlock('cloneGroup26', 'expandBtn26', 'collapseBtn26')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup26"><code class="language-php text-sm text-gray-800">ch (Exception $e) {
+        echo</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/e2e/accessilist_user_journey_test.php (Line 235:12 - Line 251:5), /Users/a00288946/Desktop/accessilist/tests/performance/accessilist_performance_test.php (Line 260:9 - Line 277:31)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn20" onclick="toggleCodeBlock('cloneGroup20', 'expandBtn20', 'collapseBtn20')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn20" onclick="toggleCodeBlock('cloneGroup20', 'expandBtn20', 'collapseBtn20')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup20"><code class="language-php text-sm text-gray-800">ch (Exception $e) {
             $this-&gt;addResult('error_handling', 'journey', 'failed', $e-&gt;getMessage());
         }
     }
@@ -404,7 +348,7 @@ if (require.main === module) {
             'status' =&gt; $status,
             'message' =&gt; $message,
             'screenshot' =&gt; $screenshot,
-            'timestamp' =</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/e2e/accessilist_user_journey_test.php (Line 271:13 - Line 287:3), /Users/a00288946/Desktop/accessilist/tests/performance/accessilist_performance_test.php (Line 289:13 - Line 304:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn27" onclick="toggleCodeBlock('cloneGroup27', 'expandBtn27', 'collapseBtn27')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn27" onclick="toggleCodeBlock('cloneGroup27', 'expandBtn27', 'collapseBtn27')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup27"><code class="language-php text-sm text-gray-800"> Page',
+            'timestamp' =</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/e2e/accessilist_user_journey_test.php (Line 271:13 - Line 287:3), /Users/a00288946/Desktop/accessilist/tests/performance/accessilist_performance_test.php (Line 289:13 - Line 304:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn21" onclick="toggleCodeBlock('cloneGroup21', 'expandBtn21', 'collapseBtn21')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn21" onclick="toggleCodeBlock('cloneGroup21', 'expandBtn21', 'collapseBtn21')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup21"><code class="language-php text-sm text-gray-800"> Page',
             'selection' =&gt; 'Checklist Selection',
             'completion' =&gt; 'Checklist Completion',
             'save_restore' =&gt; 'Save/Restore',
@@ -414,7 +358,7 @@ if (require.main === module) {
         
         foreach ($journeySteps as $step =&gt; $name) {
             $stepResults = array_filter($this-&gt;testResults, fn($r) =&gt; $r['category'] === $step);
-            $s</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/accessibility/wcag_compliance_test.php (Line 11:2 - Line 22:2), /Users/a00288946/Desktop/accessilist/tests/performance/accessilist_performance_test.php (Line 12:2 - Line 23:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn28" onclick="toggleCodeBlock('cloneGroup28', 'expandBtn28', 'collapseBtn28')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn28" onclick="toggleCodeBlock('cloneGroup28', 'expandBtn28', 'collapseBtn28')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup28"><code class="language-php text-sm text-gray-800">= [];
+            $s</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/accessibility/wcag_compliance_test.php (Line 11:2 - Line 22:2), /Users/a00288946/Desktop/accessilist/tests/performance/accessilist_performance_test.php (Line 12:2 - Line 23:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn22" onclick="toggleCodeBlock('cloneGroup22', 'expandBtn22', 'collapseBtn22')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn22" onclick="toggleCodeBlock('cloneGroup22', 'expandBtn22', 'collapseBtn22')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup22"><code class="language-php text-sm text-gray-800">= [];
     
     public function __construct($baseUrl = TestConfig::BASE_URL) {
         $this-&gt;baseUrl = $baseUrl;
@@ -423,7 +367,7 @@ if (require.main === module) {
     public function runAllTests() {
         echo &quot;♿ AccessiList WCAG Compliance Test Suite\n&quot;;
         echo &quot;======================================\n&quot;;
-     </code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/accessibility/wcag_compliance_test.php (Line 392:11 - Line 417:6), /Users/a00288946/Desktop/accessilist/tests/performance/accessilist_performance_test.php (Line 251:14 - Line 251:6)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn29" onclick="toggleCodeBlock('cloneGroup29', 'expandBtn29', 'collapseBtn29')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn29" onclick="toggleCodeBlock('cloneGroup29', 'expandBtn29', 'collapseBtn29')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup29"><code class="language-php text-sm text-gray-800"> // Test status announcements
+     </code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/accessibility/wcag_compliance_test.php (Line 392:11 - Line 417:6), /Users/a00288946/Desktop/accessilist/tests/performance/accessilist_performance_test.php (Line 251:14 - Line 251:6)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn23" onclick="toggleCodeBlock('cloneGroup23', 'expandBtn23', 'collapseBtn23')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn23" onclick="toggleCodeBlock('cloneGroup23', 'expandBtn23', 'collapseBtn23')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup23"><code class="language-php text-sm text-gray-800"> // Test status announcements
             $result = self::evaluateScript('document.querySelectorAll(&quot;[role=status], [aria-live=polite]&quot;).length', 'Count status announcement elements');
             $statusElements = intval($result);
             
@@ -434,7 +378,7 @@ if (require.main === module) {
             }
             
             // Test form validation
-            $result = self::evaluateScript('document.querySelectorAll(&quot;input[required], textarea[required], select[required]&quot;).lengt</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/accessibility/wcag_compliance_test.php (Line 438:2 - Line 456:33), /Users/a00288946/Desktop/accessilist/tests/e2e/accessilist_user_journey_test.php (Line 270:2 - Line 306:31)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn30" onclick="toggleCodeBlock('cloneGroup30', 'expandBtn30', 'collapseBtn30')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn30" onclick="toggleCodeBlock('cloneGroup30', 'expandBtn30', 'collapseBtn30')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup30"><code class="language-php text-sm text-gray-800">        echo &quot;\n📊 WCAG Compliance Test Results\n&quot;;
+            $result = self::evaluateScript('document.querySelectorAll(&quot;input[required], textarea[required], select[required]&quot;).lengt</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/accessibility/wcag_compliance_test.php (Line 438:2 - Line 456:33), /Users/a00288946/Desktop/accessilist/tests/e2e/accessilist_user_journey_test.php (Line 270:2 - Line 306:31)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn24" onclick="toggleCodeBlock('cloneGroup24', 'expandBtn24', 'collapseBtn24')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn24" onclick="toggleCodeBlock('cloneGroup24', 'expandBtn24', 'collapseBtn24')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup24"><code class="language-php text-sm text-gray-800">        echo &quot;\n📊 WCAG Compliance Test Results\n&quot;;
         echo &quot;=============================\n&quot;;
         
         $total = count($this-&gt;testResults);
@@ -444,7 +388,7 @@ if (require.main === module) {
         echo &quot;Total Tests: $total\n&quot;;
         echo &quot;Passed: $passed\n&quot;;
         echo &quot;Failed: $failed\n&quot;;
-        echo &quot;Compliance Scor</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/accessibility/wcag_compliance_test.php (Line 464:13 - Line 487:62), /Users/a00288946/Desktop/accessilist/tests/e2e/accessilist_user_journey_test.php (Line 297:13 - Line 320:59)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn31" onclick="toggleCodeBlock('cloneGroup31', 'expandBtn31', 'collapseBtn31')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn31" onclick="toggleCodeBlock('cloneGroup31', 'expandBtn31', 'collapseBtn31')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup31"><code class="language-php text-sm text-gray-800">
+        echo &quot;Compliance Scor</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/accessibility/wcag_compliance_test.php (Line 464:13 - Line 487:62), /Users/a00288946/Desktop/accessilist/tests/e2e/accessilist_user_journey_test.php (Line 297:13 - Line 320:59)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn25" onclick="toggleCodeBlock('cloneGroup25', 'expandBtn25', 'collapseBtn25')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn25" onclick="toggleCodeBlock('cloneGroup25', 'expandBtn25', 'collapseBtn25')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup25"><code class="language-php text-sm text-gray-800">
         echo &quot;========================\n&quot;;
         
         $wcagCategories = [
@@ -455,7 +399,9 @@ if (require.main === module) {
             'aria' =&gt; 'ARIA Labels',
             'semantic' =&gt; 'Semantic HTML',
             'responsive' =&gt; 'Responsive Design',
-            'er</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/run_comprehensive_tests.php (Line 469:1 - Line 495:3), /Users/a00288946/Desktop/accessilist/tests/unit/path_management_test.php (Line 181:2 - Line 206:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn32" onclick="toggleCodeBlock('cloneGroup32', 'expandBtn32', 'collapseBtn32')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn32" onclick="toggleCodeBlock('cloneGroup32', 'expandBtn32', 'collapseBtn32')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup32"><code class="language-php text-sm text-gray-800">           $results-&gt;addResult('accessibility', 'wcag_compliance', 'passed', 'WCAG compliance verified', $screenshot);
+            'er</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/includes/html-head.php (Line 21:2 - Line 32:6), /Users/a00288946/Desktop/accessilist/php/includes/html-head.php (Line 20:6 - Line 28:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn26" onclick="toggleCodeBlock('cloneGroup26', 'expandBtn26', 'collapseBtn26')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn26" onclick="toggleCodeBlock('cloneGroup26', 'expandBtn26', 'collapseBtn26')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup26"><code class="language-php text-sm text-gray-800">pageTitle, ENT_QUOTES, 'UTF-8'); ?&gt;&lt;/title&gt;
+&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/simple-modal.css&lt;?php echo $includeLoadingStyles ? '' : '?v=' . time(); ?&gt;&quot;&gt;
+&lt;link re</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/run_comprehensive_tests.php (Line 469:1 - Line 495:3), /Users/a00288946/Desktop/accessilist/tests/unit/path_management_test.php (Line 181:2 - Line 206:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn27" onclick="toggleCodeBlock('cloneGroup27', 'expandBtn27', 'collapseBtn27')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn27" onclick="toggleCodeBlock('cloneGroup27', 'expandBtn27', 'collapseBtn27')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup27"><code class="language-php text-sm text-gray-800">           $results-&gt;addResult('accessibility', 'wcag_compliance', 'passed', 'WCAG compliance verified', $screenshot);
         } catch (Exception $e) {
             $results-&gt;addResult('accessibility', 'wcag_compliance', 'failed', $e-&gt;getMessage());
         }
@@ -471,7 +417,7 @@ function runAllTests() {
     
     $results = new TestResults();
     
-    try </code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/run_comprehensive_tests.php (Line 486:2 - Line 500:16), /Users/a00288946/Desktop/accessilist/tests/e2e/accessilist_user_journey_test.php (Line 278:2 - Line 292:30)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn33" onclick="toggleCodeBlock('cloneGroup33', 'expandBtn33', 'collapseBtn33')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn33" onclick="toggleCodeBlock('cloneGroup33', 'expandBtn33', 'collapseBtn33')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup33"><code class="language-php text-sm text-gray-800"> &quot;🧪 AccessiList Comprehensive Test Suite\n&quot;;
+    try </code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/tests/run_comprehensive_tests.php (Line 486:2 - Line 500:16), /Users/a00288946/Desktop/accessilist/tests/e2e/accessilist_user_journey_test.php (Line 278:2 - Line 292:30)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn28" onclick="toggleCodeBlock('cloneGroup28', 'expandBtn28', 'collapseBtn28')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn28" onclick="toggleCodeBlock('cloneGroup28', 'expandBtn28', 'collapseBtn28')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup28"><code class="language-php text-sm text-gray-800"> &quot;🧪 AccessiList Comprehensive Test Suite\n&quot;;
     echo &quot;=====================================\n&quot;;
     echo &quot;Base URL: &quot; . TestConfig::BASE_URL . &quot;\n&quot;;
     echo &quot;Timestamp: &quot; . date('Y-m-d H:i:s') . &quot;\n\n&quot;;
@@ -481,94 +427,17 @@ function runAllTests() {
     try {
         // Run all test categories
         UnitTests::runAll($results);
-        Integr</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/reports.php (Line 14:2 - Line 25:6), /Users/a00288946/Desktop/accessilist/php/reports.php (Line 13:6 - Line 21:5)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn34" onclick="toggleCodeBlock('cloneGroup34', 'expandBtn34', 'collapseBtn34')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn34" onclick="toggleCodeBlock('cloneGroup34', 'expandBtn34', 'collapseBtn34')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup34"><code class="language-php text-sm text-gray-800">&gt;Accessibility Report - AccessiList&lt;/title&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/simple-modal.css&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/focus.css</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/mychecklist.php (Line 1:1 - Line 12:2), /Users/a00288946/Desktop/accessilist/php/reports.php (Line 1:1 - Line 12:5)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn35" onclick="toggleCodeBlock('cloneGroup35', 'expandBtn35', 'collapseBtn35')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn35" onclick="toggleCodeBlock('cloneGroup35', 'expandBtn35', 'collapseBtn35')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup35"><code class="language-php text-sm text-gray-800">&lt;?php
-// Determine base path for assets
-$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' ||
-           $_SERVER['HTTP_HOST'] === '127.0.0.1' ||
-           strpos($_SERVER['HTTP_HOST'], 'local') !== false;
-$basePath = $isLocal ? '' : '/training/online/accessilist';
-?&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-&lt;meta charset=&quot;U</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/mychecklist.php (Line 14:10 - Line 49:2), /Users/a00288946/Desktop/accessilist/php/reports.php (Line 13:12 - Line 48:10)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn36" onclick="toggleCodeBlock('cloneGroup36', 'expandBtn36', 'collapseBtn36')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn36" onclick="toggleCodeBlock('cloneGroup36', 'expandBtn36', 'collapseBtn36')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup36"><code class="language-php text-sm text-gray-800">ce-width, initial-scale=1.0&quot;&gt;
-&lt;title&gt;Accessibility Checklist&lt;/title&gt;
-    &lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/simple-modal.css?v=&lt;?php echo time(); ?&gt;&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/focus.css?v=&lt;?php echo time(); ?&gt;&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/landing.css?v=&lt;?php echo time(); ?&gt;&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/admin.css?v=&lt;?php echo time(); ?&gt;&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/form-elements.css?v=&lt;?php echo time(); ?&gt;&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/table.css?v=&lt;?php echo time(); ?&gt;&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $ba</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/mychecklist.php (Line 49:3 - Line 61:5), /Users/a00288946/Desktop/accessilist/php/reports.php (Line 54:3 - Line 66:7)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn37" onclick="toggleCodeBlock('cloneGroup37', 'expandBtn37', 'collapseBtn37')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn37" onclick="toggleCodeBlock('cloneGroup37', 'expandBtn37', 'collapseBtn37')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup37"><code class="language-php text-sm text-gray-800">asePath; ?&gt;/css/section.css?v=&lt;?php echo time(); ?&gt;&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/status.css?v=&lt;?php echo time(); ?&gt;&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/mychecklist.php (Line 89:7 - Line 100:3), /Users/a00288946/Desktop/accessilist/php/mychecklist.php (Line 83:6 - Line 94:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn38" onclick="toggleCodeBlock('cloneGroup38', 'expandBtn38', 'collapseBtn38')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn38" onclick="toggleCodeBlock('cloneGroup38', 'expandBtn38', 'collapseBtn38')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup38"><code class="language-php text-sm text-gray-800">nt-size: 18px;
-    color: #333;
-  }
-&lt;/style&gt;
-&lt;/head&gt;
-&lt;body&gt;
-&lt;!-- Loading Overlay --&gt;
-&lt;div id=&quot;loadingOverlay&quot; role=&quot;alert&quot; aria-live=&quot;polite&quot;&gt;
-  &lt;div id=&quot;loadingSpinner&quot;&gt;&lt;/div&gt;
-  &lt;div id=&quot;loadingText&quot;&gt;Loading your checklist...&lt;/div&gt;
-&lt;/div&gt;
-
-&lt;!-- NoScript fallback to notify users that JavaScript is required --&gt;
-&lt;noscript&gt;
-&lt;p&gt;This application requires JavaScript to function proper</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/mychecklist.php (Line 100:2 - Line 106:2), /Users/a00288946/Desktop/accessilist/php/mychecklist.php (Line 88:3 - Line 94:3)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn39" onclick="toggleCodeBlock('cloneGroup39', 'expandBtn39', 'collapseBtn39')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn39" onclick="toggleCodeBlock('cloneGroup39', 'expandBtn39', 'collapseBtn39')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup39"><code class="language-php text-sm text-gray-800">ngs.&lt;/p&gt;
-&lt;/noscript&gt;
-
-&lt;!-- Sticky Header --&gt;
-&lt;header class=&quot;sticky-header&quot;&gt;
-    &lt;h1&gt;Accessibility Checklist&lt;/h1&gt;
-    &lt;div class=&quot;header-buttons&quot;&gt;
-        &lt;button id=&quot;saveButton&quot; class=&quot;save-button&quot; ari</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/mychecklist.php (Line 129:2 - Line 136:2), /Users/a00288946/Desktop/accessilist/php/reports.php (Line 109:2 - Line 116:7)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn40" onclick="toggleCodeBlock('cloneGroup40', 'expandBtn40', 'collapseBtn40')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn40" onclick="toggleCodeBlock('cloneGroup40', 'expandBtn40', 'collapseBtn40')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup40"><code class="language-php text-sm text-gray-800">s/number-1-0.svg&quot; alt=&quot;Checkpoint 1 table&quot; class=&quot;inactive-state&quot; width=&quot;36&quot; height=&quot;36&quot;&gt;
+        Integr</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/mychecklist.php (Line 38:7 - Line 49:3), /Users/a00288946/Desktop/accessilist/php/mychecklist.php (Line 32:6 - Line 43:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn29" onclick="toggleCodeBlock('cloneGroup29', 'expandBtn29', 'collapseBtn29')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn29" onclick="toggleCodeBlock('cloneGroup29', 'expandBtn29', 'collapseBtn29')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup29"><code class="language-php text-sm text-gray-800">nfocus&quot; aria-label=&quot;Checklist 1&quot; title=&quot;View Checkpoint 1&quot;&gt;
+                &lt;img src=&quot;&lt;?php echo $basePath; ?&gt;/images/number-1-1.svg&quot; alt=&quot;Checkpoint 1 table&quot; class=&quot;active-state&quot; width=&quot;36&quot; height=&quot;36&quot;&gt;
+                &lt;img src=&quot;&lt;?php echo $basePath; ?&gt;/images/number-1-0.svg&quot; alt=&quot;Checkpoint 1 table&quot; class=&quot;inactive-state&quot; width=&quot;36&quot; height=&quot;36&quot;&gt;
             &lt;/a&gt;
         &lt;/li&gt;
-        &lt;li&gt;
-            </code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/index.php (Line 1:1 - Line 11:2), /Users/a00288946/Desktop/accessilist/php/reports.php (Line 14:1 - Line 21:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn41" onclick="toggleCodeBlock('cloneGroup41', 'expandBtn41', 'collapseBtn41')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn41" onclick="toggleCodeBlock('cloneGroup41', 'expandBtn41', 'collapseBtn41')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup41"><code class="language-php text-sm text-gray-800">&lt;link rel=&quot;stylesheet&quot; href=&quot;css/simple-modal.css&quot;&gt;
+</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/mychecklist.php (Line 49:2 - Line 55:2), /Users/a00288946/Desktop/accessilist/php/mychecklist.php (Line 37:3 - Line 43:3)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn30" onclick="toggleCodeBlock('cloneGroup30', 'expandBtn30', 'collapseBtn30')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn30" onclick="toggleCodeBlock('cloneGroup30', 'expandBtn30', 'collapseBtn30')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup30"><code class="language-php text-sm text-gray-800">0)&quot; data-target=&quot;checklist-2&quot; aria-label=&quot;Checklist 2&quot; title=&quot;View Checkpoint 2&quot;&gt;
+                &lt;img src=&quot;&lt;?php echo $basePath; ?&gt;/images/number-2-1.svg&quot; alt=&quot;Checkpoint 2 table&quot; class=&quot;active-state&quot;</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/index.php (Line 1:1 - Line 11:2), /Users/a00288946/Desktop/accessilist/php/includes/html-head.php (Line 21:1 - Line 28:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn31" onclick="toggleCodeBlock('cloneGroup31', 'expandBtn31', 'collapseBtn31')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn31" onclick="toggleCodeBlock('cloneGroup31', 'expandBtn31', 'collapseBtn31')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup31"><code class="language-php text-sm text-gray-800">&lt;link rel=&quot;stylesheet&quot; href=&quot;css/simple-modal.css&quot;&gt;
 &lt;link rel=&quot;stylesheet&quot; href=&quot;css/focus.css&quot;&gt;
 &lt;link rel=&quot;stylesheet&quot; href=&quot;css/landing.css&quot;&gt;
 &lt;link rel=&quot;stylesheet&quot; href=&quot;css/admin.css&quot;&gt;
-&lt;link re</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/home.php (Line 1:1 - Line 14:11), /Users/a00288946/Desktop/accessilist/php/reports.php (Line 1:1 - Line 14:10)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn42" onclick="toggleCodeBlock('cloneGroup42', 'expandBtn42', 'collapseBtn42')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn42" onclick="toggleCodeBlock('cloneGroup42', 'expandBtn42', 'collapseBtn42')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup42"><code class="language-php text-sm text-gray-800">&lt;?php
-// Determine base path for assets
-$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' ||
-           $_SERVER['HTTP_HOST'] === '127.0.0.1' ||
-           strpos($_SERVER['HTTP_HOST'], 'local') !== false;
-$basePath = $isLocal ? '' : '/training/online/accessilist';
-?&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-&lt;meta charset=&quot;UTF-8&quot; /&gt;
-&lt;!-- Added viewport meta for responsiveness --&gt;
-&lt;meta name=&quot;viewport&quot; content=&quot;width=devic</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/home.php (Line 14:11 - Line 26:2), /Users/a00288946/Desktop/accessilist/php/reports.php (Line 13:12 - Line 21:5)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn43" onclick="toggleCodeBlock('cloneGroup43', 'expandBtn43', 'collapseBtn43')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn43" onclick="toggleCodeBlock('cloneGroup43', 'expandBtn43', 'collapseBtn43')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup43"><code class="language-php text-sm text-gray-800">e-width, initial-scale=1.0&quot;&gt;
-&lt;title&gt;Accessibility Checklists&lt;/title&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/simple-modal.css?v=&lt;?php echo time(); ?&gt;&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/home.php (Line 27:5 - Line 35:4), /Users/a00288946/Desktop/accessilist/php/mychecklist.php (Line 62:4 - Line 71:3)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn44" onclick="toggleCodeBlock('cloneGroup44', 'expandBtn44', 'collapseBtn44')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn44" onclick="toggleCodeBlock('cloneGroup44', 'expandBtn44', 'collapseBtn44')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup44"><code class="language-php text-sm text-gray-800"> ?&gt;/css/focus.css?v=&lt;?php echo time(); ?&gt;&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/landing.css?v=&lt;?php echo time(); ?&gt;&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/admin.css?v=&lt;?php echo time(); ?&gt;&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/admin.php (Line 1:1 - Line 13:6), /Users/a00288946/Desktop/accessilist/php/reports.php (Line 1:1 - Line 13:14)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn45" onclick="toggleCodeBlock('cloneGroup45', 'expandBtn45', 'collapseBtn45')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn45" onclick="toggleCodeBlock('cloneGroup45', 'expandBtn45', 'collapseBtn45')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup45"><code class="language-php text-sm text-gray-800">&lt;?php
-// Determine base path for assets
-$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' ||
-           $_SERVER['HTTP_HOST'] === '127.0.0.1' ||
-           strpos($_SERVER['HTTP_HOST'], 'local') !== false;
-$basePath = $isLocal ? '' : '/training/online/accessilist';
-?&gt;
-&lt;!DOCTYPE html&gt;
-&lt;html lang=&quot;en&quot;&gt;
-&lt;head&gt;
-&lt;meta charset=&quot;UTF-8&quot; /&gt;
-&lt;meta name=&quot;viewport&quot; c</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/admin.php (Line 13:6 - Line 27:3), /Users/a00288946/Desktop/accessilist/php/reports.php (Line 13:12 - Line 28:3)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn46" onclick="toggleCodeBlock('cloneGroup46', 'expandBtn46', 'collapseBtn46')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn46" onclick="toggleCodeBlock('cloneGroup46', 'expandBtn46', 'collapseBtn46')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup46"><code class="language-php text-sm text-gray-800">ontent=&quot;width=device-width, initial-scale=1.0&quot;&gt;
-&lt;title&gt;Admin&lt;/title&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/simple-modal.css&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/focus.css?v=&lt;?php echo time(); ?&gt;&quot;&gt;
-&lt;link r</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/php/admin.php (Line 26:5 - Line 34:6), /Users/a00288946/Desktop/accessilist/php/reports.php (Line 67:4 - Line 76:14)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn47" onclick="toggleCodeBlock('cloneGroup47', 'expandBtn47', 'collapseBtn47')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn47" onclick="toggleCodeBlock('cloneGroup47', 'expandBtn47', 'collapseBtn47')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup47"><code class="language-php text-sm text-gray-800">p echo time(); ?&gt;&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/landing.css&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/admin.css&quot;&gt;
-&lt;link rel=&quot;stylesheet&quot; href=&quot;&lt;?php echo $basePath; ?&gt;/css/fo</code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div><a name="markdown-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">markdown</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/DEPLOYMENT.md (Line 172:1 - Line 188:29), /Users/a00288946/Desktop/accessilist/ROLLBACK_PLAN.md (Line 275:1 - Line 291:29)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn53" onclick="toggleCodeBlock('cloneGroup53', 'expandBtn53', 'collapseBtn53')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn53" onclick="toggleCodeBlock('cloneGroup53', 'expandBtn53', 'collapseBtn53')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup53"><code class="language-markdown text-sm text-gray-800">s (session-*.sh, ai-changelog-master.sh)
+&lt;link re</code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div><a name="markdown-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">markdown</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/DEPLOYMENT.md (Line 172:1 - Line 188:29), /Users/a00288946/Desktop/accessilist/ROLLBACK_PLAN.md (Line 275:1 - Line 291:29)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn37" onclick="toggleCodeBlock('cloneGroup37', 'expandBtn37', 'collapseBtn37')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn37" onclick="toggleCodeBlock('cloneGroup37', 'expandBtn37', 'collapseBtn37')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup37"><code class="language-markdown text-sm text-gray-800">s (session-*.sh, ai-changelog-master.sh)
 # - Testing infrastructure (tests/, scripts/)
 
 # 3. Set permissions
@@ -582,85 +451,7 @@ php tests/run_comprehensive_tests.php  # If PHP CLI available on server
 
 # 5. Record deployment completion
 ./ai-changelog-master.sh update
-./ai-changelog-master.sh </code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div><a name="css-clones"></a><h2 class="text-2xl font-semibold text-gray-700 mb-4">css</h2><div class="divide-y divide-gray-200 border-b-2"><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/css/table.css (Line 249:2 - Line 266:4), /Users/a00288946/Desktop/accessilist/css/table.css (Line 161:2 - Line 177:42)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn48" onclick="toggleCodeBlock('cloneGroup48', 'expandBtn48', 'collapseBtn48')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn48" onclick="toggleCodeBlock('cloneGroup48', 'expandBtn48', 'collapseBtn48')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup48"><code class="language-css text-sm text-gray-800">{
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    transition: background-color 0.2s ease;
-    width: 75px;
-    height: 75px;
-    min-width: 75px;
-    min-height: 75px;
-    max-width: 75px;
-    max-height: 75px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/css/header.css (Line 61:6 - Line 72:5), /Users/a00288946/Desktop/accessilist/css/header.css (Line 45:5 - Line 56:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn49" onclick="toggleCodeBlock('cloneGroup49', 'expandBtn49', 'collapseBtn49')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn49" onclick="toggleCodeBlock('cloneGroup49', 'expandBtn49', 'collapseBtn49')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup49"><code class="language-css text-sm text-gray-800">: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 0.5rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    font-weight: bold;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    background-color: #333</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/css/header.css (Line 76:2 - Line 89:8), /Users/a00288946/Desktop/accessilist/css/header.css (Line 59:2 - Line 56:8)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn50" onclick="toggleCodeBlock('cloneGroup50', 'expandBtn50', 'collapseBtn50')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn50" onclick="toggleCodeBlock('cloneGroup50', 'expandBtn50', 'collapseBtn50')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup50"><code class="language-css text-sm text-gray-800">{
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    padding: 0.5rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    color: white;
-    font-weight: bold;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    background-color: #478F00</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/css/form-elements.css (Line 37:2 - Line 57:75), /Users/a00288946/Desktop/accessilist/css/form-elements.css (Line 7:2 - Line 23:18)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn51" onclick="toggleCodeBlock('cloneGroup51', 'expandBtn51', 'collapseBtn51')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn51" onclick="toggleCodeBlock('cloneGroup51', 'expandBtn51', 'collapseBtn51')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup51"><code class="language-css text-sm text-gray-800">{
-    width: 100%;
-    min-height: 75px;
-    height: auto;
-    box-sizing: border-box;
-    resize: none;
-    padding: 8px;
-    border: 1px solid #ccc;
-    border-radius: 3px;
-    font-family: inherit;
-    font-size: 1rem;
-    line-height: 2; /* User preference: all multiline text line-height of 2 */
-    color: #333;
-    background-color: #fff;
-}
-
-/* ====================================================================
-   UNIFIED NOTES CELL STYLES
-   Used by: Principle tables (.notes-cell)
-            Report tables (.report-notes-cell, .report-task-cell)
-   ==================================================================== */</code></pre></div><div class="py-4"><p class="text-gray-600">/Users/a00288946/Desktop/accessilist/css/admin.css (Line 120:2 - Line 137:4), /Users/a00288946/Desktop/accessilist/css/table.css (Line 161:2 - Line 266:2)</p><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2" id="expandBtn52" onclick="toggleCodeBlock('cloneGroup52', 'expandBtn52', 'collapseBtn52')">Show code</button><button class="bg-gray-500 text-white px-1 py-0.5 text-xs rounded focus:outline-none ml-2 hidden" id="collapseBtn52" onclick="toggleCodeBlock('cloneGroup52', 'expandBtn52', 'collapseBtn52')">Hide code</button><pre class="bg-gray-100 border border-gray-200 p-4 rounded mt-2 hidden" id="cloneGroup52"><code class="language-css text-sm text-gray-800">{
-    background: none;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    transition: background-color 0.2s ease;
-    width: 75px;
-    height: 75px;
-    min-width: 75px;
-    min-height: 75px;
-    max-width: 75px;
-    max-height: 75px;
-    box-sizing: border-box;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    position: absolute;
-    top: 50%</code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div></section><!-- Add more sections for other formats and clone groups as needed--></main><footer class="bg-white shadow mt-8 py-4"><div class="container mx-auto px-4 text-center"><p class="text-sm text-gray-600">This report is generated by jscpd, an open-source copy/paste detector.</p><p class="text-sm text-gray-600">jscpd is licensed under the MIT License.</p><a class="text-blue-500 text-sm" href="https://github.com/kucherenko/jscpd" target="_blank" rel="noopener noreferrer">View jscpd on GitHub</a></div></footer><script src="js/prism.js"></script><script>function toggleCodeBlock(codeBlockId, expandBtnId, collapseBtnId) {
+./ai-changelog-master.sh </code></pre></div><!-- Add more clone groups for .txt format as needed         // Add more clone groups for .txt format as needed--></div></section><!-- Add more sections for other formats and clone groups as needed--></main><footer class="bg-white shadow mt-8 py-4"><div class="container mx-auto px-4 text-center"><p class="text-sm text-gray-600">This report is generated by jscpd, an open-source copy/paste detector.</p><p class="text-sm text-gray-600">jscpd is licensed under the MIT License.</p><a class="text-blue-500 text-sm" href="https://github.com/kucherenko/jscpd" target="_blank" rel="noopener noreferrer">View jscpd on GitHub</a></div></footer><script src="js/prism.js"></script><script>function toggleCodeBlock(codeBlockId, expandBtnId, collapseBtnId) {
   const codeBlock = document.getElementById(codeBlockId);
   const expandBtn = document.getElementById(expandBtnId);
   const collapseBtn = document.getElementById(collapseBtnId);

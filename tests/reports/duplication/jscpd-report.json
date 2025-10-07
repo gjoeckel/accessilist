@@ -1,12 +1,12 @@
 {
   "statistics": {
-    "detectionDate": "2025-10-07T14:20:03.298Z",
+    "detectionDate": "2025-10-07T14:35:07.165Z",
     "formats": {
-      "javascript": {
+      "css": {
         "sources": {
-          "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/shell-minimal/build/index.js": {
-            "lines": 229,
-            "tokens": 1905,
+          "/Users/a00288946/Desktop/accessilist/tests/reports/duplication/html/styles/prism.css": {
+            "lines": 7,
+            "tokens": 232,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -16,51 +16,175 @@
             "newDuplicatedLines": 0,
             "newClones": 0
           },
-          "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js": {
-            "lines": 206,
-            "tokens": 1530,
+          "/Users/a00288946/Desktop/accessilist/css/table.css": {
+            "lines": 452,
+            "tokens": 2356,
             "sources": 1,
-            "clones": 6,
-            "duplicatedLines": 134,
-            "duplicatedTokens": 939,
-            "percentage": 65.05,
-            "percentageTokens": 61.37,
+            "clones": 3,
+            "duplicatedLines": 51,
+            "duplicatedTokens": 360,
+            "percentage": 11.28,
+            "percentageTokens": 15.28,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
-          "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/puppeteer-minimal/build/index.js": {
-            "lines": 220,
-            "tokens": 1911,
+          "/Users/a00288946/Desktop/accessilist/css/status.css": {
+            "lines": 84,
+            "tokens": 527,
             "sources": 1,
-            "clones": 2,
-            "duplicatedLines": 42,
-            "duplicatedTokens": 285,
-            "percentage": 19.09,
-            "percentageTokens": 14.91,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
-          "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/github-minimal/build/index.js": {
-            "lines": 214,
-            "tokens": 1964,
+          "/Users/a00288946/Desktop/accessilist/css/simple-modal.css": {
+            "lines": 81,
+            "tokens": 416,
             "sources": 1,
-            "clones": 2,
-            "duplicatedLines": 46,
-            "duplicatedTokens": 327,
-            "percentage": 21.5,
-            "percentageTokens": 16.65,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
-          "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/everything-minimal/build/index.js": {
-            "lines": 216,
-            "tokens": 1638,
+          "/Users/a00288946/Desktop/accessilist/css/side-panel.css": {
+            "lines": 132,
+            "tokens": 848,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/a00288946/Desktop/accessilist/css/section.css": {
+            "lines": 101,
+            "tokens": 635,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/a00288946/Desktop/accessilist/css/modal.css": {
+            "lines": 128,
+            "tokens": 796,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/a00288946/Desktop/accessilist/css/landing.css": {
+            "lines": 190,
+            "tokens": 1026,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/a00288946/Desktop/accessilist/css/header.css": {
+            "lines": 115,
+            "tokens": 782,
+            "sources": 1,
+            "clones": 4,
+            "duplicatedLines": 48,
+            "duplicatedTokens": 414,
+            "percentage": 41.74,
+            "percentageTokens": 52.94,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/a00288946/Desktop/accessilist/css/form-elements.css": {
+            "lines": 116,
+            "tokens": 614,
             "sources": 1,
             "clones": 2,
-            "duplicatedLines": 46,
-            "duplicatedTokens": 327,
-            "percentage": 21.3,
-            "percentageTokens": 19.96,
+            "duplicatedLines": 40,
+            "duplicatedTokens": 236,
+            "percentage": 34.48,
+            "percentageTokens": 38.44,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/a00288946/Desktop/accessilist/css/focus.css": {
+            "lines": 202,
+            "tokens": 675,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/a00288946/Desktop/accessilist/css/base.css": {
+            "lines": 144,
+            "tokens": 706,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/a00288946/Desktop/accessilist/css/admin.css": {
+            "lines": 184,
+            "tokens": 1043,
+            "sources": 1,
+            "clones": 1,
+            "duplicatedLines": 17,
+            "duplicatedTokens": 122,
+            "percentage": 9.24,
+            "percentageTokens": 11.7,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          }
+        },
+        "total": {
+          "lines": 1936,
+          "tokens": 10656,
+          "sources": 13,
+          "clones": 5,
+          "duplicatedLines": 78,
+          "duplicatedTokens": 566,
+          "percentage": 4.03,
+          "percentageTokens": 5.31,
+          "newDuplicatedLines": 0,
+          "newClones": 0
+        }
+      },
+      "javascript": {
+        "sources": {
+          "/Users/a00288946/Desktop/accessilist/tests/reports/duplication/html/js/prism.js": {
+            "lines": 15,
+            "tokens": 4580,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -450,14 +574,14 @@
           }
         },
         "total": {
-          "lines": 7617,
-          "tokens": 59429,
-          "sources": 37,
-          "clones": 25,
-          "duplicatedLines": 379,
-          "duplicatedTokens": 3114,
-          "percentage": 4.98,
-          "percentageTokens": 5.24,
+          "lines": 6547,
+          "tokens": 55061,
+          "sources": 33,
+          "clones": 19,
+          "duplicatedLines": 245,
+          "duplicatedTokens": 2175,
+          "percentage": 3.74,
+          "percentageTokens": 3.95,
           "newDuplicatedLines": 0,
           "newClones": 0
         }
@@ -551,6 +675,66 @@
           "/Users/a00288946/Desktop/accessilist/php/includes/session-utils.php": {
             "lines": 46,
             "tokens": 243,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/a00288946/Desktop/accessilist/php/includes/noscript.php": {
+            "lines": 3,
+            "tokens": 69,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/a00288946/Desktop/accessilist/php/includes/html-head.php": {
+            "lines": 72,
+            "tokens": 520,
+            "sources": 1,
+            "clones": 3,
+            "duplicatedLines": 32,
+            "duplicatedTokens": 312,
+            "percentage": 44.44,
+            "percentageTokens": 60,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/a00288946/Desktop/accessilist/php/includes/footer.php": {
+            "lines": 28,
+            "tokens": 171,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/a00288946/Desktop/accessilist/php/includes/config.php": {
+            "lines": 16,
+            "tokens": 71,
+            "sources": 1,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
+            "newDuplicatedLines": 0,
+            "newClones": 0
+          },
+          "/Users/a00288946/Desktop/accessilist/php/includes/common-scripts.php": {
+            "lines": 49,
+            "tokens": 216,
             "sources": 1,
             "clones": 0,
             "duplicatedLines": 0,
@@ -669,26 +853,26 @@
             "newClones": 0
           },
           "/Users/a00288946/Desktop/accessilist/php/reports.php": {
-            "lines": 289,
-            "tokens": 2478,
+            "lines": 228,
+            "tokens": 1908,
             "sources": 1,
-            "clones": 12,
-            "duplicatedLines": 156,
-            "duplicatedTokens": 1420,
-            "percentage": 53.98,
-            "percentageTokens": 57.3,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
           "/Users/a00288946/Desktop/accessilist/php/mychecklist.php": {
-            "lines": 194,
-            "tokens": 1925,
+            "lines": 123,
+            "tokens": 1190,
             "sources": 1,
-            "clones": 9,
-            "duplicatedLines": 107,
-            "duplicatedTokens": 1085,
-            "percentage": 55.15,
-            "percentageTokens": 56.36,
+            "clones": 4,
+            "duplicatedLines": 34,
+            "duplicatedTokens": 444,
+            "percentage": 27.64,
+            "percentageTokens": 37.31,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -705,26 +889,26 @@
             "newClones": 0
           },
           "/Users/a00288946/Desktop/accessilist/php/home.php": {
-            "lines": 145,
-            "tokens": 1338,
+            "lines": 120,
+            "tokens": 1043,
             "sources": 1,
-            "clones": 3,
-            "duplicatedLines": 33,
-            "duplicatedTokens": 334,
-            "percentage": 22.76,
-            "percentageTokens": 24.96,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
           "/Users/a00288946/Desktop/accessilist/php/admin.php": {
-            "lines": 411,
-            "tokens": 3429,
+            "lines": 384,
+            "tokens": 3123,
             "sources": 1,
-            "clones": 3,
-            "duplicatedLines": 34,
-            "duplicatedTokens": 319,
-            "percentage": 8.27,
-            "percentageTokens": 9.3,
+            "clones": 0,
+            "duplicatedLines": 0,
+            "duplicatedTokens": 0,
+            "percentage": 0,
+            "percentageTokens": 0,
             "newDuplicatedLines": 0,
             "newClones": 0
           },
@@ -742,14 +926,14 @@
           }
         },
         "total": {
-          "lines": 3795,
-          "tokens": 33431,
-          "sources": 23,
-          "clones": 23,
-          "duplicatedLines": 350,
-          "duplicatedTokens": 3100,
-          "percentage": 9.22,
-          "percentageTokens": 9.27,
+          "lines": 3779,
+          "tokens": 32572,
+          "sources": 28,
+          "clones": 13,
+          "duplicatedLines": 218,
+          "duplicatedTokens": 1899,
+          "percentage": 5.77,
+          "percentageTokens": 5.83,
           "newDuplicatedLines": 0,
           "newClones": 0
         }
@@ -1465,398 +1649,22 @@
           "newDuplicatedLines": 0,
           "newClones": 0
         }
-      },
-      "css": {
-        "sources": {
-          "/Users/a00288946/Desktop/accessilist/css/table.css": {
-            "lines": 452,
-            "tokens": 2356,
-            "sources": 1,
-            "clones": 3,
-            "duplicatedLines": 51,
-            "duplicatedTokens": 360,
-            "percentage": 11.28,
-            "percentageTokens": 15.28,
-            "newDuplicatedLines": 0,
-            "newClones": 0
-          },
-          "/Users/a00288946/Desktop/accessilist/css/status.css": {
-            "lines": 84,
-            "tokens": 527,
-            "sources": 1,
-            "clones": 0,
-            "duplicatedLines": 0,
-            "duplicatedTokens": 0,
-            "percentage": 0,
-            "percentageTokens": 0,
-            "newDuplicatedLines": 0,
-            "newClones": 0
-          },
-          "/Users/a00288946/Desktop/accessilist/css/simple-modal.css": {
-            "lines": 81,
-            "tokens": 416,
-            "sources": 1,
-            "clones": 0,
-            "duplicatedLines": 0,
-            "duplicatedTokens": 0,
-            "percentage": 0,
-            "percentageTokens": 0,
-            "newDuplicatedLines": 0,
-            "newClones": 0
-          },
-          "/Users/a00288946/Desktop/accessilist/css/side-panel.css": {
-            "lines": 132,
-            "tokens": 848,
-            "sources": 1,
-            "clones": 0,
-            "duplicatedLines": 0,
-            "duplicatedTokens": 0,
-            "percentage": 0,
-            "percentageTokens": 0,
-            "newDuplicatedLines": 0,
-            "newClones": 0
-          },
-          "/Users/a00288946/Desktop/accessilist/css/section.css": {
-            "lines": 101,
-            "tokens": 635,
-            "sources": 1,
-            "clones": 0,
-            "duplicatedLines": 0,
-            "duplicatedTokens": 0,
-            "percentage": 0,
-            "percentageTokens": 0,
-            "newDuplicatedLines": 0,
-            "newClones": 0
-          },
-          "/Users/a00288946/Desktop/accessilist/css/modal.css": {
-            "lines": 128,
-            "tokens": 796,
-            "sources": 1,
-            "clones": 0,
-            "duplicatedLines": 0,
-            "duplicatedTokens": 0,
-            "percentage": 0,
-            "percentageTokens": 0,
-            "newDuplicatedLines": 0,
-            "newClones": 0
-          },
-          "/Users/a00288946/Desktop/accessilist/css/landing.css": {
-            "lines": 190,
-            "tokens": 1026,
-            "sources": 1,
-            "clones": 0,
-            "duplicatedLines": 0,
-            "duplicatedTokens": 0,
-            "percentage": 0,
-            "percentageTokens": 0,
-            "newDuplicatedLines": 0,
-            "newClones": 0
-          },
-          "/Users/a00288946/Desktop/accessilist/css/header.css": {
-            "lines": 115,
-            "tokens": 782,
-            "sources": 1,
-            "clones": 4,
-            "duplicatedLines": 48,
-            "duplicatedTokens": 414,
-            "percentage": 41.74,
-            "percentageTokens": 52.94,
-            "newDuplicatedLines": 0,
-            "newClones": 0
-          },
-          "/Users/a00288946/Desktop/accessilist/css/form-elements.css": {
-            "lines": 116,
-            "tokens": 614,
-            "sources": 1,
-            "clones": 2,
-            "duplicatedLines": 40,
-            "duplicatedTokens": 236,
-            "percentage": 34.48,
-            "percentageTokens": 38.44,
-            "newDuplicatedLines": 0,
-            "newClones": 0
-          },
-          "/Users/a00288946/Desktop/accessilist/css/focus.css": {
-            "lines": 202,
-            "tokens": 675,
-            "sources": 1,
-            "clones": 0,
-            "duplicatedLines": 0,
-            "duplicatedTokens": 0,
-            "percentage": 0,
-            "percentageTokens": 0,
-            "newDuplicatedLines": 0,
-            "newClones": 0
-          },
-          "/Users/a00288946/Desktop/accessilist/css/base.css": {
-            "lines": 144,
-            "tokens": 706,
-            "sources": 1,
-            "clones": 0,
-            "duplicatedLines": 0,
-            "duplicatedTokens": 0,
-            "percentage": 0,
-            "percentageTokens": 0,
-            "newDuplicatedLines": 0,
-            "newClones": 0
-          },
-          "/Users/a00288946/Desktop/accessilist/css/admin.css": {
-            "lines": 184,
-            "tokens": 1043,
-            "sources": 1,
-            "clones": 1,
-            "duplicatedLines": 17,
-            "duplicatedTokens": 122,
-            "percentage": 9.24,
-            "percentageTokens": 11.7,
-            "newDuplicatedLines": 0,
-            "newClones": 0
-          }
-        },
-        "total": {
-          "lines": 1929,
-          "tokens": 10424,
-          "sources": 12,
-          "clones": 5,
-          "duplicatedLines": 78,
-          "duplicatedTokens": 566,
-          "percentage": 4.04,
-          "percentageTokens": 5.43,
-          "newDuplicatedLines": 0,
-          "newClones": 0
-        }
       }
     },
     "total": {
-      "lines": 25371,
-      "tokens": 198877,
-      "sources": 130,
-      "clones": 54,
-      "duplicatedLines": 823,
-      "duplicatedTokens": 6906,
-      "percentage": 3.24,
-      "percentageTokens": 3.47,
+      "lines": 24292,
+      "tokens": 193882,
+      "sources": 132,
+      "clones": 38,
+      "duplicatedLines": 557,
+      "duplicatedTokens": 4766,
+      "percentage": 2.29,
+      "percentageTokens": 2.46,
       "newDuplicatedLines": 0,
       "newClones": 0
     }
   },
   "duplicates": [
-    {
-      "format": "javascript",
-      "lines": 17,
-      "fragment": ",\n    version: \"1.0.0\",\n}, {\n    capabilities: {\n        tools: {},\n    },\n});\n// List tools handler\nserver.setRequestHandler(ListToolsRequestSchema, async () => ({\n    tools,\n}));\n// Call tool handler\nserver.setRequestHandler(CallToolRequestSchema, async (request) => {\n    const { name, arguments: args } = request.params;\n    try {\n        switch (name) {\n            case \"navigate\"",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/puppeteer-minimal/build/index.js",
-        "start": 122,
-        "end": 138,
-        "startLoc": {
-          "line": 122,
-          "column": 20,
-          "position": 1105
-        },
-        "endLoc": {
-          "line": 138,
-          "column": 11,
-          "position": 1227
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js",
-        "start": 117,
-        "end": 133,
-        "startLoc": {
-          "line": 117,
-          "column": 30,
-          "position": 814
-        },
-        "endLoc": {
-          "line": 133,
-          "column": 14,
-          "position": 936
-        }
-      }
-    },
-    {
-      "format": "javascript",
-      "lines": 27,
-      "fragment": ");\n                return {\n                    content: [\n                        {\n                            type: \"text\",\n                            text: JSON.stringify(result, null, 2),\n                        },\n                    ],\n                };\n            }\n            default:\n                throw new Error(`Unknown tool: ${name}`);\n        }\n    }\n    catch (error) {\n        return {\n            content: [\n                {\n                    type: \"text\",\n                    text: `Error: ${error instanceof Error ? error.message : String(error)}`,\n                },\n            ],\n            isError: true,\n        };\n    }\n});\n// Graceful shutdown",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/puppeteer-minimal/build/index.js",
-        "start": 176,
-        "end": 202,
-        "startLoc": {
-          "line": 176,
-          "column": 9,
-          "position": 1567
-        },
-        "endLoc": {
-          "line": 202,
-          "column": 21,
-          "position": 1730
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js",
-        "start": 171,
-        "end": 197,
-        "startLoc": {
-          "line": 171,
-          "column": 13,
-          "position": 1280
-        },
-        "endLoc": {
-          "line": 197,
-          "column": 16,
-          "position": 1443
-        }
-      }
-    },
-    {
-      "format": "javascript",
-      "lines": 17,
-      "fragment": ",\n    version: \"1.0.0\",\n}, {\n    capabilities: {\n        tools: {},\n    },\n});\n// List tools handler\nserver.setRequestHandler(ListToolsRequestSchema, async () => ({\n    tools,\n}));\n// Call tool handler\nserver.setRequestHandler(CallToolRequestSchema, async (request) => {\n    const { name, arguments: args } = request.params;\n    try {\n        switch (name) {\n            case \"get_file_contents\"",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/github-minimal/build/index.js",
-        "start": 125,
-        "end": 141,
-        "startLoc": {
-          "line": 125,
-          "column": 17,
-          "position": 1190
-        },
-        "endLoc": {
-          "line": 141,
-          "column": 20,
-          "position": 1312
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js",
-        "start": 117,
-        "end": 133,
-        "startLoc": {
-          "line": 117,
-          "column": 30,
-          "position": 814
-        },
-        "endLoc": {
-          "line": 133,
-          "column": 14,
-          "position": 936
-        }
-      }
-    },
-    {
-      "format": "javascript",
-      "lines": 31,
-      "fragment": ");\n                return {\n                    content: [\n                        {\n                            type: \"text\",\n                            text: JSON.stringify(result, null, 2),\n                        },\n                    ],\n                };\n            }\n            default:\n                throw new Error(`Unknown tool: ${name}`);\n        }\n    }\n    catch (error) {\n        return {\n            content: [\n                {\n                    type: \"text\",\n                    text: `Error: ${error instanceof Error ? error.message : String(error)}`,\n                },\n            ],\n            isError: true,\n        };\n    }\n});\n// Start server\nasync function main() {\n    const transport = new StdioServerTransport();\n    await server.connect(transport);\n    console.error(\"GitHub Minimal MCP Server running on stdio\"",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/github-minimal/build/index.js",
-        "start": 179,
-        "end": 209,
-        "startLoc": {
-          "line": 179,
-          "column": 6,
-          "position": 1714
-        },
-        "endLoc": {
-          "line": 209,
-          "column": 45,
-          "position": 1919
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js",
-        "start": 171,
-        "end": 201,
-        "startLoc": {
-          "line": 171,
-          "column": 13,
-          "position": 1280
-        },
-        "endLoc": {
-          "line": 201,
-          "column": 58,
-          "position": 1485
-        }
-      }
-    },
-    {
-      "format": "javascript",
-      "lines": 17,
-      "fragment": ",\n    version: \"1.0.0\",\n}, {\n    capabilities: {\n        tools: {},\n    },\n});\n// List tools handler\nserver.setRequestHandler(ListToolsRequestSchema, async () => ({\n    tools,\n}));\n// Call tool handler\nserver.setRequestHandler(CallToolRequestSchema, async (request) => {\n    const { name, arguments: args } = request.params;\n    try {\n        switch (name) {\n            case \"validate_protocol\"",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/everything-minimal/build/index.js",
-        "start": 129,
-        "end": 145,
-        "startLoc": {
-          "line": 129,
-          "column": 21,
-          "position": 974
-        },
-        "endLoc": {
-          "line": 145,
-          "column": 20,
-          "position": 1096
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js",
-        "start": 117,
-        "end": 133,
-        "startLoc": {
-          "line": 117,
-          "column": 30,
-          "position": 814
-        },
-        "endLoc": {
-          "line": 133,
-          "column": 14,
-          "position": 936
-        }
-      }
-    },
-    {
-      "format": "javascript",
-      "lines": 31,
-      "fragment": ");\n                return {\n                    content: [\n                        {\n                            type: \"text\",\n                            text: JSON.stringify(result, null, 2),\n                        },\n                    ],\n                };\n            }\n            default:\n                throw new Error(`Unknown tool: ${name}`);\n        }\n    }\n    catch (error) {\n        return {\n            content: [\n                {\n                    type: \"text\",\n                    text: `Error: ${error instanceof Error ? error.message : String(error)}`,\n                },\n            ],\n            isError: true,\n        };\n    }\n});\n// Start server\nasync function main() {\n    const transport = new StdioServerTransport();\n    await server.connect(transport);\n    console.error(\"Everything Minimal MCP Server running on stdio\"",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/everything-minimal/build/index.js",
-        "start": 181,
-        "end": 211,
-        "startLoc": {
-          "line": 181,
-          "column": 2,
-          "position": 1388
-        },
-        "endLoc": {
-          "line": 211,
-          "column": 49,
-          "position": 1593
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js",
-        "start": 171,
-        "end": 201,
-        "startLoc": {
-          "line": 171,
-          "column": 13,
-          "position": 1280
-        },
-        "endLoc": {
-          "line": 201,
-          "column": 58,
-          "position": 1485
-        }
-      }
-    },
     {
       "format": "javascript",
       "lines": 17,
@@ -2795,6 +2603,42 @@
     },
     {
       "format": "php",
+      "lines": 12,
+      "fragment": "pageTitle, ENT_QUOTES, 'UTF-8'); ?></title>\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/simple-modal.css<?php echo $includeLoadingStyles ? '' : '?v=' . time(); ?>\">\n<link re",
+      "tokens": 0,
+      "firstFile": {
+        "name": "/Users/a00288946/Desktop/accessilist/php/includes/html-head.php",
+        "start": 21,
+        "end": 32,
+        "startLoc": {
+          "line": 21,
+          "column": 2,
+          "position": 120
+        },
+        "endLoc": {
+          "line": 32,
+          "column": 6,
+          "position": 222
+        }
+      },
+      "secondFile": {
+        "name": "/Users/a00288946/Desktop/accessilist/php/includes/html-head.php",
+        "start": 20,
+        "end": 28,
+        "startLoc": {
+          "line": 20,
+          "column": 6,
+          "position": 110
+        },
+        "endLoc": {
+          "line": 28,
+          "column": 2,
+          "position": 182
+        }
+      }
+    },
+    {
+      "format": "php",
       "lines": 27,
       "fragment": "           $results->addResult('accessibility', 'wcag_compliance', 'passed', 'WCAG compliance verified', $screenshot);\r\n        } catch (Exception $e) {\r\n            $results->addResult('accessibility', 'wcag_compliance', 'failed', $e->getMessage());\r\n        }\r\n    }\r\n}\r\n\r\n// Main test runner\r\nfunction runAllTests() {\r\n    echo \"🧪 AccessiList Comprehensive Test Suite\\n\";\r\n    echo \"=====================================\\n\";\r\n    echo \"Base URL: \" . TestConfig::BASE_URL . \"\\n\";\r\n    echo \"Timestamp: \" . date('Y-m-d H:i:s') . \"\\n\\n\";\r\n    \r\n    $results = new TestResults();\r\n    \r\n    try ",
       "tokens": 0,
@@ -2868,252 +2712,72 @@
     {
       "format": "php",
       "lines": 12,
-      "fragment": ">Accessibility Report - AccessiList</title>\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/simple-modal.css\">\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/focus.css",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/reports.php",
-        "start": 14,
-        "end": 25,
-        "startLoc": {
-          "line": 14,
-          "column": 2,
-          "position": 125
-        },
-        "endLoc": {
-          "line": 25,
-          "column": 6,
-          "position": 228
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/reports.php",
-        "start": 13,
-        "end": 21,
-        "startLoc": {
-          "line": 13,
-          "column": 6,
-          "position": 115
-        },
-        "endLoc": {
-          "line": 21,
-          "column": 5,
-          "position": 188
-        }
-      }
-    },
-    {
-      "format": "php",
-      "lines": 12,
-      "fragment": "<?php\n// Determine base path for assets\n$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' ||\n           $_SERVER['HTTP_HOST'] === '127.0.0.1' ||\n           strpos($_SERVER['HTTP_HOST'], 'local') !== false;\n$basePath = $isLocal ? '' : '/training/online/accessilist';\n?>\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"U",
+      "fragment": "nfocus\" aria-label=\"Checklist 1\" title=\"View Checkpoint 1\">\n                <img src=\"<?php echo $basePath; ?>/images/number-1-1.svg\" alt=\"Checkpoint 1 table\" class=\"active-state\" width=\"36\" height=\"36\">\n                <img src=\"<?php echo $basePath; ?>/images/number-1-0.svg\" alt=\"Checkpoint 1 table\" class=\"inactive-state\" width=\"36\" height=\"36\">\n            </a>\n        </li>\n",
       "tokens": 0,
       "firstFile": {
         "name": "/Users/a00288946/Desktop/accessilist/php/mychecklist.php",
-        "start": 1,
-        "end": 12,
-        "startLoc": {
-          "line": 1,
-          "column": 1,
-          "position": 0
-        },
-        "endLoc": {
-          "line": 12,
-          "column": 2,
-          "position": 93
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/reports.php",
-        "start": 1,
-        "end": 12,
-        "startLoc": {
-          "line": 1,
-          "column": 1,
-          "position": 0
-        },
-        "endLoc": {
-          "line": 12,
-          "column": 5,
-          "position": 93
-        }
-      }
-    },
-    {
-      "format": "php",
-      "lines": 36,
-      "fragment": "ce-width, initial-scale=1.0\">\n<title>Accessibility Checklist</title>\n    <link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/simple-modal.css?v=<?php echo time(); ?>\">\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/focus.css?v=<?php echo time(); ?>\">\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/landing.css?v=<?php echo time(); ?>\">\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/admin.css?v=<?php echo time(); ?>\">\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/form-elements.css?v=<?php echo time(); ?>\">\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/table.css?v=<?php echo time(); ?>\">\n<link rel=\"stylesheet\" href=\"<?php echo $ba",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/mychecklist.php",
-        "start": 14,
+        "start": 38,
         "end": 49,
         "startLoc": {
-          "line": 14,
-          "column": 10,
-          "position": 125
+          "line": 38,
+          "column": 7,
+          "position": 344
         },
         "endLoc": {
           "line": 49,
-          "column": 2,
-          "position": 420
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/reports.php",
-        "start": 13,
-        "end": 48,
-        "startLoc": {
-          "line": 13,
-          "column": 12,
-          "position": 112
-        },
-        "endLoc": {
-          "line": 48,
-          "column": 10,
-          "position": 406
-        }
-      }
-    },
-    {
-      "format": "php",
-      "lines": 13,
-      "fragment": "asePath; ?>/css/section.css?v=<?php echo time(); ?>\">\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/status.css?v=<?php echo time(); ?>\">\n<link rel=\"stylesheet\" href=\"<",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/mychecklist.php",
-        "start": 49,
-        "end": 61,
-        "startLoc": {
-          "line": 49,
           "column": 3,
-          "position": 420
-        },
-        "endLoc": {
-          "line": 61,
-          "column": 5,
-          "position": 506
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/reports.php",
-        "start": 54,
-        "end": 66,
-        "startLoc": {
-          "line": 54,
-          "column": 3,
-          "position": 467
-        },
-        "endLoc": {
-          "line": 66,
-          "column": 7,
-          "position": 553
-        }
-      }
-    },
-    {
-      "format": "php",
-      "lines": 12,
-      "fragment": "nt-size: 18px;\n    color: #333;\n  }\n</style>\n</head>\n<body>\n<!-- Loading Overlay -->\n<div id=\"loadingOverlay\" role=\"alert\" aria-live=\"polite\">\n  <div id=\"loadingSpinner\"></div>\n  <div id=\"loadingText\">Loading your checklist...</div>\n</div>\n\n<!-- NoScript fallback to notify users that JavaScript is required -->\n<noscript>\n<p>This application requires JavaScript to function proper",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/mychecklist.php",
-        "start": 89,
-        "end": 100,
-        "startLoc": {
-          "line": 89,
-          "column": 7,
-          "position": 807
-        },
-        "endLoc": {
-          "line": 100,
-          "column": 3,
-          "position": 952
+          "position": 489
         }
       },
       "secondFile": {
         "name": "/Users/a00288946/Desktop/accessilist/php/mychecklist.php",
-        "start": 83,
-        "end": 94,
+        "start": 32,
+        "end": 43,
         "startLoc": {
-          "line": 83,
+          "line": 32,
           "column": 6,
-          "position": 729
+          "position": 266
         },
         "endLoc": {
-          "line": 94,
+          "line": 43,
           "column": 2,
-          "position": 873
+          "position": 410
         }
       }
     },
     {
       "format": "php",
       "lines": 7,
-      "fragment": "ngs.</p>\n</noscript>\n\n<!-- Sticky Header -->\n<header class=\"sticky-header\">\n    <h1>Accessibility Checklist</h1>\n    <div class=\"header-buttons\">\n        <button id=\"saveButton\" class=\"save-button\" ari",
+      "fragment": "0)\" data-target=\"checklist-2\" aria-label=\"Checklist 2\" title=\"View Checkpoint 2\">\n                <img src=\"<?php echo $basePath; ?>/images/number-2-1.svg\" alt=\"Checkpoint 2 table\" class=\"active-state\"",
       "tokens": 0,
       "firstFile": {
         "name": "/Users/a00288946/Desktop/accessilist/php/mychecklist.php",
-        "start": 100,
-        "end": 106,
+        "start": 49,
+        "end": 55,
         "startLoc": {
-          "line": 100,
+          "line": 49,
           "column": 2,
-          "position": 975
+          "position": 512
         },
         "endLoc": {
-          "line": 106,
+          "line": 55,
           "column": 2,
-          "position": 1052
+          "position": 589
         }
       },
       "secondFile": {
         "name": "/Users/a00288946/Desktop/accessilist/php/mychecklist.php",
-        "start": 88,
-        "end": 94,
+        "start": 37,
+        "end": 43,
         "startLoc": {
-          "line": 88,
+          "line": 37,
           "column": 3,
-          "position": 795
+          "position": 332
         },
         "endLoc": {
-          "line": 94,
+          "line": 43,
           "column": 3,
-          "position": 872
-        }
-      }
-    },
-    {
-      "format": "php",
-      "lines": 8,
-      "fragment": "s/number-1-0.svg\" alt=\"Checkpoint 1 table\" class=\"inactive-state\" width=\"36\" height=\"36\">\n            </a>\n        </li>\n        <li>\n            ",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/mychecklist.php",
-        "start": 129,
-        "end": 136,
-        "startLoc": {
-          "line": 129,
-          "column": 2,
-          "position": 1290
-        },
-        "endLoc": {
-          "line": 136,
-          "column": 2,
-          "position": 1363
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/reports.php",
-        "start": 109,
-        "end": 116,
-        "startLoc": {
-          "line": 109,
-          "column": 2,
-          "position": 955
-        },
-        "endLoc": {
-          "line": 116,
-          "column": 7,
-          "position": 1028
+          "position": 409
         }
       }
     },
@@ -3138,234 +2802,18 @@
         }
       },
       "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/reports.php",
-        "start": 14,
-        "end": 21,
-        "startLoc": {
-          "line": 14,
-          "column": 1,
-          "position": 117
-        },
-        "endLoc": {
-          "line": 21,
-          "column": 2,
-          "position": 195
-        }
-      }
-    },
-    {
-      "format": "php",
-      "lines": 14,
-      "fragment": "<?php\n// Determine base path for assets\n$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' ||\n           $_SERVER['HTTP_HOST'] === '127.0.0.1' ||\n           strpos($_SERVER['HTTP_HOST'], 'local') !== false;\n$basePath = $isLocal ? '' : '/training/online/accessilist';\n?>\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\" />\n<!-- Added viewport meta for responsiveness -->\n<meta name=\"viewport\" content=\"width=devic",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/home.php",
-        "start": 1,
-        "end": 14,
-        "startLoc": {
-          "line": 1,
-          "column": 1,
-          "position": 0
-        },
-        "endLoc": {
-          "line": 14,
-          "column": 11,
-          "position": 124
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/reports.php",
-        "start": 1,
-        "end": 14,
-        "startLoc": {
-          "line": 1,
-          "column": 1,
-          "position": 0
-        },
-        "endLoc": {
-          "line": 14,
-          "column": 10,
-          "position": 124
-        }
-      }
-    },
-    {
-      "format": "php",
-      "lines": 13,
-      "fragment": "e-width, initial-scale=1.0\">\n<title>Accessibility Checklists</title>\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/simple-modal.css?v=<?php echo time(); ?>\">\n<link rel=\"stylesheet\" href=\"<?php echo",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/home.php",
-        "start": 14,
-        "end": 26,
-        "startLoc": {
-          "line": 14,
-          "column": 11,
-          "position": 125
-        },
-        "endLoc": {
-          "line": 26,
-          "column": 2,
-          "position": 241
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/reports.php",
-        "start": 13,
-        "end": 21,
-        "startLoc": {
-          "line": 13,
-          "column": 12,
-          "position": 112
-        },
-        "endLoc": {
-          "line": 21,
-          "column": 5,
-          "position": 188
-        }
-      }
-    },
-    {
-      "format": "php",
-      "lines": 9,
-      "fragment": " ?>/css/focus.css?v=<?php echo time(); ?>\">\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/landing.css?v=<?php echo time(); ?>\">\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/admin.css?v=<?php echo time(); ?>\">\n<link rel=\"stylesheet\" href",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/home.php",
-        "start": 27,
-        "end": 35,
-        "startLoc": {
-          "line": 27,
-          "column": 5,
-          "position": 247
-        },
-        "endLoc": {
-          "line": 35,
-          "column": 4,
-          "position": 341
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/mychecklist.php",
-        "start": 62,
-        "end": 71,
-        "startLoc": {
-          "line": 62,
-          "column": 4,
-          "position": 520
-        },
-        "endLoc": {
-          "line": 71,
-          "column": 3,
-          "position": 615
-        }
-      }
-    },
-    {
-      "format": "php",
-      "lines": 13,
-      "fragment": "<?php\n// Determine base path for assets\n$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' ||\n           $_SERVER['HTTP_HOST'] === '127.0.0.1' ||\n           strpos($_SERVER['HTTP_HOST'], 'local') !== false;\n$basePath = $isLocal ? '' : '/training/online/accessilist';\n?>\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"UTF-8\" />\n<meta name=\"viewport\" c",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/admin.php",
-        "start": 1,
-        "end": 13,
-        "startLoc": {
-          "line": 1,
-          "column": 1,
-          "position": 0
-        },
-        "endLoc": {
-          "line": 13,
-          "column": 6,
-          "position": 105
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/reports.php",
-        "start": 1,
-        "end": 13,
-        "startLoc": {
-          "line": 1,
-          "column": 1,
-          "position": 0
-        },
-        "endLoc": {
-          "line": 13,
-          "column": 14,
-          "position": 105
-        }
-      }
-    },
-    {
-      "format": "php",
-      "lines": 15,
-      "fragment": "ontent=\"width=device-width, initial-scale=1.0\">\n<title>Admin</title>\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/simple-modal.css\">\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/focus.css?v=<?php echo time(); ?>\">\n<link r",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/admin.php",
-        "start": 13,
-        "end": 27,
-        "startLoc": {
-          "line": 13,
-          "column": 6,
-          "position": 106
-        },
-        "endLoc": {
-          "line": 27,
-          "column": 3,
-          "position": 238
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/reports.php",
-        "start": 13,
+        "name": "/Users/a00288946/Desktop/accessilist/php/includes/html-head.php",
+        "start": 21,
         "end": 28,
         "startLoc": {
-          "line": 13,
-          "column": 12,
+          "line": 21,
+          "column": 1,
           "position": 112
         },
         "endLoc": {
           "line": 28,
-          "column": 3,
-          "position": 257
-        }
-      }
-    },
-    {
-      "format": "php",
-      "lines": 9,
-      "fragment": "p echo time(); ?>\">\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/landing.css\">\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/admin.css\">\n<link rel=\"stylesheet\" href=\"<?php echo $basePath; ?>/css/fo",
-      "tokens": 0,
-      "firstFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/admin.php",
-        "start": 26,
-        "end": 34,
-        "startLoc": {
-          "line": 26,
-          "column": 5,
-          "position": 228
-        },
-        "endLoc": {
-          "line": 34,
-          "column": 6,
-          "position": 310
-        }
-      },
-      "secondFile": {
-        "name": "/Users/a00288946/Desktop/accessilist/php/reports.php",
-        "start": 67,
-        "end": 76,
-        "startLoc": {
-          "line": 67,
-          "column": 4,
-          "position": 565
-        },
-        "endLoc": {
-          "line": 76,
-          "column": 14,
-          "position": 648
+          "column": 2,
+          "position": 190
         }
       }
     },

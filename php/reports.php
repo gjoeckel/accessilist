@@ -1,64 +1,11 @@
 <?php
-// Determine base path for assets
-$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' ||
-           $_SERVER['HTTP_HOST'] === '127.0.0.1' ||
-           strpos($_SERVER['HTTP_HOST'], 'local') !== false;
-$basePath = $isLocal ? '' : '/training/online/accessilist';
+require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/includes/html-head.php';
+require_once __DIR__ . '/includes/footer.php';
+require_once __DIR__ . '/includes/common-scripts.php';
+
+renderHTMLHead('Accessibility Report - AccessiList', true);
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accessibility Report - AccessiList</title>
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/simple-modal.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/focus.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/landing.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/admin.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/form-elements.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/table.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/section.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/status.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/side-panel.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/header.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/base.css">
-<style>
-  /* Loading overlay styles */
-  #loadingOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.9);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  }
-
-  #loadingSpinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
-    border-radius: 50%;
-    margin-bottom: 20px;
-    animation: spin 1s linear infinite;
-  }
-
-  @keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-  }
-
-  #loadingText {
-    font-size: 18px;
-    color: #333;
-  }
-</style>
-</head>
 <body>
 <!-- Loading Overlay -->
 <div id="loadingOverlay" role="alert" aria-live="polite">
@@ -66,10 +13,7 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
   <div id="loadingText">Loading report...</div>
 </div>
 
-<!-- NoScript fallback -->
-<noscript>
-<p>This application requires JavaScript to function properly. Please enable JavaScript in your browser settings.</p>
-</noscript>
+<?php require __DIR__ . '/includes/noscript.php'; ?>
 
 <!-- Sticky Header -->
 <header class="sticky-header">
@@ -106,15 +50,10 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
     </div>
 </main>
 
-<!-- Footer -->
-<div class="status-footer" role="contentinfo" aria-live="polite">
-    <p class="copyright-text">© 2025 NCADEMI. All rights reserved.</p>
-    <div class="status-content"></div>
-</div>
+<?php renderFooter('status'); ?>
 
 <!-- Scripts -->
-<script type="module" src="<?php echo $basePath; ?>/js/path-utils.js?v=<?php echo time(); ?>"></script>
-<script type="module" src="<?php echo $basePath; ?>/js/date-utils.js?v=<?php echo time(); ?>"></script>
+<?php renderCommonScripts('report'); ?>
 
 <!-- Report-specific JavaScript -->
 <script type="module">

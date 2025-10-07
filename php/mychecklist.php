@@ -1,59 +1,11 @@
 <?php
-// Determine base path for assets
-$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' ||
-           $_SERVER['HTTP_HOST'] === '127.0.0.1' ||
-           strpos($_SERVER['HTTP_HOST'], 'local') !== false;
-$basePath = $isLocal ? '' : '/training/online/accessilist';
+require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/includes/html-head.php';
+require_once __DIR__ . '/includes/footer.php';
+require_once __DIR__ . '/includes/common-scripts.php';
+
+renderHTMLHead('Accessibility Checklist', true);
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<!-- Added viewport meta for responsiveness -->
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Accessibility Checklist</title>
-    <link rel="stylesheet" href="<?php echo $basePath; ?>/css/simple-modal.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/focus.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/landing.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/admin.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/form-elements.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/table.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/section.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/status.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/side-panel.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/header.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/base.css?v=<?php echo time(); ?>">
-<style>
-  /* Loading overlay styles */
-  #loadingOverlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(255, 255, 255, 0.9);
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-  }
-
-  #loadingSpinner {
-    width: 50px;
-    height: 50px;
-    border: 5px solid #f3f3f3;
-    border-top: 5px solid #3498db;
-    border-radius: 50%;
-    margin-bottom: 20px;
-  }
-
-  #loadingText {
-    font-size: 18px;
-    color: #333;
-  }
-</style>
-</head>
 <body>
 <!-- Loading Overlay -->
 <div id="loadingOverlay" role="alert" aria-live="polite">
@@ -61,10 +13,7 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
   <div id="loadingText">Loading your checklist...</div>
 </div>
 
-<!-- NoScript fallback to notify users that JavaScript is required -->
-<noscript>
-<p>This application requires JavaScript to function properly. Please enable JavaScript in your browser settings.</p>
-</noscript>
+<?php require __DIR__ . '/includes/noscript.php'; ?>
 
 <!-- Sticky Header -->
 <header class="sticky-header">
@@ -126,30 +75,10 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
     <p>© 2025 NCADEMI. All rights reserved.</p>
 </footer> -->
 
-<!-- Status Footer -->
-<div class="status-footer" role="contentinfo" aria-live="polite">
-    <p class="copyright-text">© 2025 NCADEMI. All rights reserved.</p>
-    <div class="status-content"></div>
-</div>
+<?php renderFooter('status'); ?>
 
 <!-- Scripts -->
-<!-- Path configuration handled by path-utils.js -->
-<script type="module" src="<?php echo $basePath; ?>/js/path-utils.js?v=<?php echo time(); ?>"></script>
-<script src="<?php echo $basePath; ?>/js/type-manager.js?v=<?php echo time(); ?>"></script>
-<script type="module" src="<?php echo $basePath; ?>/js/StatusManager.js?v=<?php echo time(); ?>"></script>
-<script src="<?php echo $basePath; ?>/js/simple-modal.js?v=<?php echo time(); ?>"></script>
-<script src="<?php echo $basePath; ?>/js/ModalActions.js?v=<?php echo time(); ?>"></script>
-<script type="module" src="<?php echo $basePath; ?>/js/ui-components.js?v=<?php echo time(); ?>"></script>
-
-<!-- Utilities (shared across modules) -->
-<script type="module" src="<?php echo $basePath; ?>/js/date-utils.js?v=<?php echo time(); ?>"></script>
-
-<!-- Unified Save/Restore System (NEW - replaces 7 legacy modules) -->
-<script type="module" src="<?php echo $basePath; ?>/js/StateManager.js?v=<?php echo time(); ?>"></script>
-<script type="module" src="<?php echo $basePath; ?>/js/StateEvents.js?v=<?php echo time(); ?>"></script>
-
-<!-- Main application (refactored to use unified system) -->
-<script type="module" src="<?php echo $basePath; ?>/js/main.js?v=<?php echo time(); ?>"></script>
+<?php renderCommonScripts('checklist'); ?>
 <script>
   // Make checklist type and session key available to JavaScript (supports minimal URL include)
   window.checklistTypeFromPHP = '<?php echo isset($_GET['type']) ? htmlspecialchars($_GET['type'], ENT_QUOTES, 'UTF-8') : ''; ?>';

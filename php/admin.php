@@ -1,33 +1,13 @@
 <?php
-// Determine base path for assets
-$isLocal = $_SERVER['HTTP_HOST'] === 'localhost' ||
-           $_SERVER['HTTP_HOST'] === '127.0.0.1' ||
-           strpos($_SERVER['HTTP_HOST'], 'local') !== false;
-$basePath = $isLocal ? '' : '/training/online/accessilist';
+require_once __DIR__ . '/includes/config.php';
+require_once __DIR__ . '/includes/html-head.php';
+require_once __DIR__ . '/includes/footer.php';
+require_once __DIR__ . '/includes/common-scripts.php';
+
+renderHTMLHead('Admin');
 ?>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Admin</title>
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/simple-modal.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/focus.css?v=<?php echo time(); ?>">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/landing.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/admin.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/form-elements.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/table.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/section.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/status.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/side-panel.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/header.css">
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/base.css">
-</head>
 <body>
-<!-- NoScript fallback -->
-<noscript>
-<p>This application requires JavaScript to function properly. Please enable JavaScript in your browser settings.</p>
-</noscript>
+<?php require __DIR__ . '/includes/noscript.php'; ?>
 
 <!-- Sticky Header -->
 <header class="sticky-header">
@@ -65,19 +45,12 @@ $basePath = $isLocal ? '' : '/training/online/accessilist';
     </section>
 </main>
 
-<!-- Footer -->
-<footer role="contentinfo">
-    <p>© 2025 NCADEMI. All rights reserved.</p>
-</footer>
+<?php renderFooter('standard'); ?>
 
 <!-- Old modal HTML removed - now using SimpleModal system -->
 
-<!-- Path Configuration -->
-<script src="<?php echo $basePath; ?>/js/path-utils.js?v=<?php echo time(); ?>"></script>
-<script src="<?php echo $basePath; ?>/js/type-manager.js?v=<?php echo time(); ?>"></script>
-<script type="module" src="<?php echo $basePath; ?>/js/ui-components.js?v=<?php echo time(); ?>"></script>
-<script src="<?php echo $basePath; ?>/js/simple-modal.js?v=<?php echo time(); ?>"></script>
-<script src="<?php echo $basePath; ?>/js/ModalActions.js?v=<?php echo time(); ?>"></script>
+<!-- Scripts -->
+<?php renderCommonScripts('admin'); ?>
 <script>
 // Error monitoring for debugging
 window.addEventListener('error', function(e) {
