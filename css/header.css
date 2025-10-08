@@ -72,6 +72,22 @@
     background-color: #333;
 }
 
+/* Header buttons group for multiple buttons on right */
+.header-buttons-group {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+.header-buttons-group .header-button {
+    position: static;
+    transform: none;
+}
+
 /* Save Button - Exact match to Home button except color */
 #saveButton {
     position: absolute;
@@ -110,6 +126,13 @@
 #adminButton,
 #cancelButton {
     background-color: #333;
+    color: white;
+}
+
+/* Reports button */
+.reports-button,
+#reportsButton {
+    background-color: #336699;
     color: white;
 }
 

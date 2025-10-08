@@ -12,7 +12,10 @@ renderHTMLHead('Accessibility Checklists');
 <header class="sticky-header">
     <div class="header-content">
         <h1>Accessibility Checklists</h1>
-        <button id="adminButton" class="header-button">Admin</button>
+        <div class="header-buttons-group">
+            <button id="adminButton" class="header-button">Admin</button>
+            <button id="reportsButton" class="header-button reports-button">Reports</button>
+        </div>
     </div>
 </header>
 
@@ -87,6 +90,14 @@ renderHTMLHead('Accessibility Checklists');
     if (adminButton) {
       adminButton.addEventListener('click', function() {
         window.location.href = '<?php echo $basePath; ?>/admin';
+      });
+    }
+
+    // Connect Reports button to redirect to reports
+    const reportsButton = document.getElementById('reportsButton');
+    if (reportsButton) {
+      reportsButton.addEventListener('click', function() {
+        window.location.href = '<?php echo $basePath; ?>/reports';
       });
     }
 
