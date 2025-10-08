@@ -7,8 +7,24 @@ if (!in_array($_SERVER['REQUEST_METHOD'], ['GET', 'POST'])) {
 }
 
 /**
+ * Reserved keys for demo files
+ * These keys are reserved and will not be generated for users
+ */
+function getReservedKeys() {
+    return ['WRD', 'PPT', 'XLS', 'DOC', 'SLD', 'CAM', 'DJO'];
+}
+
+/**
+ * Check if a key is reserved
+ */
+function isReservedKey($key) {
+    return in_array($key, getReservedKeys(), true);
+}
+
+/**
  * Generate a random 3-character alphanumeric key
  * Uses cryptographically secure random_int()
+ * Skips reserved demo keys
  */
 function generateRandomKey() {
     $chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
@@ -37,6 +53,12 @@ function generateUniqueKey() {
 
     for ($i = 0; $i < $maxAttempts; $i++) {
         $key = generateRandomKey();
+
+        // Skip reserved demo keys
+        if (isReservedKey($key)) {
+            continue;
+        }
+
         $filename = "$savesDir/$key.json";
 
         if (!file_exists($filename)) {

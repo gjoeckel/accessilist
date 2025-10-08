@@ -49,7 +49,34 @@ php -S localhost:8000 router.php
 - `router.php` mirrors `.htaccess` rewrites for clean URLs; fastest iteration.
 - Use when Docker isn’t available.
 
-#### 4. Minimal Verification (Constrained Agents)
+#### 4. Production-Mirror Testing (Local Apache)
+
+For comprehensive production validation before deployment:
+
+```bash
+# One-time setup: Create production path structure
+sudo ./scripts/setup-production-path.sh
+
+# Setup/start local Apache
+npm run apache-start
+
+# Run comprehensive tests (30 automated tests)
+./scripts/test-production-mirror.sh
+```
+
+**What it tests:**
+- ✅ Production-style clean URLs (`/home`, `/admin`, `/reports`)
+- ✅ Extensionless API endpoints
+- ✅ Complete save/restore workflow
+- ✅ Static assets with production paths
+- ✅ Content verification
+- ✅ Error handling
+
+**See**: `PRODUCTION-MIRROR-TESTING.md` for complete guide
+
+**Latest Results**: 100% pass rate (30/30 tests) - `PRODUCTION-MIRROR-TEST-RESULTS.md`
+
+#### 5. Minimal Verification (Constrained Agents)
 
 - Prefer MCP tools. If Chrome MCP is available, check `http://127.0.0.1:8080/home` and `/php/api/list`.
 - Fallback for PHP router: `http://localhost:8000/index.php` expecting 200.

@@ -23,8 +23,8 @@ Options -MultiViews
 # Reports page: /reports → /php/reports.php
 RewriteRule ^reports/?$ php/reports.php [L]
 
-  # Checklist report page: /checklist-report → /php/checklist-report.php
-  RewriteRule ^checklist-report/?$ php/checklist-report.php [L]
+  # User report page: /report → /php/report.php
+  RewriteRule ^report/?$ php/report.php [L,QSA]
 
   # --- API Routes: extensionless to .php (preserve method) ---
   # Matches /php/api/save → /php/api/save.php (and similarly for restore, list, delete, health)

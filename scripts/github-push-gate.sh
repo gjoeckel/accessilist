@@ -99,8 +99,9 @@ secure_git_push() {
         return 1
     fi
 
-    # Token is valid, proceed with deployment
-    echo -e "${BLUE}📋 Deploying to production...${NC}"
+    # Token is valid, proceed with push
+    echo -e "${BLUE}📋 Pushing to GitHub...${NC}"
+    echo ""
 
     # Push to GitHub
     echo -e "${GREEN}🚀 Pushing to GitHub repository...${NC}"
@@ -120,65 +121,18 @@ secure_git_push() {
         fi
     fi
 
-    # Step 3: Deploy to AWS production
-    echo -e "${BLUE}🚀 Deploying to AWS production...${NC}"
+    echo -e "${GREEN}✅ Pushed to GitHub successfully!${NC}"
+    echo ""
+    echo -e "${BLUE}🤖 GitHub Actions Deployment:${NC}"
+    echo "  • Workflow: deploy-simple.yml"
+    echo "  • Trigger: Push to $current_branch detected"
+    echo "  • Status: Deployment starting automatically..."
+    echo "  • Monitor: https://github.com/gjoeckel/accessilist/actions"
+    echo ""
+    echo -e "${YELLOW}Note: GitHub Actions will deploy to AWS production${NC}"
+    echo -e "${YELLOW}      Estimated time: 1-2 minutes${NC}"
+    echo ""
 
-    # AWS deployment configuration
-    local PEM_FILE="/Users/a00288946/Developer/projects/GeorgeWebAIMServerKey.pem"
-    local SERVER="george@ec2-3-20-59-76.us-east-2.compute.amazonaws.com"
-    local REMOTE_PATH="/var/websites/webaim/htdocs/training/online/accessilist"
-    local LOCAL_PATH="$(pwd)"
-
-    # Deploy files to AWS
-    rsync -avz --progress \
-      --filter='P .env' \
-      --filter='P .env.*' \
-      --exclude .git/ \
-      --exclude .gitignore \
-      --exclude .cursor/ \
-      --exclude node_modules/ \
-      --exclude .DS_Store \
-      --exclude .env \
-      --exclude .env.local \
-      --exclude .env.backup \
-      --exclude saves/ \
-      --exclude logs/ \
-      --exclude tests/ \
-      --exclude backups/ \
-      --exclude archive/ \
-      --exclude my-mcp-servers/ \
-      --exclude _notes/ \
-      --exclude docs/ \
-      --exclude scripts/ \
-      --exclude '*.md' \
-      --exclude '*.backup' \
-      --exclude '*.bak' \
-      --exclude '*.log' \
-      --exclude php-server.log \
-      --exclude .php-server.pid \
-      -e "ssh -i $PEM_FILE" \
-      "$LOCAL_PATH/" \
-      "$SERVER:$REMOTE_PATH/"
-
-    rsync_exit=$?
-    # Exit code 0 = success, 23 = partial transfer (some files vanished, but OK)
-    if [ $rsync_exit -eq 0 ] || [ $rsync_exit -eq 23 ]; then
-        echo -e "${GREEN}✅ Deployment successful!${NC}"
-
-        # Verify deployment
-        echo -e "${BLUE}🔍 Verifying deployment...${NC}"
-        sleep 2
-
-        if curl -s -o /dev/null -w "%{http_code}" "https://webaim.org/training/online/accessilist/home" | grep -q "200"; then
-            echo -e "${GREEN}✅ Production site is responding${NC}"
-        else
-            echo -e "${YELLOW}⚠️  Production site check returned non-200 status${NC}"
-        fi
-    else
-        echo -e "${RED}❌ Deployment failed${NC}"
-    fi
-
-    echo -e "${GREEN}✅ GitHub push and deployment complete!${NC}"
     return 0
 }
 

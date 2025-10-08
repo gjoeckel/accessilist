@@ -36,7 +36,20 @@ jobs:
           --exclude .cursor/ \
           --exclude node_modules/ \
           --exclude deploy-temp/ \
+          --exclude .env \
+          --exclude .env.* \
+          --exclude saves/ \
+          --exclude logs/ \
+          --exclude tests/ \
+          --exclude backups/ \
+          --exclude archive/ \
+          --exclude my-mcp-servers/ \
+          --exclude docs/ \
+          --exclude scripts/ \
+          --exclude "*.md" \
           --exclude "*.log" \
+          --exclude "*.backup" \
+          --exclude "*.bak" \
           . deploy-temp/
 
     - name: Setup SSH
@@ -54,6 +67,9 @@ jobs:
     - name: Deploy files
       run: |
         rsync -avz --delete --no-times --no-perms --no-group \
+          --filter='P .env' \
+          --filter='P .env.*' \
+          --filter='P saves/' \
           -e "ssh -o StrictHostKeyChecking=no" \
           deploy-temp/ \
           ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/
