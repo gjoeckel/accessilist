@@ -1,0 +1,41 @@
+{
+  "name": "@gjoeckel/mcp-agent-autonomy",
+  "version": "1.0.1",
+  "description": "Agent Autonomy Workflow Server - Execute predefined workflows without approval",
+  "main": "build/index.js",
+  "bin": {
+    "mcp-agent-autonomy": "./build/index.js"
+  },
+  "scripts": {
+    "build": "tsc",
+    "prepare": "npm run build",
+    "start": "node build/index.js",
+    "test": "echo \"No tests specified\" && exit 0"
+  },
+  "keywords": [
+    "mcp",
+    "workflow",
+    "automation",
+    "autonomous",
+    "model-context-protocol"
+  ],
+  "author": "gjoeckel",
+  "license": "ISC",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.0",
+    "zod": "^3.22.0"
+  },
+  "devDependencies": {
+    "@types/node": "^20.0.0",
+    "typescript": "^5.0.0"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gjoeckel/my-mcp-servers.git",
+    "directory": "packages/agent-autonomy"
+  }
+}
+

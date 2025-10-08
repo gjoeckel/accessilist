@@ -1,28 +1,28 @@
 # My Custom MCP Servers
 
 **Repository**: [https://github.com/gjoeckel/my-mcp-servers](https://github.com/gjoeckel/my-mcp-servers)
-**Purpose**: Custom MCP servers with minimal tool sets for 35-tool limit compliance
-**Target**: Exactly 35 tools across 5 servers for optimal AI autonomous operation
+**Purpose**: Custom MCP servers with minimal tool sets for 39-tool limit compliance
+**Target**: Exactly 39 tools across 6 servers for optimal AI autonomous operation
 
 ---
 
 ## 🎯 **STRATEGY OVERVIEW**
 
-This repository contains custom forks of official MCP servers, reduced to only essential tools to stay within the 35-tool limit while maintaining full functionality.
+This repository contains custom forks of official MCP servers, reduced to only essential tools to stay within the 39-tool limit while maintaining full functionality.
 
-### **35-Tool Configuration**
+### **39-Tool Configuration** (Current)
 ```
-✅ CUSTOM SERVERS (Forked & Reduced):
-├── github-minimal: 4 tools (reduced from 20+ tools)
-├── shell-minimal: 4 tools (custom implementation)
-├── puppeteer-minimal: 4 tools (reduced from 12+ tools)
-└── sequential-thinking-minimal: 4 tools (reduced from original)
-
-✅ OFFICIAL SERVERS (Unchanged):
+✅ OFFICIAL SERVERS:
 ├── filesystem: 15 tools (all essential)
 └── memory: 8 tools (all essential)
 
-TOTAL: 4 + 4 + 4 + 4 + 15 + 8 = 35 tools ✅
+✅ CUSTOM SERVERS (Minimal implementations):
+├── shell-minimal: 4 tools (custom implementation)
+├── github-minimal: 4 tools (reduced from 20+ tools)
+├── puppeteer-minimal: 4 tools (reduced from 12+ tools)
+└── agent-autonomy: 4 tools (workflow automation)
+
+TOTAL: 15 + 8 + 4 + 4 + 4 + 4 = 39 tools ✅
 ```
 
 ---
@@ -57,10 +57,23 @@ TOTAL: 4 + 4 + 4 + 4 + 15 + 8 = 35 tools ✅
 - `kill_process` - Stop processes
 - `get_environment` - Check environment variables
 
-**Tools Removed** (6+ tools):
-- `check_status`, `get_system_info`, `monitor_performance`
-- `backup_files`, `restore_files`, `schedule_task`
-- And more...
+### **Agent Autonomy** (`packages/agent-autonomy/`)
+**Original**: Custom implementation for workflow automation
+**Custom**: 4 workflow tools only
+**Published**: npm package `mcp-agent-autonomy@1.0.1`
+
+**Tools Included**:
+- `execute_workflow` - Execute predefined workflows autonomously
+- `list_workflows` - List all available workflows
+- `register_workflow` - Register new workflows at runtime
+- `check_approval` - Check command approval status
+
+**Key Features**:
+- Autonomous execution without approval prompts
+- Workflow definitions in `.cursor/workflows.json`
+- Multi-step command orchestration
+- Error handling and logging
+- Zero additional tool overhead for unlimited workflows
 
 ### **Puppeteer Minimal** (`packages/puppeteer-minimal/`)
 **Original**: `@modelcontextprotocol/server-puppeteer` (12+ tools)
@@ -134,9 +147,12 @@ Update your `.cursor/mcp.json`:
       "command": "node",
       "args": ["/path/to/my-mcp-servers/packages/puppeteer-minimal/build/index.js"]
     },
-    "sequential-thinking-minimal": {
+    "agent-autonomy": {
       "command": "node",
-      "args": ["/path/to/my-mcp-servers/packages/sequential-thinking-minimal/build/index.js"]
+      "args": ["/path/to/my-mcp-servers/packages/agent-autonomy/build/index.js"],
+      "env": {
+        "WORKING_DIRECTORY": "/path/to/your/project"
+      }
     },
     "filesystem": {
       "command": "npx",
@@ -178,9 +194,12 @@ When packages are published to npm:
       "command": "npx",
       "args": ["-y", "@gjoeckel/mcp-puppeteer-minimal"]
     },
-    "sequential-thinking-minimal": {
+    "agent-autonomy": {
       "command": "npx",
-      "args": ["-y", "@gjoeckel/mcp-sequential-thinking-minimal"]
+      "args": ["-y", "mcp-agent-autonomy@1.0.1"],
+      "env": {
+        "WORKING_DIRECTORY": "/path/to/your/project"
+      }
     },
     "filesystem": {
       "command": "npx",
@@ -202,9 +221,12 @@ When packages are published to npm:
 ```
 my-mcp-servers/
 ├── packages/
-│   ├── github-minimal/          # Forked GitHub server (4 tools)
 │   ├── shell-minimal/           # Custom shell server (4 tools)
-│   └── puppeteer-minimal/       # Forked Puppeteer server (4 tools)
+│   ├── github-minimal/          # Forked GitHub server (4 tools)
+│   ├── puppeteer-minimal/       # Forked Puppeteer server (4 tools)
+│   ├── agent-autonomy/          # Workflow automation (4 tools) - Published to npm
+│   ├── sequential-thinking-minimal/  # DEPRECATED - Not in current config
+│   └── everything-minimal/      # DEPRECATED - Not in current config
 ├── scripts/
 │   ├── build-all.sh            # Build all packages
 │   ├── link-all.sh             # Link all packages globally
@@ -252,18 +274,24 @@ git merge upstream/main
 ### **Current Tool Distribution**
 | Server | Original Tools | Custom Tools | Reduction | Status |
 |--------|----------------|--------------|-----------|---------|
-| GitHub | 20+ | 4 | 80% | ✅ Complete |
-| Shell | Custom | 4 | N/A | ✅ Complete |
-| Puppeteer | 12+ | 4 | 67% | ✅ Complete |
-| Sequential Thinking | 8+ | 4 | 50% | ✅ Complete |
 | Filesystem | 15 | 15 | 0% | ✅ Official |
 | Memory | 8 | 8 | 0% | ✅ Official |
-| **TOTAL** | **63+** | **35** | **44%** | ✅ **PERFECT** |
+| Shell Minimal | Custom | 4 | N/A | ✅ Custom |
+| GitHub Minimal | 20+ | 4 | 80% | ✅ Custom |
+| Puppeteer Minimal | 12+ | 4 | 67% | ✅ Custom |
+| Agent Autonomy | Custom | 4 | N/A | ✅ Published |
+| **TOTAL** | **55+** | **39** | **29%** | ✅ **OPTIMIZED** |
+
+### **Deprecated Servers** (Not in current configuration)
+| Server | Status | Reason |
+|--------|--------|--------|
+| Sequential Thinking Minimal | ❌ Removed | Freed tool slots for agent-autonomy |
+| Everything Minimal | ❌ Removed | Freed tool slots for agent-autonomy |
 
 ### **Verification Commands**
 ```bash
 # Check tool count in Cursor IDE
-# The AI should have exactly 35 tools available
+# The AI should have exactly 39 tools available
 
 # Manual verification
 npm run verify-tool-count
@@ -287,9 +315,10 @@ npm run health-check
 - ✅ **Easy Updates**: Can pull upstream bug fixes
 
 ### **Compliance**
-- ✅ **35-Tool Limit**: Exactly at the optimal limit
+- ✅ **39-Tool Configuration**: Optimized configuration under 40-tool limit
 - ✅ **No Bloat**: No unused or rarely-used tools
 - ✅ **Full Functionality**: All essential operations preserved
+- ✅ **Workflow Automation**: Unlimited workflows via agent-autonomy (4 tools)
 
 ---
 
@@ -302,10 +331,11 @@ npm run health-check
 5. Submit a pull request
 
 ### **Guidelines**
-- Maintain the 35-tool limit
+- Maintain the 39-tool configuration (under 40-tool limit)
 - Document any new tools
 - Test with Cursor IDE integration
 - Keep tool descriptions clear and concise
+- Consider workflow-based features (agent-autonomy) for scalability
 
 ---
 
@@ -323,4 +353,4 @@ ISC License - See individual package licenses for details.
 
 ---
 
-*This repository provides optimized MCP servers for AI autonomous operation within the 35-tool limit while maintaining full essential functionality.*
+*This repository provides optimized MCP servers for AI autonomous operation within the 39-tool configuration (under 40-tool limit) while maintaining full essential functionality and workflow automation capabilities.*
