@@ -15,6 +15,9 @@ renderHTMLHead('Accessibility Checklist', true);
 
 <?php require __DIR__ . '/includes/noscript.php'; ?>
 
+<!-- Skip Link -->
+<a href="#first-principle" class="skip-link">Skip to checklist</a>
+
 <!-- Sticky Header -->
 <header class="sticky-header">
     <h1>Accessibility Checklist</h1>
@@ -52,7 +55,7 @@ renderHTMLHead('Accessibility Checklist', true);
                 <img src="<?php echo $basePath; ?>/images/number-3-0.svg" alt="Checkpoint 3 table" class="inactive-state" width="36" height="36">
             </a>
         </li>
-        <li id="checklist-4-section" style="display: none;" role="region" aria-live="polite" aria-label="Checkpoint 4 table" aria-hidden="true">
+        <li id="checklist-4-section" role="region" aria-live="polite" aria-label="Checkpoint 4 table" aria-hidden="true">
             <a href="javascript:void(0)" data-target="checklist-4" aria-label="Checkpoint 4" title="View Checkpoint 4">
                 <img src="<?php echo $basePath; ?>/images/number-4-1.svg" alt="Checkpoint 4 table" class="active-state" width="36" height="36">
                 <img src="<?php echo $basePath; ?>/images/number-4-0.svg" alt="Checkpoint 4 table" class="inactive-state" width="36" height="36">
@@ -65,7 +68,7 @@ renderHTMLHead('Accessibility Checklist', true);
 </nav>
 
 <!-- Main Content -->
-<main role="main" aria-label="Accessibility checklist content">
+<main role="main" id="main-content" tabindex="-1" aria-label="Accessibility checklist content">
     <!-- Content will be generated dynamically -->
     <div id="content">
         <section class="principles-container">
@@ -84,6 +87,29 @@ renderHTMLHead('Accessibility Checklist', true);
 <?php renderFooter('status'); ?>
 
 <!-- Scripts -->
+<script>
+  // Prevent browser from restoring scroll position
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  // Reset scroll position immediately
+  window.scrollTo(0, 0);
+
+  // Handle skip link - focus on first h2 without scrolling
+  document.addEventListener('DOMContentLoaded', function() {
+    const skipLink = document.querySelector('.skip-link');
+    if (skipLink) {
+      skipLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        // Find first h2 in principles container
+        const firstH2 = document.querySelector('.principles-container h2');
+        if (firstH2) {
+          firstH2.focus();
+        }
+      });
+    }
+  });
+</script>
 <?php renderCommonScripts('checklist'); ?>
 <script>
   // Make checklist type and session key available to JavaScript (supports minimal URL include)
@@ -92,6 +118,7 @@ renderHTMLHead('Accessibility Checklist', true);
 </script>
 <script type="module">
   document.addEventListener('DOMContentLoaded', function() {
+
     try {
       // Initialize UI components
       if (typeof initializeUIComponents === 'function') {
@@ -126,7 +153,7 @@ renderHTMLHead('Accessibility Checklist', true);
         });
       }
 
-      // Report button handler - open report in new window
+      // Report button handler - open report in same tab
       const reportButton = document.getElementById('reportButton');
       if (reportButton) {
         reportButton.addEventListener('click', function() {
@@ -135,7 +162,7 @@ renderHTMLHead('Accessibility Checklist', true);
             const reportUrl = window.basePath
               ? `${window.basePath}/report?session=${sessionKey}`
               : `/report?session=${sessionKey}`;
-            window.open(reportUrl, '_blank', 'noopener,noreferrer');
+            window.location.href = reportUrl;
           } else {
             console.error('Session key not available for report');
           }

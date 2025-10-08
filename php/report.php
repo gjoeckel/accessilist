@@ -30,14 +30,18 @@ if (!file_exists($sessionFile)) {
 
 renderHTMLHead('My Checklist Report');
 ?>
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/report.css?v=<?php echo time(); ?>">
 <body>
 <?php require __DIR__ . '/includes/noscript.php'; ?>
+
+<!-- Skip Link -->
+<a href="#report-caption" class="skip-link">Skip to report table</a>
 
 <!-- Sticky Header -->
 <header class="sticky-header">
     <h1>Report</h1>
-    <button id="homeButton" class="home-button" aria-label="Go to home page">
-        <span class="button-text">Home</span>
+    <button id="backButton" class="back-button" aria-label="Back to checklist">
+        <span class="button-text">Back</span>
     </button>
     <div class="header-buttons-group">
         <button id="refreshButton" class="header-button" aria-label="Refresh report data">
@@ -53,12 +57,21 @@ renderHTMLHead('My Checklist Report');
         <div class="filter-group" role="group" aria-label="Filter tasks by status">
             <button
                 id="filter-completed"
-                class="filter-button active"
+                class="filter-button"
                 data-filter="completed"
-                aria-pressed="true"
+                aria-pressed="false"
                 aria-label="Show completed tasks">
                 <span class="filter-label">Completed</span>
                 <span class="filter-count" id="count-completed">0</span>
+            </button>
+            <button
+                id="filter-in-progress"
+                class="filter-button"
+                data-filter="in-progress"
+                aria-pressed="false"
+                aria-label="Show in progress tasks">
+                <span class="filter-label">In Progress</span>
+                <span class="filter-count" id="count-in-progress">0</span>
             </button>
             <button
                 id="filter-pending"
@@ -70,18 +83,18 @@ renderHTMLHead('My Checklist Report');
                 <span class="filter-count" id="count-pending">0</span>
             </button>
             <button
-                id="filter-in-progress"
-                class="filter-button"
-                data-filter="in-progress"
-                aria-pressed="false"
-                aria-label="Show in progress tasks">
-                <span class="filter-label">In Progress</span>
-                <span class="filter-count" id="count-in-progress">0</span>
+                id="filter-all"
+                class="filter-button active"
+                data-filter="all"
+                aria-pressed="true"
+                aria-label="Show all tasks">
+                <span class="filter-label">All</span>
+                <span class="filter-count" id="count-all">0</span>
             </button>
         </div>
 
         <!-- Last Update Timestamp -->
-        <h2 id="report-caption" tabindex="-1"><span id="report-type-name">Checklist</span> last updated: <span id="last-update-time">Loading...</span></h2>
+        <h2 id="report-caption" tabindex="-1"><span id="report-type-name">Checklist</span> last updated: <span id="last-update-time" aria-live="polite" aria-atomic="true">Loading...</span></h2>
 
         <!-- Table Container -->
         <div class="admin-container">
@@ -105,6 +118,29 @@ renderHTMLHead('My Checklist Report');
 <?php renderFooter(); ?>
 
 <!-- Scripts -->
+<script>
+  // Prevent browser from restoring scroll position
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  // Reset scroll position immediately
+  window.scrollTo(0, 0);
+
+  // Handle skip link - focus without scrolling
+  document.addEventListener('DOMContentLoaded', function() {
+    const skipLink = document.querySelector('.skip-link');
+    if (skipLink) {
+      skipLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.focus();
+        }
+      });
+    }
+  });
+</script>
 <?php renderCommonScripts('admin'); ?>
 
 <!-- Date utilities -->
@@ -117,6 +153,7 @@ import { UserReportManager } from '<?php echo $basePath; ?>/js/report.js?v=<?php
 const sessionKey = '<?php echo htmlspecialchars($sessionKey, ENT_QUOTES, 'UTF-8'); ?>';
 
 document.addEventListener('DOMContentLoaded', function() {
+
     console.log('Initializing user report page for session:', sessionKey);
 
     // Update timestamp on page load
@@ -126,14 +163,12 @@ document.addEventListener('DOMContentLoaded', function() {
     const reportManager = new UserReportManager(sessionKey);
     reportManager.initialize();
 
-    // Set up Home button
-    const homeButton = document.getElementById('homeButton');
-    if (homeButton) {
-        homeButton.addEventListener('click', function() {
-            const target = window.getPHPPath
-                ? window.getPHPPath('home')
-                : '/home';
-            window.location.href = target;
+    // Set up Back button to return to checklist
+    const backButton = document.getElementById('backButton');
+    if (backButton) {
+        backButton.addEventListener('click', function() {
+            const basePath = window.ENV?.basePath || '';
+            window.location.href = `${basePath}/?=${sessionKey}`;
         });
     }
 
@@ -148,11 +183,17 @@ document.addEventListener('DOMContentLoaded', function() {
 
 function refreshData() {
     const refreshButton = document.getElementById('refreshButton');
+    const statusContent = document.querySelector('.status-content');
     if (!refreshButton) return;
 
     // Indicate refresh in progress
     refreshButton.setAttribute('aria-busy', 'true');
     refreshButton.disabled = true;
+
+    if (statusContent) {
+        statusContent.textContent = 'Refreshing report...';
+        statusContent.classList.remove('status-success', 'status-error');
+    }
 
     // Reload the report data
     const reportManager = new UserReportManager(sessionKey);
@@ -163,10 +204,30 @@ function refreshData() {
         // After refresh completes
         refreshButton.setAttribute('aria-busy', 'false');
         refreshButton.disabled = false;
+
+        // Announce completion to screen readers
+        if (statusContent) {
+            statusContent.textContent = 'Report refreshed successfully';
+            statusContent.classList.add('status-success');
+            setTimeout(() => {
+                statusContent.textContent = '';
+                statusContent.classList.remove('status-success');
+            }, 5000);
+        }
     }).catch(error => {
         console.error('Error refreshing data:', error);
         refreshButton.setAttribute('aria-busy', 'false');
         refreshButton.disabled = false;
+
+        // Show error message
+        if (statusContent) {
+            statusContent.textContent = 'Error refreshing report';
+            statusContent.classList.add('status-error');
+            setTimeout(() => {
+                statusContent.textContent = '';
+                statusContent.classList.remove('status-error');
+            }, 5000);
+        }
     });
 }
 
@@ -182,123 +243,6 @@ function updateTimestamp() {
 }
 </script>
 
-<!-- Report-specific styles -->
-<style>
-/* Report header info section */
-.report-header-info {
-    margin: 2rem 0 1.5rem 0;
-    padding: 0 2rem;
-}
-
-.report-header-info h2 {
-    margin: 0 0 0.5rem 0;
-}
-
-/* Subtitle under h2 */
-.subtitle {
-    font-size: 0.9rem;
-    color: #666;
-    margin: 0 0 1.5rem 0;
-    font-weight: normal;
-}
-
-/* Filter Buttons */
-.filter-group {
-    display: flex;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-}
-
-.filter-button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
-    border: 2px solid #ddd;
-    background-color: white;
-    color: #333;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.filter-button:hover {
-    background-color: #f8f9fa;
-    border-color: #adb5bd;
-}
-
-.filter-button:focus {
-    outline: 2px solid #2196F3;
-    outline-offset: 2px;
-}
-
-.filter-button.active {
-    color: white;
-}
-
-.filter-button[data-filter="completed"].active {
-    background-color: #4CAF50;
-    border-color: #4CAF50;
-}
-
-.filter-button[data-filter="pending"].active {
-    background-color: #666666;
-    border-color: #666666;
-}
-
-.filter-button[data-filter="in-progress"].active {
-    background-color: #2196F3;
-    border-color: #2196F3;
-}
-
-.filter-count {
-    background-color: rgba(0, 0, 0, 0.1);
-    padding: 0.15rem 0.5rem;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    min-width: 1.5rem;
-    text-align: center;
-}
-
-.filter-button.active .filter-count {
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-/* Checkpoint column - just enough for icon */
-.checkpoint-cell {
-    width: 5%;
-    text-align: center;
-    vertical-align: middle;
-    padding: 8px;
-}
-
-.checkpoint-cell img {
-    width: 36px;
-    height: 36px;
-    display: block;
-    margin: 0 auto;
-}
-
-/* Updated column (matches table.css pattern) */
-.updated-cell {
-    width: 8%;
-    text-align: center;
-    vertical-align: middle;
-    padding: 8px;
-}
-
-/* Empty state */
-.empty-state {
-    text-align: center;
-    padding: 2rem;
-    color: #6c757d;
-    font-style: italic;
-}
-</style>
 
 </body>
 </html>

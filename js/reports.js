@@ -11,7 +11,7 @@
 export class ReportsManager {
     constructor() {
         this.allChecklists = [];
-        this.currentFilter = 'completed'; // Default filter
+        this.currentFilter = 'all'; // Default filter
         this.filterButtons = null;
         this.tableBody = null;
     }
@@ -31,6 +31,15 @@ export class ReportsManager {
             button.addEventListener('click', (e) => {
                 this.handleFilterClick(e.currentTarget);
             });
+        });
+
+        // Set up delete button event delegation
+        this.tableBody.addEventListener('click', (e) => {
+            if (e.target.closest('.reports-delete-button')) {
+                const button = e.target.closest('.reports-delete-button');
+                const sessionKey = button.getAttribute('data-session-key');
+                this.handleDeleteClick(sessionKey, button);
+            }
         });
 
         // Load initial data
@@ -153,7 +162,8 @@ export class ReportsManager {
         const counts = {
             'completed': 0,
             'pending': 0,
-            'in-progress': 0
+            'in-progress': 0,
+            'all': 0
         };
 
         this.allChecklists.forEach(checklist => {
@@ -161,6 +171,7 @@ export class ReportsManager {
             if (counts.hasOwnProperty(status)) {
                 counts[status]++;
             }
+            counts['all']++; // Count all checklists
         });
 
         // Update count badges
@@ -182,9 +193,11 @@ export class ReportsManager {
         }
 
         // Filter checklists by current filter
-        const filtered = this.allChecklists.filter(
-            checklist => checklist.calculatedStatus === this.currentFilter
-        );
+        const filtered = this.currentFilter === 'all'
+            ? this.allChecklists
+            : this.allChecklists.filter(
+                checklist => checklist.calculatedStatus === this.currentFilter
+            );
 
         console.log(`Rendering ${filtered.length} checklists with filter: ${this.currentFilter}`);
 
@@ -195,11 +208,12 @@ export class ReportsManager {
         if (filtered.length === 0) {
             const row = document.createElement('tr');
             const cell = document.createElement('td');
-            cell.colSpan = 5;
+            cell.colSpan = 6; // Updated to span all 6 columns (Type, Updated, Key, Status, Progress, Delete)
             cell.textContent = `No ${this.currentFilter.replace('-', ' ')} checklists found`;
             cell.style.textAlign = 'center';
             cell.style.padding = '2rem';
             cell.style.color = '#6c757d';
+            cell.style.fontSize = '1.5rem'; // Increased font size
             row.appendChild(cell);
             this.tableBody.appendChild(row);
 
@@ -245,11 +259,12 @@ export class ReportsManager {
 
         // Build row HTML
         row.innerHTML = `
-            <td>${this.escapeHtml(formattedType)}</td>
-            <td>${this.escapeHtml(formattedDate)}</td>
-            <td>${this.createInstanceLink(checklist.sessionKey, typeSlug)}</td>
-            <td>${this.createStatusBadge(checklist.calculatedStatus)}</td>
-            <td>${this.createProgressBar(progress.completed, progress.total, checklist.calculatedStatus)}</td>
+            <td class="admin-type-cell">${this.escapeHtml(formattedType)}</td>
+            <td class="admin-date-cell">${this.escapeHtml(formattedDate)}</td>
+            <td class="admin-instance-cell">${this.createInstanceLink(checklist.sessionKey, typeSlug)}</td>
+            <td class="reports-status-cell">${this.createStatusBadge(checklist.calculatedStatus)}</td>
+            <td class="reports-progress-cell">${this.createProgressBar(progress.completed, progress.total, checklist.calculatedStatus)}</td>
+            <td class="reports-delete-cell">${this.createDeleteButton(checklist.sessionKey)}</td>
         `;
 
         return row;
@@ -259,7 +274,7 @@ export class ReportsManager {
      * Calculate progress (completed tasks / total tasks)
      */
     calculateProgress(statusButtons) {
-        if (!statusButtons || typeof statusButtons !== 'object') {
+        if (!statusButtons || typeof statusButtons !== 'object' || Object.keys(statusButtons).length === 0) {
             return { completed: 0, total: 0 };
         }
 
@@ -331,6 +346,23 @@ export class ReportsManager {
     }
 
     /**
+     * Create delete button HTML (reused from admin.php)
+     */
+    createDeleteButton(sessionKey) {
+        const iconPath = window.getImagePath
+            ? window.getImagePath('delete.svg')
+            : `/images/delete.svg`;
+
+        return `
+            <button class="reports-delete-button"
+                    data-session-key="${this.escapeHtml(sessionKey)}"
+                    aria-label="Delete checklist ${this.escapeHtml(sessionKey)}">
+                <img src="${this.escapeHtml(iconPath)}" alt="Delete">
+            </button>
+        `;
+    }
+
+    /**
      * Format date timestamp
      */
     formatDate(timestamp) {
@@ -376,6 +408,137 @@ export class ReportsManager {
                 statusContent.textContent = '';
             }
         }, 5000);
+    }
+
+    /**
+     * Handle delete button click
+     */
+    handleDeleteClick(sessionKey, button) {
+        // Store the triggering button for focus restoration
+        const triggeringButton = button;
+
+        // Show SimpleModal confirmation with proper focus management
+        window.simpleModal.delete(
+            'Delete Checklist',
+            `Are you sure you want to delete checklist ${sessionKey}?`,
+            () => {
+                // Delete confirmed - perform deletion
+                this.deleteChecklist(sessionKey, triggeringButton);
+            },
+            () => {
+                // Delete cancelled - restore focus to triggering button
+                setTimeout(() => {
+                    if (triggeringButton && triggeringButton.classList.contains('reports-delete-button')) {
+                        triggeringButton.focus();
+                        console.log('Reports: Focus restored to triggering delete button after cancel');
+                    }
+                }, 100);
+            }
+        );
+    }
+
+    /**
+     * Delete a checklist
+     */
+    async deleteChecklist(sessionKey, triggeringButton) {
+        try {
+            const apiPath = window.getAPIPath
+                ? window.getAPIPath('delete')
+                : '/php/api/delete.php';
+
+            const response = await fetch(apiPath + '?session=' + sessionKey, {
+                method: 'DELETE'
+            });
+
+            if (response.ok) {
+                // Find the row being deleted
+                const currentRow = document.querySelector(`tr[data-session-key="${sessionKey}"]`);
+                let targetDeleteButton = null;
+
+                if (currentRow) {
+                    // Find the delete button in the row above the deleted row
+                    const previousRow = currentRow.previousElementSibling;
+                    if (previousRow) {
+                        targetDeleteButton = previousRow.querySelector('.reports-delete-button');
+                    }
+
+                    // Remove the row from the DOM
+                    currentRow.remove();
+
+                    // Update the allChecklists array
+                    this.allChecklists = this.allChecklists.filter(
+                        checklist => checklist.sessionKey !== sessionKey
+                    );
+
+                    // Update filter counts
+                    this.updateFilterCounts();
+
+                    // Focus management after deletion
+                    setTimeout(() => {
+                        if (targetDeleteButton) {
+                            // Focus on the delete button in the row above
+                            targetDeleteButton.focus();
+                            console.log('Reports: Focused on delete button in row above deleted row');
+                        } else {
+                            // No row above - check remaining rows
+                            const remainingDeleteButtons = this.tableBody.querySelectorAll('.reports-delete-button');
+
+                            if (remainingDeleteButtons.length > 0) {
+                                // Focus on the first remaining delete button
+                                remainingDeleteButtons[0].focus();
+                                console.log('Reports: Focused on first remaining delete button');
+                            } else {
+                                // No more rows - focus on Home button
+                                const homeButton = document.getElementById('homeButton');
+                                if (homeButton) {
+                                    homeButton.focus();
+                                    console.log('Reports: Focused on Home button after deletion (no more rows)');
+                                }
+                            }
+                        }
+                    }, 100);
+
+                    // Update status message
+                    this.updateStatusMessage(`Checklist ${sessionKey} deleted successfully`);
+                } else {
+                    // Row not found - reload data and focus Home
+                    await this.loadChecklists();
+                    setTimeout(() => {
+                        const homeButton = document.getElementById('homeButton');
+                        if (homeButton) {
+                            homeButton.focus();
+                            console.log('Reports: Focused on Home button after deletion (row not found)');
+                        }
+                    }, 100);
+                }
+            } else {
+                // Show error modal
+                window.simpleModal.error(
+                    'Delete Failed',
+                    'Failed to delete checklist. Please try again.',
+                    () => {
+                        // Restore focus to triggering button on error
+                        if (triggeringButton && triggeringButton.classList.contains('reports-delete-button')) {
+                            triggeringButton.focus();
+                            console.log('Reports: Focus restored to triggering button after delete error');
+                        }
+                    }
+                );
+            }
+        } catch (error) {
+            console.error('Error deleting checklist:', error);
+            window.simpleModal.error(
+                'Delete Error',
+                'An error occurred while deleting the checklist.',
+                () => {
+                    // Restore focus to triggering button on error
+                    if (triggeringButton && triggeringButton.classList.contains('reports-delete-button')) {
+                        triggeringButton.focus();
+                        console.log('Reports: Focus restored to triggering button after delete error');
+                    }
+                }
+            );
+        }
     }
 
     /**

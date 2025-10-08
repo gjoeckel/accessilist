@@ -1,10 +1,28 @@
 /* Admin Page Styles - Consolidated */
 
 /* Admin Section Styles (from multiple.css block) */
+
+/* Skip link targets - prevent sticky header overlap */
+#admin-caption,
+#reports-caption,
+#report-caption {
+    scroll-margin-top: 180px; /* 70px header + 110px breathing room to keep filters visible */
+}
+
+/* Golden-ring focus for skip link targets */
+#admin-caption:focus,
+#reports-caption:focus,
+#report-caption:focus {
+    outline: none;
+    box-shadow: var(--golden-ring);
+    border-radius: 6px;
+}
+
 .admin-section {
     --theme-color: #666666; /* Added from multiple.css block */
     --header-fill-color: #F7E7D9; /* Added from multiple.css block */
     padding-top: 90px; /* 70px sticky header + 20px breathing room */
+    padding-bottom: 30px; /* Whitespace between last row and footer */
     color: var(--theme-color); /* Added from multiple.css block */
     position: relative; /* Added from multiple.css block */
     z-index: 1; /* Added from multiple.css block */
@@ -12,7 +30,6 @@
     flex-direction: column; /* Added from multiple.css block */
     align-items: center; /* Added from multiple.css block */
     padding: 20px; /* from checklist.css block */
-    margin-top: 80px; /* from checklist.css block */
 }
 
 .admin-section h2 {
@@ -53,7 +70,6 @@
 }
 
 .admin-table td {
-    padding: 8px; /* multiple.css */
     text-align: center;
     border-bottom: 1px solid #ddd;
     vertical-align: middle;
@@ -77,11 +93,11 @@
 
 /* Explicit widths from checklist.css (commented out in multiple.css) - Re-evaluate if needed */
 .admin-date-cell {
-    width: 20%;
+    width: 15%; /* Updated for reports.php: Updated column */
 }
 
 .admin-instance-cell {
-    width: 15%;
+    width: 7%; /* Updated for reports.php: Key column */
     text-align: left !important; /* Overriding general center alignment */
 }
 
@@ -90,12 +106,24 @@
     width: 7%;
     text-align: center;
     vertical-align: middle;
+    padding: 0;
+    position: relative;
+    min-width: 40px;
 }
 
 .reports-progress-cell {
-    width: 46%;
+    width: 52%; /* 100% - (12% Type + 15% Updated + 7% Key + 7% Status + 7% Delete) */
     text-align: left;
     padding-left: 1rem;
+}
+
+.reports-delete-cell {
+    width: 7%;
+    text-align: center;
+    vertical-align: middle;
+    padding: 0;
+    position: relative;
+    min-width: 40px;
 }
 
 .admin-action-cell {
@@ -160,6 +188,45 @@
     padding: 4px; /* Padding around the icon */
 }
 
+/* Admin Delete Button Focus/Hover - Rounded like Status buttons */
+.admin-delete-button:hover,
+.admin-delete-button:focus {
+    outline: none;
+    border-radius: 4px;
+}
+
+/* Reports Delete Button - Same styling as Admin delete button */
+.reports-delete-button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    transition: background-color 0.2s ease;
+    width: 75px;
+    height: 75px;
+    min-width: 75px;
+    min-height: 75px;
+    max-width: 75px;
+    max-height: 75px;
+    box-sizing: border-box;
+    display: inline-flex; /* inline-flex respects parent's text-align: center */
+    align-items: center;
+    justify-content: center;
+}
+
+.reports-delete-button img {
+    width: 100%; /* Scale image to button width */
+    height: 100%; /* Scale image to button height */
+    object-fit: contain; /* Ensure aspect ratio is maintained */
+    padding: 4px; /* Padding around the icon */
+}
+
+.reports-delete-button:hover,
+.reports-delete-button:focus {
+    outline: none;
+    border-radius: 4px;
+}
+
 /* Legacy delete button styles removed */
 
 /* Instance Link Styles */
@@ -195,4 +262,49 @@
     max-width: 1500px;
     margin: 0 auto;
     min-width: 800px; /* Ensure minimum usable width */
+}
+
+/* Responsive adjustments for smaller viewports */
+@media (max-width: 1024px) {
+    .admin-container {
+        width: 100%;
+        max-width: 100%;
+        min-width: auto;
+        margin: 0 auto; /* Center the container */
+        padding: 0 30px; /* 30px minimum whitespace from edges */
+        box-sizing: border-box; /* Include padding in width calculation */
+    }
+
+    .admin-table {
+        font-size: 0.9rem;
+        width: 100%;
+        margin: 0 auto; /* Center the table */
+    }
+
+    .admin-section {
+        padding-left: 0; /* Container already has padding */
+        padding-right: 0;
+    }
+
+    /* Adjust column widths for smaller screens */
+    .admin-type-cell {
+        width: 10%;
+    }
+
+    .admin-date-cell {
+        width: 12%;
+    }
+
+    .admin-instance-cell {
+        width: 8%;
+    }
+
+    .reports-status-cell,
+    .reports-delete-cell {
+        width: 6%;
+    }
+
+    .reports-progress-cell {
+        width: 58%;
+    }
 }

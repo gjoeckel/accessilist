@@ -15,6 +15,9 @@ export class UserReportManager {
         this.principlesData = null;
         this.typeSlug = null;
         this.tableBody = null;
+        this.currentFilter = 'all'; // Default filter
+        this.filterButtons = null;
+        this.allRows = []; // Store all rows for filtering
     }
 
     /**
@@ -22,6 +25,17 @@ export class UserReportManager {
      */
     async initialize() {
         console.log('Initializing UserReportManager for session:', this.sessionKey);
+
+        // Cache DOM elements
+        this.tableBody = document.querySelector('.report-table tbody');
+        this.filterButtons = document.querySelectorAll('.filter-button');
+
+        // Set up filter button event listeners
+        this.filterButtons.forEach(button => {
+            button.addEventListener('click', (e) => {
+                this.handleFilterClick(e.currentTarget);
+            });
+        });
 
         try {
             // 1. Load checklist data
@@ -40,6 +54,26 @@ export class UserReportManager {
             console.error('Error initializing report:', error);
             this.showError('Failed to load report data');
         }
+    }
+
+    /**
+     * Handle filter button click
+     */
+    handleFilterClick(button) {
+        const filter = button.getAttribute('data-filter');
+
+        // Update active state
+        this.filterButtons.forEach(btn => {
+            btn.classList.remove('active');
+            btn.setAttribute('aria-pressed', 'false');
+        });
+
+        button.classList.add('active');
+        button.setAttribute('aria-pressed', 'true');
+
+        // Update current filter and re-render
+        this.currentFilter = filter;
+        this.applyFilter();
     }
 
     /**
@@ -169,6 +203,7 @@ export class UserReportManager {
         }
 
         tbody.innerHTML = '';
+        this.allRows = []; // Reset rows array
 
         // Group tasks by principle
         const grouped = this.groupTasksByPrinciple();
@@ -180,7 +215,7 @@ export class UserReportManager {
             return;
         }
 
-        // Render all tasks in ONE table
+        // Render all tasks in ONE table and store rows with status
         grouped.forEach(section => {
             console.log(`Adding tasks from: ${section.title}, count: ${section.tasks.length}`);
 
@@ -188,10 +223,75 @@ export class UserReportManager {
             section.tasks.forEach(task => {
                 const taskRow = this.createTaskRow(task, section.id);
                 tbody.appendChild(taskRow);
+
+                // Store row with its status for filtering
+                this.allRows.push({
+                    row: taskRow,
+                    status: task.status
+                });
             });
         });
 
         console.log('Report rendered successfully');
+
+        // Update filter counts
+        this.updateFilterCounts();
+
+        // Apply initial filter
+        this.applyFilter();
+    }
+
+    /**
+     * Update filter count badges
+     */
+    updateFilterCounts() {
+        const counts = {
+            'completed': 0,
+            'pending': 0,
+            'in-progress': 0,
+            'all': 0
+        };
+
+        this.allRows.forEach(item => {
+            const status = item.status;
+            if (counts.hasOwnProperty(status)) {
+                counts[status]++;
+            } else if (status === 'in_progress') {
+                counts['in-progress']++;
+            }
+            counts['all']++; // Count all tasks
+        });
+
+        // Update count badges
+        Object.keys(counts).forEach(status => {
+            const countElement = document.getElementById(`count-${status}`);
+            if (countElement) {
+                countElement.textContent = counts[status];
+            }
+        });
+    }
+
+    /**
+     * Apply current filter to table rows
+     */
+    applyFilter() {
+        if (this.allRows.length === 0) return;
+
+        let visibleCount = 0;
+
+        this.allRows.forEach(item => {
+            const status = item.status === 'in_progress' ? 'in-progress' : item.status;
+
+            // Show all rows if filter is 'all', otherwise filter by status
+            if (this.currentFilter === 'all' || this.currentFilter === status) {
+                item.row.style.display = '';
+                visibleCount++;
+            } else {
+                item.row.style.display = 'none';
+            }
+        });
+
+        console.log(`Filter applied: ${this.currentFilter}, visible rows: ${visibleCount}`);
     }
 
     /**

@@ -15,6 +15,9 @@ renderHTMLHead('Accessibility Report - AccessiList', true);
 
 <?php require __DIR__ . '/includes/noscript.php'; ?>
 
+<!-- Skip Link -->
+<a href="#report-caption" class="skip-link">Skip to report table</a>
+
 <!-- Sticky Header -->
 <header class="sticky-header">
     <h1>Accessibility Report</h1>
@@ -53,6 +56,29 @@ renderHTMLHead('Accessibility Report - AccessiList', true);
 <?php renderFooter('status'); ?>
 
 <!-- Scripts -->
+<script>
+  // Prevent browser from restoring scroll position
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  // Reset scroll position immediately
+  window.scrollTo(0, 0);
+
+  // Handle skip link - focus without scrolling
+  document.addEventListener('DOMContentLoaded', function() {
+    const skipLink = document.querySelector('.skip-link');
+    if (skipLink) {
+      skipLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.focus();
+        }
+      });
+    }
+  });
+</script>
 <?php renderCommonScripts('report'); ?>
 
 <!-- Report-specific JavaScript -->
@@ -201,14 +227,14 @@ renderHTMLHead('Accessibility Report - AccessiList', true);
   function showNoDataMessage() {
     const tbody = document.querySelector('.report-table tbody');
     if (tbody) {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem; color: #666;">No report data available. Complete some checklist items first.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="4" class="table-no-data-message">No report data available. Complete some checklist items first.</td></tr>';
     }
   }
 
   function showErrorMessage() {
     const tbody = document.querySelector('.report-table tbody');
     if (tbody) {
-      tbody.innerHTML = '<tr><td colspan="4" style="text-align: center; padding: 2rem; color: #d32f2f;">Error loading report data. Please try again.</td></tr>';
+      tbody.innerHTML = '<tr><td colspan="4" class="table-error-message">Error loading report data. Please try again.</td></tr>';
     }
   }
 

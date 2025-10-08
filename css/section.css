@@ -5,23 +5,27 @@ main {
     grid-area: main;
     max-width: 90%;
     margin-left: 100px;
-    /* min-height: 3000px; /* From multiple.css block - Keep or remove? Keeping checklist.css version */
-    padding-bottom: 100vh; /* From checklist.css block */
+    padding-top: 90px; /* Position first section below sticky header on load */
+    padding-bottom: 100vh; /* Allow scrolling past last section */
 }
 
 /* Section Styles */
 section {
-    padding-top: 90px;  /* 70px sticky header + 20px breathing room */
     color: var(--theme-color);
     position: relative;
     z-index: 1;
-    margin-bottom: 2rem;
+    margin-bottom: 60px; /* Spacing between sections */
 }
 
 /* Principle Section Specific Styles */
 .principle-section {
     position: relative;
     z-index: 1;
+}
+
+/* First section - no extra margin (main already has padding-top) */
+.principle-section.checklist-1 {
+    margin-top: 0;
 }
 
 /* Report Section Specific Styles */

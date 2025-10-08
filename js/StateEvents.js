@@ -338,6 +338,22 @@ class StateEvents {
 
     const targetId = link.getAttribute('data-target') || link.getAttribute('href')?.substring(1);
     const targetSection = document.getElementById(targetId);
+
+    // === DEBUG LOGGING ===
+    console.log('=== SIDE PANEL NAVIGATION DEBUG ===');
+    console.log('Target ID:', targetId);
+    console.log('Section exists:', !!targetSection);
+    if (targetSection) {
+      console.log('Section display:', window.getComputedStyle(targetSection).display);
+      console.log('Section visibility:', window.getComputedStyle(targetSection).visibility);
+      console.log('Section offsetTop:', targetSection.offsetTop);
+      console.log('Section offsetParent:', targetSection.offsetParent);
+      console.log('Section getBoundingClientRect:', targetSection.getBoundingClientRect());
+    }
+    console.log('Current scrollY:', window.scrollY);
+    console.log('Window height:', window.innerHeight);
+    console.log('=================================');
+
     if (!targetSection) {
       console.warn(`StateEvents: Target section ${targetId} not found`);
       return;
@@ -360,8 +376,12 @@ class StateEvents {
     if (activeImg) activeImg.style.display = 'block';
     if (inactiveImg) inactiveImg.style.display = 'none';
 
-    // Scroll to target section
-    window.scrollTo({ top: targetSection.offsetTop, behavior: 'smooth' });
+    // Scroll using StateManager's DRY method
+    if (this.stateManager && typeof this.stateManager.scrollSectionToPosition === 'function') {
+      this.stateManager.scrollSectionToPosition(targetSection, { smooth: false });
+    } else {
+      console.error('StateEvents: scrollSectionToPosition method not available on StateManager');
+    }
 
     // Focus the section heading with a small delay to ensure DOM is ready
     setTimeout(() => {
@@ -377,7 +397,7 @@ class StateEvents {
       } else {
         console.warn(`StateEvents: No checklist-caption heading found for ${targetId}`);
       }
-    }, 100); // Small delay to ensure scroll and DOM updates are complete
+    }, 300); // Increased delay to ensure scroll completes
 
     // Mark dirty for auto-save
     this.stateManager.markDirty();

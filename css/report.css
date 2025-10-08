@@ -1,0 +1,123 @@
+/* Report Page Styles (Single Report View) */
+
+/* Report header info section */
+.report-header-info {
+    margin: 2rem 0 1.5rem 0;
+    padding: 0 2rem;
+}
+
+.report-header-info h2 {
+    margin: 0 0 0.5rem 0;
+}
+
+/* Subtitle under h2 */
+.subtitle {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0 0 1.5rem 0;
+    font-weight: normal;
+}
+
+/* Filter Buttons (shared with reports.css) */
+.filter-group {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border: 2px solid #ddd;
+    background-color: white;
+    color: #333;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.filter-button:hover {
+    background-color: #f8f9fa;
+    border-color: #adb5bd;
+}
+
+.filter-button:focus {
+    outline: 2px solid #2196F3;
+    outline-offset: 2px;
+}
+
+.filter-button.active {
+    color: white;
+    box-shadow: var(--golden-ring);
+}
+
+.filter-button[data-filter="completed"].active {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.filter-button[data-filter="pending"].active {
+    background-color: #666666;
+    border-color: #666666;
+}
+
+.filter-button[data-filter="in-progress"].active {
+    background-color: #2196F3;
+    border-color: #2196F3;
+}
+
+.filter-button[data-filter="all"].active {
+    background-color: #333333;
+    border-color: #333333;
+}
+
+.filter-count {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 0.15rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    min-width: 1.5rem;
+    text-align: center;
+}
+
+.filter-button.active .filter-count {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Checkpoint column - just enough for icon */
+.checkpoint-cell {
+    width: 5%;
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px;
+}
+
+.checkpoint-cell img {
+    width: 36px;
+    height: 36px;
+    display: block;
+    margin: 0 auto;
+}
+
+/* Updated column (matches table.css pattern) */
+.updated-cell {
+    width: 8%;
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px;
+}
+
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+    font-style: italic;
+}
+

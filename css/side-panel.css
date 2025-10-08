@@ -131,3 +131,8 @@ body.loaded .side-panel {
 
 /* --- Removed duplicated styles from multiple.css --- */
 /* Lines 143-266 (original file) deleted */
+
+/* Hidden section (for conditional display) */
+#checklist-4-section {
+    display: none;
+}

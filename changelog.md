@@ -8,6 +8,66 @@
 
 ## Entries
 
+### 2025-10-08 14:42:57 UTC - Spacing Refinements + Checklist-4 Scroll Analysis
+
+**Summary:**
+- Refined vertical spacing on admin pages and home page for better visual balance
+- Adjusted button group positioning on home page for optimal layout
+- Conducted comprehensive analysis of checklist-4 scrolling issues
+- Identified 5 critical root causes preventing checklist-4 from scrolling correctly
+
+**Spacing Updates:**
+- ✅ **Admin Pages**: Removed excess `margin-top` from `.admin-section` in `admin.css`
+  - Reduces whitespace between sticky header and filter buttons
+  - Creates consistent spacing across admin, reports, and report pages
+- ✅ **Home Page**: Adjusted button group positioning in `landing.css`
+  - Changed from 0px to 30px top margin for breathing room
+  - Total spacing: 90px (main padding) + 30px (container margin) = 120px from top
+  - Balanced layout between header and button groups
+
+**Checklist-4 Analysis (5 Critical Issues Identified):**
+- **Issue #1**: CSS `display: none` override conflict in `side-panel.css`
+  - ID selector overriding inline JavaScript styles
+  - Prevents checklist-4 from becoming visible even when `showRobust = true`
+- **Issue #2**: `offsetTop` returns 0 for hidden elements in `StateManager.js`
+  - `scrollSectionToPosition()` method calculates wrong position when element has `display: none`
+  - Causes scroll to position 0 instead of correct offset
+- **Issue #3**: Dynamic DOM creation skipped in `buildPrinciples.js`
+  - When `showRobust = false`, checklist-4 section never created in DOM
+  - Side panel link has no target to scroll to even after becoming visible
+- **Issue #4**: No layout recalculation after visibility toggle in `main.js`
+  - Side panel visibility changes but content section remains hidden
+  - No trigger to recalculate scroll positions after element becomes visible
+- **Issue #5**: Side panel click handler missing visibility check in `StateEvents.js`
+  - Attempts to scroll to hidden section without validation
+  - Combined with Issue #2, results in scroll to position 0
+
+**Working Status:**
+- ✅ **Checklists 1-3**: Scrolling correctly on page load/reload and side panel click
+- ❌ **Checklist 4**: Broken for both reload and side panel click (5 root causes identified)
+
+**Files Modified:**
+- `css/admin.css`: Removed `margin-top: 80px` from `.admin-section`
+- `css/landing.css`: Changed button group margin from 0 to 30px
+
+**Technical Details:**
+- Spacing changes improve visual hierarchy without affecting functionality
+- Checklist-4 analysis provides clear roadmap for upcoming fixes
+- Root causes documented with code snippets and proposed solutions
+- Recommended fix order: Issues #3 → #2 → #4 → #1 → #5
+
+**Next Steps:**
+- Create rollback point on "reports" branch
+- Branch to "side-panel" for checklist-4 fixes and potential refactor
+- Implement fixes in recommended order with testing at each stage
+
+**Impact:**
+- Better visual spacing across all admin and home pages
+- Clear understanding of checklist-4 scrolling failures
+- Prepared for systematic resolution of complex visibility/scroll issues
+
+---
+
 ### 2025-10-08 11:02:52 UTC - Reports Page Visual Enhancements + User Report Feature Complete
 
 **Summary:**

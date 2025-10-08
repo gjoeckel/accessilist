@@ -1,4 +1,28 @@
 /* Header Styles - Consolidated from multiple-side-test.css block */
+
+/* Skip Link (WCAG 2.4.1 Bypass Blocks) */
+.skip-link {
+    position: fixed; /* Changed from absolute to fixed */
+    top: 0;
+    left: 0;
+    background: #000;
+    color: #fff;
+    padding: 8px 16px;
+    text-decoration: none;
+    z-index: 10000;
+    font-weight: bold;
+    transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    transform: translateY(-100%); /* Hide above viewport */
+    clip: rect(0, 0, 0, 0); /* Fully hide when not focused */
+}
+
+.skip-link:focus {
+    transform: translateY(0); /* Show at top */
+    clip: auto; /* Show when focused */
+    outline: none;
+    box-shadow: var(--golden-ring);
+}
+
 .sticky-header {
     position: fixed;
     top: 0;
@@ -40,7 +64,8 @@
     padding-right: 3rem;
 }
 
-.home-button {
+.home-button,
+.back-button {
     position: absolute;
     left: 2rem;
     top: 50%;
@@ -54,6 +79,11 @@
     cursor: pointer;
     transition: background-color 0.2s;
     background-color: #336699;
+}
+
+/* Back button specific styling */
+.back-button {
+    background-color: #333333;
 }
 
 .home-button:hover,

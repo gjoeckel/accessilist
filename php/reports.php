@@ -4,14 +4,18 @@ require_once __DIR__ . '/includes/html-head.php';
 require_once __DIR__ . '/includes/footer.php';
 require_once __DIR__ . '/includes/common-scripts.php';
 
-renderHTMLHead('Reports');
+renderHTMLHead('Systemwide Reports');
 ?>
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/reports.css?v=<?php echo time(); ?>">
 <body>
 <?php require __DIR__ . '/includes/noscript.php'; ?>
 
+<!-- Skip Link -->
+<a href="#reports-caption" class="skip-link">Skip to reports table</a>
+
 <!-- Sticky Header -->
 <header class="sticky-header">
-    <h1>Reports</h1>
+    <h1>Systemwide Reports</h1>
     <button id="homeButton" class="home-button" aria-label="Go to home page">
         <span class="button-text">Home</span>
     </button>
@@ -29,21 +33,12 @@ renderHTMLHead('Reports');
         <div class="filter-group" role="group" aria-label="Filter checklists by status">
             <button
                 id="filter-completed"
-                class="filter-button active"
+                class="filter-button"
                 data-filter="completed"
-                aria-pressed="true"
+                aria-pressed="false"
                 aria-label="Show completed checklists">
                 <span class="filter-label">Completed</span>
                 <span class="filter-count" id="count-completed">0</span>
-            </button>
-            <button
-                id="filter-pending"
-                class="filter-button"
-                data-filter="pending"
-                aria-pressed="false"
-                aria-label="Show pending checklists">
-                <span class="filter-label">Pending</span>
-                <span class="filter-count" id="count-pending">0</span>
             </button>
             <button
                 id="filter-in-progress"
@@ -54,10 +49,28 @@ renderHTMLHead('Reports');
                 <span class="filter-label">In Progress</span>
                 <span class="filter-count" id="count-in-progress">0</span>
             </button>
+            <button
+                id="filter-pending"
+                class="filter-button"
+                data-filter="pending"
+                aria-pressed="false"
+                aria-label="Show checklists where all tasks are pending">
+                <span class="filter-label">All Pending</span>
+                <span class="filter-count" id="count-pending">0</span>
+            </button>
+            <button
+                id="filter-all"
+                class="filter-button active"
+                data-filter="all"
+                aria-pressed="true"
+                aria-label="Show all checklists">
+                <span class="filter-label">All</span>
+                <span class="filter-count" id="count-all">0</span>
+            </button>
         </div>
 
         <!-- Last Update Timestamp -->
-        <h2 id="reports-caption" tabindex="-1">Last reports update: <span id="last-update-time">Loading...</span></h2>
+        <h2 id="reports-caption" tabindex="-1">Last update: <span id="last-update-time" aria-live="polite" aria-atomic="true">Loading...</span></h2>
 
         <!-- Table Container -->
         <div class="admin-container">
@@ -69,6 +82,7 @@ renderHTMLHead('Reports');
                         <th class="admin-instance-cell">Key</th>
                         <th class="reports-status-cell">Status</th>
                         <th class="reports-progress-cell">Progress</th>
+                        <th class="reports-delete-cell">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -82,6 +96,29 @@ renderHTMLHead('Reports');
 <?php renderFooter('standard'); ?>
 
 <!-- Scripts -->
+<script>
+  // Prevent browser from restoring scroll position
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  // Reset scroll position immediately
+  window.scrollTo(0, 0);
+
+  // Handle skip link - focus without scrolling
+  document.addEventListener('DOMContentLoaded', function() {
+    const skipLink = document.querySelector('.skip-link');
+    if (skipLink) {
+      skipLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.focus();
+        }
+      });
+    }
+  });
+</script>
 <?php
 // FIXED: Changed from 'reports' to 'admin' since common-scripts.php doesn't have 'reports' case
 // Admin includes: path-utils, type-manager, ui-components, simple-modal, ModalActions
@@ -99,6 +136,7 @@ import { ReportsManager } from '<?php echo $basePath; ?>/js/reports.js?v=<?php e
 let reportsManager;
 
 document.addEventListener('DOMContentLoaded', function() {
+
     console.log('Initializing reports page');
 
     // Update timestamp on page load
@@ -141,11 +179,17 @@ function updateTimestamp() {
 
 function refreshData() {
     const refreshButton = document.getElementById('refreshButton');
+    const statusContent = document.querySelector('.status-content');
     if (!refreshButton) return;
 
     // Indicate refresh in progress
     refreshButton.setAttribute('aria-busy', 'true');
     refreshButton.disabled = true;
+
+    if (statusContent) {
+        statusContent.textContent = 'Refreshing reports...';
+        statusContent.classList.remove('status-success', 'status-error');
+    }
 
     // Reload the data
     if (reportsManager) {
@@ -156,6 +200,16 @@ function refreshData() {
             // After refresh completes
             refreshButton.setAttribute('aria-busy', 'false');
             refreshButton.disabled = false;
+
+            // Announce completion to screen readers
+            if (statusContent) {
+                statusContent.textContent = 'Reports refreshed successfully';
+                statusContent.classList.add('status-success');
+                setTimeout(() => {
+                    statusContent.textContent = '';
+                    statusContent.classList.remove('status-success');
+                }, 5000);
+            }
         }).catch(error => {
             console.error('Error refreshing data:', error);
             refreshButton.setAttribute('aria-busy', 'false');
@@ -180,122 +234,6 @@ function refreshData() {
     <div class="status-content"></div>
 </div>
 
-<!-- Additional CSS for Reports-specific styling -->
-<style>
-/* Filter Buttons */
-.filter-group {
-    display: flex;
-    gap: 0.75rem;
-    margin-bottom: 1.5rem;
-    flex-wrap: wrap;
-}
-
-.filter-button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
-    border: 2px solid #ddd;
-    background-color: white;
-    color: #333;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-}
-
-.filter-button:hover {
-    background-color: #f8f9fa;
-    border-color: #adb5bd;
-}
-
-.filter-button:focus {
-    outline: 2px solid #2196F3;
-    outline-offset: 2px;
-}
-
-.filter-button.active {
-    color: white;
-}
-
-.filter-button[data-filter="completed"].active {
-    background-color: #4CAF50;
-    border-color: #4CAF50;
-}
-
-.filter-button[data-filter="pending"].active {
-    background-color: #666666;
-    border-color: #666666;
-}
-
-.filter-button[data-filter="in-progress"].active {
-    background-color: #2196F3;
-    border-color: #2196F3;
-}
-
-.filter-count {
-    background-color: rgba(0, 0, 0, 0.1);
-    padding: 0.15rem 0.5rem;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    min-width: 1.5rem;
-    text-align: center;
-}
-
-.filter-button.active .filter-count {
-    background-color: rgba(255, 255, 255, 0.3);
-}
-
-/* Status Icon (matches report.php) */
-.status-icon {
-    display: block;
-    margin: 0 auto;
-}
-
-/* Progress Bar */
-.progress-container {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-}
-
-.progress-bar {
-    flex: 1;
-    height: 16px;
-    background-color: #e0e0e0;
-    border-radius: 4px;
-    overflow: hidden;
-}
-
-.progress-fill {
-    height: 100%;
-    transition: width 0.3s ease;
-    border-radius: 4px;
-}
-
-.progress-fill.completed {
-    background-color: #4CAF50;
-}
-
-.progress-fill.in-progress {
-    background-color: #2196F3;
-}
-
-.progress-fill.pending {
-    background-color: #9E9E9E;
-}
-
-.progress-text {
-    font-size: 1.1rem;
-    color: #666;
-    font-weight: 600;
-    min-width: 60px;
-}
-
-/* Table column widths now defined in admin.css */
-</style>
 
 </body>
 </html>

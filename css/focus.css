@@ -110,6 +110,12 @@ select:focus {
   background-color: #4482c1; /* Apply button-blue hover */
 }
 
+/* Back button background hover/focus (darker gray) */
+#backButton:hover,
+#backButton:focus {
+  background-color: #1a1a1a; /* Darker gray on hover */
+}
+
 /* Instance link hover style */
 .instance-link:hover {
     text-decoration: underline;
@@ -190,8 +196,9 @@ h2:is(:hover, :focus) .heading-content,
 
 /* Admin Delete column - DELETED - Will be rebuilt using Status button pattern */
 
-/* Home button hover/focus ring matches Save button's hover ring */
-#homeButton:is(:hover, :focus) {
+/* Home button and Back button hover/focus ring matches Save button's hover ring */
+#homeButton:is(:hover, :focus),
+#backButton:is(:hover, :focus) {
   box-shadow: var(--golden-ring) !important;
 }
 
