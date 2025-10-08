@@ -1,0 +1,125 @@
+/* Reports Page Styles */
+
+/* Filter Buttons */
+.filter-group {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1.5rem;
+    flex-wrap: wrap;
+}
+
+.filter-button {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.75rem 1.25rem;
+    border: 2px solid #ddd;
+    background-color: white;
+    color: #333;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+
+.filter-button:hover {
+    background-color: #f8f9fa;
+    border-color: #adb5bd;
+}
+
+.filter-button:focus {
+    outline: 2px solid #2196F3;
+    outline-offset: 2px;
+}
+
+.filter-button.active {
+    color: white;
+    box-shadow: var(--golden-ring);
+}
+
+.filter-button[data-filter="completed"].active {
+    background-color: #4CAF50;
+    border-color: #4CAF50;
+}
+
+.filter-button[data-filter="pending"].active {
+    background-color: #666666;
+    border-color: #666666;
+}
+
+.filter-button[data-filter="in-progress"].active {
+    background-color: #2196F3;
+    border-color: #2196F3;
+}
+
+.filter-button[data-filter="all"].active {
+    background-color: #333333;
+    border-color: #333333;
+}
+
+.filter-button[data-filter="all"].active .filter-count {
+    color: #333333;
+}
+
+.filter-count {
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 0.15rem 0.5rem;
+    border-radius: 12px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    min-width: 1.5rem;
+    text-align: center;
+}
+
+.filter-button.active .filter-count {
+    background-color: rgba(255, 255, 255, 0.3);
+}
+
+/* Status Icon */
+.status-icon {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Progress Bar */
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-left: 1rem;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 16px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+    border-radius: 4px;
+}
+
+.progress-fill.completed {
+    background-color: #4CAF50;
+}
+
+.progress-fill.in-progress {
+    background-color: #2196F3;
+}
+
+.progress-fill.pending {
+    background-color: #9E9E9E;
+}
+
+.progress-text {
+    font-size: 1.1rem;
+    color: #666;
+    font-weight: 600;
+    min-width: 60px;
+}
+

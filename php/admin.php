@@ -9,13 +9,16 @@ renderHTMLHead('Admin');
 <body>
 <?php require __DIR__ . '/includes/noscript.php'; ?>
 
+<!-- Skip Link -->
+<a href="#admin-caption" class="skip-link">Skip to checklists table</a>
+
 <!-- Sticky Header -->
 <header class="sticky-header">
     <h1>Admin</h1>
-    <div class="header-buttons">
-        <button id="homeButton" class="home-button" aria-label="Go to home page">
-            <span class="button-text">Home</span>
-        </button>
+    <button id="homeButton" class="home-button" aria-label="Go to home page">
+        <span class="button-text">Home</span>
+    </button>
+    <div class="header-buttons-group">
         <button id="refreshButton" class="header-button" aria-label="Refresh checklist data">
             <span class="button-text">Refresh</span>
         </button>
@@ -50,6 +53,29 @@ renderHTMLHead('Admin');
 <!-- Old modal HTML removed - now using SimpleModal system -->
 
 <!-- Scripts -->
+<script>
+  // Prevent browser from restoring scroll position
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  // Reset scroll position immediately
+  window.scrollTo(0, 0);
+
+  // Handle skip link - focus without scrolling
+  document.addEventListener('DOMContentLoaded', function() {
+    const skipLink = document.querySelector('.skip-link');
+    if (skipLink) {
+      skipLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.focus();
+        }
+      });
+    }
+  });
+</script>
 <?php renderCommonScripts('admin'); ?>
 <script>
 // Error monitoring for debugging
@@ -151,39 +177,52 @@ async function deleteInstance(instanceId, triggeringButton) {
         });
 
         if (response.ok) {
-            // Find the row being deleted
+            // Find the row being deleted and get the target focus element
             const currentRow = document.querySelector(`tr[data-instance="${instanceId}"]`);
+            let targetDeleteButton = null;
+
             if (currentRow) {
+                // Find the delete button in the row above the deleted row
+                const previousRow = currentRow.previousElementSibling;
+                if (previousRow) {
+                    targetDeleteButton = previousRow.querySelector('.admin-delete-button');
+                }
+
                 // Remove the row immediately for better UX
                 currentRow.remove();
 
                 // Focus management after deletion
                 setTimeout(() => {
-                    const tableBody = document.querySelector('.admin-table tbody');
-                    if (tableBody) {
-                        const allRows = Array.from(tableBody.querySelectorAll('tr'));
-                        const remainingDeleteButtons = tableBody.querySelectorAll('.admin-delete-button');
+                    if (targetDeleteButton) {
+                        // Focus on the delete button in the row above
+                        targetDeleteButton.focus();
+                        console.log('Admin: Focused on delete button in row above deleted row');
+                    } else {
+                        // No row above - check remaining rows
+                        const tableBody = document.querySelector('.admin-table tbody');
+                        if (tableBody) {
+                            const remainingDeleteButtons = tableBody.querySelectorAll('.admin-delete-button');
 
-                        if (remainingDeleteButtons.length > 0) {
-                            // Focus on the delete button above the deleted row (if any)
-                            // Since we removed the row, focus on the first available delete button
-                            const firstDeleteButton = remainingDeleteButtons[0];
-                            firstDeleteButton.focus();
-                            console.log('Admin: Focused on remaining delete button after deletion');
+                            if (remainingDeleteButtons.length > 0) {
+                                // Focus on the first remaining delete button
+                                const firstDeleteButton = remainingDeleteButtons[0];
+                                firstDeleteButton.focus();
+                                console.log('Admin: Focused on first remaining delete button');
+                            } else {
+                                // No more rows - focus on Home button
+                                const homeButton = document.getElementById('homeButton');
+                                if (homeButton) {
+                                    homeButton.focus();
+                                    console.log('Admin: Focused on Home button after deletion (no more rows)');
+                                }
+                            }
                         } else {
-                            // No more rows - focus on Home button
+                            // Fallback: focus on Home button
                             const homeButton = document.getElementById('homeButton');
                             if (homeButton) {
                                 homeButton.focus();
-                                console.log('Admin: Focused on Home button after deletion (no more rows)');
+                                console.log('Admin: Focused on Home button after deletion (fallback)');
                             }
-                        }
-                    } else {
-                        // Fallback: focus on Home button
-                        const homeButton = document.getElementById('homeButton');
-                        if (homeButton) {
-                            homeButton.focus();
-                            console.log('Admin: Focused on Home button after deletion (fallback)');
                         }
                     }
                 }, 100);

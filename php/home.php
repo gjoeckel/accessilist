@@ -8,17 +8,22 @@ renderHTMLHead('Accessibility Checklists');
 <body>
 <?php require __DIR__ . '/includes/noscript.php'; ?>
 
+<!-- Skip Link -->
+<a href="#checklist-groups" class="skip-link">Skip to checklist selection</a>
+
 <!-- Sticky Header -->
 <header class="sticky-header">
     <div class="header-content">
         <h1>Accessibility Checklists</h1>
-        <button id="adminButton" class="header-button">Admin</button>
+        <div class="header-buttons-group">
+            <button id="reportsButton" class="header-button reports-button">Reports</button>
+        </div>
     </div>
 </header>
 
 <!-- Main Content -->
 <main role="main">
-    <div class="landing-content checklist-groups-container">
+    <div class="landing-content checklist-groups-container" id="checklist-groups" tabindex="-1">
       <div class="checklist-group">
         <h2>Microsoft</h2>
         <div class="checklist-buttons-row">
@@ -47,10 +52,35 @@ renderHTMLHead('Accessibility Checklists');
 <?php renderFooter('standard'); ?>
 
 <!-- Scripts -->
+<script>
+  // Prevent browser from restoring scroll position
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  // Reset scroll position immediately
+  window.scrollTo(0, 0);
+
+  // Handle skip link - focus without scrolling
+  document.addEventListener('DOMContentLoaded', function() {
+    const skipLink = document.querySelector('.skip-link');
+    if (skipLink) {
+      skipLink.addEventListener('click', function(e) {
+        e.preventDefault();
+        const targetId = this.getAttribute('href').substring(1);
+        const target = document.getElementById(targetId);
+        if (target) {
+          target.focus();
+        }
+      });
+    }
+  });
+</script>
 <script type="module" src="<?php echo $basePath; ?>/js/path-utils.js?v=<?php echo time(); ?>"></script>
 <script src="<?php echo $basePath; ?>/js/type-manager.js?v=<?php echo time(); ?>"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+
+
     // Connect buttons to redirect to php/mychecklist.php
     const buttons = document.querySelectorAll('.checklist-button');
     buttons.forEach(button => {
@@ -82,11 +112,17 @@ renderHTMLHead('Accessibility Checklists');
       });
     });
 
-    // Connect Admin button to redirect to admin (short URL)
-    const adminButton = document.getElementById('adminButton');
-    if (adminButton) {
-      adminButton.addEventListener('click', function() {
-        window.location.href = '<?php echo $basePath; ?>/admin';
+    // Show initial message in footer
+    const statusContent = document.querySelector('.status-content');
+    if (statusContent) {
+      statusContent.textContent = 'Select a checklist type';
+    }
+
+    // Connect Reports button to redirect to reports
+    const reportsButton = document.getElementById('reportsButton');
+    if (reportsButton) {
+      reportsButton.addEventListener('click', function() {
+        window.location.href = '<?php echo $basePath; ?>/reports';
       });
     }
 

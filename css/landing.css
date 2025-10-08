@@ -1,5 +1,21 @@
 /* Landing Page Styles - Consolidated */
 
+/* Main content height on home page */
+main[role="main"] {
+    height: 1080px;
+}
+
+/* Ensure checklist groups stay visible when focused (skip link target) */
+#checklist-groups {
+    scroll-margin-top: 120px; /* 70px header + 50px breathing room */
+}
+
+#checklist-groups:focus {
+    outline: none;
+    box-shadow: var(--golden-ring);
+    border-radius: 6px;
+}
+
 .landing-content {
     display: flex;
     flex-direction: column;
@@ -99,7 +115,7 @@ button.checklist-button {
 .landing-content.checklist-groups-container {
   width: 100%;
   max-width: 1000px;
-  margin: 100px auto 2rem auto;
+  margin: 30px auto 2rem auto; /* 30px top margin for breathing room */
   display: flex;
   flex-direction: row;
   justify-content: space-around;

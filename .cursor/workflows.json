@@ -1,0 +1,76 @@
+{
+  "ai-start": {
+    "description": "Load AI session context and initialize environment",
+    "commands": [
+      "./scripts/session/session-start.sh"
+    ],
+    "auto_approve": true,
+    "working_directory": "/Users/a00288946/Desktop/accessilist",
+    "timeout": 30000,
+    "on_error": "continue"
+  },
+  "ai-end": {
+    "description": "Save session context and generate changelog",
+    "commands": [
+      "./scripts/session/session-end.sh"
+    ],
+    "auto_approve": true,
+    "working_directory": "/Users/a00288946/Desktop/accessilist",
+    "timeout": 20000,
+    "on_error": "continue"
+  },
+  "ai-update": {
+    "description": "Record mid-session progress",
+    "commands": [
+      "./scripts/session/session-update.sh"
+    ],
+    "auto_approve": true,
+    "working_directory": "/Users/a00288946/Desktop/accessilist",
+    "timeout": 20000,
+    "on_error": "continue"
+  },
+  "ai-repeat": {
+    "description": "Reload session context",
+    "commands": [
+      "./scripts/session/session-start.sh"
+    ],
+    "auto_approve": true,
+    "working_directory": "/Users/a00288946/Desktop/accessilist",
+    "timeout": 20000,
+    "on_error": "continue"
+  },
+  "ai-clean": {
+    "description": "Clean temporary files and logs",
+    "commands": [
+      "rm -f logs/*.log",
+      "rm -rf node_modules/.cache",
+      "find . -name '.DS_Store' -delete",
+      "echo '✅ Project cleaned'"
+    ],
+    "auto_approve": true,
+    "working_directory": "/Users/a00288946/Desktop/accessilist",
+    "timeout": 10000,
+    "on_error": "continue"
+  },
+  "ai-dry": {
+    "description": "Run duplicate code detection",
+    "commands": [
+      "./scripts/ai-dry.sh"
+    ],
+    "auto_approve": true,
+    "working_directory": "/Users/a00288946/Desktop/accessilist",
+    "timeout": 60000,
+    "on_error": "continue"
+  },
+  "ai-compress": {
+    "description": "Compress session context into summary",
+    "commands": [
+      "./scripts/utils/compress-context.sh"
+    ],
+    "auto_approve": true,
+    "working_directory": "/Users/a00288946/Desktop/accessilist",
+    "timeout": 30000,
+    "on_error": "continue"
+  }
+}
+

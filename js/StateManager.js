@@ -411,16 +411,33 @@ class UnifiedStateManager {
     console.log('State restoration completed');
   }
 
+  /**
+   * Scroll a section to the standard position (below sticky header)
+   * @param {HTMLElement} section - The section element to scroll to
+   * @param {Object} options - Options for scroll behavior
+   * @returns {number} The scroll position used
+   */
+  scrollSectionToPosition(section, options = {}) {
+    if (!section) return 0;
+
+    const SECTION_TOP_POSITION = 90; // 70px header + 20px breathing room
+    const scrollToPosition = section.offsetTop - SECTION_TOP_POSITION;
+    const behavior = options.smooth ? 'smooth' : 'auto';
+    const clampedPosition = Math.max(0, scrollToPosition);
+
+    console.log(`StateManager: Scrolling section to position:`, clampedPosition);
+    console.log('Section offsetTop:', section.offsetTop, 'SECTION_TOP_POSITION:', SECTION_TOP_POSITION);
+
+    window.scrollTo({ top: clampedPosition, behavior });
+    return clampedPosition;
+  }
+
   jumpToSection(sectionId) {
     const section = document.getElementById(sectionId);
     if (section) {
-      // Side panel is at 70px from viewport top
-      // Section has padding-top: 90px (70px header + 20px breathing room)
-      // To align section content with side panel, position section at viewport top (0px)
-      // Content will appear at 90px (section padding), which aligns with side panel area
-      const targetPosition = 0; // Position section element at viewport top
-      const y = section.getBoundingClientRect().top + window.pageYOffset - targetPosition;
-      window.scrollTo({ top: y, behavior: 'instant' });
+      this.scrollSectionToPosition(section, { smooth: false });
+    } else {
+      console.warn(`StateManager: Section ${sectionId} not found for jumpToSection`);
     }
   }
 

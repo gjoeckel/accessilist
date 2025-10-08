@@ -1,7 +1,7 @@
 #!/bin/bash
 # Start Optimized MCP Servers for Autonomous Operation
 # This script starts only essential servers to stay under 40-tool limit
-# Tool count: GitHub Minimal(4) + Puppeteer Minimal(4) + Sequential Thinking Minimal(4) + Everything Minimal(4) + Filesystem(15) + Memory(8) = 39 tools
+# Tool count: Filesystem(15) + Memory(8) + Shell Minimal(4) + GitHub Minimal(4) + Puppeteer Minimal(4) + Agent Autonomy(4) = 39 tools
 # Uses remote repository: https://github.com/gjoeckel/my-mcp-servers
 
 set -euo pipefail
@@ -68,7 +68,7 @@ trap 'rm -f "$LOCK_FILE"' EXIT
 : > "$LOCK_FILE"
 
 # Determine which servers need starting (skip running)
-servers=("github-minimal" "puppeteer-minimal" "sequential-thinking-minimal" "everything-minimal" "filesystem" "memory")
+servers=("filesystem" "memory" "shell-minimal" "github-minimal" "puppeteer-minimal" "agent-autonomy")
 needs_start=()
 for s in "${servers[@]}"; do
   pid_file="$PROJECT_ROOT/.cursor/${s}.pid"
@@ -101,6 +101,31 @@ fi
 # Start optimized MCP servers (39 tools total - just under 40 limit)
 echo "🚀 Starting optimized MCP servers..."
 
+# Filesystem MCP (15 tools - file operations, directory navigation)
+# Note: Managed by Cursor IDE, not started by this script
+if [ ${#needs_start[@]} -gt 0 ] && array_contains "filesystem" "${needs_start[@]}"; then
+  echo "ℹ️  filesystem - Managed by Cursor IDE"
+else
+  echo "⏭️  filesystem already running"
+fi
+
+# Memory MCP (8 tools - knowledge storage, entity management)
+# Note: Managed by Cursor IDE, not started by this script
+if [ ${#needs_start[@]} -gt 0 ] && array_contains "memory" "${needs_start[@]}"; then
+  echo "ℹ️  memory - Managed by Cursor IDE"
+else
+  echo "⏭️  memory already running"
+fi
+
+# Shell Minimal MCP (4 tools - essential shell commands)
+if [ ${#needs_start[@]} -gt 0 ] && array_contains "shell-minimal" "${needs_start[@]}"; then
+  start_mcp_server "shell-minimal" \
+    "npx" \
+    "-y git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/shell-minimal"
+else
+  echo "⏭️  shell-minimal already running"
+fi
+
 # GitHub Minimal MCP (4 tools - essential GitHub operations only)
 if [ ${#needs_start[@]} -gt 0 ] && array_contains "github-minimal" "${needs_start[@]}"; then
   if [ -n "${GITHUB_TOKEN:-}" ]; then
@@ -124,51 +149,21 @@ else
   echo "⏭️  puppeteer-minimal already running"
 fi
 
-# Sequential Thinking Minimal MCP (4 tools - essential problem solving)
-if [ ${#needs_start[@]} -gt 0 ] && array_contains "sequential-thinking-minimal" "${needs_start[@]}"; then
-  start_mcp_server "sequential-thinking-minimal" \
-    "npx" \
-    "-y git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/sequential-thinking-minimal"
+# Agent Autonomy MCP (4 tools - workflow automation)
+# Note: Managed by Cursor IDE via npm package, not started by this script
+if [ ${#needs_start[@]} -gt 0 ] && array_contains "agent-autonomy" "${needs_start[@]}"; then
+  echo "ℹ️  agent-autonomy - Managed by Cursor IDE (npm: mcp-agent-autonomy@1.0.1)"
 else
-  echo "⏭️  sequential-thinking-minimal already running"
-fi
-
-# Everything Minimal MCP (4 tools - essential protocol validation)
-if [ ${#needs_start[@]} -gt 0 ] && array_contains "everything-minimal" "${needs_start[@]}"; then
-  start_mcp_server "everything-minimal" \
-    "npx" \
-    "-y git+https://github.com/gjoeckel/my-mcp-servers.git#mcp-restart:packages/everything-minimal"
-else
-  echo "⏭️  everything-minimal already running"
-fi
-
-# Filesystem MCP (15 tools - file operations, directory navigation)
-if [ ${#needs_start[@]} -gt 0 ] && array_contains "filesystem" "${needs_start[@]}"; then
-  start_mcp_server "filesystem" \
-    "npx" \
-    "-y @modelcontextprotocol/server-filesystem /Users/a00288946/Desktop/accessilist" \
-    "ALLOWED_PATHS=/Users/a00288946/Desktop/accessilist:/Users/a00288946/.cursor:/Users/a00288946/.config/mcp
-READ_ONLY=false"
-else
-  echo "⏭️  filesystem already running"
-fi
-
-# Memory MCP (8 tools - knowledge storage, entity management)
-if [ ${#needs_start[@]} -gt 0 ] && array_contains "memory" "${needs_start[@]}"; then
-  start_mcp_server "memory" \
-    "npx" \
-    "-y @modelcontextprotocol/server-memory"
-else
-  echo "⏭️  memory already running"
+  echo "⏭️  agent-autonomy already running"
 fi
 
 echo "📊 Tool count optimization:"
-echo "   ✅ GitHub Minimal: 4 tools (essential GitHub operations)"
-echo "   ✅ Puppeteer Minimal: 4 tools (essential browser automation)"
-echo "   ✅ Sequential Thinking Minimal: 4 tools (essential problem solving)"
-echo "   ✅ Everything Minimal: 4 tools (essential protocol validation)"
-echo "   ✅ Filesystem: 15 tools (file operations)"
-echo "   ✅ Memory: 8 tools (knowledge storage)"
+echo "   ✅ Filesystem: 15 tools (official - file operations)"
+echo "   ✅ Memory: 8 tools (official - knowledge storage)"
+echo "   ✅ Shell Minimal: 4 tools (custom - shell commands)"
+echo "   ✅ GitHub Minimal: 4 tools (custom - GitHub operations)"
+echo "   ✅ Puppeteer Minimal: 4 tools (custom - browser automation)"
+echo "   ✅ Agent Autonomy: 4 tools (custom - workflow automation)"
 echo "   📈 Total: 39 tools (just under 40-tool limit)"
 
 # Wait for servers to initialize
@@ -177,7 +172,7 @@ sleep 5
 
 # Verify servers are running
 echo "🔍 Verifying MCP servers..."
-servers=("github-minimal" "puppeteer-minimal" "sequential-thinking-minimal" "everything-minimal" "filesystem" "memory")
+servers=("filesystem" "memory" "shell-minimal" "github-minimal" "puppeteer-minimal" "agent-autonomy")
 all_running=true
 
 for server in "${servers[@]}"; do
@@ -197,29 +192,29 @@ cat > "$PROJECT_ROOT/.cursor/mcp-status.json" << EOF
   "status": "running",
   "timestamp": "$(date -u +%Y-%m-%dT%H:%M:%SZ)",
   "servers": {
+    "filesystem": $(if [ -f "$PROJECT_ROOT/.cursor/filesystem.pid" ]; then echo "true"; else echo "false"; fi),
+    "memory": $(if [ -f "$PROJECT_ROOT/.cursor/memory.pid" ]; then echo "true"; else echo "false"; fi),
+    "shell-minimal": $(if [ -f "$PROJECT_ROOT/.cursor/shell-minimal.pid" ]; then echo "true"; else echo "false"; fi),
     "github-minimal": $(if [ -f "$PROJECT_ROOT/.cursor/github-minimal.pid" ]; then echo "true"; else echo "false"; fi),
     "puppeteer-minimal": $(if [ -f "$PROJECT_ROOT/.cursor/puppeteer-minimal.pid" ]; then echo "true"; else echo "false"; fi),
-    "sequential-thinking-minimal": $(if [ -f "$PROJECT_ROOT/.cursor/sequential-thinking-minimal.pid" ]; then echo "true"; else echo "false"; fi),
-    "everything-minimal": $(if [ -f "$PROJECT_ROOT/.cursor/everything-minimal.pid" ]; then echo "true"; else echo "false"; fi),
-    "filesystem": $(if [ -f "$PROJECT_ROOT/.cursor/filesystem.pid" ]; then echo "true"; else echo "false"; fi),
-    "memory": $(if [ -f "$PROJECT_ROOT/.cursor/memory.pid" ]; then echo "true"; else echo "false"; fi)
+    "agent-autonomy": $(if [ -f "$PROJECT_ROOT/.cursor/agent-autonomy.pid" ]; then echo "true"; else echo "false"; fi)
   },
   "autonomous_mode": true,
   "mcp_tools_available": true,
   "tool_count": "39_tools_optimized",
-  "configuration": "all-minimal-servers"
+  "configuration": "optimized-for-autonomy"
 }
 EOF
 
 echo ""
 echo "🎯 OPTIMIZED MCP SERVERS STARTUP COMPLETE!"
 echo "=========================================="
-echo "✅ GitHub Minimal MCP server started (4 tools)"
-echo "✅ Puppeteer Minimal MCP server started (4 tools)"
-echo "✅ Sequential Thinking Minimal MCP server started (4 tools)"
-echo "✅ Everything Minimal MCP server started (4 tools)"
-echo "✅ Filesystem MCP server started (15 tools)"
-echo "✅ Memory MCP server started (8 tools)"
+echo "✅ Filesystem MCP server (15 tools)"
+echo "✅ Memory MCP server (8 tools)"
+echo "✅ Shell Minimal MCP server (4 tools)"
+echo "✅ GitHub Minimal MCP server (4 tools)"
+echo "✅ Puppeteer Minimal MCP server (4 tools)"
+echo "✅ Agent Autonomy MCP server (4 tools)"
 echo "✅ Total: 39 tools (just under 40-tool limit)"
 echo "✅ Autonomous operation enabled"
 echo "✅ MCP tools available for use"
@@ -231,20 +226,23 @@ echo "🚀 Ready for optimized autonomous development!"
 echo "   MCP tools should now be available in Cursor IDE"
 echo ""
 echo "💡 Available Capabilities:"
-echo "   • GitHub Minimal: Repository operations (4 essential tools only)"
-echo "   • Puppeteer Minimal: Browser automation (4 essential tools only)"
-echo "   • Sequential Thinking Minimal: Problem solving (4 essential tools only)"
-echo "   • Everything Minimal: Protocol validation (4 essential tools only)"
-echo "   • Filesystem: File operations, directory navigation, content management"
-echo "   • Memory: Knowledge storage, entity management, search"
+echo "   • Filesystem: File operations, directory navigation, content management (15 tools)"
+echo "   • Memory: Knowledge storage, entity management, search (8 tools)"
+echo "   • Shell Minimal: Essential shell commands (4 tools)"
+echo "   • GitHub Minimal: Repository operations (4 tools)"
+echo "   • Puppeteer Minimal: Browser automation (4 tools)"
+echo "   • Agent Autonomy: Workflow automation (4 tools)"
 echo ""
 echo "🔧 Essential Tools Available:"
+echo "   Filesystem: read, write, list, search, create, move, delete files/directories"
+echo "   Memory: create_entities, create_relations, search_nodes, read_graph"
+echo "   Shell: execute_command, list_processes, kill_process, get_environment"
 echo "   GitHub: get_file_contents, create_or_update_file, push_files, search_repositories"
 echo "   Puppeteer: navigate, take_screenshot, extract_text, click_element"
-echo "   Sequential Thinking: create_step, get_steps, analyze_problem, generate_solution"
-echo "   Everything: validate_protocol, test_connection, get_system_info, run_diagnostics"
+echo "   Agent Autonomy: execute_workflow, list_workflows, register_workflow, check_approval"
 echo ""
 echo "📈 Tool Count Optimization:"
 echo "   • Previous: 50+ tools (over limit)"
-echo "   • Current: 39 tools (just under 40-tool limit)"
-echo "   • Improvement: 78% reduction while maintaining all essential functionality"
+echo "   • Current: 39 tools (optimized configuration)"
+echo "   • Removed: sequential-thinking-minimal, everything-minimal"
+echo "   • Added: shell-minimal, agent-autonomy"

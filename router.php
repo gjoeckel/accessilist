@@ -30,6 +30,24 @@ if ($requestUri === '/admin' || $requestUri === '/admin/') {
     return true;
 }
 
+// Reports page: /reports → /php/reports.php
+if ($requestUri === '/reports' || $requestUri === '/reports/') {
+    require __DIR__ . '/php/reports.php';
+    return true;
+}
+
+// User report page: /report → /php/report.php
+if ($requestUri === '/report' || $requestUri === '/report/') {
+    require __DIR__ . '/php/report.php';
+    return true;
+}
+
+// Checklist report page: /checklist-report → /php/checklist-report.php
+if ($requestUri === '/checklist-report' || $requestUri === '/checklist-report/') {
+    require __DIR__ . '/php/checklist-report.php';
+    return true;
+}
+
 // API Routes: /php/api/save → /php/api/save.php
 if (preg_match('#^/php/api/([^/.]+)$#', $requestUri, $matches)) {
     $apiFile = __DIR__ . '/php/api/' . $matches[1] . '.php';

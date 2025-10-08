@@ -1,7 +1,8 @@
 #!/bin/bash
 
 # Local PHP Server Start
-# Kills existing PHP servers and starts fresh for manual developer testing
+# Starts PHP server with router.php for clean URL support
+# Supports both foreground and background modes
 
 set -e
 
@@ -11,6 +12,12 @@ BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
 NC='\033[0m'
+
+# Check for background flag
+BACKGROUND=false
+if [[ "$1" == "--background" ]] || [[ "$1" == "-bg" ]]; then
+    BACKGROUND=true
+fi
 
 echo -e "${BLUE}🔧 Starting Local PHP Development Server${NC}"
 echo "=============================================="
@@ -41,14 +48,39 @@ echo -e "${GREEN}✅ Port 8000 available${NC}"
 
 echo ""
 
-# Start new PHP server
-echo -e "${BLUE}🚀 Starting PHP development server...${NC}"
+# Start new PHP server with router.php
+echo -e "${BLUE}🚀 Starting PHP development server with router.php...${NC}"
 echo "-------------------------------------------"
 echo "URL: http://localhost:8000"
 echo "Root: /Users/a00288946/Desktop/accessilist"
-echo "Press Ctrl+C to stop"
-echo ""
+echo "Router: router.php (enables clean URLs)"
 
 cd /Users/a00288946/Desktop/accessilist
-php -S localhost:8000
+
+if [ "$BACKGROUND" = true ]; then
+    echo "Mode: Background (logging to logs/php-server.log)"
+    echo ""
+    echo -e "${GREEN}✅ Server starting in background...${NC}"
+    php -S localhost:8000 router.php > logs/php-server.log 2>&1 &
+    SERVER_PID=$!
+    sleep 1
+    
+    # Verify server started
+    if ps -p $SERVER_PID > /dev/null; then
+        echo -e "${GREEN}✅ Server running (PID: $SERVER_PID)${NC}"
+        echo ""
+        echo -e "${BLUE}📋 Useful commands:${NC}"
+        echo "  View logs: tail -f logs/php-server.log"
+        echo "  Stop server: kill $SERVER_PID"
+        echo "  Or: lsof -ti:8000 | xargs kill"
+    else
+        echo -e "${RED}❌ Server failed to start${NC}"
+        echo "Check logs/php-server.log for details"
+        exit 1
+    fi
+else
+    echo "Mode: Foreground (Press Ctrl+C to stop)"
+    echo ""
+    php -S localhost:8000 router.php
+fi
 

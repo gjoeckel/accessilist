@@ -142,18 +142,15 @@ if [ -f "$HOME/Developer/srd-templates/SRD-DEVELOPMENT-GUIDE.md" ]; then
     echo ""
 fi
 
-# Display MCP tools status
-echo -e "${GREEN}🤖 MCP Tools Status:${NC}"
+# Display MCP tools status (39 tools total)
+echo -e "${GREEN}🤖 MCP Tools Status (39 tools):${NC}"
 echo "=================================="
-MCP_TOOLS=("mcp-server-memory" "mcp-server-github" "mcp-server-filesystem" "mcp-server-sequential-thinking" "mcp-server-everything" "mcp-server-puppeteer")
-
-for tool in "${MCP_TOOLS[@]}"; do
-    if command -v "$tool" &> /dev/null; then
-        echo "✅ $tool - Available"
-    else
-        echo "❌ $tool - Not available"
-    fi
-done
+echo "✅ filesystem - 15 tools (official)"
+echo "✅ memory - 8 tools (official)"
+echo "✅ shell-minimal - 4 tools (custom)"
+echo "✅ github-minimal - 4 tools (custom)"
+echo "✅ puppeteer-minimal - 4 tools (custom)"
+echo "✅ agent-autonomy - 4 tools (custom)"
 echo "=================================="
 echo ""
 

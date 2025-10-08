@@ -1,16 +1,16 @@
 {
   "status": "running",
-  "timestamp": "2025-10-07T22:45:47Z",
+  "timestamp": "2025-10-08T22:57:19Z",
   "servers": {
+    "filesystem": true,
+    "memory": true,
+    "shell-minimal": true,
     "github-minimal": true,
     "puppeteer-minimal": true,
-    "sequential-thinking-minimal": true,
-    "everything-minimal": true,
-    "filesystem": true,
-    "memory": true
+    "agent-autonomy": true
   },
   "autonomous_mode": true,
   "mcp_tools_available": true,
   "tool_count": "39_tools_optimized",
-  "configuration": "all-minimal-servers"
+  "configuration": "optimized-for-autonomy"
 }
