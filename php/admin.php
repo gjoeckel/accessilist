@@ -12,10 +12,10 @@ renderHTMLHead('Admin');
 <!-- Sticky Header -->
 <header class="sticky-header">
     <h1>Admin</h1>
-    <div class="header-buttons">
-        <button id="homeButton" class="home-button" aria-label="Go to home page">
-            <span class="button-text">Home</span>
-        </button>
+    <button id="homeButton" class="home-button" aria-label="Go to home page">
+        <span class="button-text">Home</span>
+    </button>
+    <div class="header-buttons-group">
         <button id="refreshButton" class="header-button" aria-label="Refresh checklist data">
             <span class="button-text">Refresh</span>
         </button>

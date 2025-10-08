@@ -4,19 +4,43 @@ require_once __DIR__ . '/includes/html-head.php';
 require_once __DIR__ . '/includes/footer.php';
 require_once __DIR__ . '/includes/common-scripts.php';
 
-renderHTMLHead('Reports');
+// Get and validate session key
+$sessionKey = $_GET['session'] ?? '';
+if (empty($sessionKey) || !preg_match('/^[A-Z0-9\-]{3,20}$/', $sessionKey)) {
+    http_response_code(400);
+    echo '<!DOCTYPE html><html><head><title>Invalid Session</title></head><body>';
+    echo '<h1>Invalid Session Key</h1>';
+    echo '<p>The session key provided is invalid or missing.</p>';
+    echo '<a href="' . $basePath . '/home">Return to Home</a>';
+    echo '</body></html>';
+    exit;
+}
+
+// Check if session file exists
+$sessionFile = __DIR__ . '/../saves/' . $sessionKey . '.json';
+if (!file_exists($sessionFile)) {
+    http_response_code(404);
+    echo '<!DOCTYPE html><html><head><title>Session Not Found</title></head><body>';
+    echo '<h1>Session Not Found</h1>';
+    echo '<p>The session "' . htmlspecialchars($sessionKey) . '" does not exist.</p>';
+    echo '<a href="' . $basePath . '/home">Return to Home</a>';
+    echo '</body></html>';
+    exit;
+}
+
+renderHTMLHead('My Checklist Report');
 ?>
 <body>
 <?php require __DIR__ . '/includes/noscript.php'; ?>
 
 <!-- Sticky Header -->
 <header class="sticky-header">
-    <h1>Reports</h1>
+    <h1>Report</h1>
     <button id="homeButton" class="home-button" aria-label="Go to home page">
         <span class="button-text">Home</span>
     </button>
     <div class="header-buttons-group">
-        <button id="refreshButton" class="header-button" aria-label="Refresh reports data">
+        <button id="refreshButton" class="header-button" aria-label="Refresh report data">
             <span class="button-text">Refresh</span>
         </button>
     </div>
@@ -24,15 +48,15 @@ renderHTMLHead('Reports');
 
 <!-- Main Content -->
 <main role="main">
-    <section id="reports" class="admin-section">
+    <section id="report" class="admin-section">
         <!-- Filter Buttons -->
-        <div class="filter-group" role="group" aria-label="Filter checklists by status">
+        <div class="filter-group" role="group" aria-label="Filter tasks by status">
             <button
                 id="filter-completed"
                 class="filter-button active"
                 data-filter="completed"
                 aria-pressed="true"
-                aria-label="Show completed checklists">
+                aria-label="Show completed tasks">
                 <span class="filter-label">Completed</span>
                 <span class="filter-count" id="count-completed">0</span>
             </button>
@@ -41,7 +65,7 @@ renderHTMLHead('Reports');
                 class="filter-button"
                 data-filter="pending"
                 aria-pressed="false"
-                aria-label="Show pending checklists">
+                aria-label="Show pending tasks">
                 <span class="filter-label">Pending</span>
                 <span class="filter-count" id="count-pending">0</span>
             </button>
@@ -50,25 +74,24 @@ renderHTMLHead('Reports');
                 class="filter-button"
                 data-filter="in-progress"
                 aria-pressed="false"
-                aria-label="Show in progress checklists">
+                aria-label="Show in progress tasks">
                 <span class="filter-label">In Progress</span>
                 <span class="filter-count" id="count-in-progress">0</span>
             </button>
         </div>
 
         <!-- Last Update Timestamp -->
-        <h2 id="reports-caption" tabindex="-1">Last reports update: <span id="last-update-time">Loading...</span></h2>
+        <h2 id="report-caption" tabindex="-1"><span id="report-type-name">Checklist</span> last updated: <span id="last-update-time">Loading...</span></h2>
 
         <!-- Table Container -->
         <div class="admin-container">
-            <table class="admin-table reports-table" aria-labelledby="reports-caption">
+            <table class="admin-table report-table" aria-labelledby="report-caption">
                 <thead>
                     <tr>
-                        <th class="admin-type-cell">Type</th>
-                        <th class="admin-date-cell">Updated</th>
-                        <th class="admin-instance-cell">Key</th>
-                        <th class="reports-status-cell">Status</th>
-                        <th class="reports-progress-cell">Progress</th>
+                        <th class="checkpoint-cell">Chkpt</th>
+                        <th class="task-cell">Tasks</th>
+                        <th class="notes-cell">Notes</th>
+                        <th class="status-cell">Status</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,42 +102,37 @@ renderHTMLHead('Reports');
     </section>
 </main>
 
-<?php renderFooter('standard'); ?>
+<?php renderFooter(); ?>
 
 <!-- Scripts -->
-<?php
-// FIXED: Changed from 'reports' to 'admin' since common-scripts.php doesn't have 'reports' case
-// Admin includes: path-utils, type-manager, ui-components, simple-modal, ModalActions
-renderCommonScripts('admin');
-?>
+<?php renderCommonScripts('admin'); ?>
 
-<!-- Date utilities (shared) -->
+<!-- Date utilities -->
 <script type="module" src="<?php echo $basePath; ?>/js/date-utils.js?v=<?php echo time(); ?>"></script>
 
-<!-- Reports functionality -->
+<!-- User Report functionality -->
 <script type="module">
-import { ReportsManager } from '<?php echo $basePath; ?>/js/reports.js?v=<?php echo time(); ?>';
+import { UserReportManager } from '<?php echo $basePath; ?>/js/report.js?v=<?php echo time(); ?>';
 
-// Initialize reports manager
-let reportsManager;
+const sessionKey = '<?php echo htmlspecialchars($sessionKey, ENT_QUOTES, 'UTF-8'); ?>';
 
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('Initializing reports page');
+    console.log('Initializing user report page for session:', sessionKey);
 
     // Update timestamp on page load
     updateTimestamp();
 
-    // Create reports manager instance
-    reportsManager = new ReportsManager();
-    reportsManager.initialize();
+    // Create report manager instance
+    const reportManager = new UserReportManager(sessionKey);
+    reportManager.initialize();
 
     // Set up Home button
     const homeButton = document.getElementById('homeButton');
     if (homeButton) {
         homeButton.addEventListener('click', function() {
             const target = window.getPHPPath
-                ? window.getPHPPath('home.php')
-                : '/php/home.php';
+                ? window.getPHPPath('home')
+                : '/home';
             window.location.href = target;
         });
     }
@@ -128,6 +146,30 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
+function refreshData() {
+    const refreshButton = document.getElementById('refreshButton');
+    if (!refreshButton) return;
+
+    // Indicate refresh in progress
+    refreshButton.setAttribute('aria-busy', 'true');
+    refreshButton.disabled = true;
+
+    // Reload the report data
+    const reportManager = new UserReportManager(sessionKey);
+    reportManager.initialize().then(() => {
+        // Update timestamp after successful refresh
+        updateTimestamp();
+
+        // After refresh completes
+        refreshButton.setAttribute('aria-busy', 'false');
+        refreshButton.disabled = false;
+    }).catch(error => {
+        console.error('Error refreshing data:', error);
+        refreshButton.setAttribute('aria-busy', 'false');
+        refreshButton.disabled = false;
+    });
+}
+
 function updateTimestamp() {
     const timestampElement = document.getElementById('last-update-time');
     if (timestampElement) {
@@ -138,50 +180,28 @@ function updateTimestamp() {
         timestampElement.textContent = formatted;
     }
 }
-
-function refreshData() {
-    const refreshButton = document.getElementById('refreshButton');
-    if (!refreshButton) return;
-
-    // Indicate refresh in progress
-    refreshButton.setAttribute('aria-busy', 'true');
-    refreshButton.disabled = true;
-
-    // Reload the data
-    if (reportsManager) {
-        reportsManager.loadChecklists().then(() => {
-            // Update timestamp after successful refresh
-            updateTimestamp();
-
-            // After refresh completes
-            refreshButton.setAttribute('aria-busy', 'false');
-            refreshButton.disabled = false;
-        }).catch(error => {
-            console.error('Error refreshing data:', error);
-            refreshButton.setAttribute('aria-busy', 'false');
-            refreshButton.disabled = false;
-
-            if (window.simpleModal) {
-                window.simpleModal.error(
-                    'Refresh Failed',
-                    'Failed to refresh reports data. Please try again.',
-                    () => {
-                        refreshButton.focus();
-                    }
-                );
-            }
-        });
-    }
-}
 </script>
 
-<!-- Status Footer -->
-<div class="status-footer" role="status" aria-live="polite">
-    <div class="status-content"></div>
-</div>
-
-<!-- Additional CSS for Reports-specific styling -->
+<!-- Report-specific styles -->
 <style>
+/* Report header info section */
+.report-header-info {
+    margin: 2rem 0 1.5rem 0;
+    padding: 0 2rem;
+}
+
+.report-header-info h2 {
+    margin: 0 0 0.5rem 0;
+}
+
+/* Subtitle under h2 */
+.subtitle {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0 0 1.5rem 0;
+    font-weight: normal;
+}
+
 /* Filter Buttons */
 .filter-group {
     display: flex;
@@ -248,54 +268,38 @@ function refreshData() {
     background-color: rgba(255, 255, 255, 0.3);
 }
 
-/* Status Icon (matches report.php) */
-.status-icon {
+/* Checkpoint column - just enough for icon */
+.checkpoint-cell {
+    width: 5%;
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px;
+}
+
+.checkpoint-cell img {
+    width: 36px;
+    height: 36px;
     display: block;
     margin: 0 auto;
 }
 
-/* Progress Bar */
-.progress-container {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
+/* Updated column (matches table.css pattern) */
+.updated-cell {
+    width: 8%;
+    text-align: center;
+    vertical-align: middle;
+    padding: 8px;
 }
 
-.progress-bar {
-    flex: 1;
-    height: 16px;
-    background-color: #e0e0e0;
-    border-radius: 4px;
-    overflow: hidden;
+/* Empty state */
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+    font-style: italic;
 }
-
-.progress-fill {
-    height: 100%;
-    transition: width 0.3s ease;
-    border-radius: 4px;
-}
-
-.progress-fill.completed {
-    background-color: #4CAF50;
-}
-
-.progress-fill.in-progress {
-    background-color: #2196F3;
-}
-
-.progress-fill.pending {
-    background-color: #9E9E9E;
-}
-
-.progress-text {
-    font-size: 1.1rem;
-    color: #666;
-    font-weight: 600;
-    min-width: 60px;
-}
-
-/* Table column widths now defined in admin.css */
 </style>
 
 </body>
 </html>
+

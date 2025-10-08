@@ -31,25 +31,32 @@ npm run local-apache-start
 
 ---
 
-### **For Manual Developer Testing** (PHP Built-in Server Only)
+### **For Manual Developer Testing** (PHP Built-in Server with Router)
 ```bash
-# Using npm
+# Using npm (foreground)
 npm run local-start
 
+# Using npm (background)
+npm run local-start:bg
+
 # Or direct script
-./scripts/local-start.sh
+./scripts/local-start.sh              # Foreground
+./scripts/local-start.sh --background # Background
 ```
 
 **What it does:**
 - ✅ Checks port 8000 availability
-- ✅ Starts PHP server on http://localhost:8000
+- ✅ Starts PHP server on http://localhost:8000 with router.php
+- ✅ **Enables clean URLs** (/home, /admin, /reports work!)
 - ✅ Can run alongside Apache (different ports)
-- ⚠️ **Note:** .htaccess rules won't work (no mod_rewrite)
+- ✅ Background mode logs to logs/php-server.log
+- ✅ Simulates Apache .htaccess behavior for development
 
 **Use when:**
 - Quick development testing
 - JavaScript/CSS changes
-- PHP logic testing (non-URL dependent)
+- PHP logic testing
+- Testing clean URL routing without Apache
 
 ---
 
@@ -105,11 +112,11 @@ npm run deploy:aws
 |---------|-------------------|----------------------|---------------------|
 | **Port** | 8000 | 80 | ✅ Yes (different) |
 | **URL** | http://localhost:8000 | http://localhost | ✅ Unique URLs |
-| **mod_rewrite** | ❌ No | ✅ Yes | ✅ No conflict |
-| **.htaccess** | ❌ Ignored | ✅ Processed | ✅ No conflict |
-| **Clean URLs** | ❌ Won't work | ✅ Works | ✅ Test on Apache |
+| **Router** | ✅ router.php | ✅ .htaccess | ✅ No conflict |
+| **Clean URLs** | ✅ Works (/home, /admin) | ✅ Works | ✅ Both support |
 | **PHP** | ✅ Built-in | ✅ mod_php/FPM | ✅ Separate processes |
-| **Use For** | Quick dev | Production testing | ✅ Both simultaneously |
+| **Logging** | ✅ logs/php-server.log | ✅ Apache logs | ✅ Separate logs |
+| **Use For** | Quick dev + routing | Production testing | ✅ Both simultaneously |
 | **Requires** | PHP only | Apache + PHP | - |
 | **Sudo** | ❌ No | ✅ Yes (for Apache) | - |
 
@@ -131,9 +138,10 @@ npm run apache-start
 ### **Testing Both:**
 ```bash
 # Terminal 3: Test commands
-# PHP server (no .htaccess processing):
+# PHP server (with router.php):
 curl http://localhost:8000/php/home.php    # ✅ Works
-curl http://localhost:8000/home            # ❌ 404
+curl http://localhost:8000/home            # ✅ Works (clean URL!)
+curl http://localhost:8000/admin           # ✅ Works (clean URL!)
 
 # Apache server (with .htaccess processing):
 curl http://localhost/php/home.php         # ✅ Works
@@ -174,8 +182,9 @@ This configures:
 - ✅ Testing PHP logic
 - ✅ Developing JavaScript/CSS
 - ✅ Making quick changes
-- ✅ Not testing URL routing
+- ✅ Testing clean URL routing (/home, /admin)
 - ✅ Want fastest startup
+- ✅ Don't need exact Apache configuration
 
 ### **Use `apache-start` when:**
 - ✅ Testing .htaccess rules
@@ -246,16 +255,15 @@ lsof -ti:80
 
 ## 🧪 **Testing Clean URLs**
 
-### **After `local-start` (PHP Server)**
+### **After `local-start` (PHP Server with router.php)**
 ```bash
-# These will work:
+# ALL of these will work:
 curl -I http://localhost:8000/
 curl -I http://localhost:8000/php/home.php
 curl -I http://localhost:8000/php/admin.php
-
-# These will 404 (no .htaccess):
-curl -I http://localhost:8000/home     # ❌ 404
-curl -I http://localhost:8000/admin    # ❌ 404
+curl -I http://localhost:8000/home     # ✅ Works (router.php)
+curl -I http://localhost:8000/admin    # ✅ Works (router.php)
+curl -I http://localhost:8000/reports  # ✅ Works (router.php)
 ```
 
 ### **After `apache-start` (Apache)**

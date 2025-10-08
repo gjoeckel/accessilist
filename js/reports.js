@@ -1,6 +1,6 @@
 /**
  * Reports Module
- * 
+ *
  * Manages the reports page functionality:
  * - Loading checklist data with full state
  * - Calculating checklist status based on statusButtons
@@ -21,11 +21,11 @@ export class ReportsManager {
      */
     initialize() {
         console.log('Initializing ReportsManager');
-        
+
         // Cache DOM elements
         this.tableBody = document.querySelector('.reports-table tbody');
         this.filterButtons = document.querySelectorAll('.filter-button');
-        
+
         // Set up filter button event listeners
         this.filterButtons.forEach(button => {
             button.addEventListener('click', (e) => {
@@ -42,16 +42,16 @@ export class ReportsManager {
      */
     handleFilterClick(button) {
         const filter = button.getAttribute('data-filter');
-        
+
         // Update active state
         this.filterButtons.forEach(btn => {
             btn.classList.remove('active');
             btn.setAttribute('aria-pressed', 'false');
         });
-        
+
         button.classList.add('active');
         button.setAttribute('aria-pressed', 'true');
-        
+
         // Update current filter and re-render
         this.currentFilter = filter;
         this.renderTable();
@@ -64,10 +64,10 @@ export class ReportsManager {
         console.log('Loading checklists from API');
 
         try {
-            const apiPath = window.getAPIPath 
+            const apiPath = window.getAPIPath
                 ? window.getAPIPath('list-detailed')
                 : '/php/api/list-detailed.php';
-                
+
             console.log('Fetching from:', apiPath);
 
             const response = await fetch(apiPath);
@@ -102,7 +102,7 @@ export class ReportsManager {
         } catch (error) {
             console.error('Error loading checklists:', error);
             this.showError('Failed to load checklists');
-            
+
             if (this.tableBody) {
                 this.tableBody.innerHTML = '<tr><td colspan="5" class="error-message">Error loading checklists</td></tr>';
             }
@@ -111,7 +111,7 @@ export class ReportsManager {
 
     /**
      * Calculate checklist status based on statusButtons
-     * 
+     *
      * Logic:
      * - completed: All tasks are "completed"
      * - in-progress: At least one task is "completed" or "in_progress", but not all completed
@@ -123,7 +123,7 @@ export class ReportsManager {
         }
 
         const statuses = Object.values(statusButtons);
-        
+
         if (statuses.length === 0) {
             return 'pending';
         }
@@ -202,7 +202,7 @@ export class ReportsManager {
             cell.style.color = '#6c757d';
             row.appendChild(cell);
             this.tableBody.appendChild(row);
-            
+
             this.updateStatusMessage(`No ${this.currentFilter.replace('-', ' ')} checklists found`);
             return;
         }
@@ -228,7 +228,7 @@ export class ReportsManager {
         // Format type using TypeManager if available
         const typeSlug = checklist.typeSlug || 'unknown';
         let formattedType = typeSlug;
-        
+
         if (window.TypeManager && typeof window.TypeManager.formatDisplayName === 'function') {
             formattedType = await window.TypeManager.formatDisplayName(typeSlug);
         } else {
@@ -236,9 +236,9 @@ export class ReportsManager {
             formattedType = typeSlug.charAt(0).toUpperCase() + typeSlug.slice(1);
         }
 
-        // Format dates
-        const createdDate = checklist.metadata?.created || checklist.timestamp || checklist.created;
-        const formattedDate = this.formatDate(createdDate);
+        // Format dates - use lastModified if available, otherwise created
+        const updatedDate = checklist.metadata?.lastModified || checklist.metadata?.created || checklist.timestamp || checklist.created;
+        const formattedDate = this.formatDate(updatedDate);
 
         // Calculate progress
         const progress = this.calculateProgress(checklist.state?.statusButtons || {});
@@ -276,10 +276,10 @@ export class ReportsManager {
     createInstanceLink(sessionKey, typeSlug) {
         const basePath = window.ENV?.basePath || '';
         const href = `${basePath}/?=${sessionKey}`;
-        
-        return `<a href="${this.escapeHtml(href)}" 
-                   class="instance-link" 
-                   target="_blank" 
+
+        return `<a href="${this.escapeHtml(href)}"
+                   class="instance-link"
+                   target="_blank"
                    rel="noopener noreferrer"
                    aria-label="Open checklist ${this.escapeHtml(sessionKey)} in new window">
                    ${this.escapeHtml(sessionKey)}
@@ -287,17 +287,27 @@ export class ReportsManager {
     }
 
     /**
-     * Create status badge HTML
+     * Create status icon HTML (matches report.php pattern)
      */
     createStatusBadge(status) {
         const labels = {
             'completed': 'Completed',
             'pending': 'Pending',
-            'in-progress': 'In Progress'
+            'in-progress': 'In Progress',
+            'in_progress': 'In Progress'
         };
 
         const label = labels[status] || status;
-        return `<span class="status-badge ${status}">${this.escapeHtml(label)}</span>`;
+        const iconPath = window.getImagePath
+            ? window.getImagePath(`${status}.svg`)
+            : `/images/${status}.svg`;
+
+        return `<img src="${this.escapeHtml(iconPath)}"
+                     alt="${this.escapeHtml(label)}"
+                     class="status-icon"
+                     width="75"
+                     height="75"
+                     style="display: block; margin: 0 auto;">`;
     }
 
     /**
@@ -309,7 +319,7 @@ export class ReportsManager {
         }
 
         const percentage = (completed / total) * 100;
-        
+
         return `
             <div class="progress-container">
                 <div class="progress-bar">
@@ -358,7 +368,7 @@ export class ReportsManager {
      */
     showError(message) {
         this.updateStatusMessage(`Error: ${message}`);
-        
+
         // Clear error after 5 seconds
         setTimeout(() => {
             const statusContent = document.querySelector('.status-content');

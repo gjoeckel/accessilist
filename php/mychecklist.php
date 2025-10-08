@@ -18,9 +18,15 @@ renderHTMLHead('Accessibility Checklist', true);
 <!-- Sticky Header -->
 <header class="sticky-header">
     <h1>Accessibility Checklist</h1>
-    <div class="header-buttons">
-        <button id="saveButton" class="save-button" aria-label="Save checklist" type="button">
+    <button id="homeButton" class="home-button" aria-label="Go to home page">
+        <span class="button-text">Home</span>
+    </button>
+    <div class="header-buttons-group">
+        <button id="saveButton" class="save-button header-button" aria-label="Save checklist" type="button">
             <span>Save</span>
+        </button>
+        <button id="reportButton" class="report-button header-button" aria-label="View report" type="button">
+            <span>Report</span>
         </button>
     </div>
 </header>
@@ -110,6 +116,32 @@ renderHTMLHead('Accessibility Checklist', true);
       if (typeof window.initializeApp === 'function') {
         window.initializeApp();
       }
+
+      // Home button handler
+      const homeButton = document.getElementById('homeButton');
+      if (homeButton) {
+        homeButton.addEventListener('click', function() {
+          const target = window.getPHPPath ? window.getPHPPath('home') : '/home';
+          window.location.href = target;
+        });
+      }
+
+      // Report button handler - open report in new window
+      const reportButton = document.getElementById('reportButton');
+      if (reportButton) {
+        reportButton.addEventListener('click', function() {
+          const sessionKey = window.sessionKeyFromPHP || window.unifiedStateManager?.sessionKey;
+          if (sessionKey) {
+            const reportUrl = window.basePath
+              ? `${window.basePath}/report?session=${sessionKey}`
+              : `/report?session=${sessionKey}`;
+            window.open(reportUrl, '_blank', 'noopener,noreferrer');
+          } else {
+            console.error('Session key not available for report');
+          }
+        });
+      }
+
     } catch (error) {
       console.error('Error during initialization:', error);
       const loadingText = document.getElementById('loadingText');

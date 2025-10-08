@@ -36,6 +36,12 @@ if ($requestUri === '/reports' || $requestUri === '/reports/') {
     return true;
 }
 
+// User report page: /report → /php/report.php
+if ($requestUri === '/report' || $requestUri === '/report/') {
+    require __DIR__ . '/php/report.php';
+    return true;
+}
+
 // Checklist report page: /checklist-report → /php/checklist-report.php
 if ($requestUri === '/checklist-report' || $requestUri === '/checklist-report/') {
     require __DIR__ . '/php/checklist-report.php';

@@ -42,7 +42,7 @@
 
 .home-button {
     position: absolute;
-    left: 1rem;
+    left: 2rem;
     top: 50%;
     transform: translateY(-50%);
     padding: 0.5rem 1.5rem;
@@ -54,6 +54,11 @@
     cursor: pointer;
     transition: background-color 0.2s;
     background-color: #336699;
+}
+
+.home-button:hover,
+.home-button:focus {
+    background-color: #285588;
 }
 
 .header-button {
@@ -88,21 +93,56 @@
     transform: none;
 }
 
-/* Save Button - Exact match to Home button except color */
-#saveButton {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
+/* Report Button - Same color as Home button */
+#reportButton,
+.report-button {
+    background-color: #336699;
+    color: white;
     padding: 0.5rem 1.5rem;
     border: none;
     border-radius: 4px;
-    color: white;
     font-weight: bold;
     font-size: 0.75rem;
     cursor: pointer;
     transition: background-color 0.2s;
+}
+
+#reportButton:hover,
+.report-button:hover {
+    background-color: #285588;
+}
+
+/* Multiple buttons on right side */
+.header-buttons {
+    position: absolute;
+    right: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    display: flex;
+    gap: 12px;
+    align-items: center;
+}
+
+/* Buttons inside header-buttons-group lose absolute positioning */
+.header-buttons-group .header-button,
+.header-buttons-group .save-button,
+.header-buttons-group .report-button {
+    position: static;
+    transform: none;
+}
+
+/* Save Button - Green background */
+#saveButton,
+.save-button {
     background-color: #478F00;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: background-color 0.2s;
 }
 
 /* Save Button hover state */

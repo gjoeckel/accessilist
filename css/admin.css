@@ -20,7 +20,7 @@
     color: var(--theme-color); /* Use section color */
     font-size: 1.3rem;
     text-align: center;
-    margin-bottom: 2rem;
+    margin: 1.5rem;
     z-index: 1;
     background-color: transparent;
     padding: 0;
@@ -77,12 +77,25 @@
 
 /* Explicit widths from checklist.css (commented out in multiple.css) - Re-evaluate if needed */
 .admin-date-cell {
-    width: 25%;
+    width: 20%;
 }
 
 .admin-instance-cell {
     width: 15%;
     text-align: left !important; /* Overriding general center alignment */
+}
+
+/* Reports Table Column Widths */
+.reports-status-cell {
+    width: 7%;
+    text-align: center;
+    vertical-align: middle;
+}
+
+.reports-progress-cell {
+    width: 46%;
+    text-align: left;
+    padding-left: 1rem;
 }
 
 .admin-action-cell {

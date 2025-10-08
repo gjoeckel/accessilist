@@ -20,17 +20,18 @@ function send_success($payload = []) {
     'success' => true,
     'timestamp' => time()
   ];
-  
+
   // If payload is provided, wrap it in 'data' property per SRD API contract
   if (!empty($payload)) {
     $base['data'] = $payload;
   }
-  
+
   send_json($base);
 }
 
 function validate_session_key($sessionKey) {
-  if (!preg_match('/^[a-zA-Z0-9]{3}$/', $sessionKey)) {
+  // Support both 3-char production keys (ABC, 0EX) and longer test keys (TEST-PROGRESS-50)
+  if (!preg_match('/^[a-zA-Z0-9\-]{3,20}$/', $sessionKey)) {
     send_error('Invalid session key', 400);
   }
 }
