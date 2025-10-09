@@ -17,7 +17,8 @@ select:focus {
   .principles-table .info-link,
   .principles-table .notes-textarea,
   .principles-table .status-button,
-  .admin-delete-button, /* Admin delete button - same as status buttons */
+  .report-delete-button, /* Report delete button - same as status buttons */
+  .reports-delete-button, /* Systemwide reports delete button */
   .principles-table .restart-button,
   .principles-button,
   .modal-button,
@@ -31,7 +32,6 @@ select:focus {
   .toggle-strip,
   .show-button,
   /* .delete-button, */ /* Legacy admin table - removed */
-  /* .admin-delete-button, */ /* EXCLUDED - no transitions to prevent visual shifts */
   /* .clear-data-button, */
   .camtasia-button,
   /* .checklist-button, */
@@ -72,7 +72,8 @@ select:focus {
 :is(
   .principles-table .status-button,
   .principles-table .restart-button,
-  .admin-delete-button, /* Admin delete button - same as status buttons */
+  .report-delete-button, /* Report delete button - same as status buttons */
+  .reports-delete-button, /* Systemwide reports delete button */
   .modal-button,
   #cancelRestart,
   #confirmRestartYes,
@@ -87,7 +88,6 @@ select:focus {
   .toggle-strip,
   .show-button,
   /* .delete-button, */ /* Legacy admin table - removed */
-  /* .admin-delete-button, */ /* EXCLUDED - no transitions to prevent visual shifts */
   /* .clear-data-button, */
   .camtasia-button,
   /* .checklist-button */
@@ -99,10 +99,11 @@ select:focus {
 
 
 
-/* Unified green hover/focus background for key action buttons (remove from .checklist-button) */
-:is(#yesButton, #refreshButton):is(:hover, :focus) {
+/* Unified green background for modal action buttons */
+#yesButton:is(:hover, :focus) {
     background-color: #478F00;
 }
+/* Note: #refreshButton and #saveButton maintain same green in header.css */
 
 /* Home button background hover/focus (color only) */
 #homeButton:hover,
@@ -116,11 +117,7 @@ select:focus {
   background-color: #1a1a1a; /* Darker gray on hover */
 }
 
-/* Instance link hover style */
-.instance-link:hover {
-    text-decoration: underline;
-    color: var(--primary-color, #0056b3); /* Retained from original */
-}
+/* Instance link hover removed - using unified golden ring pattern */
 
 
 /* --- Side Panel Focus/Hover Indicator (Circular Border) --- */
@@ -143,48 +140,57 @@ select:focus {
     background-color: #db1b14;
 }
 
-/* === Add Row Button Focus/Hover Circle (Moved to table.css) === */
+/* ====================================================================
+   TABLE INTERACTIVE ELEMENTS (Unified Golden Ring Pattern)
+   ==================================================================== */
 
-button.info-link:focus {
-  border-radius: 5px; /* Adjust value as needed */
+/* All table interactive elements get golden ring on hover/focus */
+.info-link:is(:hover, :focus),
+.status-button:is(:hover, :focus),
+.report-status-button:is(:hover, :focus),
+.restart-button:is(:hover, :focus),
+.report-delete-button:is(:hover, :focus),
+.reports-delete-button:is(:hover, :focus),
+.instance-link:is(:hover, :focus),
+textarea:is(:hover, :focus) {
+    box-shadow: var(--golden-ring) !important;
+    outline: none;
+}
+
+/* ====================================================================
+   HEADER BUTTONS
+   ==================================================================== */
+
+/* Header action buttons - golden ring */
+#saveButton:is(:hover, :focus),
+#yesButton:is(:hover, :focus),
+#refreshButton:is(:hover, :focus),
+#adminButton:is(:hover, :focus),
+#cancelButton:is(:hover, :focus),
+#homeButton:is(:hover, :focus),
+#backButton:is(:hover, :focus) {
+    box-shadow: var(--golden-ring) !important;
+}
+
+/* ====================================================================
+   LANDING PAGE BUTTONS
+   ==================================================================== */
+
+.checklist-button:is(:hover, :focus),
+.clear-data-button:is(:hover, :focus) {
+    box-shadow: var(--golden-ring) !important;
+}
+
+/* ====================================================================
+   SIDE PANEL
+   ==================================================================== */
+
+.toggle-strip:is(:hover, :focus) {
+    box-shadow: var(--golden-ring) !important;
 }
 
 .side-panel a:focus {
-  outline: none;
-}
-
-/* === Add Row Button Base Styles (Moved to table.css) === */
-
-/* === Standard Blue Outline for Key Action Buttons (exclude .checklist-button) === */
-#yesButton:focus, #yesButton:hover,
-#refreshButton:focus, #refreshButton:hover,
-.clear-data-button:focus, .clear-data-button:hover,
-#adminButton:focus, #adminButton:hover,
-#cancelButton:focus, #cancelButton:hover {
-  box-shadow: var(--golden-ring) !important;
-}
-
-/* Apply Home-like ring (white gap, #333 border, gold outer) to interactive elements */
-#saveButton:is(:hover, :focus),
-.checklist-button:is(:hover, :focus),
-.toggle-strip:is(:hover, :focus),
-:is(button, input, select, textarea):is(:hover, :focus),
-.instance-link:is(:hover, :focus) {
-  box-shadow: var(--golden-ring) !important;
-}
-
-/* Checklist Info column: rounded hover/focus shape */
-.principles-table .info-link:is(:hover, :focus) {
-  border-radius: 6px !important;
-  box-shadow: var(--golden-ring) !important;
-}
-
-/* Admin Instance column: match Checklist Info rounded style */
-.instance-link:is(:hover, :focus) {
-  border-radius: 6px !important;
-  width: 30% !important;
-  margin: 0 auto !important;
-  display: block !important;
+    outline: none;
 }
 
 /* Focused section headings ring wraps the inner .heading-content for stable layout */

@@ -117,18 +117,19 @@ class StateEvents {
     // State transitions
     if (currentState === 'pending') {
       newState = 'in-progress';
-      newIcon = window.getImagePath('in-progress.svg');
-      newLabel = 'Task status: In Progress';
+      newIcon = window.getImagePath('active.svg');
+      newLabel = 'Task status: Active';
       console.log('StateEvents: Transitioning from pending to in-progress');
     } else if (currentState === 'in-progress') {
       newState = 'completed';
-      newIcon = window.getImagePath('completed.svg');
-      newLabel = 'Task status: Completed';
+      newIcon = window.getImagePath('done.svg');
+      newLabel = 'Task status: Done';
       console.log('StateEvents: Transitioning from in-progress to completed');
 
       // Show and enable restart button when status is completed
       if (restartButton) {
-        restartButton.style.display = 'flex';
+        restartButton.classList.remove('restart-hidden');
+        restartButton.classList.add('restart-visible');
         restartButton.disabled = false;
         console.log('StateEvents: Restart button shown and enabled');
       }
@@ -170,13 +171,14 @@ class StateEvents {
     } else if (currentState === 'completed') {
       // Cycle back to pending
       newState = 'pending';
-      newIcon = window.getImagePath('pending.svg');
-      newLabel = 'Task status: Pending';
+      newIcon = window.getImagePath('ready.svg');
+      newLabel = 'Task status: Ready';
       console.log('StateEvents: Transitioning from completed to pending');
 
       // Hide restart button
       if (restartButton) {
-        restartButton.style.display = 'none';
+        restartButton.classList.remove('restart-visible');
+        restartButton.classList.add('restart-hidden');
         console.log('StateEvents: Restart button hidden');
       }
 
@@ -301,11 +303,11 @@ class StateEvents {
 
         if (currentState === 'pending' && hasText) {
           // Has text: pending → in-progress
-          this._updateStatusButton(statusButton, 'in-progress', 'Task status: In Progress', window.getImagePath('in-progress.svg'));
+          this._updateStatusButton(statusButton, 'in-progress', 'Task status: Active', window.getImagePath('active.svg'));
           console.log(`StateEvents: Status changed from pending to in-progress for row ${row.getAttribute('data-id')}`);
         } else if (currentState === 'in-progress' && !hasText) {
           // No text: in-progress → pending
-          this._updateStatusButton(statusButton, 'pending', 'Task status: Pending', window.getImagePath('pending.svg'));
+          this._updateStatusButton(statusButton, 'pending', 'Task status: Ready', window.getImagePath('ready.svg'));
           console.log(`StateEvents: Status changed from in-progress to pending for row ${row.getAttribute('data-id')}`);
         }
 
@@ -365,16 +367,16 @@ class StateEvents {
       l.classList.remove('infocus');
       const activeImg = l.querySelector('.active-state');
       const inactiveImg = l.querySelector('.inactive-state');
-      if (activeImg) activeImg.style.display = 'none';
-      if (inactiveImg) inactiveImg.style.display = 'block';
+      if (activeImg) activeImg.classList.remove('show');
+      if (inactiveImg) inactiveImg.classList.remove('hide');
     });
 
     // Add infocus class to clicked link
     link.classList.add('infocus');
     const activeImg = link.querySelector('.active-state');
     const inactiveImg = link.querySelector('.inactive-state');
-    if (activeImg) activeImg.style.display = 'block';
-    if (inactiveImg) inactiveImg.style.display = 'none';
+    if (activeImg) activeImg.classList.add('show');
+    if (inactiveImg) inactiveImg.classList.add('hide');
 
     // Scroll using StateManager's DRY method
     if (this.stateManager && typeof this.stateManager.scrollSectionToPosition === 'function') {
@@ -441,11 +443,7 @@ class StateEvents {
     const notesText = textarea.value;
 
     // Make textarea non-interactive but keep it visible
-    textarea.style.border = 'none';
-    textarea.style.backgroundColor = 'transparent';
-    textarea.style.color = '#666'; // Keep text visible but muted
-    textarea.style.resize = 'none';
-    textarea.style.pointerEvents = 'none';
+    textarea.classList.add('textarea-completed');
     textarea.disabled = true;
     textarea.setAttribute('tabindex', '-1');
     textarea.setAttribute('aria-hidden', 'true');
@@ -457,11 +455,7 @@ class StateEvents {
    * Restore textarea to editable state
    */
   restoreTextareaState(textarea, row) {
-    textarea.style.border = '';
-    textarea.style.backgroundColor = '';
-    textarea.style.color = '';
-    textarea.style.resize = '';
-    textarea.style.pointerEvents = '';
+    textarea.classList.remove('textarea-completed');
     textarea.disabled = false;
     textarea.setAttribute('tabindex', '0');
     textarea.setAttribute('aria-hidden', 'false');

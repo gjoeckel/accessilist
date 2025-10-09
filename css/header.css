@@ -1,8 +1,29 @@
-/* Header Styles - Consolidated from multiple-side-test.css block */
+/* ====================================================================
+   HEADER STYLESHEET
 
-/* Skip Link (WCAG 2.4.1 Bypass Blocks) */
+   SCOPE: Sticky header and navigation elements
+
+   CONTAINS:
+   - Skip link (WCAG accessibility)
+   - Sticky header structure and layout
+   - Navigation buttons (Home, Back)
+   - Action buttons (Save, Report, Refresh, Admin)
+   - Button groups and positioning
+
+   LOADS: After base.css
+
+   DOES NOT CONTAIN:
+   - Focus states (use focus.css)
+   - Page-specific content (use list.css, reports.css, etc.)
+   - Form elements (use form-elements.css)
+   ==================================================================== */
+
+/* ====================================================================
+   SKIP LINK (WCAG 2.4.1 Bypass Blocks)
+   ==================================================================== */
+
 .skip-link {
-    position: fixed; /* Changed from absolute to fixed */
+    position: fixed;
     top: 0;
     left: 0;
     background: #000;
@@ -12,16 +33,20 @@
     z-index: 10000;
     font-weight: bold;
     transition: background-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
-    transform: translateY(-100%); /* Hide above viewport */
-    clip: rect(0, 0, 0, 0); /* Fully hide when not focused */
+    transform: translateY(-100%); /* Hidden above viewport */
+    clip: rect(0, 0, 0, 0);
 }
 
 .skip-link:focus {
     transform: translateY(0); /* Show at top */
-    clip: auto; /* Show when focused */
+    clip: auto;
     outline: none;
     box-shadow: var(--golden-ring);
 }
+
+/* ====================================================================
+   STICKY HEADER STRUCTURE
+   ==================================================================== */
 
 .sticky-header {
     position: fixed;
@@ -35,6 +60,7 @@
     display: flex;
     align-items: center;
 }
+
 .header-content {
     position: relative;
     width: 100%;
@@ -43,6 +69,7 @@
     max-width: 1200px;
     margin: 0 auto;
 }
+
 .sticky-header h1 {
     position: absolute;
     left: 50%;
@@ -52,17 +79,10 @@
     font-size: 1.5rem;
     color: var(--text-color);
 }
-/* Header Button Styles */
-.header-buttons {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    margin-left: 0;
-    margin-right: 0;
-    padding-left: 3rem;
-    padding-right: 3rem;
-}
+
+/* ====================================================================
+   NAVIGATION BUTTONS (Left Side)
+   ==================================================================== */
 
 .home-button,
 .back-button {
@@ -81,16 +101,20 @@
     background-color: #336699;
 }
 
-/* Back button specific styling */
-.back-button {
-    background-color: #333333;
-}
-
 .home-button:hover,
 .home-button:focus {
     background-color: #285588;
 }
 
+.back-button {
+    background-color: #333333;
+}
+
+/* ====================================================================
+   ACTION BUTTONS (Right Side)
+   ==================================================================== */
+
+/* Generic header button (default dark style) */
 .header-button {
     position: absolute;
     right: 1rem;
@@ -103,29 +127,34 @@
     font-weight: bold;
     font-size: 0.75rem;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: none; /* No color transition */
     background-color: #333;
 }
 
-/* Header buttons group for multiple buttons on right */
-.header-buttons-group {
-    position: absolute;
-    right: 1rem;
-    top: 50%;
-    transform: translateY(-50%);
-    display: flex;
-    gap: 12px;
-    align-items: center;
+/* Refresh Button - Green (stays same color on hover/focus) */
+#refreshButton {
+    background-color: #478F00;
 }
 
-.header-buttons-group .header-button {
-    position: static;
-    transform: none;
+/* Save Button - Green (stays same color on hover/focus) */
+#saveButton,
+.save-button {
+    background-color: #478F00;
+    color: white;
+    padding: 0.5rem 1.5rem;
+    border: none;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 0.75rem;
+    cursor: pointer;
+    transition: none; /* No color transition */
 }
 
-/* Report Button - Same color as Home button */
+/* Report Button - Blue (matches Home button) */
 #reportButton,
-.report-button {
+.report-button,
+.reports-button,
+#reportsButton {
     background-color: #336699;
     color: white;
     padding: 0.5rem 1.5rem;
@@ -142,8 +171,31 @@
     background-color: #285588;
 }
 
-/* Multiple buttons on right side */
-.header-buttons {
+/* Admin and Cancel Buttons - Dark */
+#adminButton,
+#cancelButton {
+    background-color: #333;
+    color: white;
+}
+
+/* Start and Yes Buttons - Green */
+#startButton,
+#yesButton {
+    background-color: #336600;
+    color: white;
+}
+
+/* Test Button - Gray */
+#testButton {
+    color: #222222;
+    background-color: #888888;
+}
+
+/* ====================================================================
+   BUTTON GROUPS (Multiple Buttons on Right)
+   ==================================================================== */
+
+.header-buttons-group {
     position: absolute;
     right: 1rem;
     top: 50%;
@@ -153,57 +205,10 @@
     align-items: center;
 }
 
-/* Buttons inside header-buttons-group lose absolute positioning */
+/* Buttons inside groups lose absolute positioning */
 .header-buttons-group .header-button,
 .header-buttons-group .save-button,
 .header-buttons-group .report-button {
     position: static;
     transform: none;
 }
-
-/* Save Button - Green background */
-#saveButton,
-.save-button {
-    background-color: #478F00;
-    color: white;
-    padding: 0.5rem 1.5rem;
-    border: none;
-    border-radius: 4px;
-    font-weight: bold;
-    font-size: 0.75rem;
-    cursor: pointer;
-    transition: background-color 0.2s;
-}
-
-/* Save Button hover state */
-#saveButton:hover,
-#saveButton:focus {
-    background-color: #3a7a00; /* Slightly darker green for hover */
-}
-
-/* Other primary action buttons (Start/Yes) */
-#startButton,
-#yesButton {
-    background-color: #336600;
-    color: white;
-}
-/* Secondary action button (Test) */
-#testButton {
-    color: #222222;
-    background-color: #888888;
-}
-/* Admin button */
-#adminButton,
-#cancelButton {
-    background-color: #333;
-    color: white;
-}
-
-/* Reports button */
-.reports-button,
-#reportsButton {
-    background-color: #336699;
-    color: white;
-}
-
-/* Removed focus/hover styles - Handled by focus.css */

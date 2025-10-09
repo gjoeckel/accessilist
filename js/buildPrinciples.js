@@ -44,20 +44,12 @@ function createPrincipleSection(principleId, data) {
     heading.id = `${principleId}-caption`;
     heading.className = 'checklist-caption';
 
-    // Set aria-label to combine table number and caption
-    let tableNumber;
-    if (principleId === 'checklist-1') {
-        tableNumber = '1';
-    } else if (principleId === 'checklist-2') {
-        tableNumber = '2';
-    } else if (principleId === 'checklist-3') {
-        tableNumber = '3';
-    } else if (principleId === 'checklist-4') {
-        tableNumber = '4';
-    } else {
-        // Default to empty string if principle ID is not recognized
-        tableNumber = '';
-        console.warn(`Unknown principle ID: ${principleId}`);
+    // Extract checkpoint/checklist number dynamically (supports checkpoint-N or checklist-N)
+    const match = principleId.match(/(?:checkpoint|checklist)-(\d+)/);
+    const tableNumber = match ? match[1] : null;
+
+    if (!tableNumber) {
+        console.warn(`Unknown principle ID format: ${principleId}`);
     }
 
     // Only set aria-label if we have a valid table number
@@ -174,26 +166,9 @@ function buildTable(rows, principleId) {
         infoButton.setAttribute('aria-label', `Show example for ${row.task}`);
 
         const infoImg = document.createElement('img');
-        infoImg.src = window.getImagePath('info0.svg');
+        infoImg.src = window.getImagePath('info-.svg');
         infoImg.alt = '';
         infoButton.appendChild(infoImg);
-
-        // Add hover and focus event listeners
-        infoButton.addEventListener('mouseenter', () => {
-            infoImg.src = window.getImagePath('info1.svg');
-        });
-
-        infoButton.addEventListener('mouseleave', () => {
-            infoImg.src = window.getImagePath('info0.svg');
-        });
-
-        infoButton.addEventListener('focus', () => {
-            infoImg.src = window.getImagePath('info1.svg');
-        });
-
-        infoButton.addEventListener('blur', () => {
-            infoImg.src = window.getImagePath('info0.svg');
-        });
 
         // Add click handler for modal using SimpleModal
         infoButton.addEventListener('click', () => {
@@ -237,10 +212,10 @@ function buildTable(rows, principleId) {
         const statusButton = document.createElement('button');
         statusButton.className = 'status-button';
         statusButton.setAttribute('data-state', 'pending');
-        statusButton.setAttribute('aria-label', 'Task status: Pending');
+        statusButton.setAttribute('aria-label', 'Task status: Ready');
         statusButton.setAttribute('data-id', row.id);
         statusButton.id = `status-${row.id}`;
-        const pendingImgPath = window.getImagePath('pending.svg');
+        const pendingImgPath = window.getImagePath('ready.svg');
         statusButton.innerHTML = `<img src="${pendingImgPath}" alt="">`;
         statusCell.appendChild(statusButton);
 
@@ -249,12 +224,12 @@ function buildTable(rows, principleId) {
         const restartButton = document.createElement('button');
         restartButton.className = 'restart-button';
         restartButton.type = 'button';
-        restartButton.setAttribute('aria-label', 'Reset task to Pending');
+        restartButton.setAttribute('aria-label', 'Reset task to Ready');
         restartButton.setAttribute('data-id', row.id);
         restartButton.id = `restart-${row.id}`;
-        const restartImgPath = window.getImagePath('restart.svg');
-        restartButton.innerHTML = `<img src="${restartImgPath}" alt="Reset task" width="36" height="36">`;
-        restartButton.style.display = 'none'; // Initially hidden
+        const restartImgPath = window.getImagePath('reset.svg');
+        restartButton.innerHTML = `<img src="${restartImgPath}" alt="Reset task">`;
+        restartButton.classList.add('restart-hidden'); // Initially hidden
         restartCell.appendChild(restartButton);
 
         // Event handlers removed - now handled by StateEvents.js global event delegation
@@ -276,14 +251,12 @@ function buildTable(rows, principleId) {
 
     // Create image element with color-coded icon for each checklist
     const img = document.createElement('img');
-    const iconMap = {
-        'checklist-1': 'add-1.svg', // Blue
-        'checklist-2': 'add-2.svg', // Green
-        'checklist-3': 'add-3.svg', // Orange
-        'checklist-4': 'add-4.svg'  // Dark Blue/Purple
-    };
+    // Dynamic icon selection based on checkpoint/checklist number
+    const match = principleId.match(/(?:checkpoint|checklist)-(\d+)/);
+    const num = match ? match[1] : '0';
+    const iconName = `add-${num}.svg`;
 
-    const iconName = iconMap[principleId] || 'add0.svg';
+    // Icon pattern: add-1.svg (Blue), add-2.svg (Green), add-3.svg (Orange), add-4.svg (Dark Blue/Purple)
     img.src = window.getImagePath ? window.getImagePath(iconName) : `/images/${iconName}`;
     img.alt = 'Add Row';
     addButton.appendChild(img);
@@ -365,25 +338,31 @@ async function buildContent(data) {
         console.log('Clearing existing content');
         main.innerHTML = '';
 
-        // Create principle sections
-        console.log('Creating principle sections');
-        Object.entries(data).forEach(([principleId, principleData]) => {
-            if (principleId !== 'report' && principleId !== 'type' && principleId !== 'showRobust') {  // Skip report section, type field, and showRobust flag
-                // Skip checklist-4 if showRobust is false (incomplete checklist)
-                if (principleId === 'checklist-4' && !data.showRobust) {
-                    console.log(`Skipping ${principleId} - showRobust is false (incomplete checklist)`);
-                    return;
-                }
+        // Create checkpoint sections dynamically (supports checkpoint-1 through checkpoint-10)
+        console.log('Creating checkpoint sections');
 
-                console.log(`Creating section for principle: ${principleId}`);
-                const section = createPrincipleSection(principleId, principleData);
-                if (section) {
-                    console.log(`Building table for principle: ${principleId}`);
-                    const tableWrapper = buildTable(principleData.table, principleId);
-                    section.querySelector('.guidelines-container').appendChild(tableWrapper);
-                    main.appendChild(section);
-                    console.log(`Section for ${principleId} added to main`);
-                }
+        // Filter and sort checkpoint keys
+        const checkpointKeys = Object.keys(data)
+            .filter(key => key.startsWith('checkpoint-') || key.startsWith('checklist-')) // Support both new and legacy
+            .sort((a, b) => {
+                const numA = parseInt(a.split('-')[1]);
+                const numB = parseInt(b.split('-')[1]);
+                return numA - numB;
+            });
+
+        console.log(`Found ${checkpointKeys.length} checkpoints:`, checkpointKeys);
+
+        checkpointKeys.forEach(checkpointKey => {
+            const checkpointData = data[checkpointKey];
+
+            console.log(`Creating section for checkpoint: ${checkpointKey}`);
+            const section = createPrincipleSection(checkpointKey, checkpointData);
+            if (section) {
+                console.log(`Building table for checkpoint: ${checkpointKey}`);
+                const tableWrapper = buildTable(checkpointData.table, checkpointKey);
+                section.querySelector('.guidelines-container').appendChild(tableWrapper);
+                main.appendChild(section);
+                console.log(`Section for ${checkpointKey} added to main`);
             }
         });
 

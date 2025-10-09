@@ -28,10 +28,10 @@ if (!file_exists($sessionFile)) {
     exit;
 }
 
-renderHTMLHead('My Checklist Report');
+renderHTMLHead('List Report');
 ?>
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/report.css?v=<?php echo time(); ?>">
-<body>
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/list-report.css?v=<?php echo time(); ?>">
+<body class="report-page">
 <?php require __DIR__ . '/includes/noscript.php'; ?>
 
 <!-- Skip Link -->
@@ -39,7 +39,7 @@ renderHTMLHead('My Checklist Report');
 
 <!-- Sticky Header -->
 <header class="sticky-header">
-    <h1>Report</h1>
+    <h1>List Report</h1>
     <button id="backButton" class="back-button" aria-label="Back to checklist">
         <span class="button-text">Back</span>
     </button>
@@ -52,7 +52,7 @@ renderHTMLHead('My Checklist Report');
 
 <!-- Main Content -->
 <main role="main">
-    <section id="report" class="admin-section">
+    <section id="report" class="report-section">
         <!-- Filter Buttons -->
         <div class="filter-group" role="group" aria-label="Filter tasks by status">
             <button
@@ -61,7 +61,7 @@ renderHTMLHead('My Checklist Report');
                 data-filter="completed"
                 aria-pressed="false"
                 aria-label="Show completed tasks">
-                <span class="filter-label">Completed</span>
+                <span class="filter-label">Done</span>
                 <span class="filter-count" id="count-completed">0</span>
             </button>
             <button
@@ -70,7 +70,7 @@ renderHTMLHead('My Checklist Report');
                 data-filter="in-progress"
                 aria-pressed="false"
                 aria-label="Show in progress tasks">
-                <span class="filter-label">In Progress</span>
+                <span class="filter-label">Active</span>
                 <span class="filter-count" id="count-in-progress">0</span>
             </button>
             <button
@@ -78,8 +78,8 @@ renderHTMLHead('My Checklist Report');
                 class="filter-button"
                 data-filter="pending"
                 aria-pressed="false"
-                aria-label="Show pending tasks">
-                <span class="filter-label">Pending</span>
+                aria-label="Show not started tasks">
+                <span class="filter-label">Not Started</span>
                 <span class="filter-count" id="count-pending">0</span>
             </button>
             <button
@@ -94,11 +94,11 @@ renderHTMLHead('My Checklist Report');
         </div>
 
         <!-- Last Update Timestamp -->
-        <h2 id="report-caption" tabindex="-1"><span id="report-type-name">Checklist</span> last updated: <span id="last-update-time" aria-live="polite" aria-atomic="true">Loading...</span></h2>
+        <h2 id="report-caption" tabindex="-1"><span id="report-type-name">Checklist</span> last updated: <span id="last-update-time">Loading...</span></h2>
 
         <!-- Table Container -->
-        <div class="admin-container">
-            <table class="admin-table report-table" aria-labelledby="report-caption">
+        <div class="report-container">
+            <table class="report-table" aria-labelledby="report-caption">
                 <thead>
                     <tr>
                         <th class="checkpoint-cell">Chkpt</th>
@@ -167,8 +167,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const backButton = document.getElementById('backButton');
     if (backButton) {
         backButton.addEventListener('click', function() {
-            const basePath = window.ENV?.basePath || '';
-            window.location.href = `${basePath}/?=${sessionKey}`;
+            const basePath = window.basePath || '';
+            window.location.href = `${basePath}/mychecklist?session=${sessionKey}`;
         });
     }
 
@@ -204,6 +204,7 @@ function refreshData() {
         // After refresh completes
         refreshButton.setAttribute('aria-busy', 'false');
         refreshButton.disabled = false;
+        refreshButton.focus(); // Keep focus while success message shows
 
         // Announce completion to screen readers
         if (statusContent) {
@@ -212,6 +213,7 @@ function refreshData() {
             setTimeout(() => {
                 statusContent.textContent = '';
                 statusContent.classList.remove('status-success');
+                refreshButton.blur(); // Release focus when message disappears
             }, 5000);
         }
     }).catch(error => {
@@ -226,6 +228,7 @@ function refreshData() {
             setTimeout(() => {
                 statusContent.textContent = '';
                 statusContent.classList.remove('status-error');
+                refreshButton.blur(); // Release focus when error message disappears
             }, 5000);
         }
     });

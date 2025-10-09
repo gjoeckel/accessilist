@@ -20,8 +20,14 @@ Options -MultiViews
   # Admin page: /admin → /php/admin.php
   RewriteRule ^admin/?$ php/admin.php [L]
 
-# Reports page: /reports → /php/reports.php
-RewriteRule ^reports/?$ php/reports.php [L]
+  # Systemwide Report page: /reports → /php/systemwide-report.php
+  RewriteRule ^reports/?$ php/systemwide-report.php [L]
+
+  # List Report page: /list-report → /php/list-report.php
+  RewriteRule ^list-report/?$ php/list-report.php [L]
+
+  # My Checklist page: /mychecklist → /php/mychecklist.php
+  RewriteRule ^mychecklist/?$ php/mychecklist.php [L]
 
   # User report page: /report → /php/report.php
   RewriteRule ^report/?$ php/report.php [L,QSA]

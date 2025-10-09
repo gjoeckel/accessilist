@@ -1,0 +1,55 @@
+{
+  "version": "0.8",
+  "type": "Test-5-Checkpoints",
+  "checkpoint-1": {
+    "caption": "First checkpoint for testing 5-checkpoint layout",
+    "table": [
+      {
+        "id": "1.1",
+        "task": "Test task 1.1",
+        "info": "placeholder"
+      }
+    ]
+  },
+  "checkpoint-2": {
+    "caption": "Second checkpoint for testing 5-checkpoint layout",
+    "table": [
+      {
+        "id": "2.1",
+        "task": "Test task 2.1",
+        "info": "placeholder"
+      }
+    ]
+  },
+  "checkpoint-3": {
+    "caption": "Third checkpoint for testing 5-checkpoint layout",
+    "table": [
+      {
+        "id": "3.1",
+        "task": "Test task 3.1",
+        "info": "placeholder"
+      }
+    ]
+  },
+  "checkpoint-4": {
+    "caption": "Fourth checkpoint for testing 5-checkpoint layout",
+    "table": [
+      {
+        "id": "4.1",
+        "task": "Test task 4.1",
+        "info": "placeholder"
+      }
+    ]
+  },
+  "checkpoint-5": {
+    "caption": "Fifth checkpoint for testing 5-checkpoint layout",
+    "table": [
+      {
+        "id": "5.1",
+        "task": "Test task 5.1 - image will be missing but that's OK",
+        "info": "placeholder"
+      }
+    ]
+  }
+}
+

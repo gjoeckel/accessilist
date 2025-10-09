@@ -1,0 +1,326 @@
+/* ====================================================================
+   LIST STYLESHEET (Checklist Page)
+
+   SCOPE: All styles specific to the checklist page
+
+   CONTAINS:
+   - Main content layout and positioning
+   - Principle sections with checkpoint color themes
+   - Section headers and captions
+   - Side panel navigation (collapsible)
+   - Principles table wrapper
+   - Add row buttons for checklists
+   - Screen reader utilities
+
+   LOADS: After table.css
+
+   USED BY:
+   - mychecklist.php (all checklist types)
+
+   CONSOLIDATED FROM:
+   - side-panel.css (deleted)
+   - section.css (deleted)
+   - Portions of table.css (moved here)
+
+   DOES NOT CONTAIN:
+   - Shared table styles (use table.css)
+   - Form elements (use form-elements.css)
+   - Report page styles (use list-report.css, systemwide-reports.css, reports.css)
+   - Focus states (use focus.css)
+   ==================================================================== */
+
+/* ====================================================================
+   MAIN CONTENT LAYOUT
+   ==================================================================== */
+
+/* Main content for checklist page only - has side panel */
+body:not(.report-page) main {
+    grid-area: main;
+    max-width: 90%;
+    margin-left: 100px;
+    padding-top: 90px; /* Position first section below sticky header */
+    padding-bottom: 100vh; /* Allow scrolling past last section */
+}
+
+/* Main content for report pages - no side panel */
+body.report-page main {
+    grid-area: main;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 90px;
+    padding-bottom: 2rem;
+}
+
+/* ====================================================================
+   PRINCIPLE SECTIONS
+   ==================================================================== */
+
+section {
+    color: var(--theme-color);
+    position: relative;
+    z-index: 1;
+    margin-bottom: 60px;
+}
+
+.principle-section {
+    position: relative;
+    z-index: 1;
+}
+
+/* First section has no extra margin */
+.principle-section.checkpoint-1,
+.principle-section.checklist-1 {
+    margin-top: 0;
+}
+
+/* Checkpoint Color Themes */
+.principle-section.checkpoint-1,
+.principle-section.checklist-1 {
+    --theme-color: #005192;
+    --header-fill-color: #F0F9FF;
+}
+
+.principle-section.checkpoint-2,
+.principle-section.checklist-2 {
+    --theme-color: #5E850F;
+    --header-fill-color: #F7FDED;
+}
+
+.principle-section.checkpoint-3,
+.principle-section.checklist-3 {
+    --theme-color: #AC6628;
+    --header-fill-color: #F7E7D9;
+}
+
+.principle-section.checkpoint-4,
+.principle-section.checklist-4 {
+    --theme-color: #0C2336;
+    --header-fill-color: #E7ECF0;
+}
+
+/* Section Headers */
+.principle-section h2 {
+    color: var(--theme-color);
+    font-size: 1.3rem;
+    text-align: center;
+    margin-bottom: 2rem;
+    z-index: 1;
+    background-color: transparent;
+    padding: 4px;
+}
+
+/* Checklist Caption (clickable section heading) */
+.checklist-caption {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    cursor: pointer;
+    border-radius: 6px;
+    padding: calc(0.5rem + 4px) calc(1rem + 4px);
+    transition: box-shadow 0.2s ease;
+    max-width: fit-content;
+    white-space: nowrap;
+    margin: 0 auto;
+}
+
+.checklist-caption img {
+    flex-shrink: 0;
+}
+
+.checklist-caption:focus,
+.checklist-caption:hover {
+    outline: none;
+    box-shadow: var(--golden-ring) !important;
+}
+
+/* Screen Reader Only */
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Hidden sections (shown dynamically by JS) */
+[id$="-section"] {
+    display: none;
+}
+
+/* ====================================================================
+   SIDE PANEL NAVIGATION
+   ==================================================================== */
+
+:root {
+    --side-panel-width: 250px;
+    --side-panel-collapsed-width: 60px;
+}
+
+.side-panel {
+    position: fixed;
+    top: 165px;
+    left: 0;
+    width: var(--side-panel-collapsed-width);
+    background-color: white;
+    padding: 1rem;
+    display: flex;
+    flex-direction: column;
+    z-index: 90;
+    transform: translateX(calc(-1 * var(--side-panel-collapsed-width)));
+}
+
+body.loaded .side-panel {
+    transition: all 0.3s ease;
+}
+
+.side-panel[aria-expanded="true"] {
+    transform: translateX(0);
+}
+
+.side-panel ul {
+    list-style: none;
+    padding: 15px 0;
+    margin: 0;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.side-panel a {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 32px;
+    height: 32px;
+    padding: 0;
+    color: inherit;
+    text-decoration: none;
+    border-radius: 50%;
+}
+
+.side-panel a:focus,
+.side-panel a:hover {
+    outline: none;
+    box-shadow: var(--golden-ring) !important;
+}
+
+.side-panel img {
+    width: 36px;
+    height: 36px;
+}
+
+/* Side Panel Toggle Strip */
+.toggle-strip {
+    position: absolute;
+    right: -21px;
+    top: 0;
+    width: 21px;
+    height: 100%;
+    background-color: #ccc;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    color: black;
+    font-size: 1rem;
+    z-index: 91;
+    transition: transform 0.3s ease;
+}
+
+.toggle-strip:focus,
+.toggle-strip:hover {
+    outline: none;
+    box-shadow: var(--golden-ring) !important;
+}
+
+.toggle-arrow {
+    transition: transform 0.45s ease;
+}
+
+.side-panel[aria-expanded="false"] .toggle-arrow {
+    transform: rotate(180deg);
+}
+
+/* Side Panel Icon States */
+.side-panel a .active-state {
+    display: none !important;
+}
+
+.side-panel a .inactive-state {
+    display: block !important;
+}
+
+.side-panel a.infocus .active-state {
+    display: block !important;
+}
+
+.side-panel a.infocus .inactive-state {
+    display: none !important;
+}
+
+/* ====================================================================
+   PRINCIPLES TABLE SPECIFIC
+   ==================================================================== */
+
+.principles-table th:nth-child(3),
+.principles-table td:nth-child(3) {
+    display: table-cell;
+}
+
+.principles-table-wrapper {
+    margin-bottom: 1rem;
+}
+
+.principles-buttons {
+    display: flex;
+    justify-content: flex-start;
+    margin-top: 0.5rem;
+    gap: 0.5rem;
+}
+
+/* Add Row Buttons */
+.principles-button {
+    width: 30px;
+    padding: 0;
+    border: none !important;
+    background-color: transparent !important;
+    position: relative;
+    border-radius: 50%;
+}
+
+.principles-button img {
+    width: 100%;
+    object-fit: contain;
+}
+
+.principles-button:is(:hover, :focus) {
+    outline: none;
+    box-shadow: var(--golden-ring) !important;
+}
+
+/* ====================================================================
+   RESPONSIVE STYLES
+   ==================================================================== */
+
+@media (max-width: 768px) {
+    .side-panel {
+        position: fixed;
+        left: 0;
+        width: var(--side-panel-collapsed-width);
+        height: 40vh;
+        z-index: 90;
+        top: 165px;
+    }
+
+    .side-panel[aria-expanded="false"] {
+        transform: translateX(calc(-1 * var(--side-panel-collapsed-width)));
+    }
+}

@@ -1,6 +1,273 @@
-/* Reports Page Styles */
+/* ====================================================================
+   REPORTS STYLESHEET (Shared)
 
-/* Filter Buttons */
+   SCOPE: Shared report/admin styles used by multiple report pages
+
+   CONTAINS:
+   - Skip link targets and focus states
+   - Report section layout and colors
+   - Report table structure (.report-table)
+   - Reports.php column widths (systemwide list)
+   - Delete buttons (report and reports variants)
+   - Instance links
+   - Filter buttons (shared by both report pages)
+   - Empty state styles
+   - Report container and responsive styles
+
+   LOADS: After list.css
+
+   USED BY:
+   - systemwide-report.php (systemwide reports list) + systemwide-report.css
+   - list-report.php (individual report) + list-report.css
+
+   DOES NOT CONTAIN:
+   - Systemwide-specific styles (use systemwide-report.css)
+   - List report-specific styles (use list-report.css)
+   - Generic table styles (use table.css)
+   - Focus states (use focus.css)
+   ==================================================================== */
+
+/* ====================================================================
+   SKIP LINK TARGETS
+   ==================================================================== */
+
+#reports-caption,
+#report-caption {
+    scroll-margin-top: 180px;
+    padding: 4px; /* Reserve space for golden ring to prevent layout shift */
+}
+
+#reports-caption:focus,
+#report-caption:focus {
+    outline: none;
+    box-shadow: var(--golden-ring);
+    border-radius: 6px;
+}
+
+/* ====================================================================
+   REPORT SECTION LAYOUT
+   ==================================================================== */
+
+.report-section {
+    --theme-color: #666666;
+    --header-fill-color: #F7E7D9;
+    padding-top: 90px;
+    padding-bottom: 30px;
+    color: var(--theme-color);
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+}
+
+.report-section h2 {
+    color: var(--theme-color);
+    font-size: 1.3rem;
+    text-align: center;
+    margin: 1.5rem;
+    z-index: 1;
+    background-color: transparent;
+    padding: 0;
+}
+
+/* ====================================================================
+   REPORT TABLE STRUCTURE
+   ==================================================================== */
+
+.report-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    max-width: none;
+    table-layout: fixed;
+}
+
+.report-table caption {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+    width: 100%;
+}
+
+.report-table th {
+    text-align: center !important;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+    background-color: #f5f5f5;
+    font-weight: bold;
+    display: table-cell;
+}
+
+.report-table td {
+    text-align: center;
+    border-bottom: 1px solid #ddd;
+    vertical-align: middle;
+    display: table-cell;
+}
+
+.report-container {
+    width: 1200px;
+    max-width: 1500px;
+    margin: 0 auto;
+    min-width: 800px;
+}
+
+/* ====================================================================
+   REPORTS.PHP COLUMN WIDTHS (Systemwide Reports List)
+   ==================================================================== */
+
+/* Systemwide reports cells - inherit base table styles */
+.report-type-cell,
+.report-date-cell,
+.report-instance-cell,
+.reports-status-cell,
+.reports-progress-cell,
+.reports-delete-cell {
+    vertical-align: middle;
+}
+
+/* Fixed-width square cells for consistency */
+.report-instance-cell,
+.reports-status-cell,
+.reports-delete-cell {
+    max-height: 75px; /* Limit row height to exactly 75px */
+    text-align: center;
+}
+
+/* Key column header needs reduced padding due to narrow width */
+th.report-instance-cell,
+th.reports-status-cell,
+th.reports-delete-cell {
+    padding: 8px; /* Reduced from 1rem to fit text in narrow width */
+}
+
+/* Systemwide reports status buttons - use checkpoint table pattern but non-interactive */
+.reports-status-button {
+    cursor: default; /* Non-interactive */
+}
+
+/* Column widths and text alignment */
+.report-type-cell,
+.reports-table .task-cell:nth-child(1) { /* First task-cell in systemwide reports table only */
+    width: 150px;
+    text-align: center !important;
+}
+
+.report-date-cell,
+.reports-table .task-cell:nth-child(2) { /* Second task-cell in systemwide reports table only */
+    width: 225px;
+    text-align: center !important;
+}
+
+.report-instance-cell {
+    width: 75px;
+    text-align: center !important;
+}
+
+.reports-status-cell {
+    width: 75px;
+    text-align: center !important;
+}
+
+.reports-progress-cell,
+.reports-table .task-cell:nth-child(5) { /* Fifth task-cell in systemwide reports table only */
+    width: auto; /* Takes remaining space */
+}
+
+/* Progress header should be centered, but data cells left-aligned for progress bar */
+th.reports-progress-cell,
+.reports-table th.task-cell:nth-child(5) {
+    text-align: center !important;
+}
+
+td.reports-progress-cell,
+.reports-table td.task-cell:nth-child(5) {
+    text-align: left;
+}
+
+.reports-delete-cell {
+    width: 75px;
+    text-align: center !important;
+}
+
+.report-table th.report-type-cell {
+    background-color: #f5f5f5;
+    font-weight: bold;
+    text-align: center !important;
+    vertical-align: middle;
+}
+
+/* ====================================================================
+   DELETE BUTTONS
+   ==================================================================== */
+
+/* Delete Buttons - Use unified pattern from table.css */
+/* Both .report-delete-button and .reports-delete-button inherit from table.css */
+
+/* ====================================================================
+   INSTANCE LINKS
+   ==================================================================== */
+
+.instance-link {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 58px;
+    height: 58px;
+    margin: auto;
+    color: var(--color-link);
+    text-decoration: none;
+    border-radius: 4px;
+    transition: none;
+    font-weight: 600;
+}
+
+/* ====================================================================
+   FILTER BUTTONS (Shared by systemwide-report.php and list-report.php)
+   ==================================================================== */
+
+/* Filter button colors on hover/focus only (not active) */
+.filter-button[data-filter="pending"]:is(:hover, :focus) {
+    background-color: #1A76BB !important;
+    color: white !important;
+}
+
+.filter-button[data-filter="in-progress"]:is(:hover, :focus) {
+    background-color: #FEC111 !important;
+    color: #333333 !important;
+}
+
+.filter-button[data-filter="completed"]:is(:hover, :focus) {
+    background-color: #00834B !important;
+    color: white !important;
+}
+
+.filter-button[data-filter="all"]:is(:hover, :focus) {
+    background-color: #333333 !important;
+    color: white !important;
+}
+
+/* Filter button golden ring on hover/focus only (not on active state) */
+.filter-button:not(.active):is(:hover, :focus) {
+    box-shadow: var(--golden-ring) !important;
+    outline: none;
+    transition: none !important; /* Remove all animations */
+}
+
+/* Filter button counter styling on hover/active */
+.filter-button:is(:hover, .active) .filter-count {
+    background-color: #333333 !important;
+    color: #FFFFFF !important;
+}
+
+/* Special styling for "All" filter button counter */
+.filter-button[data-filter="all"]:is(:hover, .active) .filter-count {
+    background-color: #FFFFFF !important;
+    color: #333333 !important;
+}
+
 .filter-group {
     display: flex;
     gap: 0.75rem;
@@ -23,45 +290,6 @@
     transition: all 0.2s ease;
 }
 
-.filter-button:hover {
-    background-color: #f8f9fa;
-    border-color: #adb5bd;
-}
-
-.filter-button:focus {
-    outline: 2px solid #2196F3;
-    outline-offset: 2px;
-}
-
-.filter-button.active {
-    color: white;
-    box-shadow: var(--golden-ring);
-}
-
-.filter-button[data-filter="completed"].active {
-    background-color: #4CAF50;
-    border-color: #4CAF50;
-}
-
-.filter-button[data-filter="pending"].active {
-    background-color: #666666;
-    border-color: #666666;
-}
-
-.filter-button[data-filter="in-progress"].active {
-    background-color: #2196F3;
-    border-color: #2196F3;
-}
-
-.filter-button[data-filter="all"].active {
-    background-color: #333333;
-    border-color: #333333;
-}
-
-.filter-button[data-filter="all"].active .filter-count {
-    color: #333333;
-}
-
 .filter-count {
     background-color: rgba(0, 0, 0, 0.1);
     padding: 0.15rem 0.5rem;
@@ -72,54 +300,40 @@
     text-align: center;
 }
 
-.filter-button.active .filter-count {
-    background-color: rgba(255, 255, 255, 0.3);
+/* ====================================================================
+   EMPTY STATE
+   ==================================================================== */
+
+.empty-state {
+    text-align: center;
+    padding: 2rem;
+    color: #6c757d;
+    font-style: italic;
 }
 
-/* Status Icon */
-.status-icon {
-    display: block;
-    margin: 0 auto;
-}
+/* ====================================================================
+   RESPONSIVE STYLES
+   ==================================================================== */
 
-/* Progress Bar */
-.progress-container {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-    padding-left: 1rem;
-}
+@media (max-width: 1024px) {
+    .report-container {
+        width: 100%;
+        max-width: 100%;
+        min-width: auto;
+        margin: 0 auto;
+        padding: 0 30px;
+        box-sizing: border-box;
+    }
 
-.progress-bar {
-    flex: 1;
-    height: 16px;
-    background-color: #e0e0e0;
-    border-radius: 4px;
-    overflow: hidden;
-}
+    .report-table {
+        font-size: 0.9rem;
+        width: 100%;
+        margin: 0 auto;
+    }
 
-.progress-fill {
-    height: 100%;
-    transition: width 0.3s ease;
-    border-radius: 4px;
-}
+    .report-section {
+        padding-left: 0;
+        padding-right: 0;
+    }
 
-.progress-fill.completed {
-    background-color: #4CAF50;
 }
-
-.progress-fill.in-progress {
-    background-color: #2196F3;
-}
-
-.progress-fill.pending {
-    background-color: #9E9E9E;
-}
-
-.progress-text {
-    font-size: 1.1rem;
-    color: #666;
-    font-weight: 600;
-    min-width: 60px;
-}
-

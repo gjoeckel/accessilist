@@ -30,15 +30,21 @@ if ($requestUri === '/admin' || $requestUri === '/admin/') {
     return true;
 }
 
-// Reports page: /reports → /php/reports.php
+// Systemwide Report page: /reports → /php/systemwide-report.php
 if ($requestUri === '/reports' || $requestUri === '/reports/') {
-    require __DIR__ . '/php/reports.php';
+    require __DIR__ . '/php/systemwide-report.php';
     return true;
 }
 
-// User report page: /report → /php/report.php
-if ($requestUri === '/report' || $requestUri === '/report/') {
-    require __DIR__ . '/php/report.php';
+// List Report page: /list-report → /php/list-report.php
+if ($requestUri === '/list-report' || $requestUri === '/list-report/') {
+    require __DIR__ . '/php/list-report.php';
+    return true;
+}
+
+// My Checklist page: /mychecklist → /php/mychecklist.php
+if ($requestUri === '/mychecklist' || $requestUri === '/mychecklist/') {
+    require __DIR__ . '/php/mychecklist.php';
     return true;
 }
 

@@ -51,8 +51,8 @@ function createTableRow(rowData, tableType) {
         const infoButton = document.createElement('button');
         infoButton.className = 'info-link';
         infoButton.setAttribute('aria-label', `Show example for ${rowData.task || 'this task'}`);
-        const infoImgPath = window.getImagePath('info0.svg');
-        infoButton.innerHTML = `<img src="${infoImgPath}" alt="" width="24" height="24">`; // Added size for clarity
+        const infoImgPath = window.getImagePath('info-.svg');
+        infoButton.innerHTML = `<img src="${infoImgPath}" alt="">`;
         // TODO: Add event listeners (hover, focus, click for modal) - Likely attached elsewhere
         infoCell.appendChild(infoButton);
         tr.appendChild(infoCell);
@@ -76,12 +76,22 @@ function createTableRow(rowData, tableType) {
         statusCell.setAttribute('role', 'cell');
         const statusButton = document.createElement('button');
         statusButton.className = 'status-button';
-        const initialState = rowData.status || 'pending'; // Default to pending if not specified
+        const initialState = rowData.status || 'pending'; // Status value: pending/in-progress/completed
         statusButton.setAttribute('data-state', initialState);
         statusButton.setAttribute('data-id', rowData.id);
-        statusButton.setAttribute('aria-label', `Task status: ${initialState.charAt(0).toUpperCase() + initialState.slice(1)}`);
-        const statusImgPath = window.getImagePath(`${initialState}.svg`);
-        statusButton.innerHTML = `<img src="${statusImgPath}" alt="" width="24" height="24">`;
+
+        // Map status to icon filename
+        const iconMap = {
+            'pending': 'ready.svg',
+            'in-progress': 'active.svg',
+            'completed': 'done.svg'
+        };
+        const statusIcon = iconMap[initialState] || 'ready.svg';
+        const statusLabel = initialState === 'in-progress' ? 'In Progress' : initialState.charAt(0).toUpperCase() + initialState.slice(1);
+
+        statusButton.setAttribute('aria-label', `Task status: ${statusLabel}`);
+        const statusImgPath = window.getImagePath(statusIcon);
+        statusButton.innerHTML = `<img src="${statusImgPath}" alt="">`;
         // TODO: Add event listeners (click for state change) - Likely attached elsewhere
         statusCell.appendChild(statusButton);
         tr.appendChild(statusCell);
@@ -94,19 +104,19 @@ function createTableRow(rowData, tableType) {
         restartButton.className = 'restart-button';
         restartButton.setAttribute('data-id', rowData.id);
         restartButton.setAttribute('aria-label', `Restart task ${rowData.task || 'this task'}`);
-        const restartImgPath = window.getImagePath('restart.svg');
-        restartButton.innerHTML = `<img src="${restartImgPath}" alt="" width="36" height="36">`;
+        const restartImgPath = window.getImagePath('reset.svg');
+        restartButton.innerHTML = `<img src="${restartImgPath}" alt="">`;
         restartButton.disabled = (initialState !== 'completed'); // Only enable restart if completed
-        restartButton.style.display = (initialState === 'completed') ? 'flex' : 'none'; // Show restart button for completed rows
+        restartButton.classList.add((initialState === 'completed') ? 'restart-visible' : 'restart-hidden'); // Show restart button for completed rows
         // TODO: Add event listeners (hover, focus, click for modal) - Likely attached elsewhere
         restartCell.appendChild(restartButton);
         tr.appendChild(restartCell);
 
     } else if (tableType === 'report') {
         // Report table handling removed - reports now on separate page
-        console.warn('Report table type no longer supported - use reports.php page');
+        console.warn('Report table type no longer supported - use systemwide-report.php page');
         const errorCell = document.createElement('td');
-        errorCell.textContent = 'Report functionality moved to reports.php';
+        errorCell.textContent = 'Report functionality moved to systemwide-report.php';
         errorCell.colSpan = 5;
         tr.appendChild(errorCell);
 
@@ -122,10 +132,10 @@ function createTableRow(rowData, tableType) {
     return tr;
 }
 
-// handleAddRow function removed - report functionality moved to reports.php
+// handleAddRow function removed - report functionality moved to systemwide-report.php
 
 // Expose functions for global access
-// window.addManualReportRow removed - report functionality moved to reports.php
+// window.addManualReportRow removed - report functionality moved to systemwide-report.php
 window.createTableRow = createTableRow;
 
 
@@ -134,7 +144,8 @@ window.createTableRow = createTableRow;
  * Should be called after the DOM is loaded and the buttons exist.
  */
 function initializePrincipleAddRowButtons() {
-    const principleButtons = document.querySelectorAll('button[data-principle^="checklist-"]');
+    // Support both checkpoint- and checklist- naming conventions
+    const principleButtons = document.querySelectorAll('button[data-principle^="checklist-"], button[data-principle^="checkpoint-"]');
     console.log(`Found ${principleButtons.length} principle add row buttons`);
 
     principleButtons.forEach(button => {
