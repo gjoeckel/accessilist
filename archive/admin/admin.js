@@ -147,7 +147,7 @@ async function loadKeys() {
             const responseData = await response.json();
             console.log('Instances loaded:', responseData);
 
-            const tbody = document.querySelector('.admin-table tbody');
+            const tbody = document.querySelector('.report-table tbody');
             if (!tbody) {
                 console.error('Could not find tbody element');
                 reject(new Error('Could not find tbody element'));
@@ -167,7 +167,7 @@ async function loadKeys() {
                 const cell = document.createElement('td');
                 cell.colSpan = 5;
                 cell.textContent = 'No instances found';
-                cell.style.textAlign = 'center';
+                cell.className = 'table-empty-message';
                 row.appendChild(cell);
                 tbody.appendChild(row);
                 resolve();

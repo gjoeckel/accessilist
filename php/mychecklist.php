@@ -130,15 +130,15 @@ renderHTMLHead('Accessibility Checklist', true);
         });
       }
 
-      // Report button handler - open report in same tab
+      // Report button handler - open list report in same tab
       const reportButton = document.getElementById('reportButton');
       if (reportButton) {
         reportButton.addEventListener('click', function() {
           const sessionKey = window.sessionKeyFromPHP || window.unifiedStateManager?.sessionKey;
           if (sessionKey) {
             const reportUrl = window.basePath
-              ? `${window.basePath}/report?session=${sessionKey}`
-              : `/report?session=${sessionKey}`;
+              ? `${window.basePath}/list-report?session=${sessionKey}`
+              : `/list-report?session=${sessionKey}`;
             window.location.href = reportUrl;
           } else {
             console.error('Session key not available for report');

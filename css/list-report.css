@@ -1,0 +1,109 @@
+/* ====================================================================
+   LIST REPORT STYLESHEET (Individual Report)
+
+   SCOPE: Styles unique to the individual checklist report page
+
+   CONTAINS:
+   - Report header info and subtitle
+   - Report.php column widths (single report table)
+   - Checkpoint cell and icon sizing
+
+   LOADS: After reports.css (conditionally loaded only by list-report.php)
+
+   USED BY:
+   - list-report.php (individual checklist report)
+
+   SHARED STYLES IN:
+   - reports.css (filters, empty state, table structure)
+
+   DOES NOT CONTAIN:
+   - Filter buttons (use reports.css)
+   - Table structure (use reports.css)
+   - Systemwide reports list (use systemwide-reports.css)
+   ==================================================================== */
+
+/* ====================================================================
+   REPORT HEADER
+   ==================================================================== */
+
+.report-header-info {
+    margin: 2rem 0 1.5rem 0;
+    padding: 0 2rem;
+}
+
+.report-header-info h2 {
+    margin: 0 0 0.5rem 0;
+}
+
+.subtitle {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0 0 1.5rem 0;
+    font-weight: normal;
+}
+
+/* ====================================================================
+   REPORT TABLE COLUMN WIDTHS
+   Total: 105% (checkpoint, date, task, notes, status, delete)
+   ==================================================================== */
+
+/* Interactive cells - uniform square dimensions for consistent golden ring spacing */
+.checkpoint-cell,
+.report-status-cell,
+.report-delete-cell {
+    width: 75px; /* Fixed width = height for perfect squares */
+    min-width: 75px;
+    max-width: 75px;
+    min-height: 75px;
+    text-align: center;
+    vertical-align: middle;
+    position: relative;
+}
+
+/* Checkpoint header needs reduced padding due to narrow width */
+th.checkpoint-cell {
+    padding: 8px; /* Reduced from 1rem to fit text in 75px width */
+    text-align: center !important;
+}
+
+.checkpoint-cell img {
+    max-width: 100%;
+    max-height: 100%;
+    width: auto;
+    height: auto;
+    object-fit: contain;
+}
+
+/* Date column */
+.report-date-cell {
+    width: 75px; /* Fixed width = height for square cell */
+    min-width: 75px;
+    max-width: 75px;
+    min-height: 75px;
+    text-align: center;
+    vertical-align: middle;
+}
+
+/* Task column */
+.report-task-cell {
+    width: auto; /* Fills remaining space after fixed-width cells */
+    min-height: 75px; /* Match row height with interactive cells */
+    vertical-align: middle;
+}
+
+td.report-task-cell {
+    text-align: left; /* Data cells left-aligned, headers inherit center from base th */
+}
+
+/* Notes column */
+.report-notes-cell {
+    width: 30%;
+    min-height: 75px; /* Match row height with interactive cells */
+    vertical-align: middle;
+    white-space: normal;
+    word-wrap: break-word;
+}
+
+td.report-notes-cell {
+    text-align: left; /* Data cells left-aligned, headers inherit center from base th */
+}

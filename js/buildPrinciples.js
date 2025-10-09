@@ -166,26 +166,9 @@ function buildTable(rows, principleId) {
         infoButton.setAttribute('aria-label', `Show example for ${row.task}`);
 
         const infoImg = document.createElement('img');
-        infoImg.src = window.getImagePath('info0.svg');
+        infoImg.src = window.getImagePath('info-.svg');
         infoImg.alt = '';
         infoButton.appendChild(infoImg);
-
-        // Add hover and focus event listeners
-        infoButton.addEventListener('mouseenter', () => {
-            infoImg.src = window.getImagePath('info1.svg');
-        });
-
-        infoButton.addEventListener('mouseleave', () => {
-            infoImg.src = window.getImagePath('info0.svg');
-        });
-
-        infoButton.addEventListener('focus', () => {
-            infoImg.src = window.getImagePath('info1.svg');
-        });
-
-        infoButton.addEventListener('blur', () => {
-            infoImg.src = window.getImagePath('info0.svg');
-        });
 
         // Add click handler for modal using SimpleModal
         infoButton.addEventListener('click', () => {
@@ -229,10 +212,10 @@ function buildTable(rows, principleId) {
         const statusButton = document.createElement('button');
         statusButton.className = 'status-button';
         statusButton.setAttribute('data-state', 'pending');
-        statusButton.setAttribute('aria-label', 'Task status: Pending');
+        statusButton.setAttribute('aria-label', 'Task status: Ready');
         statusButton.setAttribute('data-id', row.id);
         statusButton.id = `status-${row.id}`;
-        const pendingImgPath = window.getImagePath('pending.svg');
+        const pendingImgPath = window.getImagePath('ready.svg');
         statusButton.innerHTML = `<img src="${pendingImgPath}" alt="">`;
         statusCell.appendChild(statusButton);
 
@@ -241,12 +224,12 @@ function buildTable(rows, principleId) {
         const restartButton = document.createElement('button');
         restartButton.className = 'restart-button';
         restartButton.type = 'button';
-        restartButton.setAttribute('aria-label', 'Reset task to Pending');
+        restartButton.setAttribute('aria-label', 'Reset task to Ready');
         restartButton.setAttribute('data-id', row.id);
         restartButton.id = `restart-${row.id}`;
-        const restartImgPath = window.getImagePath('restart.svg');
-        restartButton.innerHTML = `<img src="${restartImgPath}" alt="Reset task" width="36" height="36">`;
-        restartButton.style.display = 'none'; // Initially hidden
+        const restartImgPath = window.getImagePath('reset.svg');
+        restartButton.innerHTML = `<img src="${restartImgPath}" alt="Reset task">`;
+        restartButton.classList.add('restart-hidden'); // Initially hidden
         restartCell.appendChild(restartButton);
 
         // Event handlers removed - now handled by StateEvents.js global event delegation

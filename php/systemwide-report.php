@@ -4,10 +4,10 @@ require_once __DIR__ . '/includes/html-head.php';
 require_once __DIR__ . '/includes/footer.php';
 require_once __DIR__ . '/includes/common-scripts.php';
 
-renderHTMLHead('Systemwide Reports');
+renderHTMLHead('Systemwide Report');
 ?>
-<link rel="stylesheet" href="<?php echo $basePath; ?>/css/reports.css?v=<?php echo time(); ?>">
-<body>
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/systemwide-report.css?v=<?php echo time(); ?>">
+<body class="report-page">
 <?php require __DIR__ . '/includes/noscript.php'; ?>
 
 <!-- Skip Link -->
@@ -15,7 +15,7 @@ renderHTMLHead('Systemwide Reports');
 
 <!-- Sticky Header -->
 <header class="sticky-header">
-    <h1>Systemwide Reports</h1>
+    <h1>Systemwide Report</h1>
     <button id="homeButton" class="home-button" aria-label="Go to home page">
         <span class="button-text">Home</span>
     </button>
@@ -28,16 +28,16 @@ renderHTMLHead('Systemwide Reports');
 
 <!-- Main Content -->
 <main role="main">
-    <section id="reports" class="admin-section">
+    <section id="reports" class="report-section">
         <!-- Filter Buttons -->
-        <div class="filter-group" role="group" aria-label="Filter checklists by status">
+        <div class="filter-group" role="group" aria-label="Filter reports by status">
             <button
                 id="filter-completed"
                 class="filter-button"
                 data-filter="completed"
                 aria-pressed="false"
-                aria-label="Show completed checklists">
-                <span class="filter-label">Completed</span>
+                aria-label="Show completed reports">
+                <span class="filter-label">Done</span>
                 <span class="filter-count" id="count-completed">0</span>
             </button>
             <button
@@ -45,8 +45,8 @@ renderHTMLHead('Systemwide Reports');
                 class="filter-button"
                 data-filter="in-progress"
                 aria-pressed="false"
-                aria-label="Show in progress checklists">
-                <span class="filter-label">In Progress</span>
+                aria-label="Show in progress reports">
+                <span class="filter-label">Active</span>
                 <span class="filter-count" id="count-in-progress">0</span>
             </button>
             <button
@@ -54,8 +54,8 @@ renderHTMLHead('Systemwide Reports');
                 class="filter-button"
                 data-filter="pending"
                 aria-pressed="false"
-                aria-label="Show checklists where all tasks are pending">
-                <span class="filter-label">All Pending</span>
+                aria-label="Show reports where all tasks are not started">
+                <span class="filter-label">Not Started</span>
                 <span class="filter-count" id="count-pending">0</span>
             </button>
             <button
@@ -63,37 +63,57 @@ renderHTMLHead('Systemwide Reports');
                 class="filter-button active"
                 data-filter="all"
                 aria-pressed="true"
-                aria-label="Show all checklists">
+                aria-label="Show all reports">
                 <span class="filter-label">All</span>
                 <span class="filter-count" id="count-all">0</span>
             </button>
         </div>
 
         <!-- Last Update Timestamp -->
-        <h2 id="reports-caption" tabindex="-1">Last update: <span id="last-update-time" aria-live="polite" aria-atomic="true">Loading...</span></h2>
+        <h2 id="reports-caption" tabindex="-1">Last update: <span id="last-update-time">Loading...</span></h2>
+
 
         <!-- Table Container -->
-        <div class="admin-container">
-            <table class="admin-table reports-table" aria-labelledby="reports-caption">
+        <div class="report-container">
+            <table class="principles-table reports-table" aria-labelledby="reports-caption">
                 <thead>
                     <tr>
-                        <th class="admin-type-cell">Type</th>
-                        <th class="admin-date-cell">Updated</th>
-                        <th class="admin-instance-cell">Key</th>
-                        <th class="reports-status-cell">Status</th>
-                        <th class="reports-progress-cell">Progress</th>
-                        <th class="reports-delete-cell">Delete</th>
+                        <th class="task-cell">Type</th>
+                        <th class="task-cell">Updated</th>
+                        <th class="info-cell">Key</th>
+                        <th class="status-cell">Status</th>
+                        <th class="task-cell">Progress</th>
+                        <th class="restart-cell">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <!-- Will be populated dynamically -->
+                    <tr>
+                        <td class="task-cell">Sample type</td>
+                        <td class="task-cell">2024-01-15</td>
+                        <td class="info-cell">
+                            <button class="info-link" aria-label="Show example">
+                                <img src="/images/info-.svg" alt="">
+                            </button>
+                        </td>
+                        <td class="status-cell">
+                            <button class="status-button" aria-label="Task status: Active">
+                                <img src="/images/active.svg" alt="">
+                            </button>
+                        </td>
+                        <td class="task-cell">5/10 tasks</td>
+                        <td class="restart-cell">
+                            <button class="restart-button restart-hidden" aria-label="Reset task">
+                                <img src="/images/reset.svg" alt="">
+                            </button>
+                        </td>
+                    </tr>
                 </tbody>
             </table>
         </div>
     </section>
 </main>
 
-<?php renderFooter('standard'); ?>
+<?php renderFooter(); ?>
 
 <!-- Scripts -->
 <script>
@@ -187,7 +207,7 @@ function refreshData() {
     refreshButton.disabled = true;
 
     if (statusContent) {
-        statusContent.textContent = 'Refreshing reports...';
+        statusContent.textContent = 'Refreshing report...';
         statusContent.classList.remove('status-success', 'status-error');
     }
 
@@ -200,40 +220,38 @@ function refreshData() {
             // After refresh completes
             refreshButton.setAttribute('aria-busy', 'false');
             refreshButton.disabled = false;
+            refreshButton.focus(); // Keep focus while success message shows
 
             // Announce completion to screen readers
             if (statusContent) {
-                statusContent.textContent = 'Reports refreshed successfully';
+                statusContent.textContent = 'Report refreshed successfully';
                 statusContent.classList.add('status-success');
                 setTimeout(() => {
                     statusContent.textContent = '';
                     statusContent.classList.remove('status-success');
+                    refreshButton.blur(); // Release focus when message disappears
                 }, 5000);
             }
         }).catch(error => {
             console.error('Error refreshing data:', error);
             refreshButton.setAttribute('aria-busy', 'false');
             refreshButton.disabled = false;
+            refreshButton.focus(); // Keep focus while error message shows
 
-            if (window.simpleModal) {
-                window.simpleModal.error(
-                    'Refresh Failed',
-                    'Failed to refresh reports data. Please try again.',
-                    () => {
-                        refreshButton.focus();
-                    }
-                );
+            // Show error message in footer
+            if (statusContent) {
+                statusContent.textContent = 'Error refreshing report';
+                statusContent.classList.add('status-error');
+                setTimeout(() => {
+                    statusContent.textContent = '';
+                    statusContent.classList.remove('status-error');
+                    refreshButton.blur(); // Release focus when error message disappears
+                }, 5000);
             }
         });
     }
 }
 </script>
-
-<!-- Status Footer -->
-<div class="status-footer" role="status" aria-live="polite">
-    <div class="status-content"></div>
-</div>
-
 
 </body>
 </html>

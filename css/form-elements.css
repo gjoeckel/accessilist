@@ -1,23 +1,41 @@
-/* Form Element Styles - DRY Consolidated */
+/* ====================================================================
+   FORM ELEMENTS STYLESHEET
+
+   SCOPE: All form input elements and their behavior
+
+   CONTAINS:
+   - Text inputs (.task-input)
+   - Textareas (textarea, .notes-textarea, etc.)
+   - Focus states for form elements
+   - Disabled/readonly states
+   - Form validation styles
+
+   DOES NOT CONTAIN:
+   - Table cells (use table.css)
+   - Table structure (use table.css)
+   - Table-specific buttons (use table.css)
+   ==================================================================== */
 
 /* ====================================================================
-   UNIFIED INPUT STYLES
-   Used by: Manual principle rows (.task-input)
+   INPUT & TEXTAREA STYLES
    ==================================================================== */
+
+/* Task input for manual principle rows */
 .task-input {
     width: 100%;
-    min-height: 75px;
+    min-height: 59px; /* 75px cell - 8px top padding - 8px bottom padding */
     height: auto;
     box-sizing: border-box;
     resize: none;
-    padding: 8px;
+    padding: 4px;
     border: 1px solid #ccc;
-    border-radius: 3px;
+    border-radius: 4px;
     font-family: inherit;
-    font-size: 1rem;
-    line-height: 2; /* User preference: all multiline text line-height of 2 */
+    font-size: 0.85rem;
+    line-height: 1.5; /* 50% increased line spacing */
     color: #333;
     background-color: #fff;
+    display: block; /* Prevents inline element whitespace at bottom */
 }
 
 .task-input:focus {
@@ -26,67 +44,42 @@
     box-shadow: 0 0 0 2px rgba(0, 124, 186, 0.2);
 }
 
-/* ====================================================================
-   UNIFIED TEXTAREA STYLES
-   Used by: Principle tables (.notes-textarea)
-            Report tables (.report-task-textarea, .report-notes-textarea)
-   ==================================================================== */
+/* Textareas - used in principle and report tables */
 textarea,
 .notes-textarea,
 .report-task-textarea,
 .report-notes-textarea {
     width: 100%;
-    min-height: 75px;
+    min-height: 59px; /* 75px cell - 8px top padding - 8px bottom padding */
     height: auto;
     box-sizing: border-box;
     resize: none;
-    padding: 8px;
+    padding: 4px;
     border: 1px solid #ccc;
-    border-radius: 3px;
+    border-radius: 4px; /* Rounded corners for smooth golden ring appearance */
     font-family: inherit;
-    font-size: 1rem;
-    line-height: 2; /* User preference: all multiline text line-height of 2 */
+    font-size: 0.85rem;
+    line-height: 1.5; /* 50% increased line spacing (base 1.0 → 1.5) */
     color: #333;
     background-color: #fff;
+    display: block; /* Prevents inline element whitespace at bottom */
+    transition: box-shadow 0.2s ease; /* Smooth transition for hover/focus */
 }
 
-/* ====================================================================
-   UNIFIED NOTES CELL STYLES
-   Used by: Principle tables (.notes-cell)
-            Report tables (.report-notes-cell, .report-task-cell)
-   ==================================================================== */
-.notes-cell,
-.report-notes-cell,
-.report-task-cell {
-    text-align: left;
-    vertical-align: top;
-    position: relative; /* Needed for absolute positioning of overlay */
-}
+/* Task-specific textareas get extra left padding for readability */
 
-/* Center the 'Notes' header text in principles tables */
-.principles-table th.notes-cell {
-    text-align: center;
-    vertical-align: middle;
-}
-
-/* Legacy text overlay styles removed - overlays no longer used */
-
-/* ====================================================================
-   AUTOMATIC ROW TEXT CONTAINERS
-   Used by: Automatic (completed task) rows in Report table
-   Purpose: Match visual appearance of textareas but read-only
-   ==================================================================== */
+/* Automatic row text containers (read-only) */
 .report-task-text,
 .report-notes-text {
     width: 100%;
-    min-height: 75px;
+    min-height: 59px; /* 75px cell - 8px top padding - 8px bottom padding */
     box-sizing: border-box;
-    padding: 8px;
+    padding: 4px;
     border: 1px solid #e0e0e0; /* Lighter border for read-only */
-    border-radius: 3px;
+    border-radius: 4px;
     font-family: inherit;
-    font-size: 1rem;
-    line-height: 2; /* User preference: all multiline text line-height of 2 */
+    font-size: 0.85rem;
+    line-height: 1.5; /* 50% increased line spacing */
     color: #555; /* Slightly muted for read-only */
     background-color: #f9f9f9; /* Light background to indicate read-only */
     white-space: pre-wrap;
@@ -94,24 +87,76 @@ textarea,
     overflow-y: auto;
 }
 
-/* Notes cell specific (if needed for report tables) */
-.report-notes-cell {
-    text-align: left;
-    vertical-align: top;
-    position: relative;
+/* Task text containers get extra left padding */
+.report-task-text {
+    padding-left: 24px; /* Match task-cell left padding for alignment */
 }
 
-.report-table th.report-notes-cell {
-    text-align: center;
-    vertical-align: middle;
+/* ====================================================================
+   STATE CLASSES (Applied by JavaScript)
+   ==================================================================== */
+
+/* Completed textarea state - applied when task is marked "Done" */
+.textarea-completed {
+    border: 1px solid white !important;
+    background-color: #fff !important;
+    color: #666 !important;
+    resize: none !important;
+    pointer-events: none !important;
+    transition: none !important;
 }
 
-/* Legacy report overlay styles removed - overlays no longer used */
-
-.report-task-cell {
-    text-align: left;
-    vertical-align: top;
-    position: relative;
+/* Restart button visibility states */
+.restart-visible {
+    visibility: visible !important;
 }
 
-/* Legacy report task overlay styles removed - overlays no longer used */ 
+.restart-hidden {
+    visibility: hidden !important;
+}
+
+/* Status button pointer state */
+.status-interactive {
+    pointer-events: auto !important;
+}
+
+/* Side panel active/inactive image states */
+.active-state {
+    display: none;
+}
+
+.active-state.show {
+    display: block !important;
+}
+
+.inactive-state {
+    display: block;
+}
+
+.inactive-state.hide {
+    display: none !important;
+}
+
+/* Row visibility (for filtering) */
+.row-hidden {
+    display: none !important;
+}
+
+/* Error text state */
+.text-error {
+    color: #d32f2f !important;
+}
+
+/* Image centering utility */
+.img-centered {
+    display: block;
+    margin: 0 auto;
+}
+
+/* Empty/no-data table message */
+.table-empty-message {
+    text-align: center !important;
+    padding: 2rem !important;
+    color: #6c757d !important;
+    font-size: 1.5rem !important;
+}

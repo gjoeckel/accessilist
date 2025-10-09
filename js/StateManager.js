@@ -284,7 +284,7 @@ class UnifiedStateManager {
 
     buttons.forEach(button => {
       if (button.id) {
-        restartButtons[button.id] = button.style.display !== 'none';
+        restartButtons[button.id] = button.classList.contains('restart-visible');
       }
     });
 
@@ -477,16 +477,16 @@ class UnifiedStateManager {
           link.classList.remove('infocus');
           const activeImg = link.querySelector('.active-state');
           const inactiveImg = link.querySelector('.inactive-state');
-          if (activeImg) activeImg.style.display = 'none';
-          if (inactiveImg) inactiveImg.style.display = 'block';
+          if (activeImg) activeImg.classList.remove('show');
+          if (inactiveImg) inactiveImg.classList.remove('hide');
         });
 
         // Set new active state
         activeLink.classList.add('infocus');
         const activeImg = activeLink.querySelector('.active-state');
         const inactiveImg = activeLink.querySelector('.inactive-state');
-        if (activeImg) activeImg.style.display = 'block';
-        if (inactiveImg) inactiveImg.style.display = 'none';
+        if (activeImg) activeImg.classList.add('show');
+        if (inactiveImg) inactiveImg.classList.add('hide');
       }
     }
   }
@@ -512,19 +512,19 @@ class UnifiedStateManager {
 
         // Update aria-label
         const stateLabels = {
-          'pending': 'Task status: Pending',
-          'in-progress': 'Task status: In Progress',
-          'completed': 'Task status: Completed'
+          'pending': 'Task status: Ready',
+          'in-progress': 'Task status: Active',
+          'completed': 'Task status: Done'
         };
-        button.setAttribute('aria-label', stateLabels[state] || 'Task status: Pending');
+        button.setAttribute('aria-label', stateLabels[state] || 'Task status: Ready');
 
         // Update image
         const img = button.querySelector('img');
         if (img) {
           const imageMap = {
-            'pending': 'pending.svg',
-            'in-progress': 'in-progress.svg',
-            'completed': 'completed.svg'
+            'pending': 'ready.svg',
+            'in-progress': 'active.svg',
+            'completed': 'done.svg'
           };
           img.src = window.getImagePath ? window.getImagePath(imageMap[state]) : imageMap[state];
         }
@@ -549,11 +549,7 @@ class UnifiedStateManager {
       // Handle Principles table: Notes column AND Task column for manual rows
       const textarea = row.querySelector('.notes-textarea, textarea[id^="textarea-"]');
       if (textarea) {
-        textarea.style.border = 'none';
-        textarea.style.backgroundColor = 'transparent';
-        textarea.style.color = '#666'; // Keep text visible but muted
-        textarea.style.resize = 'none';
-        textarea.style.pointerEvents = 'none';
+        textarea.classList.add('textarea-completed');
         textarea.disabled = true;
         textarea.setAttribute('aria-hidden', 'true');
         textarea.setAttribute('tabindex', '-1');
@@ -566,11 +562,7 @@ class UnifiedStateManager {
       if (isManualRow) {
         const taskTextarea = row.querySelector('.task-input');
         if (taskTextarea) {
-          taskTextarea.style.border = 'none';
-          taskTextarea.style.backgroundColor = 'transparent';
-          taskTextarea.style.color = '#666'; // Keep text visible but muted
-          taskTextarea.style.resize = 'none';
-          taskTextarea.style.pointerEvents = 'none';
+          taskTextarea.classList.add('textarea-completed');
           taskTextarea.disabled = true;
           taskTextarea.setAttribute('aria-hidden', 'true');
           taskTextarea.setAttribute('tabindex', '-1');
@@ -583,12 +575,13 @@ class UnifiedStateManager {
     // Show restart button if it exists
     const restartButton = row.querySelector('.restart-button');
     if (restartButton) {
-      restartButton.style.display = 'flex';
+      restartButton.classList.remove('restart-hidden');
+      restartButton.classList.add('restart-visible');
     }
 
     // Keep status button active
     statusButton.disabled = false;
-    statusButton.style.pointerEvents = 'auto';
+    statusButton.classList.add('status-interactive');
   }
 
   restoreRestartButtonsState(restartButtonsState) {
@@ -597,7 +590,13 @@ class UnifiedStateManager {
     Object.entries(restartButtonsState).forEach(([id, visible]) => {
       const button = document.getElementById(id);
       if (button) {
-        button.style.display = visible ? 'block' : 'none';
+        if (visible) {
+          button.classList.remove('restart-hidden');
+          button.classList.add('restart-visible');
+        } else {
+          button.classList.remove('restart-visible');
+          button.classList.add('restart-hidden');
+        }
       }
     });
   }
@@ -752,37 +751,38 @@ class UnifiedStateManager {
     // Clear and restore Notes textarea
     if (textarea) {
       textarea.value = '';
+      textarea.classList.remove('textarea-completed');
       textarea.setAttribute('aria-hidden', 'false');
-      textarea.removeAttribute('tabindex');
-      textarea.removeAttribute('style');
+      textarea.setAttribute('tabindex', '0');
       textarea.disabled = false;
     }
 
     // Clear and restore Task textarea for manual rows
     if (taskTextarea) {
       taskTextarea.value = '';
+      taskTextarea.classList.remove('textarea-completed');
       taskTextarea.setAttribute('aria-hidden', 'false');
-      taskTextarea.removeAttribute('tabindex');
-      taskTextarea.removeAttribute('style');
+      taskTextarea.setAttribute('tabindex', '0');
       taskTextarea.disabled = false;
     }
 
     // Reset status button to pending
     if (statusButton) {
       statusButton.setAttribute('data-state', 'pending');
-      statusButton.setAttribute('aria-label', 'Task status: Pending');
+      statusButton.setAttribute('aria-label', 'Task status: Ready');
       statusButton.removeAttribute('aria-disabled');
-      statusButton.style.pointerEvents = 'auto';
+      statusButton.classList.add('status-interactive');
       statusButton.disabled = false;
       const statusImg = statusButton.querySelector('img');
       if (statusImg) {
-        statusImg.src = window.getImagePath('pending.svg');
+        statusImg.src = window.getImagePath('ready.svg');
       }
     }
 
     // Hide restart button
     if (restartButton) {
-      restartButton.style.display = 'none';
+      restartButton.classList.remove('restart-visible');
+      restartButton.classList.add('restart-hidden');
     }
 
 
@@ -912,8 +912,8 @@ class UnifiedStateManager {
 
     // Update status button to completed state
     statusButton.setAttribute('data-state', 'completed');
-    statusButton.setAttribute('aria-label', 'Task status: Completed');
-    const completedImgPath = window.getImagePath('completed.svg');
+    statusButton.setAttribute('aria-label', 'Task status: Done');
+    const completedImgPath = window.getImagePath('done.svg');
     const statusImg = statusButton.querySelector('img');
     if (statusImg) {
       statusImg.src = completedImgPath;
@@ -921,7 +921,8 @@ class UnifiedStateManager {
 
     // Show restart button
     if (restartButton) {
-      restartButton.style.display = 'flex';
+      restartButton.classList.remove('restart-hidden');
+      restartButton.classList.add('restart-visible');
       restartButton.disabled = false;
     }
 
@@ -938,11 +939,7 @@ class UnifiedStateManager {
     // Handle Notes textarea
     const notesTextarea = rowElement.querySelector('.notes-textarea, textarea[id^="textarea-"]');
     if (notesTextarea) {
-      notesTextarea.style.border = 'none';
-      notesTextarea.style.backgroundColor = 'transparent';
-      notesTextarea.style.color = '#666'; // Keep text visible but muted
-      notesTextarea.style.resize = 'none';
-      notesTextarea.style.pointerEvents = 'none';
+      notesTextarea.classList.add('textarea-completed');
       notesTextarea.disabled = true;
       notesTextarea.setAttribute('aria-hidden', 'true');
       notesTextarea.setAttribute('tabindex', '-1');
@@ -953,11 +950,7 @@ class UnifiedStateManager {
     if (isManualRow) {
       const taskTextarea = rowElement.querySelector('.task-input');
       if (taskTextarea) {
-        taskTextarea.style.border = 'none';
-        taskTextarea.style.backgroundColor = 'transparent';
-        taskTextarea.style.color = '#666'; // Keep text visible but muted
-        taskTextarea.style.resize = 'none';
-        taskTextarea.style.pointerEvents = 'none';
+        taskTextarea.classList.add('textarea-completed');
         taskTextarea.disabled = true;
         taskTextarea.setAttribute('aria-hidden', 'true');
         taskTextarea.setAttribute('tabindex', '-1');
@@ -1137,6 +1130,12 @@ class UnifiedStateManager {
 
         if (success) {
           this.announceSaveAction('Checklist saved successfully');
+          // Keep focus for 3 seconds while success message shows
+          setTimeout(() => {
+            if (this.saveButton) {
+              this.saveButton.blur(); // Release focus when message disappears
+            }
+          }, 3000);
         } else {
           this.announceSaveAction('Error saving checklist');
         }
@@ -1146,6 +1145,7 @@ class UnifiedStateManager {
       } finally {
         this.saveButton.removeAttribute('aria-busy');
         this.saveButton.disabled = false;
+        this.saveButton.focus(); // Keep focus while success message shows
       }
     });
   }

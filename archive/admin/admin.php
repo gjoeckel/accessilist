@@ -27,17 +27,17 @@ renderHTMLHead('Admin');
 
 <!-- Main Content -->
 <main role="main">
-    <section id="admin" class="admin-section">
+    <section id="admin" class="report-section">
         <h2 id="admin-caption" tabindex="-1">Checklists</h2>
-        <div class="admin-container">
-            <table class="admin-table" aria-labelledby="admin-caption">
+        <div class="report-container">
+            <table class="report-table" aria-labelledby="admin-caption">
                 <thead>
                     <tr>
-                        <th class="admin-type-cell">Type</th>
-                        <th class="admin-date-cell">Created</th>
-                        <th class="admin-instance-cell">Key</th>
-                        <th class="admin-date-cell">Updated</th>
-                        <th class="admin-delete-cell">Delete</th>
+                        <th class="report-type-cell">Type</th>
+                        <th class="report-date-cell">Created</th>
+                        <th class="report-instance-cell">Key</th>
+                        <th class="report-date-cell">Updated</th>
+                        <th class="report-delete-cell">Delete</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -132,7 +132,7 @@ function createInstanceLink(instanceId, typeSlug) {
 function createDeleteButton(instanceId) {
     // COMPLETELY FRESH - Based on working Status button pattern
     const button = document.createElement('button');
-    button.className = 'admin-delete-button';
+    button.className = 'report-delete-button';
     button.setAttribute('aria-label', `Delete checklist ${instanceId}`);
 
     const img = document.createElement('img');
@@ -160,7 +160,7 @@ function showDeleteModal(instanceId) {
         () => {
             // Delete cancelled - restore focus to triggering button
             setTimeout(() => {
-                if (triggeringButton && triggeringButton.classList.contains('admin-delete-button')) {
+                if (triggeringButton && triggeringButton.classList.contains('report-delete-button')) {
                     triggeringButton.focus();
                     console.log('Admin: Focus restored to triggering delete button after cancel');
                 }
@@ -185,7 +185,7 @@ async function deleteInstance(instanceId, triggeringButton) {
                 // Find the delete button in the row above the deleted row
                 const previousRow = currentRow.previousElementSibling;
                 if (previousRow) {
-                    targetDeleteButton = previousRow.querySelector('.admin-delete-button');
+                    targetDeleteButton = previousRow.querySelector('.report-delete-button');
                 }
 
                 // Remove the row immediately for better UX
@@ -199,9 +199,9 @@ async function deleteInstance(instanceId, triggeringButton) {
                         console.log('Admin: Focused on delete button in row above deleted row');
                     } else {
                         // No row above - check remaining rows
-                        const tableBody = document.querySelector('.admin-table tbody');
+                        const tableBody = document.querySelector('.report-table tbody');
                         if (tableBody) {
-                            const remainingDeleteButtons = tableBody.querySelectorAll('.admin-delete-button');
+                            const remainingDeleteButtons = tableBody.querySelectorAll('.report-delete-button');
 
                             if (remainingDeleteButtons.length > 0) {
                                 // Focus on the first remaining delete button
@@ -244,7 +244,7 @@ async function deleteInstance(instanceId, triggeringButton) {
                 'Failed to delete checklist. Please try again.',
                 () => {
                     // Restore focus to triggering button on error
-                    if (triggeringButton && triggeringButton.classList.contains('admin-delete-button')) {
+                    if (triggeringButton && triggeringButton.classList.contains('report-delete-button')) {
                         triggeringButton.focus();
                         console.log('Admin: Focus restored to triggering button after delete error');
                     }
@@ -258,7 +258,7 @@ async function deleteInstance(instanceId, triggeringButton) {
             'An error occurred while deleting the checklist.',
             () => {
                 // Restore focus to triggering button on error
-                if (triggeringButton && triggeringButton.classList.contains('admin-delete-button')) {
+                if (triggeringButton && triggeringButton.classList.contains('report-delete-button')) {
                     triggeringButton.focus();
                     console.log('Admin: Focus restored to triggering button after delete error');
                 }
@@ -291,7 +291,7 @@ async function loadInstances() {
 
         console.log('Extracted instances array:', instances);
 
-        const tbody = document.querySelector('.admin-table tbody');
+        const tbody = document.querySelector('.report-table tbody');
         if (tbody) {
             tbody.innerHTML = '';
 
@@ -325,10 +325,10 @@ async function loadInstances() {
                     <td>${formatDate(createdDate)}</td>
                     <td>${createInstanceLink(instance.sessionKey, instance.typeSlug).outerHTML}</td>
                     <td>${updatedText}</td>
-                    <td class="admin-delete-cell"></td>
+                    <td class="report-delete-cell"></td>
                 `;
 
-                const actionsCell = row.querySelector('.admin-delete-cell');
+                const actionsCell = row.querySelector('.report-delete-cell');
                 const deleteButton = createDeleteButton(instance.sessionKey);
                 actionsCell.appendChild(deleteButton);
 
@@ -338,7 +338,7 @@ async function loadInstances() {
         }
     } catch (error) {
         console.error('Error loading instances:', error);
-        const tbody = document.querySelector('.admin-table tbody');
+        const tbody = document.querySelector('.report-table tbody');
         if (tbody) {
             tbody.innerHTML = '<tr><td colspan="4" class="error-message">Error loading instances</td></tr>';
         }

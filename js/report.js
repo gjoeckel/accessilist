@@ -139,17 +139,17 @@ export class UserReportManager {
     convertToPrinciples(checklistData) {
         const principles = [];
 
-        // Find all checklist-N keys
+        // Find all checkpoint-N keys
         Object.keys(checklistData).forEach(key => {
-            if (key.startsWith('checklist-')) {
-                const checklistNum = key.split('-')[1];
-                const checklist = checklistData[key];
+            if (key.startsWith('checkpoint-')) {
+                const checkpointNum = key.split('-')[1];
+                const checkpoint = checklistData[key];
 
-                if (checklist && checklist.table) {
+                if (checkpoint && checkpoint.table) {
                     principles.push({
                         id: key,
-                        title: checklist.caption || `Principle ${checklistNum}`,
-                        rows: checklist.table || []
+                        title: checkpoint.caption || `Principle ${checkpointNum}`,
+                        rows: checkpoint.table || []
                     });
                 }
             }
@@ -192,7 +192,7 @@ export class UserReportManager {
     }
 
     /**
-     * Render the complete report in ONE table (matches reports.php structure)
+     * Render the complete report in ONE table (matches systemwide-report.php structure)
      */
     renderTable() {
         const tbody = document.querySelector('.report-table tbody');
@@ -284,10 +284,10 @@ export class UserReportManager {
 
             // Show all rows if filter is 'all', otherwise filter by status
             if (this.currentFilter === 'all' || this.currentFilter === status) {
-                item.row.style.display = '';
+                item.row.classList.remove('row-hidden');
                 visibleCount++;
             } else {
-                item.row.style.display = 'none';
+                item.row.classList.add('row-hidden');
             }
         });
 
@@ -455,16 +455,11 @@ export class UserReportManager {
         taskCell.setAttribute('role', 'cell');
 
         const taskTextarea = document.createElement('textarea');
-        taskTextarea.className = 'notes-textarea';
+        taskTextarea.className = 'notes-textarea textarea-completed';
         taskTextarea.value = task.task;
         taskTextarea.disabled = true;
         taskTextarea.setAttribute('aria-hidden', 'true');
         taskTextarea.setAttribute('tabindex', '-1');
-        taskTextarea.style.border = 'none';
-        taskTextarea.style.backgroundColor = 'transparent';
-        taskTextarea.style.color = '#666';
-        taskTextarea.style.resize = 'none';
-        taskTextarea.style.pointerEvents = 'none';
         taskCell.appendChild(taskTextarea);
         row.appendChild(taskCell);
 
@@ -474,16 +469,11 @@ export class UserReportManager {
         notesCell.setAttribute('role', 'cell');
 
         const notesTextarea = document.createElement('textarea');
-        notesTextarea.className = 'notes-textarea';
+        notesTextarea.className = 'notes-textarea textarea-completed';
         notesTextarea.value = task.notes || '';
         notesTextarea.disabled = true;
         notesTextarea.setAttribute('aria-hidden', 'true');
         notesTextarea.setAttribute('tabindex', '-1');
-        notesTextarea.style.border = 'none';
-        notesTextarea.style.backgroundColor = 'transparent';
-        notesTextarea.style.color = '#666';
-        notesTextarea.style.resize = 'none';
-        notesTextarea.style.pointerEvents = 'none';
         notesCell.appendChild(notesTextarea);
         row.appendChild(notesCell);
 
@@ -502,19 +492,25 @@ export class UserReportManager {
      * Create status icon (non-interactive, just displays status)
      */
     createStatusButton(status, taskId) {
+        // Map status values to icon filenames
+        const iconMap = {
+            'pending': 'ready',
+            'in-progress': 'active',
+            'in_progress': 'active',
+            'completed': 'done'
+        };
+
+        const iconName = iconMap[status] || status;
+
         // Use img instead of button for read-only report view
         const img = document.createElement('img');
         const iconPath = window.getImagePath
-            ? window.getImagePath(`${status}.svg`)
-            : `/images/${status}.svg`;
+            ? window.getImagePath(`${iconName}.svg`)
+            : `/images/${iconName}.svg`;
 
         img.src = iconPath;
         img.alt = this.formatStatusLabel(status);
-        img.className = 'status-icon';
-        img.width = 75;
-        img.height = 75;
-        img.style.display = 'block';
-        img.style.margin = '0 auto';
+        img.className = 'status-icon img-centered';
 
         return img;
     }
@@ -545,7 +541,7 @@ export class UserReportManager {
 
         if (subtitleElement) {
             subtitleElement.textContent = message;
-            subtitleElement.style.color = '#d32f2f';
+            subtitleElement.classList.add('text-error');
         }
 
         // Show error in table
@@ -565,6 +561,6 @@ export class UserReportManager {
     }
 }
 
-// Export for use in report.php
+// Export for use in list-report.php
 export default UserReportManager;
 

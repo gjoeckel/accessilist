@@ -8,6 +8,110 @@
 
 ## Entries
 
+### 2025-10-09 23:28:28 UTC - Report Pages Complete Refactor: Terminology, Styling, and Architecture
+
+**Summary:**
+- Renamed and restructured report pages with clean URL architecture
+- Updated status terminology: Reports use "Not Started/Active/Done" (review context)
+- Implemented perfect filter button styling with golden ring focus states
+- Fixed table row heights, column widths, and interactive element sizing
+- Added smart placeholder logic for unsaved reports
+- Standardized button focus management across all pages
+
+**File Renaming and Clean URLs:**
+- ✅ **reports.php → systemwide-report.php**: Systemwide report listing all saved checklists
+- ✅ **report.php → list-report.php**: Individual checklist report view
+- ✅ **systemwide-reports.css → systemwide-report.css**: Styling consistency
+- ✅ **Updated Routes**: .htaccess and router.php updated for /reports and /list-report
+- ✅ **Navigation Fixed**: All links, buttons, and paths updated throughout codebase
+- ✅ **mychecklist Route**: Added /mychecklist clean URL for Back button navigation
+
+**Status Terminology Updates:**
+- ✅ **Report Context**: Changed filter labels from "All Ready/In Progress/Completed" to "Not Started/Active/Done"
+- ✅ **Active Checklist Context**: Maintains "Ready/Active/Done" terminology (encouraging, action-oriented)
+- ✅ **Documentation Updated**: USER-STORIES.md updated with current terminology across 9 user stories
+- ✅ **Consistent Labeling**: All aria-labels, comments, and user-facing text updated
+- ✅ **SVG Icon Mapping**: Fixed status values to map to ready.svg/active.svg/done.svg
+
+**Filter Button Styling (Perfected):**
+- ✅ **Color Scheme**:
+  - Not Started: Blue (#1A76BB) with white text
+  - Active: Yellow (#FEC111) with dark text (#333333)
+  - Done: Green (#00834B) with white text
+  - All: Dark gray (#333333) with white text
+- ✅ **Interaction States**:
+  - Hover/Focus: Colored background + golden ring + inverted counter
+  - Active (selected): Normal appearance (no golden ring, no colored background)
+  - Active + Hover: Colored background (no golden ring) + inverted counter
+- ✅ **Counter Badges**: Inverted colors on hover/active (white circle for All button)
+- ✅ **No Animations**: All transitions removed for instant visual feedback
+
+**Button Focus Management:**
+- ✅ **Save & Refresh Buttons**: Stay green (#478F00) on all states (no color change on hover/focus)
+- ✅ **Persistent Focus**: Focus maintained while success/error messages display (3-5 seconds)
+- ✅ **Auto-Blur**: Focus released automatically when footer message disappears
+- ✅ **Golden Ring**: Applied on hover/focus, persists during message display
+
+**Table Perfection:**
+- ✅ **Row Heights**: Maintained at 75px across all tables
+- ✅ **Column Widths** (systemwide-report.php):
+  - Type: 150px, Updated: 225px, Key: 75px, Status: 75px, Progress: auto, Delete: 75px
+- ✅ **Interactive Elements**:
+  - Key link: 58px × 58px centered with golden ring hover/focus
+  - Status icons: Non-interactive display only (removed button wrapper)
+  - Delete buttons: 64px active area with golden ring
+- ✅ **Progress Header**: Centered text (data cells left-aligned for progress bar)
+- ✅ **Checkpoint Header**: Centered with reduced padding (8px) for 75px width
+
+**Smart Placeholder Logic:**
+- ✅ **Unsaved Reports Detection**: Checks for metadata.lastModified (not just created)
+- ✅ **Updated Column**: Shows "-" for unsaved, formatted date for saved
+- ✅ **Progress Column**: Shows "not saved" (centered) for unsaved, progress bar for saved
+- ✅ **Clear Visual Distinction**: Immediately obvious which reports haven't been saved
+
+**Footer Messaging:**
+- ✅ **Streamlined**: Footer only shows Refresh button messages (success/error)
+- ✅ **Removed**: All filter button and delete action footer messages
+- ✅ **Consistent Text**: "Report refreshed successfully" / "Error refreshing report" on both pages
+- ✅ **Duplicate Fixed**: Removed duplicate status-footer div from systemwide-report.php
+- ✅ **Aria-Live Cleaned**: Removed from h2 timestamp to prevent announcement conflicts
+
+**Layout Improvements:**
+- ✅ **Full Width Reports**: Added `body.report-page` class to remove side panel margin
+- ✅ **Centered Content**: Report pages use max-width: 1200px, centered layout
+- ✅ **Skip Link Padding**: Added 4px padding to h2 targets to prevent layout shift on focus
+- ✅ **No Side Panel Space**: Report pages use full viewport width
+
+**Bug Fixes:**
+- ✅ **list-report.php Table Population**: Fixed convertToPrinciples() looking for "checklist-" instead of "checkpoint-"
+- ✅ **Status Icon Paths**: Added icon mapping for pending/in-progress/completed → ready/active/done
+- ✅ **Back Button Path**: Fixed to use /?session=${sessionKey} for proper checklist navigation
+- ✅ **CSS Scope**: Changed .principles-table to .reports-table to prevent global interference
+- ✅ **Table Class**: Removed duplicate class="report-table report-table"
+
+**Files Modified (18):**
+- **PHP**: systemwide-report.php, list-report.php, mychecklist.php, home.php
+- **JavaScript**: reports.js, report.js, StateManager.js, addRow.js
+- **CSS**: reports.css, list-report.css, list.css, table.css, header.css, focus.css, form-elements.css
+- **Config**: router.php, .htaccess
+- **Docs**: USER-STORIES.md
+
+**Files Renamed (3):**
+- reports.php → systemwide-report.php
+- report.php → list-report.php  
+- systemwide-reports.css → systemwide-report.css
+
+**Impact:**
+- **User Experience**: Clean, consistent report pages with perfect visual polish
+- **Accessibility**: Clear terminology, proper ARIA labels, WCAG-compliant focus states
+- **Architecture**: Clean separation between active checklists and reports
+- **Maintainability**: Consistent naming, scoped CSS, clear file organization
+- **Navigation**: Clean URL structure with proper routing throughout
+
+**Status:** 🟢 Report pages production-ready with polished UI/UX
+
+---
+
 ### 2025-10-08 15:13:50 UTC - JSON Template Refactor v0.8: Dynamic Checkpoint Architecture
 
 **Summary:**

@@ -209,15 +209,10 @@ export class ReportsManager {
             const row = document.createElement('tr');
             const cell = document.createElement('td');
             cell.colSpan = 6; // Updated to span all 6 columns (Type, Updated, Key, Status, Progress, Delete)
-            cell.textContent = `No ${this.currentFilter.replace('-', ' ')} checklists found`;
-            cell.style.textAlign = 'center';
-            cell.style.padding = '2rem';
-            cell.style.color = '#6c757d';
-            cell.style.fontSize = '1.5rem'; // Increased font size
+            cell.textContent = `No ${this.currentFilter.replace('-', ' ')} reports found`;
+            cell.className = 'table-empty-message';
             row.appendChild(cell);
             this.tableBody.appendChild(row);
-
-            this.updateStatusMessage(`No ${this.currentFilter.replace('-', ' ')} checklists found`);
             return;
         }
 
@@ -226,10 +221,6 @@ export class ReportsManager {
             const row = await this.createChecklistRow(checklist);
             this.tableBody.appendChild(row);
         }
-
-        // Update status message
-        const filterLabel = this.currentFilter.replace('-', ' ');
-        this.updateStatusMessage(`Showing ${filtered.length} ${filterLabel} checklist${filtered.length !== 1 ? 's' : ''}`);
     }
 
     /**
@@ -250,21 +241,23 @@ export class ReportsManager {
             formattedType = typeSlug.charAt(0).toUpperCase() + typeSlug.slice(1);
         }
 
-        // Format dates - use lastModified if available, otherwise created
-        const updatedDate = checklist.metadata?.lastModified || checklist.metadata?.created || checklist.timestamp || checklist.created;
-        const formattedDate = this.formatDate(updatedDate);
+        // Check if checklist has been manually saved (only lastModified indicates a save)
+        const isSaved = !!(checklist.metadata?.lastModified);
+
+        // Format dates - only show if manually saved
+        const formattedDate = isSaved ? this.formatDate(checklist.metadata.lastModified) : '-';
 
         // Calculate progress
         const progress = this.calculateProgress(checklist.state?.statusButtons || {});
 
         // Build row HTML
         row.innerHTML = `
-            <td class="admin-type-cell">${this.escapeHtml(formattedType)}</td>
-            <td class="admin-date-cell">${this.escapeHtml(formattedDate)}</td>
-            <td class="admin-instance-cell">${this.createInstanceLink(checklist.sessionKey, typeSlug)}</td>
-            <td class="reports-status-cell">${this.createStatusBadge(checklist.calculatedStatus)}</td>
-            <td class="reports-progress-cell">${this.createProgressBar(progress.completed, progress.total, checklist.calculatedStatus)}</td>
-            <td class="reports-delete-cell">${this.createDeleteButton(checklist.sessionKey)}</td>
+            <td class="task-cell">${this.escapeHtml(formattedType)}</td>
+            <td class="task-cell">${this.escapeHtml(formattedDate)}</td>
+            <td class="info-cell">${this.createInstanceLink(checklist.sessionKey, typeSlug)}</td>
+            <td class="status-cell">${this.createStatusBadge(checklist.calculatedStatus)}</td>
+            <td class="task-cell">${this.createProgressBar(progress.completed, progress.total, checklist.calculatedStatus, isSaved)}</td>
+            <td class="restart-cell">${this.createDeleteButton(checklist.sessionKey)}</td>
         `;
 
         return row;
@@ -302,35 +295,43 @@ export class ReportsManager {
     }
 
     /**
-     * Create status icon HTML (matches report.php pattern)
+     * Create status icon HTML (non-interactive display only)
      */
     createStatusBadge(status) {
-        const labels = {
-            'completed': 'Completed',
-            'pending': 'Pending',
-            'in-progress': 'In Progress',
-            'in_progress': 'In Progress'
+        // Map status values to checkpoint table SVG files
+        const statusMap = {
+            'completed': 'done',
+            'pending': 'ready',
+            'in-progress': 'active',
+            'in_progress': 'active'
         };
 
+        const labels = {
+            'completed': 'Done',
+            'pending': 'Not Started',
+            'in-progress': 'Active',
+            'in_progress': 'Active'
+        };
+
+        const svgName = statusMap[status] || status;
         const label = labels[status] || status;
         const iconPath = window.getImagePath
-            ? window.getImagePath(`${status}.svg`)
-            : `/images/${status}.svg`;
+            ? window.getImagePath(`${svgName}.svg`)
+            : `/images/${svgName}.svg`;
 
         return `<img src="${this.escapeHtml(iconPath)}"
                      alt="${this.escapeHtml(label)}"
                      class="status-icon"
-                     width="75"
-                     height="75"
-                     style="display: block; margin: 0 auto;">`;
+                     aria-label="${this.escapeHtml(label)}">`;
     }
 
     /**
      * Create progress bar HTML
      */
-    createProgressBar(completed, total, status) {
-        if (total === 0) {
-            return '<span class="progress-text">—</span>';
+    createProgressBar(completed, total, status, isSaved = true) {
+        // Show "not saved" for unsaved checklists or when no tasks
+        if (!isSaved || total === 0) {
+            return '<span class="progress-text" style="text-align: center; display: block;">not saved</span>';
         }
 
         const percentage = (completed / total) * 100;
@@ -386,28 +387,10 @@ export class ReportsManager {
     }
 
     /**
-     * Update status message in footer
-     */
-    updateStatusMessage(message) {
-        const statusContent = document.querySelector('.status-content');
-        if (statusContent) {
-            statusContent.textContent = message;
-        }
-    }
-
-    /**
      * Show error message
      */
     showError(message) {
-        this.updateStatusMessage(`Error: ${message}`);
-
-        // Clear error after 5 seconds
-        setTimeout(() => {
-            const statusContent = document.querySelector('.status-content');
-            if (statusContent && statusContent.textContent.startsWith('Error:')) {
-                statusContent.textContent = '';
-            }
-        }, 5000);
+        console.error('ReportsManager Error:', message);
     }
 
     /**
@@ -497,9 +480,6 @@ export class ReportsManager {
                             }
                         }
                     }, 100);
-
-                    // Update status message
-                    this.updateStatusMessage(`Checklist ${sessionKey} deleted successfully`);
                 } else {
                     // Row not found - reload data and focus Home
                     await this.loadChecklists();
@@ -551,5 +531,5 @@ export class ReportsManager {
     }
 }
 
-// Export for use in reports.php
+// Export for use in systemwide-report.php
 export default ReportsManager;

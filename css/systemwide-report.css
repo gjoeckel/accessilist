@@ -1,0 +1,77 @@
+/* ====================================================================
+   SYSTEMWIDE REPORTS STYLESHEET
+
+   SCOPE: Styles unique to the systemwide reports list page
+
+   CONTAINS:
+   - Status icon display
+   - Progress bar with status-based colors
+   - Progress text and container
+
+   LOADS: After reports.css (conditionally loaded only by systemwide-report.php)
+
+   USED BY:
+   - systemwide-report.php (systemwide reports list)
+
+   SHARED STYLES IN:
+   - reports.css (filters, empty state, table structure)
+
+   DOES NOT CONTAIN:
+   - Filter buttons (use reports.css)
+   - Table structure (use reports.css)
+   - Column widths (use reports.css)
+   ==================================================================== */
+
+/* ====================================================================
+   STATUS ICON DISPLAY
+   ==================================================================== */
+
+.status-icon {
+    display: block;
+    margin: 0 auto;
+}
+
+/* ====================================================================
+   PROGRESS BAR
+   ==================================================================== */
+
+.progress-container {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding-left: 1rem;
+}
+
+.progress-bar {
+    flex: 1;
+    height: 16px;
+    background-color: #e0e0e0;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.progress-fill {
+    height: 100%;
+    transition: width 0.3s ease;
+    border-radius: 4px;
+}
+
+/* Progress Fill States */
+.progress-fill.completed {
+    background-color: #4CAF50;
+}
+
+.progress-fill.in-progress {
+    background-color: #2196F3;
+}
+
+.progress-fill.pending {
+    background-color: #9E9E9E;
+}
+
+.progress-text {
+    font-size: 1.1rem;
+    color: #666;
+    font-weight: 600;
+    min-width: 60px;
+}

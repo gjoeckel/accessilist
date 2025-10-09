@@ -1,0 +1,202 @@
+/* ====================================================================
+   FOOTER STYLESHEET
+
+   SCOPE: Fixed footer with status messages and branding
+
+   CONTAINS:
+   - Footer structure (.status-footer)
+   - Status message bubble (.status-content)
+   - Creative Commons license links
+   - NCADEMI branding link
+   - Legacy status message container (deprecated but kept for back-compat)
+
+   LOADS: After list.css
+
+   USED BY:
+   - All pages (footer with CC license and status messages)
+
+   JAVASCRIPT:
+   - StatusManager.js manages .status-content updates
+
+   DOES NOT CONTAIN:
+   - Header styles (use header.css)
+   - Modal styles (use simple-modal.css)
+   ==================================================================== */
+
+/* ====================================================================
+   LEGACY STATUS MESSAGE CONTAINER (Deprecated)
+   Note: Kept for backwards compatibility, modern code uses .status-content
+   ==================================================================== */
+
+#statusMessageContainer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    background-color: #f8f9fa;
+    border: 1px solid #dee2e6;
+    border-radius: 4px;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    z-index: 1000;
+    min-width: 200px;
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+
+#statusMessageContainer:empty {
+    opacity: 0;
+    pointer-events: none;
+}
+
+#statusMessageContainer[role="alert"] {
+    background-color: #f8d7da;
+    border-color: #f5c6cb;
+    color: #721c24;
+}
+
+#statusMessageContainer[role="status"] {
+    background-color: #d4edda;
+    border-color: #c3e6cb;
+    color: #155724;
+}
+
+@media (forced-colors: active) {
+    #statusMessageContainer {
+        border: 2px solid ButtonText;
+        background-color: ButtonFace;
+        color: ButtonText;
+    }
+}
+
+/* ====================================================================
+   FOOTER STRUCTURE
+   ==================================================================== */
+
+.status-footer,
+footer[role="contentinfo"] {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 75px;
+    background: #f0f0f0;
+    border-top: 1px solid #dee2e6;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 30px;
+    padding-right: 30px;
+}
+
+.footer-left {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.copyright-text {
+    font-size: 1rem;
+}
+
+/* ====================================================================
+   STATUS MESSAGE BUBBLE
+   ==================================================================== */
+
+.status-content {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.875rem;
+    margin-left: auto;
+    padding: 6px 10px;
+    background: #fff;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+}
+
+.status-content:empty {
+    display: none;
+}
+
+.status-content.status-success {
+    color: #478F00;
+    border-color: #478F00;
+}
+
+.status-content.status-error {
+    color: #BF1712;
+    border-color: #BF1712;
+}
+
+/* ====================================================================
+   FOOTER LINKS
+   ==================================================================== */
+
+/* Creative Commons License */
+.cc-license {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    text-decoration: none;
+    color: inherit;
+    border-radius: 4px;
+    padding: 4px 8px;
+    transition: box-shadow 0.2s ease;
+}
+
+.cc-license:visited {
+    color: inherit;
+}
+
+.cc-license:focus,
+.cc-license:hover {
+    box-shadow: var(--golden-ring) !important;
+    outline: none;
+}
+
+.cc-icon {
+    display: inline-flex;
+    align-items: center;
+}
+
+.cc-icon svg {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+}
+
+.cc-text {
+    font-size: 0.875rem;
+    margin-left: 4px;
+}
+
+/* NCADEMI Link */
+.ncademi-link {
+    text-decoration: none;
+    color: #025191;
+    border-radius: 4px;
+    padding: 4px 8px;
+    transition: box-shadow 0.2s ease;
+}
+
+.ncademi-link:visited {
+    color: #025191;
+}
+
+.ncademi-link:focus,
+.ncademi-link:hover {
+    box-shadow: var(--golden-ring) !important;
+    outline: none;
+}
+
+/* ====================================================================
+   HIGH CONTRAST MODE
+   ==================================================================== */
+
+@media (forced-colors: active) {
+    .status-footer {
+        border-top: 2px solid ButtonText;
+        background: ButtonFace;
+    }
+}

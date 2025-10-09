@@ -142,34 +142,35 @@
 
 ### Story 2.4: Update Task Status
 **As an** Educator
-**I want to** mark tasks as Pending, In Progress, or Completed
+**I want to** mark tasks as Ready, Active, or Done
 **So that** I can track my accessibility review progress
 
 **Acceptance Criteria:**
 - Each task has Status column with clickable button
-- Three statuses: Pending (gray), In Progress (yellow), Completed (green)
+- Three statuses: Ready (blue), Active (yellow), Done (green)
 - Clicking status button cycles through states
 - Visual indicators: color-coded icons (75x75px)
-- Completed tasks show "Restart" button
+- Done tasks show "Reset" button
 - Status persists across sessions
-- Typing in Notes changes status from Pending to In Progress automatically
+- Typing in Notes changes status from Ready to Active automatically
+- Reports use alternate terminology: Not Started/Active/Done for review context
 
 **Priority**: HIGH
 **Complexity**: Medium
 
 ---
 
-### Story 2.5: Restart Completed Task
+### Story 2.5: Reset Done Task
 **As an** Educator
 **I want to** restart a completed task back to pending
 **So that** I can re-review items that need updates
 
 **Acceptance Criteria:**
-- Restart button appears when task marked Completed
-- Clicking restart shows confirmation modal
-- Confirming resets task to Pending status
+- Reset button appears when task marked Done
+- Clicking reset shows confirmation modal
+- Confirming resets task to Ready status
 - Notes textarea becomes editable again
-- Restart button disappears
+- Reset button disappears
 
 **Priority**: MEDIUM
 **Complexity**: Medium
@@ -312,7 +313,7 @@
 - Sorted by last updated (newest first)
 - Shows checklist type icon/name
 - Shows 3-character session key
-- Shows calculated status (Completed, In Progress, Pending)
+- Shows calculated status (Done, Active, Not Started)
 - Shows progress bar with percentage
 - Timestamp shows last modification time
 
@@ -327,9 +328,9 @@
 **So that** I can focus on checklists needing attention
 
 **Acceptance Criteria:**
-- Filter buttons: Completed, In Progress, Pending, All
-- Clicking filter shows only matching checklists
-- Button shows count of checklists in each status
+- Filter buttons: Done, Active, Not Started, All
+- Clicking filter shows only matching reports
+- Button shows count of reports in each status
 - "All" shows total count
 - Filtered results update immediately
 - Visual indication of active filter
@@ -432,7 +433,7 @@
 **So that** I can focus on incomplete items or review completed work
 
 **Acceptance Criteria:**
-- Filter buttons: Completed, In Progress, Pending, All
+- Filter buttons: Done, Active, Not Started, All
 - Filters apply immediately
 - Filtered view shows subset of tasks
 - Clear visual indication of active filter
@@ -571,7 +572,7 @@
 **So that** I can easily update task progress
 
 **Acceptance Criteria:**
-- Status button cycles: Pending → In Progress → Completed → Pending
+- Status button cycles: Ready → Active → Done → Ready
 - Single click advances to next status
 - Visual feedback immediate (color change)
 - Auto-save triggers after status change
@@ -758,10 +759,10 @@
 
 **Acceptance Criteria:**
 - Status logic:
-  - **Completed**: All tasks marked "completed"
-  - **In Progress**: At least one task completed or in-progress, but not all completed
-  - **Pending**: All tasks marked "pending" or no tasks started
-- Status icon displayed (green check, yellow warning, gray circle)
+  - **Done**: All tasks marked "completed"
+  - **Active**: At least one task completed or in-progress, but not all completed
+  - **Not Started**: All tasks marked "pending" or no tasks started
+- Status icon displayed (green check, yellow warning, blue ready icon)
 - Status recalculated on every dashboard load
 - Based on state.statusButtons data
 
@@ -777,7 +778,7 @@
 
 **Acceptance Criteria:**
 - Progress calculated from statusButtons:
-  - Completed tasks / Total tasks × 100
+  - Done tasks / Total tasks × 100
 - Displayed as progress bar (visual)
 - Displayed as percentage text (e.g., "75%")
 - Progress bar color-coded (green when complete)
@@ -851,9 +852,9 @@
 
 **Acceptance Criteria:**
 - Status column shows status icon (non-interactive)
-- Green check: Completed
-- Yellow warning: In Progress
-- Gray circle: Pending
+- Green check: Done
+- Yellow warning: Active
+- Blue ready icon: Not Started
 - Icons match checklist page design
 - No interaction (read-only report)
 
