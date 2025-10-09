@@ -12,7 +12,7 @@
     position: fixed;
     top: 165px;
     left: 0;
-    height: 400px;
+    /* height set dynamically by side-panel-generator.js based on checkpoint count */
     width: var(--side-panel-collapsed-width);
     background-color: white;
     padding: 1rem;
@@ -32,12 +32,12 @@ body.loaded .side-panel {
 }
 .side-panel ul {
     list-style: none;
-    padding: 0;
+    padding: 15px 0; /* Top and bottom padding for checkpoint buttons */
     margin: 0;
     flex: 1;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
+    gap: 15px; /* 15px spacing between checkpoint buttons */
 }
 .side-panel a {
     display: flex;
@@ -132,7 +132,9 @@ body.loaded .side-panel {
 /* --- Removed duplicated styles from multiple.css --- */
 /* Lines 143-266 (original file) deleted */
 
-/* Hidden section (for conditional display) */
-#checklist-4-section {
+/* Hidden section (for conditional display of last checkpoint) */
+/* Note: Last checkpoint section gets ID dynamically (checkpoint-N-section) */
+/* Default to hidden, JavaScript will show if needed */
+[id$="-section"] {
     display: none;
 }

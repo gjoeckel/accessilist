@@ -139,12 +139,24 @@ class UnifiedStateManager {
   initializeGlobalStateObjects() {
     // Initialize principle table state for manual rows only
     if (!window.principleTableState) {
-      window.principleTableState = {
-        'checklist-1': [],
-        'checklist-2': [],
-        'checklist-3': [],
-        'checklist-4': []
-      };
+      // Dynamic initialization based on JSON checkpoints
+      const principleRows = {};
+
+      if (window.checklistData) {
+        // Find all checkpoint-* or checklist-* keys
+        Object.keys(window.checklistData).forEach(key => {
+          if (key.startsWith('checkpoint-') || key.startsWith('checklist-')) {
+            principleRows[key] = [];
+          }
+        });
+      }
+
+      // Fallback to empty object if no checklistData available yet
+      window.principleTableState = Object.keys(principleRows).length > 0
+        ? principleRows
+        : {};
+
+      console.log('Initialized principleTableState:', window.principleTableState);
     }
   }
 
@@ -223,11 +235,11 @@ class UnifiedStateManager {
 
   collectSidePanelState() {
     const sidePanel = document.querySelector('.side-panel');
-    if (!sidePanel) return { expanded: true, activeSection: 'checklist-1' };
+    if (!sidePanel) return { expanded: true, activeSection: 'checkpoint-1' };
 
     const expanded = sidePanel.getAttribute('aria-expanded') === 'true';
     const activeLink = sidePanel.querySelector('a.infocus');
-    const activeSection = activeLink ? (activeLink.getAttribute('data-target') || activeLink.getAttribute('href')?.substring(1)) : 'checklist-1';
+    const activeSection = activeLink ? (activeLink.getAttribute('data-target') || activeLink.getAttribute('href')?.substring(1)) : 'checkpoint-1';
 
     return { expanded, activeSection };
   }
@@ -284,7 +296,13 @@ class UnifiedStateManager {
     if (!window.principleTableState) return {};
 
     const principleRows = {};
-    ['checklist-1', 'checklist-2', 'checklist-3', 'checklist-4'].forEach(principleId => {
+
+    // Dynamic checkpoint detection from JSON data
+    const checkpointKeys = window.checklistData
+      ? Object.keys(window.checklistData).filter(key => key.startsWith('checkpoint-') || key.startsWith('checklist-'))
+      : Object.keys(window.principleTableState); // Fallback to existing state keys
+
+    checkpointKeys.forEach(principleId => {
       // Only collect manually added rows (not default static rows)
       principleRows[principleId] = window.principleTableState[principleId] || [];
     });
@@ -615,7 +633,7 @@ class UnifiedStateManager {
 
   convertOldFormatToNew(oldData) {
     return {
-      sidePanel: oldData.sidePanelState || { expanded: true, activeSection: 'checklist-1' },
+      sidePanel: oldData.sidePanelState || { expanded: true, activeSection: 'checkpoint-1' },
       notes: oldData.textareas || {},
       statusButtons: oldData.statusButtons || {},
       restartButtons: oldData.restartButtons || {},

@@ -105,24 +105,11 @@ async function initializeApp() {
             header.textContent = `${data.type} Accessibility Checklist`;
         }
 
-        // Handle Checklist-4 section visibility
-        const checklist4Section = document.getElementById('checklist-4-section');
-        if (checklist4Section) {
-            const isVisible = data.showRobust;
-            checklist4Section.style.display = isVisible ? 'block' : 'none';
-            checklist4Section.setAttribute('aria-hidden', (!isVisible).toString());
-
-            // Announce visibility change to screen readers
-            if (isVisible) {
-                const announcement = document.createElement('div');
-                announcement.setAttribute('role', 'status');
-                announcement.setAttribute('aria-live', 'polite');
-                announcement.className = 'sr-only';
-                announcement.textContent = 'Checkpoint 4 table is now available';
-                document.body.appendChild(announcement);
-                // Remove announcement after it's been read
-                setTimeout(() => announcement.remove(), 1000);
-            }
+        // Generate side panel dynamically based on checkpoint count
+        if (typeof window.generateSidePanel === 'function') {
+            window.generateSidePanel(data);
+        } else {
+            console.error('generateSidePanel function not available - side panel will not render');
         }
 
         // Build content with the fetched data

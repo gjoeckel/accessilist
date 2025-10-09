@@ -30,6 +30,9 @@ function renderCommonScripts($scriptSet = 'basic') {
 
     // Checklist-specific scripts
     if ($scriptSet === 'checklist') {
+        echo "\n<!-- Side Panel Dynamic Generation -->\n";
+        echo "<script src=\"{$basePath}/js/side-panel-generator.js?v={$version}\"></script>\n";
+        echo "\n<!-- Core Modules -->\n";
         echo "<script type=\"module\" src=\"{$basePath}/js/StatusManager.js?v={$version}\"></script>\n";
         echo "<script src=\"{$basePath}/js/simple-modal.js?v={$version}\"></script>\n";
         echo "<script src=\"{$basePath}/js/ModalActions.js?v={$version}\"></script>\n";

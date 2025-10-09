@@ -24,7 +24,8 @@ section {
 }
 
 /* First section - no extra margin (main already has padding-top) */
-.principle-section.checklist-1 {
+.principle-section.checkpoint-1,
+.principle-section.checklist-1 { /* Backward compatibility */
     margin-top: 0;
 }
 
@@ -36,20 +37,24 @@ section {
     --header-fill-color: #F0F9FF;
 }
 
-/* Principle Color Variables */
-.principle-section.checklist-1 {
+/* Checkpoint Color Variables (Updated from checklist-* to checkpoint-*) */
+.principle-section.checkpoint-1,
+.principle-section.checklist-1 { /* Backward compatibility */
     --theme-color: #005192;
     --header-fill-color: #F0F9FF;
 }
-.principle-section.checklist-2 {
+.principle-section.checkpoint-2,
+.principle-section.checklist-2 { /* Backward compatibility */
     --theme-color: #5E850F;
     --header-fill-color: #F7FDED;
 }
-.principle-section.checklist-3 {
+.principle-section.checkpoint-3,
+.principle-section.checklist-3 { /* Backward compatibility */
     --theme-color: #AC6628;
     --header-fill-color: #F7E7D9;
 }
-.principle-section.checklist-4 {
+.principle-section.checkpoint-4,
+.principle-section.checklist-4 { /* Backward compatibility */
     --theme-color: #0C2336;
     --header-fill-color: #E7ECF0;
 }

@@ -133,7 +133,7 @@ export class UserReportManager {
 
     /**
      * Convert checklist JSON structure to principles array
-     * JSON format: { "checklist-1": { caption, table }, "checklist-2": {...}, ... }
+     * JSON format: { "checkpoint-1": { caption, table }, "checkpoint-2": {...}, ... }
      * Output: { principles: [{ id, title, rows }, ...] }
      */
     convertToPrinciples(checklistData) {
@@ -430,8 +430,9 @@ export class UserReportManager {
         row.setAttribute('data-id', task.id);
         row.className = 'principle-row';
 
-        // Extract checkpoint number from principle ID (checklist-1 → 1)
-        const checkpointNum = principleId.split('-')[1];
+        // Extract checkpoint number from principle ID (checkpoint-1 → 1 or checklist-1 → 1)
+        const match = principleId.match(/(?:checkpoint|checklist)-(\d+)/);
+        const checkpointNum = match ? match[1] : '0';
 
         // 1. Checkpoint cell with number icon
         const checkpointCell = document.createElement('td');
