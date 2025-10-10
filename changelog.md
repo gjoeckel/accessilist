@@ -8,6 +8,57 @@
 
 ## Entries
 
+### 2025-10-10 08:35:16 UTC - List Report CSS Icons: Replace Checkpoint Images with CSS Circles
+
+**Summary:**
+- Replaced checkpoint number SVG images with CSS-generated circles in list-report.php
+- Checkpoint icons now match side panel styling exactly (30×30px, #333 outline)
+- Improved performance by eliminating 4 image requests per checklist
+- Status icons remain as SVG images (ready-1.svg, active-1.svg, done-1.svg)
+
+**Changes:**
+- ✅ **Checkpoint Icons**: Changed from `<img src="number-1-0.svg">` to `<span class="checkpoint-icon">1</span>`
+- ✅ **CSS Styling**: Added `.checkpoint-icon` class matching side panel `.checkpoint-btn` style
+- ✅ **Consistency**: Checkpoint circles identical to side panel navigation (2px solid #333, transparent background)
+- ✅ **Performance**: Eliminated 4+ image requests per report page load
+- ✅ **Scalability**: CSS circles are crisp at any resolution
+
+**Styling Details:**
+```css
+.checkpoint-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #333333;
+    background-color: transparent;
+    color: #333333;
+    font-size: 1.1rem;
+    font-weight: bold;
+}
+```
+
+**Files Modified:**
+- `js/list-report.js` - Updated `createRow()` method to generate CSS checkpoint circles
+- `css/list-report.css` - Added `.checkpoint-icon` styling
+
+**Testing:**
+- ✅ All 61 Docker tests passing (100% success rate)
+- ✅ Visual consistency verified with side panel
+- ✅ No regression in functionality
+
+**Impact:**
+- **Performance**: Faster page load (fewer HTTP requests)
+- **Consistency**: Visual unity between side panel and report checkpoints
+- **Maintainability**: Color changes in one CSS rule affect all checkpoints
+- **Accessibility**: Proper aria-labels maintained
+
+**Status:** 🟢 CSS checkpoint icons complete, production-ready
+
+---
+
 ### 2025-10-10 08:29:59 UTC - Testing Infrastructure Enhancement: 46 Tests + SRD Improvements
 
 **Summary:**

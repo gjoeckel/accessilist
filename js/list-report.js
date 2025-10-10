@@ -434,19 +434,16 @@ export class UserReportManager {
         const match = principleId.match(/(?:checkpoint|checklist)-(\d+)/);
         const checkpointNum = match ? match[1] : '0';
 
-        // 1. Checkpoint cell with number icon
+        // 1. Checkpoint cell with CSS-generated number circle (matches side panel style)
         const checkpointCell = document.createElement('td');
         checkpointCell.className = 'checkpoint-cell';
         checkpointCell.setAttribute('role', 'cell');
 
-        const checkpointIcon = document.createElement('img');
-        checkpointIcon.src = window.getImagePath
-            ? window.getImagePath(`number-${checkpointNum}-0.svg`)
-            : `/images/number-${checkpointNum}-0.svg`;
-        checkpointIcon.alt = checkpointNum;
-        checkpointIcon.width = 36;
-        checkpointIcon.height = 36;
-        checkpointCell.appendChild(checkpointIcon);
+        const checkpointCircle = document.createElement('span');
+        checkpointCircle.className = 'checkpoint-icon';
+        checkpointCircle.textContent = checkpointNum;
+        checkpointCircle.setAttribute('aria-label', `Checkpoint ${checkpointNum}`);
+        checkpointCell.appendChild(checkpointCircle);
         row.appendChild(checkpointCell);
 
         // 2. Task cell with textarea (read-only, matches mychecklist.php disabled style)

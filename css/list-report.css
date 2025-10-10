@@ -66,12 +66,22 @@ th.checkpoint-cell {
     text-align: center !important;
 }
 
-.checkpoint-cell img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
+/* CSS-generated checkpoint icon - matches side panel style */
+.checkpoint-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #333333;
+    background-color: transparent;
+    color: #333333;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: default;
+    transition: none;
 }
 
 /* Date column */
