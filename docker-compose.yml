@@ -8,7 +8,14 @@ services:
     working_dir: /var/www/html
     environment:
       APACHE_DOCUMENT_ROOT: /var/www/html
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 5s
+      timeout: 3s
+      retries: 3
+      start_period: 10s
     command: >
-      bash -lc "a2enmod rewrite && \
+      bash -lc "apt-get update && apt-get install -y curl && \
+                a2enmod rewrite && \
                 sed -ri 's/AllowOverride None/AllowOverride All/g' /etc/apache2/apache2.conf && \
                 apache2-foreground"
