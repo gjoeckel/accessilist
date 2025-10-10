@@ -378,12 +378,16 @@ export class UserReportManager {
                 item.row.classList.remove('row-hidden');
                 visibleCount++;
 
-                // Style checkpoint icon in table: brown fill if this checkpoint is selected
+                // Style checkpoint icon in table:
+                // - Brown fill if specific checkpoint is selected
+                // - Brown fill if "All" is selected (reinforces all-checkpoints state)
                 const checkpointIcon = item.row.querySelector('.checkpoint-icon');
-                if (checkpointIcon && this.currentCheckpoint !== 'all' && String(itemCheckpoint) === String(this.currentCheckpoint)) {
-                    checkpointIcon.classList.add('selected');
-                } else if (checkpointIcon) {
-                    checkpointIcon.classList.remove('selected');
+                if (checkpointIcon) {
+                    if (this.currentCheckpoint === 'all' || String(itemCheckpoint) === String(this.currentCheckpoint)) {
+                        checkpointIcon.classList.add('selected');
+                    } else {
+                        checkpointIcon.classList.remove('selected');
+                    }
                 }
             } else {
                 item.row.classList.add('row-hidden');
