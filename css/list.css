@@ -258,6 +258,41 @@ body.checklist-page .checklist-caption {
     box-shadow: var(--golden-ring);
 }
 
+/* ====================================================================
+   "ALL" BUTTON (Three Lines Symbol)
+   ==================================================================== */
+
+/* Three lines button - use ::before with SVG mask for proper layering */
+.checkpoint-all {
+    font-size: 0 !important; /* Hide the ≡ text character */
+    position: relative;
+}
+
+/* Three lines icon as pseudo-element with mask */
+.checkpoint-all::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 15px;
+    -webkit-mask-image: url('/images/three-lines.svg');
+    mask-image: url('/images/three-lines.svg');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    background-color: #333333; /* Icon color - will be masked by SVG shape */
+}
+
+/* White icon when button has brown background (active state) */
+.checkpoint-all.active::before {
+    background-color: white !important; /* Mask reveals white color */
+}
+
 /* Toggle strip - collapse/expand button */
 .toggle-strip {
     position: absolute;
