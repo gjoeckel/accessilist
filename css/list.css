@@ -39,7 +39,7 @@
 }
 
 /* Add massive buffer space above all content to allow perfect checkpoint positioning */
-/* ONLY applies to mychecklist.php - allows side panel to scroll any checkpoint to 90px from top */
+/* Applies to mychecklist.php - allows side panel to scroll any checkpoint to 90px from top */
 body.checklist-page {
     padding-top: 20000px;
 }
@@ -51,6 +51,16 @@ body.checklist-page main {
     margin-left: 100px;
     padding-top: 90px; /* Position first section below sticky header */
     padding-bottom: 20000px; /* Match buffer space - ensures all checkpoints can scroll to 90px position */
+}
+
+/* List report page - similar buffer to maintain scrollbar when checkpoints hidden */
+body.report-page.list-report-page {
+    padding-top: 5000px; /* Smaller buffer than checklist page (no scroll positioning needed) */
+}
+
+/* Main content for list report page - has side panel and needs buffer */
+body.report-page.list-report-page main {
+    padding-bottom: 5000px; /* Match top buffer - ensures scrollbar stays visible */
 }
 
 /* Main content for non-checklist pages (legacy fallback) */

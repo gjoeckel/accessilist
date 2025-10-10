@@ -31,7 +31,7 @@ if (!file_exists($sessionFile)) {
 renderHTMLHead('List Report');
 ?>
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/list-report.css?v=<?php echo time(); ?>">
-<body class="report-page">
+<body class="report-page list-report-page">
 <?php require __DIR__ . '/includes/noscript.php'; ?>
 
 <!-- Skip Link -->
