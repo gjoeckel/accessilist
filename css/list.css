@@ -62,11 +62,11 @@ body:not(.report-page):not(.checklist-page) main {
     padding-bottom: 100vh;
 }
 
-/* Main content for report pages - no side panel */
+/* Main content for report pages - WITH side panel (list-report.php) */
 body.report-page main {
     grid-area: main;
     max-width: 90%;
-    margin: 0 auto;
+    margin-left: 100px; /* Reserve space for side panel - matches checklist-page */
     padding-top: 90px;
     padding-bottom: 2rem;
 }

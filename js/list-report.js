@@ -306,8 +306,8 @@ export class UserReportManager {
                 const taskRow = this.createTaskRow(task, section.id);
                 tbody.appendChild(taskRow);
 
-                // Extract checkpoint number from principle ID
-                const checkpointMatch = principle.id.match(/(?:checkpoint|checklist)-(\d+)/);
+                // Extract checkpoint number from section ID (not principle - that was the bug!)
+                const checkpointMatch = section.id.match(/(?:checkpoint|checklist)-(\d+)/);
                 const checkpointNum = checkpointMatch ? checkpointMatch[1] : '0';
 
                 // Store row with its status and checkpoint for filtering

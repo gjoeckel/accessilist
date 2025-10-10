@@ -37,15 +37,15 @@ renderHTMLHead('List Report');
 <!-- Skip Link -->
 <a href="#report-caption" class="skip-link">Skip to report table</a>
 
-<!-- Side Panel for Checkpoint Navigation -->
-<div class="side-panel" aria-expanded="true" aria-label="Checkpoint navigation">
-    <ul id="checkpoint-nav" role="list">
-        <!-- Will be populated dynamically by JavaScript -->
+<!-- Side Panel - Checkpoint Navigation -->
+<nav class="side-panel" aria-expanded="true">
+    <ul id="checkpoint-nav">
+        <!-- Checkpoint buttons generated dynamically by list-report.js -->
     </ul>
-    <button class="toggle-strip" aria-label="Toggle navigation panel">
-        <span class="toggle-arrow">◀</span>
+    <button class="toggle-strip" aria-label="Toggle side panel" aria-expanded="true" title="Toggle navigation panel">
+        <span class="toggle-arrow" aria-hidden="true">◀</span>
     </button>
-</div>
+</nav>
 
 <!-- Sticky Header -->
 <header class="sticky-header">

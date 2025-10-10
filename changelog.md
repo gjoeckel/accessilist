@@ -20,7 +20,7 @@
 **Side Panel Features:**
 - ✅ **"All" Button (≡)**: Default active state, brown fill with white symbol, shows all checkpoints
 - ✅ **Numbered Buttons (1-4)**: Dynamic generation based on JSON checkpoint count
-- ✅ **Click Behavior**: 
+- ✅ **Click Behavior**:
   - Number click: Brown fill on side panel button + brown fill on ALL matching checkpoint icons in table + hide other rows
   - All (≡) click: Brown fill on all button + show all rows + reset checkpoint icons to #333 outline
 - ✅ **Toggle Button**: Collapse/expand side panel (same as mychecklist.php)
