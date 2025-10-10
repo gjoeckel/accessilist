@@ -8,6 +8,66 @@
 
 ## Entries
 
+### 2025-10-10 11:06:32 UTC - Report Pages Filter Empty State Messages
+
+**Summary:**
+- Added custom empty state messages for filter buttons with 0 results
+- Prevents visual table shift by showing merged row with meaningful message
+- Implemented in both systemwide-report.php and list-report.php
+- Consistent 75px row height maintained even when no results
+
+**Empty State Messages:**
+- ✅ **Done filter (0 items)**: "No tasks done"
+- ✅ **Active filter (0 items)**: "No tasks active"
+- ✅ **Not Started filter (0 items)**: "All tasks started"
+- ✅ **All filter (0 items)**: "No reports found" (systemwide) / "No tasks found" (list report)
+
+**Implementation:**
+- **systemwide-report.js**: Updated `renderTable()` to show custom messages
+- **list-report.js**: Added `updateEmptyState()` method called after filtering
+- **reports.css**: Added `.table-empty-message` and `.empty-state-row` styling
+
+**Visual Improvements:**
+- ✅ **No Layout Shift**: Table maintains height with empty state row
+- ✅ **Clear Messaging**: User knows exactly why table is empty
+- ✅ **Consistent Height**: Empty state row is 75px (matches data rows)
+- ✅ **Centered Text**: Message centered in merged cell spanning all columns
+
+**CSS Styling:**
+```css
+.table-empty-message {
+    text-align: center;
+    padding: 2rem;
+    color: #666666;
+    font-size: 1rem;
+    vertical-align: middle;
+}
+
+.empty-state-row {
+    height: 75px;
+}
+```
+
+**Files Modified:**
+- `js/systemwide-report.js` - Custom filter messages in renderTable()
+- `js/list-report.js` - Added updateEmptyState() method
+- `css/reports.css` - Added empty state table styling
+
+**Testing:**
+- ✅ All 61 Docker tests passing (100% success rate)
+- ✅ No visual regression
+- ✅ Empty state displays correctly for all filters
+
+**Impact:**
+- **User Experience**: Clear feedback when filters show no results
+- **Visual Stability**: No layout shift when switching between filters
+- **Accessibility**: Meaningful messages improve screen reader experience
+- **Consistency**: Same pattern across both report pages
+
+**Status:** 🟢 Filter empty states complete, production-ready
+
+---
+
 ### 2025-10-10 08:35:16 UTC - List Report CSS Icons: Replace Checkpoint Images with CSS Circles
 
 **Summary:**

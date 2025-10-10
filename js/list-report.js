@@ -292,6 +292,40 @@ export class UserReportManager {
         });
 
         console.log(`Filter applied: ${this.currentFilter}, visible rows: ${visibleCount}`);
+
+        // Show empty state message if no visible rows
+        this.updateEmptyState(visibleCount);
+    }
+
+    /**
+     * Show/hide empty state message when filter has no results
+     */
+    updateEmptyState(visibleCount) {
+        // Remove existing empty state if present
+        const existingEmpty = this.tableBody.querySelector('.empty-state-row');
+        if (existingEmpty) {
+            existingEmpty.remove();
+        }
+
+        // Show empty state if no visible rows
+        if (visibleCount === 0) {
+            const row = document.createElement('tr');
+            row.className = 'empty-state-row';
+            const cell = document.createElement('td');
+            cell.colSpan = 4; // Span all columns (Checkpoint, Tasks, Notes, Status)
+
+            // Custom messages based on filter type
+            const messages = {
+                'completed': 'No tasks done',
+                'in-progress': 'No tasks active',
+                'pending': 'All tasks started'
+            };
+
+            cell.textContent = messages[this.currentFilter] || 'No tasks found';
+            cell.className = 'table-empty-message';
+            row.appendChild(cell);
+            this.tableBody.appendChild(row);
+        }
     }
 
     /**
