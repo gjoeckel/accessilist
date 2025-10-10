@@ -167,20 +167,18 @@ export class UserReportManager {
     /**
      * Set up scroll lock to prevent scrolling above h2 default position
      * H2 should stay 30px below sticky header + filters
+     * Uses same pattern as mychecklist.php - constant boundary, event interception only
      */
     setupScrollLock() {
-        const getMinScrollPosition = () => this.calculateH2Position();
-        let isScrolling = false;
+        const minScrollPosition = 5000; // Match body padding-top (constant like mychecklist)
 
         // Prevent mouse wheel scrolling up when at boundary
         window.addEventListener('wheel', (e) => {
-            const minScrollPosition = getMinScrollPosition();
             const isScrollingUp = e.deltaY < 0;
             const atBoundary = window.scrollY <= minScrollPosition;
 
             if (atBoundary && isScrollingUp) {
                 e.preventDefault();
-                e.stopPropagation();
             }
         }, { passive: false });
 
@@ -192,37 +190,16 @@ export class UserReportManager {
         }, { passive: true });
 
         window.addEventListener('touchmove', (e) => {
-            const minScrollPosition = getMinScrollPosition();
             const touchEndY = e.touches[0].clientY;
             const isScrollingUp = touchEndY > touchStartY;
             const atBoundary = window.scrollY <= minScrollPosition;
 
             if (atBoundary && isScrollingUp) {
                 e.preventDefault();
-                e.stopPropagation();
             }
         }, { passive: false });
 
-        // Smooth correction using requestAnimationFrame (no jarring snap-back)
-        const checkBoundary = () => {
-            const minScrollPosition = getMinScrollPosition();
-            if (window.scrollY < minScrollPosition && !isScrolling) {
-                isScrolling = true;
-                // Use smooth scroll for correction - less jarring
-                window.scrollTo({
-                    top: minScrollPosition,
-                    behavior: 'smooth'
-                });
-                // Reset flag after scroll completes
-                setTimeout(() => { isScrolling = false; }, 100);
-            }
-            requestAnimationFrame(checkBoundary);
-        };
-
-        // Start boundary check loop
-        requestAnimationFrame(checkBoundary);
-
-        console.log('Scroll lock enabled');
+        console.log('Scroll lock enabled at position:', minScrollPosition);
     }
 
     /**
