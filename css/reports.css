@@ -279,8 +279,8 @@ td.reports-progress-cell,
 .sticky-header-container {
     position: sticky;
     top: 0;
-    z-index: 1000;
-    background-color: #F5F5F0; /* Match body background */
+    z-index: 100; /* Below side panel (z-index: 200) */
+    background-color: transparent; /* No background - children have their own */
 }
 
 .filter-group {
@@ -288,6 +288,7 @@ td.reports-progress-cell,
     gap: 0.75rem;
     margin-bottom: 0; /* No bottom margin - part of sticky container */
     flex-wrap: wrap;
+    justify-content: center; /* Center the filter buttons */
     background-color: #F5F5F0; /* Match body background */
     padding-top: 15px; /* Space from header */
     padding-bottom: 15px; /* Space below filters */

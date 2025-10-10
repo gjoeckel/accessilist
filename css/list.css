@@ -227,7 +227,7 @@ body.checklist-page .checklist-caption {
     background-color: white;
     display: flex;
     flex-direction: column;
-    z-index: 90; /* Under header (100) and footer */
+    z-index: 200; /* Above sticky-header-container (z-index: 100) */
     transform: translateX(-60px); /* Hidden by default */
     transition: transform 0.3s ease;
 }
