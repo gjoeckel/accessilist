@@ -13,9 +13,9 @@ renderHTMLHead('Systemwide Report');
 <!-- Skip Link -->
 <a href="#reports-caption" class="skip-link">Skip to reports table</a>
 
-<!-- Sticky Header -->
-<header class="sticky-header">
-    <div class="header-top-row">
+<!-- Sticky Header + Filters Container -->
+<div class="sticky-header-container">
+    <header class="sticky-header">
         <h1>Systemwide Report</h1>
         <button id="homeButton" class="home-button" aria-label="Go to home page">
             <span class="button-text">Home</span>
@@ -25,9 +25,9 @@ renderHTMLHead('Systemwide Report');
                 <span class="button-text">Refresh</span>
             </button>
         </div>
-    </div>
+    </header>
 
-    <!-- Filter Buttons (in header so always visible) -->
+    <!-- Filter Buttons -->
     <div class="filter-group" role="group" aria-label="Filter reports by status">
             <button
                 id="filter-completed"
@@ -65,8 +65,8 @@ renderHTMLHead('Systemwide Report');
                 <span class="filter-label">All</span>
                 <span class="filter-count" id="count-all">0</span>
             </button>
-    </div>
-</header>
+        </div>
+</div><!-- End sticky-header-container -->
 
 <!-- Main Content -->
 <main role="main">

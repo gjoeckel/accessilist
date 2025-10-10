@@ -47,9 +47,9 @@ renderHTMLHead('List Report');
     </button>
 </nav>
 
-<!-- Sticky Header -->
-<header class="sticky-header">
-    <div class="header-top-row">
+<!-- Sticky Header + Filters Container -->
+<div class="sticky-header-container">
+    <header class="sticky-header">
         <h1>List Report</h1>
         <button id="backButton" class="back-button" aria-label="Back to checklist">
             <span class="button-text">Back</span>
@@ -59,9 +59,9 @@ renderHTMLHead('List Report');
                 <span class="button-text">Refresh</span>
             </button>
         </div>
-    </div>
+    </header>
 
-    <!-- Filter Buttons (in header so always visible) -->
+    <!-- Filter Buttons -->
     <div class="filter-group" role="group" aria-label="Filter tasks by status">
             <button
                 id="filter-completed"
@@ -99,8 +99,8 @@ renderHTMLHead('List Report');
                 <span class="filter-label">All</span>
                 <span class="filter-count" id="count-all">0</span>
             </button>
-    </div>
-</header>
+        </div>
+</div><!-- End sticky-header-container -->
 
 <!-- Main Content -->
 <main role="main">
