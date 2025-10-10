@@ -85,6 +85,7 @@ export class ReportsManager {
      */
     setupScrollLock() {
         const getMinScrollPosition = () => this.calculateH2Position();
+        let isScrolling = false;
 
         // Prevent mouse wheel scrolling up when at boundary
         window.addEventListener('wheel', (e) => {
@@ -94,6 +95,7 @@ export class ReportsManager {
 
             if (atBoundary && isScrollingUp) {
                 e.preventDefault();
+                e.stopPropagation();
             }
         }, { passive: false });
 
@@ -112,19 +114,28 @@ export class ReportsManager {
 
             if (atBoundary && isScrollingUp) {
                 e.preventDefault();
+                e.stopPropagation();
             }
         }, { passive: false });
 
-        // Fallback: snap back if somehow user gets above boundary
-        window.addEventListener('scroll', () => {
+        // Smooth correction using requestAnimationFrame (no jarring snap-back)
+        const checkBoundary = () => {
             const minScrollPosition = getMinScrollPosition();
-            if (window.scrollY < minScrollPosition) {
+            if (window.scrollY < minScrollPosition && !isScrolling) {
+                isScrolling = true;
+                // Use smooth scroll for correction - less jarring
                 window.scrollTo({
                     top: minScrollPosition,
-                    behavior: 'auto'
+                    behavior: 'smooth'
                 });
+                // Reset flag after scroll completes
+                setTimeout(() => { isScrolling = false; }, 100);
             }
-        }, { passive: true });
+            requestAnimationFrame(checkBoundary);
+        };
+
+        // Start boundary check loop
+        requestAnimationFrame(checkBoundary);
 
         console.log('Scroll lock enabled');
     }
