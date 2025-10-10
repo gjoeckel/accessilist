@@ -7,7 +7,7 @@ require_once __DIR__ . '/includes/common-scripts.php';
 renderHTMLHead('Systemwide Report');
 ?>
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/systemwide-report.css?v=<?php echo time(); ?>">
-<body class="report-page">
+<body class="report-page systemwide-report-page">
 <?php require __DIR__ . '/includes/noscript.php'; ?>
 
 <!-- Skip Link -->

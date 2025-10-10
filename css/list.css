@@ -53,13 +53,23 @@ body.checklist-page main {
     padding-bottom: 20000px; /* Match buffer space - ensures all checkpoints can scroll to 90px position */
 }
 
-/* List report page - similar buffer to maintain scrollbar when checkpoints hidden */
+/* List report page - buffer to maintain scrollbar when checkpoints hidden */
 body.report-page.list-report-page {
-    padding-top: 5000px; /* Smaller buffer than checklist page (no scroll positioning needed) */
+    padding-top: 5000px; /* Buffer for scrollbar + sticky filters */
 }
 
 /* Main content for list report page - has side panel and needs buffer */
 body.report-page.list-report-page main {
+    padding-bottom: 5000px; /* Match top buffer - ensures scrollbar stays visible */
+}
+
+/* Systemwide report page - buffer to maintain scrollbar for longer reports */
+body.report-page.systemwide-report-page {
+    padding-top: 5000px; /* Buffer for scrollbar + sticky filters */
+}
+
+/* Main content for systemwide report page - needs buffer */
+body.report-page.systemwide-report-page main {
     padding-bottom: 5000px; /* Match top buffer - ensures scrollbar stays visible */
 }
 
