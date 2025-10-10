@@ -100,15 +100,15 @@ th.checkpoint-cell {
     font-size: 0 !important; /* Hide the ≡ text character */
     position: relative;
     background-image: url('/images/three-lines.svg');
-    background-size: 18px 16px;
+    background-size: 18px 15px; /* Updated to match new SVG viewBox */
     background-position: center;
     background-repeat: no-repeat;
+    color: #333333; /* Default icon color */
 }
 
-/* Ensure SVG inherits color (for selected state) */
+/* Selected state - white icon on brown background */
 .checkpoint-all.active {
-    /* SVG uses currentColor, so it will automatically turn white when button has brown background */
-    color: white;
+    color: white !important; /* SVG currentColor becomes white */
 }
 
 /* Date column */

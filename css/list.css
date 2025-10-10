@@ -336,7 +336,7 @@ body.checklist-page .checklist-caption {
 .principle-section.active .principles-button {
     border-color: var(--selected-color) !important;
     background-color: var(--selected-color) !important;
-    color: white;
+    color: white !important; /* SVG currentColor becomes white */
 }
 
 .principles-button:is(:hover, :focus) {
