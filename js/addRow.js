@@ -82,11 +82,11 @@ function createTableRow(rowData, tableType) {
 
         // Map status to icon filename
         const iconMap = {
-            'pending': 'ready.svg',
-            'in-progress': 'active.svg',
-            'completed': 'done.svg'
+            'pending': 'ready-1.svg',
+            'in-progress': 'active-1.svg',
+            'completed': 'done-1.svg'
         };
-        const statusIcon = iconMap[initialState] || 'ready.svg';
+        const statusIcon = iconMap[initialState] || 'ready-1.svg';
         const statusLabel = initialState === 'in-progress' ? 'In Progress' : initialState.charAt(0).toUpperCase() + initialState.slice(1);
 
         statusButton.setAttribute('aria-label', `Task status: ${statusLabel}`);

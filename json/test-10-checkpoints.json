@@ -1,0 +1,104 @@
+{
+  "version": "0.8",
+  "type": "Test 10 Checkpoints",
+  "checkpoint-1": {
+    "caption": "Checkpoint 1 - Test",
+    "table": [
+      {
+        "id": "1.1",
+        "task": "Test Item 1.1",
+        "info": "placeholder"
+      }
+    ]
+  },
+  "checkpoint-2": {
+    "caption": "Checkpoint 2 - Test",
+    "table": [
+      {
+        "id": "2.1",
+        "task": "Test Item 2.1",
+        "info": "placeholder"
+      }
+    ]
+  },
+  "checkpoint-3": {
+    "caption": "Checkpoint 3 - Test",
+    "table": [
+      {
+        "id": "3.1",
+        "task": "Test Item 3.1",
+        "info": "placeholder"
+      }
+    ]
+  },
+  "checkpoint-4": {
+    "caption": "Checkpoint 4 - Test",
+    "table": [
+      {
+        "id": "4.1",
+        "task": "Test Item 4.1",
+        "info": "placeholder"
+      }
+    ]
+  },
+  "checkpoint-5": {
+    "caption": "Checkpoint 5 - Test",
+    "table": [
+      {
+        "id": "5.1",
+        "task": "Test Item 5.1",
+        "info": "placeholder"
+      }
+    ]
+  },
+  "checkpoint-6": {
+    "caption": "Checkpoint 6 - Test",
+    "table": [
+      {
+        "id": "6.1",
+        "task": "Test Item 6.1",
+        "info": "placeholder"
+      }
+    ]
+  },
+  "checkpoint-7": {
+    "caption": "Checkpoint 7 - Test",
+    "table": [
+      {
+        "id": "7.1",
+        "task": "Test Item 7.1",
+        "info": "placeholder"
+      }
+    ]
+  },
+  "checkpoint-8": {
+    "caption": "Checkpoint 8 - Test",
+    "table": [
+      {
+        "id": "8.1",
+        "task": "Test Item 8.1",
+        "info": "placeholder"
+      }
+    ]
+  },
+  "checkpoint-9": {
+    "caption": "Checkpoint 9 - Test",
+    "table": [
+      {
+        "id": "9.1",
+        "task": "Test Item 9.1",
+        "info": "placeholder"
+      }
+    ]
+  },
+  "checkpoint-10": {
+    "caption": "Checkpoint 10 - Test",
+    "table": [
+      {
+        "id": "10.1",
+        "task": "Test Item 10.1",
+        "info": "placeholder"
+      }
+    ]
+  }
+}

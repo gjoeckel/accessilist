@@ -97,7 +97,7 @@ renderHTMLHead('Systemwide Report');
                         </td>
                         <td class="status-cell">
                             <button class="status-button" aria-label="Task status: Active">
-                                <img src="/images/active.svg" alt="">
+                                <img src="/images/active-1.svg" alt="">
                             </button>
                         </td>
                         <td class="task-cell">5/10 tasks</td>
@@ -150,7 +150,7 @@ renderCommonScripts('admin');
 
 <!-- Reports functionality -->
 <script type="module">
-import { ReportsManager } from '<?php echo $basePath; ?>/js/reports.js?v=<?php echo time(); ?>';
+import { ReportsManager } from '<?php echo $basePath; ?>/js/systemwide-report.js?v=<?php echo time(); ?>';
 
 // Initialize reports manager
 let reportsManager;

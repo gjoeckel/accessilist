@@ -522,9 +522,9 @@ class UnifiedStateManager {
         const img = button.querySelector('img');
         if (img) {
           const imageMap = {
-            'pending': 'ready.svg',
-            'in-progress': 'active.svg',
-            'completed': 'done.svg'
+            'pending': 'ready-1.svg',
+            'in-progress': 'active-1.svg',
+            'completed': 'done-1.svg'
           };
           img.src = window.getImagePath ? window.getImagePath(imageMap[state]) : imageMap[state];
         }
@@ -775,7 +775,7 @@ class UnifiedStateManager {
       statusButton.disabled = false;
       const statusImg = statusButton.querySelector('img');
       if (statusImg) {
-        statusImg.src = window.getImagePath('ready.svg');
+        statusImg.src = window.getImagePath('ready-1.svg');
       }
     }
 
@@ -913,7 +913,7 @@ class UnifiedStateManager {
     // Update status button to completed state
     statusButton.setAttribute('data-state', 'completed');
     statusButton.setAttribute('aria-label', 'Task status: Done');
-    const completedImgPath = window.getImagePath('done.svg');
+    const completedImgPath = window.getImagePath('done-1.svg');
     const statusImg = statusButton.querySelector('img');
     if (statusImg) {
       statusImg.src = completedImgPath;

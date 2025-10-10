@@ -33,19 +33,39 @@
    MAIN CONTENT LAYOUT
    ==================================================================== */
 
+/* Global selected color variable */
+:root {
+    --selected-color: #AC6628; /* Brown color when checkpoint is selected */
+}
+
+/* Add massive buffer space above all content to allow perfect checkpoint positioning */
+/* ONLY applies to mychecklist.php - allows side panel to scroll any checkpoint to 90px from top */
+body.checklist-page {
+    padding-top: 20000px;
+}
+
 /* Main content for checklist page only - has side panel */
-body:not(.report-page) main {
+body.checklist-page main {
     grid-area: main;
     max-width: 90%;
     margin-left: 100px;
     padding-top: 90px; /* Position first section below sticky header */
-    padding-bottom: 100vh; /* Allow scrolling past last section */
+    padding-bottom: 20000px; /* Match buffer space - ensures all checkpoints can scroll to 90px position */
+}
+
+/* Main content for non-checklist pages (legacy fallback) */
+body:not(.report-page):not(.checklist-page) main {
+    grid-area: main;
+    max-width: 90%;
+    margin-left: 100px;
+    padding-top: 90px;
+    padding-bottom: 100vh;
 }
 
 /* Main content for report pages - no side panel */
 body.report-page main {
     grid-area: main;
-    max-width: 1200px;
+    max-width: 90%;
     margin: 0 auto;
     padding-top: 90px;
     padding-bottom: 2rem;
@@ -60,6 +80,7 @@ section {
     position: relative;
     z-index: 1;
     margin-bottom: 60px;
+    scroll-margin-top: 90px; /* Offset for sticky header when scrolling to section */
 }
 
 .principle-section {
@@ -74,28 +95,9 @@ section {
 }
 
 /* Checkpoint Color Themes */
-.principle-section.checkpoint-1,
-.principle-section.checklist-1 {
-    --theme-color: #005192;
-    --header-fill-color: #F0F9FF;
-}
-
-.principle-section.checkpoint-2,
-.principle-section.checklist-2 {
-    --theme-color: #5E850F;
-    --header-fill-color: #F7FDED;
-}
-
-.principle-section.checkpoint-3,
-.principle-section.checklist-3 {
-    --theme-color: #AC6628;
-    --header-fill-color: #F7E7D9;
-}
-
-.principle-section.checkpoint-4,
-.principle-section.checklist-4 {
-    --theme-color: #0C2336;
-    --header-fill-color: #E7ECF0;
+.principle-section {
+    --theme-color: #333333; /* Default for all checkpoints */
+    /* --selected-color inherited from :root */
 }
 
 /* Section Headers */
@@ -107,6 +109,12 @@ section {
     z-index: 1;
     background-color: transparent;
     padding: 4px;
+}
+
+/* Checklist page (mychecklist.php) - smaller h2 text and reduced spacing */
+body.checklist-page .principle-section h2 {
+    font-size: 1rem;
+    margin-bottom: 15px;
 }
 
 /* Checklist Caption (clickable section heading) */
@@ -124,8 +132,41 @@ section {
     margin: 0 auto;
 }
 
-.checklist-caption img {
+/* Checklist page (mychecklist.php) - left-align h2 to match table edge */
+body.checklist-page .checklist-caption {
+    justify-content: flex-start;
+    margin: 0;
+}
+
+/* CSS-generated number circle - outline mode (default) */
+.checklist-caption[data-number]::before {
+    content: attr(data-number);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    border: 2px solid var(--theme-color);
+    background-color: transparent;
+    color: var(--theme-color);
+    font-size: 1rem;
+    font-weight: bold;
     flex-shrink: 0;
+}
+
+/* CSS-generated number circle - filled mode (when selected via side panel) */
+.principle-section.active .checklist-caption[data-number]::before {
+    background-color: var(--selected-color);
+    border-color: var(--selected-color);
+    color: white;
+}
+
+/* Keep focus state with default theme color for keyboard navigation */
+.checklist-caption[data-number]:focus::before {
+    background-color: var(--theme-color);
+    border-color: var(--theme-color);
+    color: white;
 }
 
 .checklist-caption:focus,
@@ -153,75 +194,77 @@ section {
 }
 
 /* ====================================================================
-   SIDE PANEL NAVIGATION
+   SIDE PANEL NAVIGATION - Simple checkpoint navigation
    ==================================================================== */
 
-:root {
-    --side-panel-width: 250px;
-    --side-panel-collapsed-width: 60px;
-}
-
+/* Side panel container - full height, slides in from left */
 .side-panel {
     position: fixed;
-    top: 165px;
+    top: 0;
     left: 0;
-    width: var(--side-panel-collapsed-width);
+    bottom: 0;
+    width: 60px;
     background-color: white;
-    padding: 1rem;
     display: flex;
     flex-direction: column;
-    z-index: 90;
-    transform: translateX(calc(-1 * var(--side-panel-collapsed-width)));
-}
-
-body.loaded .side-panel {
-    transition: all 0.3s ease;
+    z-index: 90; /* Under header (100) and footer */
+    transform: translateX(-60px); /* Hidden by default */
+    transition: transform 0.3s ease;
 }
 
 .side-panel[aria-expanded="true"] {
-    transform: translateX(0);
+    transform: translateX(0); /* Visible */
 }
 
+/* Checkpoint button list */
 .side-panel ul {
     list-style: none;
-    padding: 15px 0;
+    padding: 105px 0 0 0; /* 70px header + 35px spacing */
     margin: 0;
-    flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    align-items: center;
+    gap: 35px;
 }
 
-.side-panel a {
+/* Checkpoint button */
+.checkpoint-btn {
     display: flex;
     align-items: center;
     justify-content: center;
-    width: 32px;
-    height: 32px;
-    padding: 0;
-    color: inherit;
-    text-decoration: none;
+    width: 30px;
+    height: 30px;
     border-radius: 50%;
+    border: 2px solid #333333;
+    background-color: transparent;
+    color: #333333;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: pointer;
+    transition: none;
 }
 
-.side-panel a:focus,
-.side-panel a:hover {
+/* Active checkpoint - filled circle with white number (brown when selected) */
+.checkpoint-btn.active {
+    background-color: var(--selected-color);
+    border-color: var(--selected-color);
+    color: white;
+}
+
+/* Hover/focus golden ring */
+.checkpoint-btn:is(:hover, :focus) {
     outline: none;
-    box-shadow: var(--golden-ring) !important;
+    box-shadow: var(--golden-ring);
 }
 
-.side-panel img {
-    width: 36px;
-    height: 36px;
-}
-
-/* Side Panel Toggle Strip */
+/* Toggle strip - collapse/expand button */
 .toggle-strip {
     position: absolute;
     right: -21px;
     top: 0;
+    bottom: 0;
     width: 21px;
-    height: 100%;
     background-color: #ccc;
     border: none;
     cursor: pointer;
@@ -229,42 +272,23 @@ body.loaded .side-panel {
     align-items: center;
     justify-content: center;
     padding: 0;
-    color: black;
     font-size: 1rem;
     z-index: 91;
-    transition: transform 0.3s ease;
 }
 
-.toggle-strip:focus,
-.toggle-strip:hover {
+.toggle-strip:is(:hover, :focus) {
     outline: none;
-    box-shadow: var(--golden-ring) !important;
+    box-shadow: var(--golden-ring);
 }
 
 .toggle-arrow {
-    transition: transform 0.45s ease;
+    transition: transform 0.3s ease;
 }
 
 .side-panel[aria-expanded="false"] .toggle-arrow {
     transform: rotate(180deg);
 }
 
-/* Side Panel Icon States */
-.side-panel a .active-state {
-    display: none !important;
-}
-
-.side-panel a .inactive-state {
-    display: block !important;
-}
-
-.side-panel a.infocus .active-state {
-    display: block !important;
-}
-
-.side-panel a.infocus .inactive-state {
-    display: none !important;
-}
 
 /* ====================================================================
    PRINCIPLES TABLE SPECIFIC
@@ -286,19 +310,40 @@ body.loaded .side-panel {
     gap: 0.5rem;
 }
 
-/* Add Row Buttons */
+/* Add Row Buttons - smaller size, matches h2 number icons */
 .principles-button {
-    width: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 20px;
+    height: 20px;
     padding: 0;
-    border: none !important;
-    background-color: transparent !important;
-    position: relative;
+    border: 2px solid #333333 !important;
     border-radius: 50%;
+    background-color: transparent !important;
+    color: #333333;
+    font-size: 1.2rem;
+    font-weight: bold;
+    line-height: 1;
+    cursor: pointer;
+    position: relative;
+    transition: border-color 0.2s, background-color 0.2s, color 0.2s;
 }
 
-.principles-button img {
-    width: 100%;
-    object-fit: contain;
+/* CSS-generated plus icon */
+.principles-button::before {
+    content: '+';
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-2px);
+}
+
+/* Brown selected color when checkpoint is active */
+.principle-section.active .principles-button {
+    border-color: var(--selected-color) !important;
+    background-color: var(--selected-color) !important;
+    color: white;
 }
 
 .principles-button:is(:hover, :focus) {

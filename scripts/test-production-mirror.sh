@@ -404,7 +404,7 @@ test_endpoint_content "Reports table headers" "$BASE_URL/reports" "reports-statu
 test_endpoint_content "Reports table headers" "$BASE_URL/reports" "reports-progress-cell" "Progress column present"
 test_endpoint_content "Reports refresh button" "$BASE_URL/reports" "id=\"refreshButton\"" "Refresh button present"
 test_endpoint_content "Reports home button" "$BASE_URL/reports" "id=\"homeButton\"" "Home button present"
-test_endpoint_content "Reports JavaScript module" "$BASE_URL/reports" "js/reports.js" "ReportsManager loaded"
+test_endpoint_content "Reports JavaScript module" "$BASE_URL/reports" "js/systemwide-report.js" "ReportsManager loaded"
 
 # Test 21-27: User Report (report.php)
 print_section "Test 21-27: User Report (report.php)"

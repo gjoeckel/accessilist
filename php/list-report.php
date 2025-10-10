@@ -148,7 +148,7 @@ renderHTMLHead('List Report');
 
 <!-- User Report functionality -->
 <script type="module">
-import { UserReportManager } from '<?php echo $basePath; ?>/js/report.js?v=<?php echo time(); ?>';
+import { UserReportManager } from '<?php echo $basePath; ?>/js/list-report.js?v=<?php echo time(); ?>';
 
 const sessionKey = '<?php echo htmlspecialchars($sessionKey, ENT_QUOTES, 'UTF-8'); ?>';
 

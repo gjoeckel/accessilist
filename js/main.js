@@ -105,11 +105,12 @@ async function initializeApp() {
             header.textContent = `${data.type} Accessibility Checklist`;
         }
 
-        // Generate side panel dynamically based on checkpoint count
-        if (typeof window.generateSidePanel === 'function') {
-            window.generateSidePanel(data);
+        // Initialize side panel with checkpoint data
+        if (window.SidePanel) {
+            const sidePanel = new window.SidePanel();
+            sidePanel.init(data);
         } else {
-            console.error('generateSidePanel function not available - side panel will not render');
+            console.error('SidePanel class not available - side panel will not render');
         }
 
         // Build content with the fetched data

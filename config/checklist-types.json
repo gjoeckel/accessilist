@@ -8,13 +8,14 @@
     "camtasia": { "displayName": "Camtasia", "jsonFile": "camtasia.json", "buttonId": "camtasia", "category": "Other" },
     "dojo": { "displayName": "Dojo", "jsonFile": "dojo.json", "buttonId": "dojo", "category": "Other" },
     "test-5": { "displayName": "Test-5-Checkpoints", "jsonFile": "test-5.json", "buttonId": "test-5", "category": "Testing" },
-    "test-7": { "displayName": "Test-7-Checkpoints", "jsonFile": "test-7.json", "buttonId": "test-7", "category": "Testing" }
+    "test-7": { "displayName": "Test-7-Checkpoints", "jsonFile": "test-7.json", "buttonId": "test-7", "category": "Testing" },
+    "test-10-checkpoints": { "displayName": "Test-10-Checkpoints", "jsonFile": "test-10-checkpoints.json", "buttonId": "test-10", "category": "Testing" }
   },
   "defaultType": "camtasia",
   "categories": {
     "Microsoft": ["word", "powerpoint", "excel"],
     "Google": ["docs", "slides"],
     "Other": ["camtasia", "dojo"],
-    "Testing": ["test-5", "test-7"]
+    "Testing": ["test-5", "test-7", "test-10-checkpoints"]
   }
 }

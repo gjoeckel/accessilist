@@ -6,7 +6,7 @@ require_once __DIR__ . '/includes/common-scripts.php';
 
 renderHTMLHead('Accessibility Checklist', true);
 ?>
-<body>
+<body class="checklist-page">
 <!-- Loading Overlay -->
 <div id="loadingOverlay" role="alert" aria-live="polite">
   <div id="loadingSpinner"></div>
@@ -34,12 +34,12 @@ renderHTMLHead('Accessibility Checklist', true);
     </div>
 </header>
 
-<!-- Side Panel - Dynamically Generated -->
+<!-- Side Panel - Checkpoint Navigation -->
 <nav class="side-panel" aria-expanded="true">
-    <ul id="side-panel">
-        <!-- Checkpoint buttons generated dynamically by side-panel-generator.js (2-10 checkpoints) -->
+    <ul>
+        <!-- Checkpoint buttons generated dynamically by side-panel.js -->
     </ul>
-    <button class="toggle-strip" aria-label="Toggle side panel" aria-expanded="true" aria-controls="side-panel" title="Toggle navigation panel">
+    <button class="toggle-strip" aria-label="Toggle side panel" aria-expanded="true" title="Toggle navigation panel">
         <span class="toggle-arrow" aria-hidden="true">◀</span>
     </button>
 </nav>
@@ -69,8 +69,8 @@ renderHTMLHead('Accessibility Checklist', true);
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
-  // Reset scroll position immediately
-  window.scrollTo(0, 0);
+  // Scroll to checkpoint 1 position (20000px buffer + 0px for checkpoint 1)
+  window.scrollTo(0, 20000);
 
   // Handle skip link - focus on first h2 without scrolling
   document.addEventListener('DOMContentLoaded', function() {

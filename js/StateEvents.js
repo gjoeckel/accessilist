@@ -53,15 +53,7 @@ class StateEvents {
         return;
       }
 
-      // Report table delete handling removed - reports now on separate page
-
-      // Side panel navigation
-      const sidePanelLink = e.target.closest('.side-panel a');
-      if (sidePanelLink) {
-        console.log('StateEvents: Side panel link click detected');
-        this.handleSidePanelNavigation(sidePanelLink, e);
-        return;
-      }
+      // Side panel navigation now handled by SidePanel class
 
       // Side panel toggle
       const toggleStrip = e.target.closest('.toggle-strip');
@@ -117,12 +109,12 @@ class StateEvents {
     // State transitions
     if (currentState === 'pending') {
       newState = 'in-progress';
-      newIcon = window.getImagePath('active.svg');
+      newIcon = window.getImagePath('active-1.svg');
       newLabel = 'Task status: Active';
       console.log('StateEvents: Transitioning from pending to in-progress');
     } else if (currentState === 'in-progress') {
       newState = 'completed';
-      newIcon = window.getImagePath('done.svg');
+      newIcon = window.getImagePath('done-1.svg');
       newLabel = 'Task status: Done';
       console.log('StateEvents: Transitioning from in-progress to completed');
 
@@ -171,7 +163,7 @@ class StateEvents {
     } else if (currentState === 'completed') {
       // Cycle back to pending
       newState = 'pending';
-      newIcon = window.getImagePath('ready.svg');
+      newIcon = window.getImagePath('ready-1.svg');
       newLabel = 'Task status: Ready';
       console.log('StateEvents: Transitioning from completed to pending');
 
@@ -303,11 +295,11 @@ class StateEvents {
 
         if (currentState === 'pending' && hasText) {
           // Has text: pending → in-progress
-          this._updateStatusButton(statusButton, 'in-progress', 'Task status: Active', window.getImagePath('active.svg'));
+          this._updateStatusButton(statusButton, 'in-progress', 'Task status: Active', window.getImagePath('active-1.svg'));
           console.log(`StateEvents: Status changed from pending to in-progress for row ${row.getAttribute('data-id')}`);
         } else if (currentState === 'in-progress' && !hasText) {
           // No text: in-progress → pending
-          this._updateStatusButton(statusButton, 'pending', 'Task status: Ready', window.getImagePath('ready.svg'));
+          this._updateStatusButton(statusButton, 'pending', 'Task status: Ready', window.getImagePath('ready-1.svg'));
           console.log(`StateEvents: Status changed from in-progress to pending for row ${row.getAttribute('data-id')}`);
         }
 
@@ -361,22 +353,14 @@ class StateEvents {
       return;
     }
 
-    // Remove infocus class from all links
+    // Remove infocus class from all links (pure CSS solution - no SVG manipulation)
     const allLinks = document.querySelectorAll('.side-panel a');
     allLinks.forEach(l => {
       l.classList.remove('infocus');
-      const activeImg = l.querySelector('.active-state');
-      const inactiveImg = l.querySelector('.inactive-state');
-      if (activeImg) activeImg.classList.remove('show');
-      if (inactiveImg) inactiveImg.classList.remove('hide');
     });
 
-    // Add infocus class to clicked link
+    // Add infocus class to clicked link (CSS handles visual state)
     link.classList.add('infocus');
-    const activeImg = link.querySelector('.active-state');
-    const inactiveImg = link.querySelector('.inactive-state');
-    if (activeImg) activeImg.classList.add('show');
-    if (inactiveImg) inactiveImg.classList.add('hide');
 
     // Scroll using StateManager's DRY method
     if (this.stateManager && typeof this.stateManager.scrollSectionToPosition === 'function') {

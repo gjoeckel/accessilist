@@ -300,10 +300,10 @@ export class ReportsManager {
     createStatusBadge(status) {
         // Map status values to checkpoint table SVG files
         const statusMap = {
-            'completed': 'done',
-            'pending': 'ready',
-            'in-progress': 'active',
-            'in_progress': 'active'
+            'completed': 'done-1',
+            'pending': 'ready-1',
+            'in-progress': 'active-1',
+            'in_progress': 'active-1'
         };
 
         const labels = {

@@ -8,6 +8,55 @@
 
 ## Entries
 
+### 2025-10-10 07:48:36 UTC - Report Pages CSS/JS Naming Convention Alignment + H2 Width Consistency Fix
+
+**Summary:**
+- Renamed JavaScript files to match PHP naming convention for consistency
+- Fixed h2 width inconsistency between systemwide and list report pages
+- Updated all references to use new JS file names
+- Resolved table margin-top spacing issues for visual consistency
+
+**JavaScript File Renaming:**
+- ✅ **reports.js → systemwide-report.js**: Matches systemwide-report.php naming
+- ✅ **report.js → list-report.js**: Matches list-report.php naming
+- ✅ **Updated PHP References**: Both systemwide-report.php and list-report.php updated to import new JS files
+- ✅ **Updated Test Scripts**: scripts/test-production-mirror.sh updated to reference new JS file names
+- ✅ **Verified Functionality**: Both report pages tested and working correctly with renamed files
+
+**H2 Width Consistency Fix:**
+- ✅ **Root Cause Identified**: Systemwide report h2 was 305px, list report h2 was 529px due to different container widths
+- ✅ **CSS Solution**: Added `width: 100%` to `#reports-caption` and `#report-caption` selectors in css/reports.css
+- ✅ **Result**: Both h2 elements now have identical 720px width for visual consistency
+- ✅ **No Visual Impact**: Text content remains the same, only container width standardized
+
+**Table Spacing Fix:**
+- ✅ **Margin-Top Issue**: Systemwide report used `.principles-table reports-table` (no margin-top), list report used `.report-table` (20px margin-top)
+- ✅ **CSS Solution**: Added `.reports-table { margin-top: 20px; }` to match .report-table spacing
+- ✅ **Result**: Both report pages now have consistent 30px spacing between h2 and table (10px h2 margin-bottom + 20px table margin-top)
+
+**Files Modified:**
+- **JavaScript**: js/reports.js → js/systemwide-report.js, js/report.js → js/list-report.js
+- **PHP**: php/systemwide-report.php, php/list-report.php (updated import statements)
+- **CSS**: css/reports.css (added width: 100% and margin-top: 20px rules)
+- **Scripts**: scripts/test-production-mirror.sh (updated test reference)
+
+**Testing Results:**
+- ✅ Both report pages load successfully with renamed JS files
+- ✅ All functionality working (filter buttons, refresh/back buttons, tables)
+- ✅ No console errors or broken functionality
+- ✅ H2 elements have consistent width (720px) on both pages
+- ✅ Table spacing consistent (30px) between h2 and table on both pages
+
+**Impact:**
+- **Naming Consistency**: All report files now follow consistent naming convention (systemwide-report.*, list-report.*)
+- **Visual Consistency**: H2 elements and table spacing now identical across both report pages
+- **Maintainability**: Clearer file organization and consistent styling patterns
+- **Code Quality**: Eliminated visual inconsistencies and improved file naming standards
+
+**Status:** 🟢 Report pages fully consistent with aligned naming and styling
+
+---
+
 ### 2025-10-09 23:28:28 UTC - Report Pages Complete Refactor: Terminology, Styling, and Architecture
 
 **Summary:**
@@ -98,7 +147,7 @@
 
 **Files Renamed (3):**
 - reports.php → systemwide-report.php
-- report.php → list-report.php  
+- report.php → list-report.php
 - systemwide-reports.css → systemwide-report.css
 
 **Impact:**

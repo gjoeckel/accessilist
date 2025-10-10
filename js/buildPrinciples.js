@@ -62,14 +62,9 @@ function createPrincipleSection(principleId, data) {
     // Make the heading focusable for keyboard users
     heading.setAttribute('tabindex', '0');
 
-    // Add number icon based on principle, but only if we have a valid table number
+    // Add data attribute for CSS-generated number (replaces SVG icon)
     if (tableNumber) {
-        const numberIcon = document.createElement('img');
-        numberIcon.alt = tableNumber;
-        numberIcon.src = window.getImagePath(`number-${tableNumber}-1.svg`);
-        numberIcon.width = 36;
-        numberIcon.height = 36;
-        heading.appendChild(numberIcon);
+        heading.setAttribute('data-number', tableNumber);
     }
 
     // Add caption text directly to heading
@@ -215,7 +210,7 @@ function buildTable(rows, principleId) {
         statusButton.setAttribute('aria-label', 'Task status: Ready');
         statusButton.setAttribute('data-id', row.id);
         statusButton.id = `status-${row.id}`;
-        const pendingImgPath = window.getImagePath('ready.svg');
+        const pendingImgPath = window.getImagePath('ready-1.svg');
         statusButton.innerHTML = `<img src="${pendingImgPath}" alt="">`;
         statusCell.appendChild(statusButton);
 
@@ -249,17 +244,7 @@ function buildTable(rows, principleId) {
     addButton.setAttribute('data-principle', principleId);
     addButton.setAttribute('aria-label', `Add new task to ${principleId}`);
 
-    // Create image element with color-coded icon for each checklist
-    const img = document.createElement('img');
-    // Dynamic icon selection based on checkpoint/checklist number
-    const match = principleId.match(/(?:checkpoint|checklist)-(\d+)/);
-    const num = match ? match[1] : '0';
-    const iconName = `add-${num}.svg`;
-
-    // Icon pattern: add-1.svg (Blue), add-2.svg (Green), add-3.svg (Orange), add-4.svg (Dark Blue/Purple)
-    img.src = window.getImagePath ? window.getImagePath(iconName) : `/images/${iconName}`;
-    img.alt = 'Add Row';
-    addButton.appendChild(img);
+    // CSS-generated plus icon (no SVG needed)
 
     // Add button to container
     buttonContainer.appendChild(addButton);

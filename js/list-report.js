@@ -494,10 +494,10 @@ export class UserReportManager {
     createStatusButton(status, taskId) {
         // Map status values to icon filenames
         const iconMap = {
-            'pending': 'ready',
-            'in-progress': 'active',
-            'in_progress': 'active',
-            'completed': 'done'
+            'pending': 'ready-1',
+            'in-progress': 'active-1',
+            'in_progress': 'active-1',
+            'completed': 'done-1'
         };
 
         const iconName = iconMap[status] || status;
