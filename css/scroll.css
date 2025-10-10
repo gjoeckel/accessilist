@@ -1,0 +1,55 @@
+/**
+ * scroll.css
+ *
+ * Manages scroll buffers using pseudo-elements
+ * Cleaner alternative to large padding values
+ */
+
+/* ====================================================================
+   MYCHECKLIST PAGE - Large buffer for checkpoint scroll positioning
+   ==================================================================== */
+
+/* Buffer above content - allows any checkpoint to scroll to 90px from top */
+body.checklist-page main::before {
+    content: '';
+    display: block;
+    height: 20000px;
+}
+
+/* Buffer below content - ensures all checkpoints can scroll to proper position */
+body.checklist-page main::after {
+    content: '';
+    display: block;
+    height: 20000px;
+}
+
+/* ====================================================================
+   REPORT PAGES - Smaller buffer for scrollbar visibility
+   ==================================================================== */
+
+/* List Report - buffer for scrollbar consistency when filtering */
+body.report-page.list-report-page main::before {
+    content: '';
+    display: block;
+    height: 5000px;
+}
+
+body.report-page.list-report-page main::after {
+    content: '';
+    display: block;
+    height: 5000px;
+}
+
+/* Systemwide Report - buffer for scrollbar with longer content */
+body.report-page.systemwide-report-page main::before {
+    content: '';
+    display: block;
+    height: 5000px;
+}
+
+body.report-page.systemwide-report-page main::after {
+    content: '';
+    display: block;
+    height: 5000px;
+}
+

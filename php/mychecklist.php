@@ -65,13 +65,6 @@ renderHTMLHead('Accessibility Checklist', true);
 
 <!-- Scripts -->
 <script>
-  // Prevent browser from restoring scroll position
-  if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-  }
-  // Scroll to checkpoint 1 position (20000px buffer + 0px for checkpoint 1)
-  window.scrollTo(0, 20000);
-
   // Handle skip link - focus on first h2 without scrolling
   document.addEventListener('DOMContentLoaded', function() {
     const skipLink = document.querySelector('.skip-link');

@@ -14,8 +14,6 @@ class SidePanel {
         this.ul = document.querySelector('.side-panel ul');
         this.toggleBtn = document.querySelector('.toggle-strip');
         this.currentCheckpoint = 1;
-        this.minScrollPosition = 20000; // Prevent scrolling above checkpoint 1
-        this.setupScrollBoundary();
     }
 
     /**
@@ -209,49 +207,6 @@ class SidePanel {
         });
     }
 
-    /**
-     * Prevent scrolling above checkpoint 1 (into the buffer space)
-     * Uses event interception to stop scroll before it happens (no fighting)
-     */
-    setupScrollBoundary() {
-        // Prevent mouse wheel scrolling up when at boundary
-        window.addEventListener('wheel', (e) => {
-            const isScrollingUp = e.deltaY < 0;
-            const atBoundary = window.scrollY <= this.minScrollPosition;
-
-            if (atBoundary && isScrollingUp) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-
-        // Prevent touch scrolling up when at boundary
-        let touchStartY = 0;
-
-        window.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;
-        }, { passive: true });
-
-        window.addEventListener('touchmove', (e) => {
-            const touchEndY = e.touches[0].clientY;
-            const isScrollingUp = touchEndY > touchStartY;
-            const atBoundary = window.scrollY <= this.minScrollPosition;
-
-            if (atBoundary && isScrollingUp) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-
-        // Fallback: snap back if somehow user gets above boundary
-        // (e.g., programmatic scroll, keyboard navigation)
-        window.addEventListener('scroll', () => {
-            if (window.scrollY < this.minScrollPosition) {
-                window.scrollTo({
-                    top: this.minScrollPosition,
-                    behavior: 'auto'
-                });
-            }
-        }, { passive: true });
-    }
 }
 
 // Initialize when page loads

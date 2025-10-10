@@ -16,6 +16,10 @@ function renderCommonScripts($scriptSet = 'basic') {
     echo "<!-- Path configuration handled by path-utils.js -->\n";
     echo "<script src=\"{$basePath}/js/path-utils.js?v={$version}\"></script>\n";
 
+    // Scroll manager - handles scroll positioning and boundaries
+    echo "<!-- Scroll management -->\n";
+    echo "<script src=\"{$basePath}/js/scroll.js?v={$version}\"></script>\n";
+
     // Type manager (used by admin and some other pages)
     if (in_array($scriptSet, ['admin', 'checklist'])) {
         echo "<script src=\"{$basePath}/js/type-manager.js?v={$version}\"></script>\n";

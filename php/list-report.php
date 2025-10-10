@@ -131,13 +131,6 @@ renderHTMLHead('List Report');
 
 <!-- Scripts -->
 <script>
-  // Prevent browser from restoring scroll position
-  if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-  }
-  // Reset scroll position immediately
-  window.scrollTo(0, 0);
-
   // Handle skip link - focus without scrolling
   document.addEventListener('DOMContentLoaded', function() {
     const skipLink = document.querySelector('.skip-link');

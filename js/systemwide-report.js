@@ -42,79 +42,8 @@ export class ReportsManager {
             }
         });
 
-        // Set up scroll lock to prevent scrolling above h2 default position
-        this.setupScrollLock();
-
-        // Initialize scroll position on page load
-        this.initializeScrollPosition();
-
         // Load initial data
         this.loadChecklists();
-    }
-
-    /**
-     * Calculate the correct scroll position for h2
-     * H2 should be 30px below the sticky header container
-     */
-    calculateH2Position() {
-        const stickyContainer = document.querySelector('.sticky-header-container');
-        if (!stickyContainer) {
-            return 5000; // Fallback
-        }
-        const containerHeight = stickyContainer.offsetHeight;
-        // Body padding-top (5000px) - containerHeight - 30px gap = scroll position where h2 appears 30px below container
-        return 5000;
-    }
-
-    /**
-     * Set initial scroll position to show h2 in default position
-     * Ensures filters and content are visible on page load
-     */
-    initializeScrollPosition() {
-        const targetScroll = this.calculateH2Position();
-        window.scrollTo({
-            top: targetScroll,
-            behavior: 'auto' // Instant, no animation
-        });
-        console.log('Initialized scroll position to:', targetScroll);
-    }
-
-    /**
-     * Set up scroll lock to prevent scrolling above h2 default position
-     * H2 should stay 30px below sticky header + filters
-     * Uses same pattern as mychecklist.php - constant boundary, event interception only
-     */
-    setupScrollLock() {
-        const minScrollPosition = 5000; // Match body padding-top (constant like mychecklist)
-
-        // Prevent mouse wheel scrolling up when at boundary
-        window.addEventListener('wheel', (e) => {
-            const isScrollingUp = e.deltaY < 0;
-            const atBoundary = window.scrollY <= minScrollPosition;
-
-            if (atBoundary && isScrollingUp) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-
-        // Prevent touch scrolling up when at boundary
-        let touchStartY = 0;
-
-        window.addEventListener('touchstart', (e) => {
-            touchStartY = e.touches[0].clientY;
-        }, { passive: true });
-
-        window.addEventListener('touchmove', (e) => {
-            const touchEndY = e.touches[0].clientY;
-            const isScrollingUp = touchEndY > touchStartY;
-            const atBoundary = window.scrollY <= minScrollPosition;
-
-            if (atBoundary && isScrollingUp) {
-                e.preventDefault();
-            }
-        }, { passive: false });
-
-        console.log('Scroll lock enabled at position:', minScrollPosition);
     }
 
     /**

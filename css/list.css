@@ -38,56 +38,29 @@
     --selected-color: #AC6628; /* Brown color when checkpoint is selected */
 }
 
-/* Add massive buffer space above all content to allow perfect checkpoint positioning */
-/* Applies to mychecklist.php - allows side panel to scroll any checkpoint to 90px from top */
-body.checklist-page {
-    padding-top: 20000px;
-}
+/* Scroll buffer management removed - now using pseudo-elements */
 
-/* Main content for checklist page only - has side panel */
+/* Main content for checklist page */
 body.checklist-page main {
     grid-area: main;
     max-width: 90%;
     margin-left: 100px;
-    padding-top: 90px; /* Position first section below sticky header */
-    padding-bottom: 20000px; /* Match buffer space - ensures all checkpoints can scroll to 90px position */
+    padding-top: 90px; /* Below sticky header */
 }
 
-/* List report page - buffer to maintain scrollbar when checkpoints hidden */
-body.report-page.list-report-page {
-    padding-top: 5000px; /* Buffer for scrollbar + sticky filters */
+/* Main content for report pages */
+body.report-page main {
+    grid-area: main;
+    max-width: 90%;
+    margin-left: 100px; /* Reserve space for side panel */
 }
 
-/* Main content for list report page - has side panel and needs buffer */
-body.report-page.list-report-page main {
-    padding-bottom: 5000px; /* Match top buffer - ensures scrollbar stays visible */
-}
-
-/* Systemwide report page - buffer to maintain scrollbar for longer reports */
-body.report-page.systemwide-report-page {
-    padding-top: 5000px; /* Buffer for scrollbar + sticky filters */
-}
-
-/* Main content for systemwide report page - needs buffer */
-body.report-page.systemwide-report-page main {
-    padding-bottom: 5000px; /* Match top buffer - ensures scrollbar stays visible */
-}
-
-/* Main content for non-checklist pages (legacy fallback) */
+/* Main content for non-checklist, non-report pages (legacy fallback) */
 body:not(.report-page):not(.checklist-page) main {
     grid-area: main;
     max-width: 90%;
     margin-left: 100px;
     padding-top: 90px;
-    padding-bottom: 100vh;
-}
-
-/* Main content for report pages - WITH side panel (list-report.php) */
-body.report-page main {
-    grid-area: main;
-    max-width: 90%;
-    margin-left: 100px; /* Reserve space for side panel - matches checklist-page */
-    padding-bottom: 2rem;
 }
 
 /* ====================================================================
