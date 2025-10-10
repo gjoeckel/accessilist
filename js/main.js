@@ -106,8 +106,9 @@ async function initializeApp() {
         }
 
         // Initialize side panel with checkpoint data
+        let sidePanel = null;
         if (window.SidePanel) {
-            const sidePanel = new window.SidePanel();
+            sidePanel = new window.SidePanel();
             sidePanel.init(data);
         } else {
             console.error('SidePanel class not available - side panel will not render');
@@ -115,6 +116,11 @@ async function initializeApp() {
 
         // Build content with the fetched data
         await buildContent(data);
+
+        // Apply selected styling to all checkpoints AFTER content is built
+        if (sidePanel) {
+            sidePanel.applyAllCheckpointsActive();
+        }
 
         // Setup Report table event delegation for status buttons and textareas
         setupReportTableEventDelegation();

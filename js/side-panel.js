@@ -58,10 +58,19 @@ class SidePanel {
         // Setup toggle button
         this.setupToggle();
 
-        // Show all checkpoints initially (All button is active)
-        this.showAllCheckpoints();
+        // Note: showAllCheckpoints() will be called after content is built
+        // This allows sections to exist before we apply .active class
+        // Call applyAllCheckpointsActive() from main.js after buildContent()
 
         console.log(`✅ Side panel ready with All button + ${checkpoints.length} checkpoints`);
+    }
+
+    /**
+     * Apply selected styling to all checkpoints (called after content is built)
+     */
+    applyAllCheckpointsActive() {
+        this.showAllCheckpoints();
+        console.log('Applied selected styling to all checkpoints on page load');
     }
 
     /**
