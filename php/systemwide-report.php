@@ -15,22 +15,20 @@ renderHTMLHead('Systemwide Report');
 
 <!-- Sticky Header -->
 <header class="sticky-header">
-    <h1>Systemwide Report</h1>
-    <button id="homeButton" class="home-button" aria-label="Go to home page">
-        <span class="button-text">Home</span>
-    </button>
-    <div class="header-buttons-group">
-        <button id="refreshButton" class="header-button" aria-label="Refresh reports data">
-            <span class="button-text">Refresh</span>
+    <div class="header-top-row">
+        <h1>Systemwide Report</h1>
+        <button id="homeButton" class="home-button" aria-label="Go to home page">
+            <span class="button-text">Home</span>
         </button>
+        <div class="header-buttons-group">
+            <button id="refreshButton" class="header-button" aria-label="Refresh reports data">
+                <span class="button-text">Refresh</span>
+            </button>
+        </div>
     </div>
-</header>
 
-<!-- Main Content -->
-<main role="main">
-    <section id="reports" class="report-section">
-        <!-- Filter Buttons -->
-        <div class="filter-group" role="group" aria-label="Filter reports by status">
+    <!-- Filter Buttons (in header so always visible) -->
+    <div class="filter-group" role="group" aria-label="Filter reports by status">
             <button
                 id="filter-completed"
                 class="filter-button"
@@ -67,8 +65,12 @@ renderHTMLHead('Systemwide Report');
                 <span class="filter-label">All</span>
                 <span class="filter-count" id="count-all">0</span>
             </button>
-        </div>
+    </div>
+</header>
 
+<!-- Main Content -->
+<main role="main">
+    <section id="reports" class="report-section">
         <!-- Last Update Timestamp -->
         <h2 id="reports-caption" tabindex="-1">Last update: <span id="last-update-time">Loading...</span></h2>
 

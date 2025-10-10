@@ -275,18 +275,36 @@ td.reports-progress-cell,
     color: #333333 !important;
 }
 
+/* Report pages: Sticky header contains filter buttons - expand height and reset layout */
+.report-page .sticky-header {
+    height: auto; /* Override fixed 70px height from header.css */
+    display: flex;
+    flex-direction: column;
+    gap: 0; /* No gap - padding on children handles spacing */
+    padding: 1rem; /* Consistent padding around header content */
+    align-items: flex-start; /* Align to start instead of center */
+    background-color: #F5F5F0; /* Match body background - no fill color */
+}
+
+/* Header top row - h1 and buttons */
+.header-top-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%; /* Full width to match original header */
+    margin-bottom: 15px; /* Space before filter buttons */
+}
+
+/* Filter group now inside sticky header - no separate positioning needed */
 .filter-group {
     display: flex;
     gap: 0.75rem;
-    margin-bottom: 15px; /* Part of 30px gap to h2 */
     flex-wrap: wrap;
-    position: sticky;
-    top: 75px; /* Below sticky header (60px) + 15px spacing */
-    z-index: 99; /* Above content, below header (z-index: 1000) */
-    background-color: #F5F5F0; /* Match body background */
-    padding-top: 15px; /* Space from header */
-    padding-bottom: 15px; /* Complete the 30px gap to h2 */
-    margin-top: -15px; /* Offset padding-top to maintain layout */
+    /* No sticky positioning - inherits from parent header */
+    /* No background - transparent, uses header background */
+    background: none;
+    padding: 0;
+    margin: 0;
 }
 
 .filter-button {

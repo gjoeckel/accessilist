@@ -49,22 +49,20 @@ renderHTMLHead('List Report');
 
 <!-- Sticky Header -->
 <header class="sticky-header">
-    <h1>List Report</h1>
-    <button id="backButton" class="back-button" aria-label="Back to checklist">
-        <span class="button-text">Back</span>
-    </button>
-    <div class="header-buttons-group">
-        <button id="refreshButton" class="header-button" aria-label="Refresh report data">
-            <span class="button-text">Refresh</span>
+    <div class="header-top-row">
+        <h1>List Report</h1>
+        <button id="backButton" class="back-button" aria-label="Back to checklist">
+            <span class="button-text">Back</span>
         </button>
+        <div class="header-buttons-group">
+            <button id="refreshButton" class="header-button" aria-label="Refresh report data">
+                <span class="button-text">Refresh</span>
+            </button>
+        </div>
     </div>
-</header>
 
-<!-- Main Content -->
-<main role="main">
-    <section id="report" class="report-section">
-        <!-- Filter Buttons -->
-        <div class="filter-group" role="group" aria-label="Filter tasks by status">
+    <!-- Filter Buttons (in header so always visible) -->
+    <div class="filter-group" role="group" aria-label="Filter tasks by status">
             <button
                 id="filter-completed"
                 class="filter-button"
@@ -101,8 +99,12 @@ renderHTMLHead('List Report');
                 <span class="filter-label">All</span>
                 <span class="filter-count" id="count-all">0</span>
             </button>
-        </div>
+    </div>
+</header>
 
+<!-- Main Content -->
+<main role="main">
+    <section id="report" class="report-section">
         <!-- Last Update Timestamp -->
         <h2 id="report-caption" tabindex="-1"><span id="report-type-name">Checklist</span> last updated: <span id="last-update-time">Loading...</span></h2>
 
