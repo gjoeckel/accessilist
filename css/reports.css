@@ -52,7 +52,7 @@
 .report-section {
     --theme-color: #666666;
     --header-fill-color: #F7E7D9;
-    padding-top: 10px; /* Creates 30px gap after 70px header */
+    padding-top: 170px; /* Space for fixed header + filters container (110px padding-top + ~30px buttons + 30px padding-bottom) */
     padding-bottom: 30px;
     color: var(--theme-color);
     position: relative;
