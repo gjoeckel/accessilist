@@ -321,22 +321,15 @@ body.checklist-page .checklist-caption {
     border: 2px solid #333333 !important;
     border-radius: 50%;
     background-color: transparent !important;
+    background-image: url('/images/add-plus.svg');
+    background-size: 12px 12px; /* SVG plus symbol size */
+    background-position: center;
+    background-repeat: no-repeat;
     color: #333333;
-    font-size: 1.2rem;
-    font-weight: bold;
-    line-height: 1;
+    font-size: 0; /* Hide any text content */
     cursor: pointer;
     position: relative;
     transition: border-color 0.2s, background-color 0.2s, color 0.2s;
-}
-
-/* CSS-generated plus icon */
-.principles-button::before {
-    content: '+';
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform: translateY(-2px);
 }
 
 /* Brown selected color when checkpoint is active */

@@ -95,31 +95,20 @@ th.checkpoint-cell {
    SIDE PANEL "ALL" BUTTON (Three Lines Symbol)
    ==================================================================== */
 
-/* Three lines button - hide text, use CSS-generated lines instead */
+/* Three lines button - use SVG for pixel-perfect rendering at all zoom levels */
 .checkpoint-all {
     font-size: 0 !important; /* Hide the ≡ text character */
     position: relative;
+    background-image: url('/images/three-lines.svg');
+    background-size: 18px 16px;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-/* CSS-generated three lines (thicker, longer, more space) */
-.checkpoint-all::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 18px; /* Longer lines */
-    height: 16px; /* Total height: 3 lines (3px each) + 2 gaps (3.5px each) = 9px + 7px = 16px */
-    background-image:
-        linear-gradient(currentColor, currentColor),
-        linear-gradient(currentColor, currentColor),
-        linear-gradient(currentColor, currentColor);
-    background-size: 100% 3px; /* Thicker lines (3px) */
-    background-position:
-        center top,
-        center center,
-        center bottom;
-    background-repeat: no-repeat;
+/* Ensure SVG inherits color (for selected state) */
+.checkpoint-all.active {
+    /* SVG uses currentColor, so it will automatically turn white when button has brown background */
+    color: white;
 }
 
 /* Date column */
