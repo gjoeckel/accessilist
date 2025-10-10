@@ -109,7 +109,7 @@ th.checkpoint-cell {
     left: 50%;
     transform: translate(-50%, -50%);
     width: 18px; /* Longer lines */
-    height: 12px; /* Total height for 3 lines + spacing */
+    height: 17px; /* Total height: 3 lines (3px each) + 2 gaps (4px each) = 9px + 8px = 17px */
     background-image:
         linear-gradient(currentColor, currentColor),
         linear-gradient(currentColor, currentColor),
