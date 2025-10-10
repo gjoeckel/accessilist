@@ -472,8 +472,17 @@ export class UserReportManager {
                 });
             });
 
-            // TODO: Add manual tasks from principleRows
-            // Will implement in Phase 2 when we have manual row examples
+            // Add manual tasks from saved principleRows state
+            const manualRows = savedState.principleRows?.[principle.id] || [];
+            manualRows.forEach(manualRow => {
+                section.tasks.push({
+                    id: manualRow.id,
+                    task: manualRow.task || '',
+                    notes: manualRow.notes || '',
+                    status: manualRow.status || 'pending',
+                    isManual: true
+                });
+            });
 
             grouped.push(section);
         });
