@@ -95,20 +95,35 @@ th.checkpoint-cell {
    SIDE PANEL "ALL" BUTTON (Three Lines Symbol)
    ==================================================================== */
 
-/* Three lines button - use SVG for pixel-perfect rendering at all zoom levels */
+/* Three lines button - use ::before with SVG mask for proper layering */
 .checkpoint-all {
     font-size: 0 !important; /* Hide the ≡ text character */
     position: relative;
-    background-image: url('/images/three-lines.svg');
-    background-size: 18px 15px; /* Updated to match new SVG viewBox */
-    background-position: center;
-    background-repeat: no-repeat;
-    color: #333333; /* Default icon color */
 }
 
-/* Selected state - white icon on brown background */
-.checkpoint-all.active {
-    color: white !important; /* SVG currentColor becomes white */
+/* Three lines icon as pseudo-element with mask */
+.checkpoint-all::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 15px;
+    -webkit-mask-image: url('/images/three-lines.svg');
+    mask-image: url('/images/three-lines.svg');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    background-color: #333333; /* Icon color - will be masked by SVG shape */
+}
+
+/* White icon when button has brown background (active state) */
+.checkpoint-all.active::before {
+    background-color: white !important; /* Mask reveals white color */
 }
 
 /* Date column */
