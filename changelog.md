@@ -8,6 +8,78 @@
 
 ## Entries
 
+### 2025-10-10 11:11:50 UTC - List Report Side Panel Navigation with Checkpoint Filtering
+
+**Summary:**
+- Added side panel navigation to list-report.php for checkpoint filtering
+- Implemented "show all" button with three-line symbol (≡) as default active state
+- Clicking checkpoint number shows only that checkpoint's tasks with brown-filled icons
+- All checkpoint icons in table turn brown when their checkpoint is selected
+- Reuses existing side panel CSS from mychecklist.php for consistency
+
+**Side Panel Features:**
+- ✅ **"All" Button (≡)**: Default active state, brown fill with white symbol, shows all checkpoints
+- ✅ **Numbered Buttons (1-4)**: Dynamic generation based on JSON checkpoint count
+- ✅ **Click Behavior**: 
+  - Number click: Brown fill on side panel button + brown fill on ALL matching checkpoint icons in table + hide other rows
+  - All (≡) click: Brown fill on all button + show all rows + reset checkpoint icons to #333 outline
+- ✅ **Toggle Button**: Collapse/expand side panel (same as mychecklist.php)
+
+**Icon Styling:**
+- **Default State**: 30×30px circle, 2px solid #333 outline, transparent background, #333 text
+- **Selected State**: Brown background (var(--selected-color)), white text
+- **Three Lines Button**: Larger font-size (1.3rem) for better visibility of ≡ symbol
+
+**Implementation Details:**
+- **Side Panel HTML**: Added to list-report.php with `<ul id="checkpoint-nav">`
+- **JavaScript**: Added `generateSidePanel()`, `handleCheckpointClick()`, `applyCheckpointFilter()` methods
+- **Filtering**: Combined checkpoint AND status filters (both must match to show row)
+- **Icon Highlighting**: Checkpoint icons in table get `.selected` class when checkpoint is active
+- **Row Data**: Added `checkpointNum` to `allRows` array for efficient filtering
+
+**CSS Changes:**
+```css
+/* Selected checkpoint icon in table */
+.checkpoint-icon.selected {
+    background-color: var(--selected-color);
+    border-color: var(--selected-color);
+    color: white;
+}
+
+/* Three lines "all" button */
+.checkpoint-all {
+    font-size: 1.3rem !important;
+}
+```
+
+**Files Modified:**
+- `php/list-report.php` - Added side panel HTML structure
+- `js/list-report.js` - Added checkpoint navigation and filtering logic
+- `css/list-report.css` - Added selected state styling and three-lines button sizing
+
+**User Experience:**
+1. Page loads with "All" (≡) button active (brown fill), all tasks visible
+2. Click checkpoint number → Only that checkpoint's tasks show, all its icons turn brown
+3. Click "All" (≡) → All tasks visible again, all icons return to #333 outline
+4. Filters combine: Can select checkpoint 2 + status "Done" to see only completed checkpoint 2 tasks
+5. Empty state messages work with checkpoint filtering
+
+**Testing:**
+- ✅ All 61 Docker tests passing (100% success rate)
+- ✅ Side panel CSS reused from list.css (no duplication)
+- ✅ Dynamic checkpoint count (works with 3 or 4 checkpoints)
+- ✅ No visual regressions
+
+**Impact:**
+- **Better UX**: View one checkpoint at a time without scrolling
+- **Consistency**: Same navigation pattern as mychecklist.php
+- **Performance**: Reuses existing CSS, minimal new code
+- **Flexibility**: Combines with status filters for powerful viewing options
+
+**Status:** 🟢 Side panel checkpoint navigation complete, production-ready
+
+---
+
 ### 2025-10-10 11:06:32 UTC - Report Pages Filter Empty State Messages
 
 **Summary:**

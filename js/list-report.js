@@ -18,6 +18,8 @@ export class UserReportManager {
         this.currentFilter = 'all'; // Default filter
         this.filterButtons = null;
         this.allRows = []; // Store all rows for filtering
+        this.currentCheckpoint = 'all'; // Default checkpoint view (show all)
+        this.checkpointButtons = null;
     }
 
     /**
@@ -44,16 +46,96 @@ export class UserReportManager {
             // 2. Load principles structure
             await this.loadPrinciplesStructure();
 
-            // 3. Update title
+            // 3. Generate side panel checkpoint buttons
+            this.generateSidePanel();
+
+            // 4. Update title
             await this.updateTitle();
 
-            // 4. Render table
+            // 5. Render table
             this.renderTable();
 
         } catch (error) {
             console.error('Error initializing report:', error);
             this.showError('Failed to load report data');
         }
+    }
+
+    /**
+     * Generate side panel checkpoint navigation buttons
+     */
+    generateSidePanel() {
+        const navList = document.getElementById('checkpoint-nav');
+        if (!navList) return;
+
+        // Count checkpoints from principles data
+        const checkpointCount = this.principlesData?.principles?.length || 0;
+
+        // Create "All" button (three lines symbol) - default active
+        const allLi = document.createElement('li');
+        const allBtn = document.createElement('a');
+        allBtn.href = 'javascript:void(0)';
+        allBtn.className = 'checkpoint-btn active checkpoint-all';
+        allBtn.textContent = '≡';
+        allBtn.setAttribute('data-checkpoint', 'all');
+        allBtn.setAttribute('aria-label', 'Show all checkpoints');
+        allBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            this.handleCheckpointClick('all');
+        });
+        allLi.appendChild(allBtn);
+        navList.appendChild(allLi);
+
+        // Create numbered checkpoint buttons
+        for (let i = 1; i <= checkpointCount; i++) {
+            const li = document.createElement('li');
+            const btn = document.createElement('a');
+            btn.href = 'javascript:void(0)';
+            btn.className = 'checkpoint-btn';
+            btn.textContent = i;
+            btn.setAttribute('data-checkpoint', i);
+            btn.setAttribute('aria-label', `Show checkpoint ${i}`);
+            btn.addEventListener('click', (e) => {
+                e.preventDefault();
+                this.handleCheckpointClick(i);
+            });
+            li.appendChild(btn);
+            navList.appendChild(li);
+        }
+
+        // Cache checkpoint buttons
+        this.checkpointButtons = navList.querySelectorAll('.checkpoint-btn');
+
+        // Set up toggle button
+        const toggleBtn = document.querySelector('.toggle-strip');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                const sidePanel = document.querySelector('.side-panel');
+                const expanded = sidePanel.getAttribute('aria-expanded') === 'true';
+                sidePanel.setAttribute('aria-expanded', !expanded);
+            });
+        }
+    }
+
+    /**
+     * Handle checkpoint button click in side panel
+     */
+    handleCheckpointClick(checkpoint) {
+        console.log('Checkpoint clicked:', checkpoint);
+
+        // Update active state on side panel buttons
+        this.checkpointButtons.forEach(btn => {
+            const btnCheckpoint = btn.getAttribute('data-checkpoint');
+            if (btnCheckpoint === String(checkpoint) || (checkpoint === 'all' && btnCheckpoint === 'all')) {
+                btn.classList.add('active');
+            } else {
+                btn.classList.remove('active');
+            }
+        });
+
+        // Update current checkpoint and apply filter
+        this.currentCheckpoint = checkpoint;
+        this.applyCheckpointFilter();
     }
 
     /**
@@ -224,10 +306,15 @@ export class UserReportManager {
                 const taskRow = this.createTaskRow(task, section.id);
                 tbody.appendChild(taskRow);
 
-                // Store row with its status for filtering
+                // Extract checkpoint number from principle ID
+                const checkpointMatch = principle.id.match(/(?:checkpoint|checklist)-(\d+)/);
+                const checkpointNum = checkpointMatch ? checkpointMatch[1] : '0';
+
+                // Store row with its status and checkpoint for filtering
                 this.allRows.push({
                     row: taskRow,
-                    status: task.status
+                    status: task.status,
+                    checkpointNum: checkpointNum
                 });
             });
         });
@@ -272,29 +359,49 @@ export class UserReportManager {
     }
 
     /**
-     * Apply current filter to table rows
+     * Apply checkpoint filter (show only selected checkpoint or all)
      */
-    applyFilter() {
+    applyCheckpointFilter() {
         if (this.allRows.length === 0) return;
 
         let visibleCount = 0;
 
         this.allRows.forEach(item => {
+            const itemCheckpoint = item.checkpointNum; // Checkpoint number from row data
             const status = item.status === 'in_progress' ? 'in-progress' : item.status;
 
-            // Show all rows if filter is 'all', otherwise filter by status
-            if (this.currentFilter === 'all' || this.currentFilter === status) {
+            // Check if row matches both checkpoint AND status filters
+            const matchesCheckpoint = this.currentCheckpoint === 'all' || String(itemCheckpoint) === String(this.currentCheckpoint);
+            const matchesStatus = this.currentFilter === 'all' || this.currentFilter === status;
+
+            if (matchesCheckpoint && matchesStatus) {
                 item.row.classList.remove('row-hidden');
                 visibleCount++;
+
+                // Style checkpoint icon in table: brown fill if this checkpoint is selected
+                const checkpointIcon = item.row.querySelector('.checkpoint-icon');
+                if (checkpointIcon && this.currentCheckpoint !== 'all' && String(itemCheckpoint) === String(this.currentCheckpoint)) {
+                    checkpointIcon.classList.add('selected');
+                } else if (checkpointIcon) {
+                    checkpointIcon.classList.remove('selected');
+                }
             } else {
                 item.row.classList.add('row-hidden');
             }
         });
 
-        console.log(`Filter applied: ${this.currentFilter}, visible rows: ${visibleCount}`);
+        console.log(`Checkpoint filter applied: checkpoint=${this.currentCheckpoint}, status=${this.currentFilter}, visible rows: ${visibleCount}`);
 
         // Show empty state message if no visible rows
         this.updateEmptyState(visibleCount);
+    }
+
+    /**
+     * Apply current filter to table rows (updated to also consider checkpoint)
+     */
+    applyFilter() {
+        // Use unified checkpoint filter which considers both status and checkpoint
+        this.applyCheckpointFilter();
     }
 
     /**
