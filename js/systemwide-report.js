@@ -45,8 +45,24 @@ export class ReportsManager {
         // Set up scroll lock to prevent scrolling above h2 default position
         this.setupScrollLock();
 
+        // Initialize scroll position on page load
+        this.initializeScrollPosition();
+
         // Load initial data
         this.loadChecklists();
+    }
+
+    /**
+     * Set initial scroll position to show h2 in default position
+     * Ensures filters and content are visible on page load
+     */
+    initializeScrollPosition() {
+        const targetScroll = 5000; // Match body padding-top
+        window.scrollTo({
+            top: targetScroll,
+            behavior: 'auto' // Instant, no animation
+        });
+        console.log('Initialized scroll position to:', targetScroll);
     }
 
     /**
