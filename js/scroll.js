@@ -29,16 +29,16 @@ class ScrollManager {
      */
     static initReportScroll() {
         // Fixed header/filters container height: ~180px (70px header + 110px filters area)
+        // User wants h2 70px higher than flush with container bottom
         // With 5000px ::before buffer:
-        // Scroll to position where h2 appears right below the fixed container
-        // Target: 5000px (buffer) - 180px (container height) = 4820px
-        const targetScroll = 5000 - 180;
+        // Target: 5000px (buffer) - 180px (container height) + 70px (adjustment) = 4890px
+        const targetScroll = 5000 - 180 + 70;
 
         window.scrollTo({
             top: targetScroll,
             behavior: 'auto'
         });
-        console.log('Report scroll initialized - h2 below fixed container');
+        console.log('Report scroll initialized - h2 positioned 70px higher');
     }
 
     /**

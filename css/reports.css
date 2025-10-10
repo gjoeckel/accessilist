@@ -52,7 +52,7 @@
 .report-section {
     --theme-color: #666666;
     --header-fill-color: #F7E7D9;
-    padding-top: 170px; /* Space for fixed header + filters container (110px padding-top + ~30px buttons + 30px padding-bottom) */
+    padding-top: 90px; /* Space for h2 positioning */
     padding-bottom: 30px;
     color: var(--theme-color);
     position: relative;
