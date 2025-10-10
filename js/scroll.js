@@ -1,68 +1,25 @@
 /**
  * scroll.js
  *
- * Centralized scroll management for all pages
- * Handles initial positioning and scroll boundaries
+ * Scroll buffer documentation and utilities
+ * Note: Actual scroll initialization is done inline in each PHP page
+ * to prevent visual stutter (runs before page renders)
+ *
+ * Scroll Position Calculations:
+ * 
+ * mychecklist.php:
+ *   - Buffer: 20000px (main::before)
+ *   - Target: Checkpoint 1 h2 at 90px from viewport top
+ *   - Scroll to: 20000 - 90 = 19910px
+ *
+ * Report pages (list-report.php, systemwide-report.php):
+ *   - Buffer: 5000px (main::before)
+ *   - Target: h2 below fixed header/filters (~180px tall)
+ *   - Adjustment: +70px for spacing
+ *   - Scroll to: 5000 - 180 + 70 = 4890px
  */
 
-class ScrollManager {
-    /**
-     * Initialize scroll position for mychecklist page
-     * Scrolls to checkpoint 1 default position (90px from viewport top)
-     */
-    static initChecklistScroll() {
-        // Checkpoint 1 h2 should appear 90px from top (below 70px header + 20px spacing)
-        // With 20000px ::before buffer + 90px padding-top on main:
-        // Scroll to: 20000px (buffer) - 90px (target position) = 19910px
-        const targetScroll = 20000 - 90;
-
-        window.scrollTo({
-            top: targetScroll,
-            behavior: 'auto'
-        });
-        console.log('Checklist scroll initialized - checkpoint 1 at 90px from top');
-    }
-
-    /**
-     * Initialize scroll position for report pages
-     * H2 should appear below fixed header + filters container
-     */
-    static initReportScroll() {
-        // Fixed header/filters container height: ~180px (70px header + 110px filters area)
-        // User wants h2 70px higher than flush with container bottom
-        // With 5000px ::before buffer:
-        // Target: 5000px (buffer) - 180px (container height) + 70px (adjustment) = 4890px
-        const targetScroll = 5000 - 180 + 70;
-
-        window.scrollTo({
-            top: targetScroll,
-            behavior: 'auto'
-        });
-        console.log('Report scroll initialized - h2 positioned 70px higher');
-    }
-
-    /**
-     * Prevent scroll restoration by browser
-     */
-    static disableScrollRestoration() {
-        if ('scrollRestoration' in history) {
-            history.scrollRestoration = 'manual';
-        }
-    }
-}
-
-// Make available globally
-window.ScrollManager = ScrollManager;
-
-// Auto-initialize on page load
-document.addEventListener('DOMContentLoaded', () => {
-    ScrollManager.disableScrollRestoration();
-
-    // Initialize based on page type
-    if (document.body.classList.contains('checklist-page')) {
-        ScrollManager.initChecklistScroll();
-    } else if (document.body.classList.contains('report-page')) {
-        ScrollManager.initReportScroll();
-    }
-});
-
+// Placeholder for future scroll utilities if needed
+window.ScrollManager = {
+    // Reserved for future scroll utilities
+};

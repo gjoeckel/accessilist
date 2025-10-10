@@ -13,6 +13,17 @@ renderHTMLHead('Systemwide Report');
 <!-- Skip Link -->
 <a href="#reports-caption" class="skip-link">Skip to reports table</a>
 
+<!-- Immediate Scroll Initialization - Prevents visual stutter -->
+<script>
+  // Disable scroll restoration
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  // Scroll immediately to h2 position (before page renders)
+  // 5000px buffer - 180px container + 70px adjustment = 4890px
+  window.scrollTo(0, 4890);
+</script>
+
 <!-- Sticky Header + Filters Container -->
 <div class="sticky-header-container">
     <header class="sticky-header">

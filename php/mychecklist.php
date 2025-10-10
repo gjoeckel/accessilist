@@ -18,6 +18,17 @@ renderHTMLHead('Accessibility Checklist', true);
 <!-- Skip Link -->
 <a href="#first-principle" class="skip-link">Skip to checklist</a>
 
+<!-- Immediate Scroll Initialization - Prevents visual stutter -->
+<script>
+  // Disable scroll restoration
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  // Scroll immediately to checkpoint 1 position (before page renders)
+  // 20000px buffer - 90px target position = 19910px
+  window.scrollTo(0, 19910);
+</script>
+
 <!-- Sticky Header -->
 <header class="sticky-header">
     <h1>Accessibility Checklist</h1>
