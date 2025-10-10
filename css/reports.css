@@ -68,8 +68,8 @@
     color: var(--theme-color);
     font-size: 1.3rem;
     text-align: center;
-    margin-top: 15px; /* Part of 30px gap from filters */
-    margin-bottom: 10px; /* Part of 30px gap to table */
+    margin-top: 0; /* Gap from filters handled by filter-group margin-bottom */
+    margin-bottom: 30px; /* 30px gap to table */
     z-index: 1;
     background-color: transparent;
     padding: 0;
@@ -275,23 +275,46 @@ td.reports-progress-cell,
     color: #333333 !important;
 }
 
-/* Sticky container for header + filters */
+/* Sticky container for header + filters - REPORT PAGES ONLY */
 .sticky-header-container {
     position: sticky;
     top: 0;
-    z-index: 100; /* Below side panel (z-index: 200) */
+    z-index: 2000; /* Highest - above side panel (1999) */
     background-color: transparent; /* No background - children have their own */
+}
+
+/* Header inside sticky container - override default fixed positioning for report pages only */
+.sticky-header-container .sticky-header {
+    position: relative; /* Override fixed positioning when inside container */
+    top: auto;
+    left: auto;
+    right: auto;
+    /* z-index inherited from container */
 }
 
 .filter-group {
     display: flex;
     gap: 0.75rem;
-    margin-bottom: 0; /* No bottom margin - part of sticky container */
+    margin-bottom: 30px; /* 30px gap to h2 */
+    margin-left: 81px; /* Start where side panel + toggle button ends (60px + 21px) */
     flex-wrap: wrap;
     justify-content: center; /* Center the filter buttons */
-    background-color: #F5F5F0; /* Match body background */
-    padding-top: 15px; /* Space from header */
-    padding-bottom: 15px; /* Space below filters */
+    padding-top: 40px; /* 40px space from header (was 30px, increased by 10px) */
+    padding-bottom: 0; /* No bottom padding - margin-bottom handles gap */
+    position: relative;
+}
+
+/* White background for filter area - starts at 81px to avoid covering side panel + toggle button */
+.filter-group::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -81px; /* Extend back to container edge */
+    right: 0;
+    bottom: -30px; /* Extend to include 30px margin-bottom gap */
+    background-color: white;
+    z-index: -1; /* Behind the filter buttons */
+    margin-left: 81px; /* Push background to start after side panel + toggle (60px + 21px) */
 }
 
 .filter-button {

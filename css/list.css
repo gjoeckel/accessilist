@@ -87,7 +87,6 @@ body.report-page main {
     grid-area: main;
     max-width: 90%;
     margin-left: 100px; /* Reserve space for side panel - matches checklist-page */
-    padding-top: 90px;
     padding-bottom: 2rem;
 }
 
@@ -227,7 +226,7 @@ body.checklist-page .checklist-caption {
     background-color: white;
     display: flex;
     flex-direction: column;
-    z-index: 200; /* Above sticky-header-container (z-index: 100) */
+    z-index: 1999; /* Below header (2000), above filters (500) */
     transform: translateX(-60px); /* Hidden by default */
     transition: transform 0.3s ease;
 }

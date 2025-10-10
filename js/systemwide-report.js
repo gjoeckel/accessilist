@@ -53,11 +53,25 @@ export class ReportsManager {
     }
 
     /**
+     * Calculate the correct scroll position for h2
+     * H2 should be 30px below the sticky header container
+     */
+    calculateH2Position() {
+        const stickyContainer = document.querySelector('.sticky-header-container');
+        if (!stickyContainer) {
+            return 5000; // Fallback
+        }
+        const containerHeight = stickyContainer.offsetHeight;
+        // Body padding-top (5000px) - containerHeight - 30px gap = scroll position where h2 appears 30px below container
+        return 5000;
+    }
+
+    /**
      * Set initial scroll position to show h2 in default position
      * Ensures filters and content are visible on page load
      */
     initializeScrollPosition() {
-        const targetScroll = 5000; // Match body padding-top
+        const targetScroll = this.calculateH2Position();
         window.scrollTo({
             top: targetScroll,
             behavior: 'auto' // Instant, no animation
@@ -67,13 +81,14 @@ export class ReportsManager {
 
     /**
      * Set up scroll lock to prevent scrolling above h2 default position
-     * H2 should stay at default position (below sticky header + sticky filters)
+     * H2 should stay 30px below sticky header + filters
      */
     setupScrollLock() {
-        const minScrollPosition = 5000; // Match body padding-top
+        const getMinScrollPosition = () => this.calculateH2Position();
 
         // Prevent mouse wheel scrolling up when at boundary
         window.addEventListener('wheel', (e) => {
+            const minScrollPosition = getMinScrollPosition();
             const isScrollingUp = e.deltaY < 0;
             const atBoundary = window.scrollY <= minScrollPosition;
 
@@ -90,6 +105,7 @@ export class ReportsManager {
         }, { passive: true });
 
         window.addEventListener('touchmove', (e) => {
+            const minScrollPosition = getMinScrollPosition();
             const touchEndY = e.touches[0].clientY;
             const isScrollingUp = touchEndY > touchStartY;
             const atBoundary = window.scrollY <= minScrollPosition;
@@ -101,6 +117,7 @@ export class ReportsManager {
 
         // Fallback: snap back if somehow user gets above boundary
         window.addEventListener('scroll', () => {
+            const minScrollPosition = getMinScrollPosition();
             if (window.scrollY < minScrollPosition) {
                 window.scrollTo({
                     top: minScrollPosition,
@@ -109,7 +126,7 @@ export class ReportsManager {
             }
         }, { passive: true });
 
-        console.log('Scroll lock enabled - minimum position:', minScrollPosition);
+        console.log('Scroll lock enabled');
     }
 
     /**
