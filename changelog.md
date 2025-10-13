@@ -48,12 +48,12 @@
 handleFilterClick(button) {
     // Update filter button visual state
     button.classList.add('active');
-    
+
     // Reset side panel to "All" when filter changes
     if (this.currentCheckpoint !== 'all') {
         this.handleCheckpointClick('all');
     }
-    
+
     // Apply new filter
     this.currentFilter = filter;
     this.applyFilter();
