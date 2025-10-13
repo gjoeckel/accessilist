@@ -21,6 +21,7 @@
     "deploy:full": "npm run predeploy && npm run deploy && npm run postdeploy",
     "deploy:check": "./scripts/deployment/pre-deploy-check.sh",
     "deploy:verify": "./scripts/deployment/post-deploy-verify.sh",
+    "deploy:verify-env": "./scripts/deployment/verify-production-env.sh",
     "deploy:status": "./scripts/github-push-gate.sh status",
     "generate:user-stories": "node scripts/generate-user-stories.js",
     "docker:up": "docker compose up -d",
