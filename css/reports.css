@@ -283,6 +283,7 @@ td.reports-progress-cell,
     right: 0;
     z-index: 2000; /* Above everything */
     background-color: transparent;
+    pointer-events: none; /* Allow clicks to pass through to side panel below */
 }
 
 /* Header maintains its styling (from header.css) */
@@ -293,6 +294,7 @@ td.reports-progress-cell,
     margin-bottom: 0; /* No margin - h2 starts right at bottom edge */
     margin-left: 81px; /* Start where side panel + toggle button ends (60px + 21px) */
     flex-wrap: wrap;
+    pointer-events: auto; /* Re-enable clicks for filter buttons */
     justify-content: center; /* Center the filter buttons */
     padding-top: 110px; /* 70px header height + 40px spacing = 110px total */
     padding-bottom: 30px; /* 30px spacing below buttons before h2 */
@@ -325,6 +327,7 @@ td.reports-progress-cell,
     font-size: 0.95rem;
     font-weight: 600;
     transition: all 0.2s ease;
+    pointer-events: auto; /* Ensure clicks work (parent has pointer-events: none) */
 }
 
 .filter-count {
