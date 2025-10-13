@@ -67,7 +67,7 @@ test_ssh_connection() {
 check_env_exists() {
     echo ""
     echo -e "${CYAN}Checking if production .env file exists...${NC}"
-    
+
     if ssh "$PROD_USER@$PROD_HOST" "test -f $PROD_ENV_PATH" 2>/dev/null; then
         echo -e "${GREEN}✅ Production .env file exists${NC}"
         echo "   Location: $PROD_ENV_PATH"
@@ -92,7 +92,7 @@ show_current_env() {
 create_production_env() {
     echo ""
     echo -e "${CYAN}Creating production .env file...${NC}"
-    
+
     # Create directory if needed
     echo "  Step 1: Ensuring directory exists..."
     if ssh "$PROD_USER@$PROD_HOST" "mkdir -p $PROD_ENV_DIR" 2>/dev/null; then
@@ -101,12 +101,12 @@ create_production_env() {
         echo -e "  ${RED}❌ Failed to create directory${NC}"
         return 1
     fi
-    
+
     # Create temporary file locally
     echo "  Step 2: Creating .env file..."
     local temp_file="/tmp/production-env-$$.tmp"
     echo "$PROD_ENV_CONTENT" > "$temp_file"
-    
+
     # Upload to server
     echo "  Step 3: Uploading to server..."
     if scp -q "$temp_file" "$PROD_USER@$PROD_HOST:$PROD_ENV_PATH" 2>/dev/null; then
@@ -117,7 +117,7 @@ create_production_env() {
         rm "$temp_file"
         return 1
     fi
-    
+
     # Set permissions
     echo "  Step 4: Setting file permissions..."
     if ssh "$PROD_USER@$PROD_HOST" "chmod 644 $PROD_ENV_PATH" 2>/dev/null; then
@@ -125,7 +125,7 @@ create_production_env() {
     else
         echo -e "  ${YELLOW}⚠️  Could not set permissions (may require sudo)${NC}"
     fi
-    
+
     echo ""
     echo -e "${GREEN}✅ Production .env file created successfully!${NC}"
     return 0
@@ -135,9 +135,9 @@ create_production_env() {
 verify_env_content() {
     echo ""
     echo -e "${CYAN}Verifying .env content...${NC}"
-    
+
     local errors=0
-    
+
     # Check APP_ENV=production
     if ssh "$PROD_USER@$PROD_HOST" "grep -q '^APP_ENV=production' $PROD_ENV_PATH" 2>/dev/null; then
         echo -e "  ${GREEN}✅ APP_ENV=production${NC}"
@@ -145,7 +145,7 @@ verify_env_content() {
         echo -e "  ${RED}❌ APP_ENV not set to production${NC}"
         errors=$((errors + 1))
     fi
-    
+
     # Check BASE_PATH_PRODUCTION
     if ssh "$PROD_USER@$PROD_HOST" "grep -q '^BASE_PATH_PRODUCTION=/training/online/accessilist' $PROD_ENV_PATH" 2>/dev/null; then
         echo -e "  ${GREEN}✅ BASE_PATH_PRODUCTION=/training/online/accessilist${NC}"
@@ -153,21 +153,21 @@ verify_env_content() {
         echo -e "  ${RED}❌ BASE_PATH_PRODUCTION not correct${NC}"
         errors=$((errors + 1))
     fi
-    
+
     # Check API_EXT_PRODUCTION (empty)
     if ssh "$PROD_USER@$PROD_HOST" "grep -q '^API_EXT_PRODUCTION=$' $PROD_ENV_PATH" 2>/dev/null; then
         echo -e "  ${GREEN}✅ API_EXT_PRODUCTION= (empty - correct)${NC}"
     else
         echo -e "  ${YELLOW}⚠️  API_EXT_PRODUCTION may not be correct${NC}"
     fi
-    
+
     # Check DEBUG_PRODUCTION
     if ssh "$PROD_USER@$PROD_HOST" "grep -q '^DEBUG_PRODUCTION=false' $PROD_ENV_PATH" 2>/dev/null; then
         echo -e "  ${GREEN}✅ DEBUG_PRODUCTION=false${NC}"
     else
         echo -e "  ${YELLOW}⚠️  DEBUG_PRODUCTION not set to false${NC}"
     fi
-    
+
     if [ $errors -eq 0 ]; then
         echo ""
         echo -e "${GREEN}✅ All critical settings verified!${NC}"
@@ -183,13 +183,13 @@ verify_env_content() {
 test_app_config() {
     echo ""
     echo -e "${CYAN}Testing if application can read .env...${NC}"
-    
+
     # Check if config.php can find the .env
     local test_url="https://webaim.org/training/online/accessilist/php/api/health.php"
-    
+
     echo "  Testing health endpoint: $test_url"
     local http_code=$(curl -s -o /dev/null -w "%{http_code}" "$test_url" 2>/dev/null || echo "000")
-    
+
     if [ "$http_code" = "200" ]; then
         echo -e "  ${GREEN}✅ Application responding (HTTP 200)${NC}"
         echo "  ${GREEN}✅ .env file is being read correctly${NC}"
@@ -214,22 +214,22 @@ main() {
     echo "  4. Verify .env content"
     echo "  5. Test application configuration"
     echo ""
-    
+
     # Test SSH connection
     if ! test_ssh_connection; then
         echo ""
         echo -e "${RED}Cannot proceed without SSH connection${NC}"
         exit 1
     fi
-    
+
     # Check if .env exists
     if check_env_exists; then
         show_current_env
-        
+
         echo ""
         read -p "Do you want to update the existing .env file? (y/N): " -n 1 -r
         echo ""
-        
+
         if [[ $REPLY =~ ^[Yy]$ ]]; then
             if create_production_env; then
                 show_current_env
@@ -243,7 +243,7 @@ main() {
         echo -e "${YELLOW}Production .env file needs to be created${NC}"
         read -p "Create production .env file now? (Y/n): " -n 1 -r
         echo ""
-        
+
         if [[ ! $REPLY =~ ^[Nn]$ ]]; then
             if create_production_env; then
                 show_current_env
@@ -257,17 +257,17 @@ main() {
             exit 0
         fi
     fi
-    
+
     # Verify content
     if ! verify_env_content; then
         echo ""
         echo -e "${YELLOW}Some settings may need manual correction${NC}"
         echo "SSH to server and edit: $PROD_ENV_PATH"
     fi
-    
+
     # Test application
     test_app_config
-    
+
     # Final summary
     echo ""
     echo -e "${GREEN}╔════════════════════════════════════════════════════════╗${NC}"
