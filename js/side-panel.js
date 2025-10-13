@@ -68,14 +68,14 @@ class SidePanel {
      */
     applyAllCheckpointsActive() {
         console.log('🎯 [BEFORE applyAllCheckpointsActive] Current scroll position:', window.scrollY, 'px');
+
         this.showAllCheckpoints();
 
         // Set initial scroll position NOW that content exists
-        // Buffer: 20000px (main::before pseudo-element is now rendered)
-        // Target: Checkpoint 1 at 90px from viewport top (below sticky header)
-        // Scroll to: 20000 - 90 = 19910px
-        window.scrollTo(0, 19910);
-        console.log('🎯 [AFTER scroll set] Current scroll position:', window.scrollY, 'px (target: 19910px)');
+        // Buffer is 90px, content naturally at 90px from viewport top
+        // Scroll to: 0px (top of page, can't scroll higher)
+        window.scrollTo(0, 0);
+        console.log('🎯 [AFTER scroll set] Current scroll position:', window.scrollY, 'px (target: 0px)');
 
         console.log('Applied selected styling to all checkpoints on page load');
     }
@@ -134,14 +134,15 @@ class SidePanel {
         // Show all checkpoint sections and apply selected styling
         this.showAllCheckpoints();
 
-        // Scroll to checkpoint 1 position (90px from viewport top)
-        // Buffer: 20000px, Target: 90px offset = 20000 - 90 = 19910px
+        // Scroll to top of page
+        // Buffer is 90px, content starts at viewport 90px
+        // Scroll to: 0px (top, can't scroll higher - natural browser limit)
         window.scrollTo({
-            top: 19910,
+            top: 0,
             behavior: 'auto' // Instant scroll - no animation
         });
 
-        console.log('🎯 [AFTER showAll] Scrolled to:', window.scrollY, 'px (target: 19910px)');
+        console.log('🎯 [AFTER showAll] Scrolled to:', window.scrollY, 'px (target: 0px)');
         console.log('All checkpoints visible with selected styling');
     }
 
@@ -169,8 +170,6 @@ class SidePanel {
             return;
         }
 
-        console.log(`🎯 [goToCheckpoint] Section offsetTop:`, section.offsetTop, 'px');
-
         // Update active button
         this.ul.querySelectorAll('.checkpoint-btn').forEach(btn => {
             btn.classList.remove('active');
@@ -185,9 +184,11 @@ class SidePanel {
         section.classList.add('active'); // Apply selected styling
         section.style.display = 'block'; // Show only selected
 
+        console.log(`🎯 [goToCheckpoint] Section offsetTop:`, section.offsetTop, 'px');
+
         // Scroll to position section 90px from top of viewport
-        // offsetTop = distance from document top
-        // Subtract 90 to account for header and match checkpoint 1's initial position
+        // Buffer is always 90px, so offsetTop is relative to that
+        // Subtract 90 to account for header
         const targetScroll = section.offsetTop - 90;
 
         console.log(`🎯 [goToCheckpoint] Target scroll:`, targetScroll, 'px (offsetTop', section.offsetTop, '- 90)');

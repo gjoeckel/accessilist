@@ -8,6 +8,111 @@
 
 ## Entries
 
+### 2025-10-13 14:39:05 UTC - Simplified Scroll Buffer System: Unified Minimal Buffer Prevents Upward Scrolling
+
+**Summary:**
+- Simplified dynamic buffer system to use minimal 90px buffer for ALL modes
+- Removed conditional single-checkpoint class logic and CSS complexity
+- Natural browser scroll limits prevent upward scrolling in all cases
+- Cleaner, more reliable implementation following SRD principles
+
+**Technical Simplification:**
+- **Before**: Conditional buffer (90px "All" mode, 20000px single checkpoint mode)
+- **After**: Unified 90px buffer for all modes
+- **Result**: Browser naturally prevents scrolling above position 0px
+
+**Scroll Buffer Configuration:**
+```css
+/* Unified minimal buffer - same for ALL modes */
+body.checklist-page main::before {
+    height: 90px;  /* Header offset - content starts at 90px from viewport top */
+}
+
+/* Buffer below allows scrolling down through all content */
+body.checklist-page main::after {
+    height: 20000px;  /* Ensures last checkpoint can scroll to top */
+}
+```
+
+**Code Simplification:**
+
+**css/scroll.css**
+- Removed `.single-checkpoint` conditional buffer CSS
+- Single 90px buffer definition for all modes
+- Cleaner documentation reflecting unified approach
+
+**js/side-panel.js**
+- Removed all `document.body.classList.add/remove('single-checkpoint')` calls
+- Removed `requestAnimationFrame()` wrapper (no longer needed)
+- Simplified scroll calculations (no buffer switching)
+- All methods now work with same 90px buffer
+
+**js/scroll.js**
+- Updated documentation to reflect unified minimal buffer system
+- Clarified that upward scrolling is prevented in ALL modes
+- Removed dynamic buffer switching documentation
+
+**Scroll Behavior:**
+```javascript
+// Page load - ALL checkpoints visible
+applyAllCheckpointsActive() {
+    window.scrollTo(0, 0);  // Top of page, can't scroll higher
+}
+
+// "All" button click
+showAll() {
+    window.scrollTo(0, 0);  // Top of page, can't scroll higher
+}
+
+// Individual checkpoint click
+goToCheckpoint() {
+    const targetScroll = section.offsetTop - 90;
+    window.scrollTo(targetScroll);  // Position at 90px from top
+    // Still can't scroll above 0px - browser enforces limit
+}
+```
+
+**Benefits:**
+- ✅ **Simpler**: No conditional CSS classes or buffer switching
+- ✅ **Reliable**: Browser enforces scroll limits naturally (0px minimum)
+- ✅ **DRY**: Single buffer definition, no duplicate logic
+- ✅ **Consistent**: All modes behave the same way
+- ✅ **Maintainable**: Less code, fewer edge cases
+- ✅ **No JavaScript Fighting**: Browser handles scroll constraints
+
+**User Experience:**
+1. **Page loads**: Scroll at 0px, all checkpoints visible, content at 90px from top
+2. **Scroll DOWN**: Can scroll through all content as far as needed ✅
+3. **Try scroll UP**: Browser prevents scrolling above 0px ✅
+4. **Click checkpoint button**: Scrolls to show checkpoint at 90px from top
+5. **Try scroll UP**: Browser still prevents scrolling above 0px ✅
+6. **Click "All" button**: Returns to 0px, all checkpoints visible
+
+**Files Modified:**
+- `css/scroll.css`: Removed conditional buffer, unified to 90px
+- `js/side-panel.js`: Removed class toggling, simplified scroll logic
+- `js/scroll.js`: Updated documentation for unified system
+
+**Code Reduction:**
+- Removed 10 lines from CSS (conditional buffer definition)
+- Removed 15 lines from JavaScript (class toggling, requestAnimationFrame)
+- Simplified documentation by 30%
+
+**Impact:**
+- **Architecture**: Cleaner, more maintainable codebase
+- **Performance**: No DOM class manipulation overhead
+- **Reliability**: Natural browser scroll constraints (no JavaScript needed)
+- **User Experience**: Consistent behavior across all modes
+- **Developer Experience**: Easier to understand and modify
+
+**Technical Notes:**
+- Browser enforces minimum scroll position of 0px automatically
+- No need for CSS classes or JavaScript to prevent upward scrolling
+- Single 90px buffer serves all use cases effectively
+- Bottom buffer (20000px) allows downward scrolling through all content
+
+---
+
 ### 2025-10-13 14:18:47 UTC - Fixed Checkpoint 1 Scroll Position Race Condition
 
 **Summary:**

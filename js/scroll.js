@@ -5,10 +5,21 @@
  *
  * Scroll Position Calculations:
  *
- * mychecklist.php:
- *   - Buffer: 20000px (main::before)
- *   - Target: Checkpoint 1 at 90px from viewport top
- *   - Scroll to: 20000 - 90 = 19910px (set in side-panel.js after content is built)
+ * mychecklist.php (Minimal Buffer System):
+ *   - Buffer: 90px (main::before - header offset, prevents scrolling above content)
+ *   - Bottom buffer: 20000px (main::after - allows scrolling down through all content)
+ *
+ *   - "All" mode (all checkpoints visible):
+ *     • Scroll to: 0px (top of page)
+ *     • Content: All checkpoints start at 90px from viewport top
+ *     • Can scroll DOWN through all content
+ *     • CANNOT scroll UP above 0px (natural browser limit)
+ *
+ *   - Single checkpoint mode (one checkpoint visible):
+ *     • Scroll to: section.offsetTop - 90px
+ *     • Content: Selected checkpoint at 90px from viewport top
+ *     • Can scroll DOWN if checkpoint content extends below viewport
+ *     • CANNOT scroll UP above 0px (natural browser limit)
  *
  * Report pages (list-report.php, systemwide-report.php):
  *   - Buffer: 5000px (main::before)
