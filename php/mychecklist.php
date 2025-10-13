@@ -133,10 +133,25 @@ renderHTMLHead('Accessibility Checklist', true);
         });
       }
 
-      // Report button handler - open list report in same tab
+      // Report button handler - auto-save before opening list report
       const reportButton = document.getElementById('reportButton');
       if (reportButton) {
-        reportButton.addEventListener('click', function() {
+        reportButton.addEventListener('click', async function(event) {
+          event.preventDefault(); // Prevent immediate navigation
+
+          // Auto-save if there are unsaved changes
+          if (window.unifiedStateManager?.isDirty) {
+            console.log('Auto-saving before showing report...');
+            try {
+              await window.unifiedStateManager.saveState('manual');
+              console.log('✓ Auto-save complete, navigating to report');
+            } catch (error) {
+              console.error('Auto-save failed:', error);
+              // Continue anyway - user can save later
+            }
+          }
+
+          // Navigate to report
           const sessionKey = window.sessionKeyFromPHP || window.unifiedStateManager?.sessionKey;
           if (sessionKey) {
             const reportUrl = window.basePath
