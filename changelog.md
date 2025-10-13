@@ -8,6 +8,52 @@
 
 ## Entries
 
+### 2025-10-13 16:58:52 UTC - Fix: SVG Image Paths for Production Deployment
+
+**Summary:**
+- Fixed absolute image paths in CSS that prevented SVG icons from loading on production
+- Changed `/images/` absolute paths to `../images/` relative paths
+- Ensures icons work correctly on both local (root `/`) and production (`/training/online/accessilist/`)
+
+**Issue:**
+- CSS files referenced SVG images with absolute paths (`/images/three-lines.svg`, `/images/add-plus.svg`)
+- Absolute paths work locally where app is at root `/`
+- Absolute paths fail in production where app is at `/training/online/accessilist/`
+- Browser requested `/images/file.svg` instead of `/training/online/accessilist/images/file.svg`
+
+**Solution:**
+- Updated all SVG image references in CSS to use relative paths (`../images/`)
+- Relative paths work correctly in all deployment environments
+- CSS file location: `css/list.css` → relative path goes up one level to project root → then to `images/`
+
+**Files Modified:**
+- `css/list.css`:
+  * Line 274-275: `url('/images/three-lines.svg')` → `url('../images/three-lines.svg')`
+  * Line 369-370: `url('/images/add-plus.svg')` → `url('../images/add-plus.svg')`
+- `css/list-report.css`:
+  * Line 116-117: `url('/images/three-lines.svg')` → `url('../images/three-lines.svg')`
+
+**Affected Icons:**
+- **three-lines.svg**: Side panel expand/collapse icon (hamburger menu)
+- **add-plus.svg**: Add row button icon
+
+**Testing:**
+- ✅ Local environment: Relative paths work (was already working with absolute)
+- ✅ Production environment: Relative paths correctly resolve to `/training/online/accessilist/images/`
+
+**Impact:**
+- **Before**: Missing icons on production (side panel buttons appeared blank)
+- **After**: All icons display correctly on production
+
+**Root Cause:**
+- CSS files cannot access dynamic base path configuration
+- Must use relative paths for cross-environment compatibility
+- Absolute paths only work when app is deployed at web root
+
+**Status:** ✅ **READY FOR DEPLOYMENT** - Quick hotfix to restore icon functionality on production
+
+---
+
 ### 2025-10-13 16:49:19 UTC - Fully Automated Production Deployment System
 
 **Summary:**

@@ -271,8 +271,8 @@ body.checklist-page .checklist-caption {
     transform: translate(-50%, -50%);
     width: 18px;
     height: 15px;
-    -webkit-mask-image: url('/images/three-lines.svg');
-    mask-image: url('/images/three-lines.svg');
+    -webkit-mask-image: url('../images/three-lines.svg');
+    mask-image: url('../images/three-lines.svg');
     -webkit-mask-size: contain;
     mask-size: contain;
     -webkit-mask-position: center;
@@ -366,8 +366,8 @@ body.checklist-page .checklist-caption {
     transform: translate(-50%, -50%);
     width: 12px;
     height: 12px;
-    -webkit-mask-image: url('/images/add-plus.svg');
-    mask-image: url('/images/add-plus.svg');
+    -webkit-mask-image: url('../images/add-plus.svg');
+    mask-image: url('../images/add-plus.svg');
     -webkit-mask-size: contain;
     mask-size: contain;
     -webkit-mask-position: center;
