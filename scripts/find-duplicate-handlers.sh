@@ -33,14 +33,20 @@ SELECTORS=(
 
 for SELECTOR in "${SELECTORS[@]}"; do
     # Count in StateEvents.js (global delegation)
-    GLOBAL_COUNT=$(grep -c "$SELECTOR" "$PROJECT_DIR/js/StateEvents.js" 2>/dev/null || echo "0")
+    if grep -q "$SELECTOR" "$PROJECT_DIR/js/StateEvents.js" 2>/dev/null; then
+        GLOBAL_COUNT=$(grep -c "$SELECTOR" "$PROJECT_DIR/js/StateEvents.js" 2>/dev/null)
+    else
+        GLOBAL_COUNT=0
+    fi
 
     # Count in other files (direct listeners)
     DIRECT_COUNT=0
     for FILE in "$PROJECT_DIR/js"/*.js; do
         if [ "$FILE" != "$PROJECT_DIR/js/StateEvents.js" ]; then
-            MATCHES=$(grep -c "$SELECTOR.*addEventListener" "$FILE" 2>/dev/null || echo "0")
-            DIRECT_COUNT=$((DIRECT_COUNT + MATCHES))
+            if grep -q "$SELECTOR.*addEventListener" "$FILE" 2>/dev/null; then
+                MATCHES=$(grep -c "$SELECTOR.*addEventListener" "$FILE" 2>/dev/null)
+                DIRECT_COUNT=$((DIRECT_COUNT + MATCHES))
+            fi
         fi
     done
 
@@ -80,8 +86,8 @@ echo -e "${CYAN}Files with event listeners:${NC}"
 echo ""
 
 for FILE in "$PROJECT_DIR/js"/*.js; do
-    COUNT=$(grep -c "addEventListener" "$FILE" 2>/dev/null || echo "0")
-    if [ "$COUNT" -gt 0 ]; then
+    if grep -q "addEventListener" "$FILE" 2>/dev/null; then
+        COUNT=$(grep -c "addEventListener" "$FILE" 2>/dev/null)
         FILENAME=$(basename "$FILE")
         printf "  %-30s %2d handlers\n" "$FILENAME" "$COUNT"
     fi
