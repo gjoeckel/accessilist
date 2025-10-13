@@ -8,6 +8,57 @@
 
 ## Entries
 
+### 2025-10-13 17:52:11 UTC - A11y: Update Skip Link to Target Checkpoint 1 Heading
+
+**Summary:**
+- Skip link now specifically targets checkpoint 1 h2 element (`#checkpoint-1-caption`)
+- Previously searched for first h2 generically
+- More reliable and semantically correct skip link implementation
+
+**Issue:**
+- Skip link href was `#first-principle` (non-existent ID)
+- JavaScript searched for first h2 in `.principles-container` (indirect)
+- Not guaranteed to target checkpoint 1 if DOM structure changed
+
+**Solution:**
+- Updated href to `#checkpoint-1-caption` (actual ID of checkpoint 1 h2)
+- Updated JavaScript to use `getElementById('checkpoint-1-caption')`
+- Direct targeting of the intended skip link destination
+
+**Implementation:**
+```html
+<!-- Skip Link -->
+<a href="#checkpoint-1-caption" class="skip-link">Skip to checklist</a>
+
+<script>
+  const target = document.getElementById('checkpoint-1-caption');
+  if (target) {
+    target.focus();
+  }
+</script>
+```
+
+**Files Modified:**
+- `php/mychecklist.php`:
+  * Line 19: Updated href from `#first-principle` to `#checkpoint-1-caption`
+  * Lines 84-86: Updated JavaScript to directly target checkpoint 1 h2 by ID
+  * More reliable and semantically correct
+
+**Benefits:**
+- ✅ Direct targeting of checkpoint 1 h2 (not dependent on DOM structure)
+- ✅ Semantically correct (href matches actual element ID)
+- ✅ More maintainable (clear intent)
+- ✅ WCAG 2.4.1 Bypass Blocks compliance maintained
+
+**Accessibility Impact:**
+- ✅ Keyboard users can skip navigation and go directly to first checkpoint
+- ✅ Screen reader users get clear skip link destination
+- ✅ Focus management works correctly
+
+**Status:** ✅ **IMPLEMENTED** - Ready for testing on ui-updates branch
+
+---
+
 ### 2025-10-13 17:26:53 UTC - UX: Reset Side Panel to "All" When Filter Changes
 
 **Summary:**

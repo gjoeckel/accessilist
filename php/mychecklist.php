@@ -16,7 +16,7 @@ renderHTMLHead('Accessibility Checklist', true);
 <?php require __DIR__ . '/includes/noscript.php'; ?>
 
 <!-- Skip Link -->
-<a href="#first-principle" class="skip-link">Skip to checklist</a>
+<a href="#checkpoint-1-caption" class="skip-link">Skip to checklist</a>
 
 <!-- Immediate Scroll Initialization - Prevents visual stutter -->
 <script>
@@ -80,10 +80,10 @@ renderHTMLHead('Accessibility Checklist', true);
     if (skipLink) {
       skipLink.addEventListener('click', function(e) {
         e.preventDefault();
-        // Find first h2 in principles container
-        const firstH2 = document.querySelector('.principles-container h2');
-        if (firstH2) {
-          firstH2.focus();
+        // Target checkpoint 1 h2 specifically
+        const target = document.getElementById('checkpoint-1-caption');
+        if (target) {
+          target.focus();
         }
       });
     }
