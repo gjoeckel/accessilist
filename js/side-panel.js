@@ -134,6 +134,11 @@ class SidePanel {
         // Show all checkpoint sections and apply selected styling
         this.showAllCheckpoints();
 
+        // Schedule buffer update (DOM will settle in 500ms)
+        if (typeof window.scheduleBufferUpdate === 'function') {
+            window.scheduleBufferUpdate();
+        }
+
         // Scroll to top of page
         // Buffer is 90px, content starts at viewport 90px
         // Scroll to: 0px (top, can't scroll higher - natural browser limit)
@@ -183,6 +188,11 @@ class SidePanel {
         });
         section.classList.add('active'); // Apply selected styling
         section.style.display = 'block'; // Show only selected
+
+        // Schedule buffer update (DOM will settle in 500ms)
+        if (typeof window.scheduleBufferUpdate === 'function') {
+            window.scheduleBufferUpdate();
+        }
 
         console.log(`🎯 [goToCheckpoint] Section offsetTop:`, section.offsetTop, 'px');
 

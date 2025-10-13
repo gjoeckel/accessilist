@@ -16,11 +16,12 @@ body.checklist-page main::before {
     height: 90px;  /* Header offset - content starts at 90px from viewport top */
 }
 
-/* Buffer below content - allows scrolling down through all checkpoints */
+/* Buffer below content - dynamically calculated to prevent unnecessary scrolling */
 body.checklist-page main::after {
     content: '';
     display: block;
-    height: 20000px;  /* Ensures last checkpoint can scroll to top */
+    height: var(--bottom-buffer, 20000px);  /* Fallback to 20000px until calculated */
+    transition: height 0.3s ease;  /* Smooth transition when buffer updates */
 }
 
 /* ====================================================================

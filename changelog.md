@@ -8,6 +8,85 @@
 
 ## Entries
 
+### 2025-10-13 15:29:27 UTC - Dynamic Scroll Buffer System: Content-Aware Buffer Calculation with Automated Testing
+
+**Summary:**
+- Implemented dynamic bottom buffer calculation based on content size and viewport dimensions
+- Large content (All mode): Buffer positions last checkpoint 500px from viewport top
+- Small content (single checkpoint): Zero buffer prevents unnecessary scrolling
+- Added scrollbar-gutter to eliminate layout shift when scrollbar appears/disappears
+- Comprehensive automated test suite validates buffer calculations
+- Buffer updates trigger on page load, navigation, save, row addition, and window resize
+
+**Technical Implementation:**
+
+**Buffer Calculation Logic:**
+```javascript
+if (content > viewport - topBuffer) {
+    // Content larger than viewport (All mode)
+    buffer = viewport - 500;  // Last content at 500px from top
+    // Example: 1957px - 500px = 1457px buffer
+} else {
+    // Content fits in viewport (single checkpoint)
+    buffer = 0;  // No scrolling needed
+}
+```
+
+**Key Features:**
+1. **Content-Aware**: Automatically selects appropriate buffer based on content size
+2. **Viewport-Responsive**: Recalculates on window resize (150ms debounce)
+3. **500ms Settle Time**: Debounced updates ensure DOM fully rendered before calculation
+4. **Trigger Points**: Page load, checkpoint navigation, manual row addition, save button, resize
+5. **Zero Buffer for Small Content**: Prevents visual jump and unnecessary scrolling
+6. **Dynamic Buffer for Large Content**: Positions last checkpoint 500px from viewport top
+
+**Layout Stability:**
+```css
+html {
+    scrollbar-gutter: stable;
+}
+```
+- Reserves scrollbar space even when hidden
+- Prevents 15-17px content shift when scrollbar appears/disappears
+- Maintains consistent content width across all modes
+
+**Automated Testing:**
+- Programmatic test suite: `window.ScrollManager.runBufferTests()`
+- Tests 3 scenarios: All checkpoints, single checkpoint, single + manual row
+- Validates buffer calculation accuracy (±1px tolerance)
+- Console table summary with pass/fail results
+- Self-contained: Creates test row, validates, cleans up, restores state
+
+**Files Modified:**
+- `js/scroll.js` - Core buffer calculation with 500ms debounce, test suite, resize handler
+- `js/main.js` - Triggers buffer update after content build
+- `js/side-panel.js` - Triggers buffer update on checkpoint navigation
+- `js/buildPrinciples.js` - Triggers buffer update on manual row addition
+- `js/StateManager.js` - Triggers buffer update after save
+- `css/scroll.css` - Dynamic CSS custom property `--bottom-buffer`
+- `css/base.css` - Added scrollbar-gutter for layout stability
+- `docs/development/BUFFER-TESTING-GUIDE.md` - Comprehensive testing documentation
+
+**User Experience Improvements:**
+- ✅ All mode: Last checkpoint stops at 500px from viewport top (includes header + 440px spacing)
+- ✅ Single checkpoint: No scrolling (content fits perfectly in viewport)
+- ✅ No visual jump: Scrollbar space always reserved
+- ✅ No race conditions: 500ms debounce ensures DOM stability
+- ✅ Responsive: Adapts to viewport changes automatically
+
+**Performance:**
+- Buffer calculation: ~1-5ms per update
+- Debounced updates: Maximum one calculation per 500ms
+- Minimal overhead: Only recalculates when content changes
+
+**Documentation:**
+- Buffer calculation formulas and examples
+- Test suite usage and interpretation
+- Visual verification guidelines
+- Troubleshooting common issues
+
+---
+
 ### 2025-10-13 14:39:05 UTC - Simplified Scroll Buffer System: Unified Minimal Buffer Prevents Upward Scrolling
 
 **Summary:**

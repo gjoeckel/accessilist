@@ -118,6 +118,11 @@ async function initializeApp() {
         await buildContent(data);
         console.log('🎯 [AFTER buildContent] Current scroll position:', window.scrollY, 'px');
 
+        // Schedule bottom buffer calculation (500ms delay for DOM to settle)
+        if (typeof window.scheduleBufferUpdate === 'function') {
+            window.scheduleBufferUpdate();
+        }
+
         // Apply selected styling to all checkpoints AFTER content is built
         if (sidePanel) {
             sidePanel.applyAllCheckpointsActive();
