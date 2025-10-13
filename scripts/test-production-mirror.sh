@@ -536,9 +536,107 @@ test_endpoint_content "List report filter: Active" "$BASE_URL/list-report?sessio
 rm -f "$PROJECT_DIR/saves/$TEST_REPORT_KEY.json"
 echo "  Cleaned up test session: $TEST_REPORT_KEY.json"
 
-# Test 42-46: Dynamic Checkpoint System
-print_section "Test 42-46: Dynamic Checkpoint Validation"
-log "=== Test 42-46: Dynamic Checkpoint System ==="
+# Test 42: Scroll Buffer Configuration
+print_section "Test 42: Scroll Buffer Configuration"
+log "=== Test 42: Scroll Buffer Configuration ==="
+
+# Test mychecklist.php scroll buffer
+increment_test_counter
+echo -n "  Testing mychecklist scroll buffer..."
+CHECKLIST_HTML=$(curl -s "$BASE_URL/php/mychecklist.php?type=word&session=TEST1" 2>&1)
+
+if echo "$CHECKLIST_HTML" | grep -q "history.scrollRestoration = 'manual'" && \
+   echo "$CHECKLIST_HTML" | grep -q "scroll.js"; then
+    echo -e " ${GREEN}✅ PASS${NC} (Scroll restoration disabled, scroll.js loaded)"
+    log "PASS: MyChecklist scroll buffer configuration"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+else
+    echo -e " ${RED}❌ FAIL${NC} (Scroll configuration missing)"
+    log "FAIL: MyChecklist scroll buffer configuration"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
+# Test list-report.php scroll buffer (120px top, 130px initial scroll)
+# Create test session for list-report
+echo "{\"sessionKey\":\"LST\",\"timestamp\":$(date +%s)000,\"typeSlug\":\"word\",\"state\":{\"sidePanel\":{\"expanded\":true},\"notes\":{},\"statusButtons\":{},\"restartButtons\":{},\"principleRows\":{}},\"metadata\":{\"version\":\"1.0\"}}" > "$PROJECT_DIR/saves/LST.json"
+
+increment_test_counter
+echo -n "  Testing list-report scroll buffer..."
+REPORT_HTML=$(curl -s "$BASE_URL/list-report?session=LST" 2>&1)
+
+if echo "$REPORT_HTML" | grep -q "window.scrollTo(0, 130)" && \
+   echo "$REPORT_HTML" | grep -q "scheduleReportBufferUpdate"; then
+    echo -e " ${GREEN}✅ PASS${NC} (120px buffer, 130px scroll, dynamic buffer function)"
+    log "PASS: List-report scroll buffer configuration"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+else
+    echo -e " ${RED}❌ FAIL${NC} (Scroll configuration incorrect)"
+    log "FAIL: List-report scroll buffer configuration"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
+# Cleanup
+rm -f "$PROJECT_DIR/saves/LST.json"
+
+# Test systemwide-report.php scroll buffer
+increment_test_counter
+echo -n "  Testing systemwide-report scroll buffer..."
+SYSTEMWIDE_HTML=$(curl -s "$BASE_URL/reports" 2>&1)
+
+if echo "$SYSTEMWIDE_HTML" | grep -q "window.scrollTo(0, 130)" && \
+   echo "$SYSTEMWIDE_HTML" | grep -q "scheduleReportBufferUpdate"; then
+    echo -e " ${GREEN}✅ PASS${NC} (120px buffer, 130px scroll)"
+    log "PASS: Systemwide-report scroll buffer configuration"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+else
+    echo -e " ${RED}❌ FAIL${NC} (Scroll configuration incorrect)"
+    log "FAIL: Systemwide-report scroll buffer configuration"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
+# Test 43: Side Panel All Button
+print_section "Test 43: Side Panel All Button Configuration"
+log "=== Test 43: Side Panel All Button ==="
+
+# Test All button on list-report.php
+increment_test_counter
+echo -n "  Testing All button clickability (CSS)..."
+LIST_REPORT_CSS=$(curl -s "$BASE_URL/css/list-report.css" 2>&1)
+
+if echo "$LIST_REPORT_CSS" | grep -q "min-width: 30px" && \
+   echo "$LIST_REPORT_CSS" | grep -q "pointer-events: none" && \
+   echo "$LIST_REPORT_CSS" | grep -q ".checkpoint-all"; then
+    echo -e " ${GREEN}✅ PASS${NC} (Min dimensions set, pointer-events configured)"
+    log "PASS: All button CSS configuration"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+else
+    echo -e " ${RED}❌ FAIL${NC} (CSS configuration missing)"
+    log "FAIL: All button CSS configuration"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
+# Test pointer-events pass-through
+increment_test_counter
+echo -n "  Testing pointer-events pass-through..."
+REPORTS_CSS=$(curl -s "$BASE_URL/css/reports.css" 2>&1)
+
+# Check for pointer-events: none on container and auto on children
+CONTAINER_CHECK=$(echo "$REPORTS_CSS" | grep -c "pointer-events: none")
+CHILDREN_CHECK=$(echo "$REPORTS_CSS" | grep -c "pointer-events: auto")
+
+if [ "$CONTAINER_CHECK" -gt 0 ] && [ "$CHILDREN_CHECK" -gt 0 ]; then
+    echo -e " ${GREEN}✅ PASS${NC} (Container: none (${CONTAINER_CHECK}x), Children: auto (${CHILDREN_CHECK}x))"
+    log "PASS: Pointer-events pass-through"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+else
+    echo -e " ${RED}❌ FAIL${NC} (Pointer-events not configured: none=${CONTAINER_CHECK}, auto=${CHILDREN_CHECK})"
+    log "FAIL: Pointer-events pass-through"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
+# Test 44-48: Dynamic Checkpoint System
+print_section "Test 44-48: Dynamic Checkpoint Validation"
+log "=== Test 44-48: Dynamic Checkpoint System ==="
 
 # Helper function for checkpoint count validation
 test_json_checkpoints() {

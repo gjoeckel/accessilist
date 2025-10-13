@@ -31,30 +31,53 @@ if (!file_exists($sessionFile)) {
 renderHTMLHead('List Report');
 ?>
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/list-report.css?v=<?php echo time(); ?>">
-<body class="report-page">
+<body class="report-page list-report-page">
 <?php require __DIR__ . '/includes/noscript.php'; ?>
 
 <!-- Skip Link -->
 <a href="#report-caption" class="skip-link">Skip to report table</a>
 
-<!-- Sticky Header -->
-<header class="sticky-header">
-    <h1>List Report</h1>
-    <button id="backButton" class="back-button" aria-label="Back to checklist">
-        <span class="button-text">Back</span>
-    </button>
-    <div class="header-buttons-group">
-        <button id="refreshButton" class="header-button" aria-label="Refresh report data">
-            <span class="button-text">Refresh</span>
-        </button>
-    </div>
-</header>
+<!-- Immediate Scroll Initialization - Prevents visual stutter -->
+<script>
+  // Disable scroll restoration
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  // Scroll immediately to h2 position (before page renders)
+  // ::before pseudo-element is 120px tall
+  // Scrolling to 120 puts viewport at END of ::before (start of .report-section)
+  // .report-section has 90px padding-top, so h2 is at 120 + 90 = 210
+  // But we scroll slightly less to show h2 just below the filters: 130px
+  window.scrollTo(0, 130);
+  console.log('🎯 [INLINE SCRIPT] Initial scroll to 130, waiting for content to build...');
+</script>
 
-<!-- Main Content -->
-<main role="main">
-    <section id="report" class="report-section">
-        <!-- Filter Buttons -->
-        <div class="filter-group" role="group" aria-label="Filter tasks by status">
+<!-- Side Panel - Checkpoint Navigation -->
+<nav class="side-panel" aria-expanded="true">
+    <ul id="checkpoint-nav">
+        <!-- Checkpoint buttons generated dynamically by list-report.js -->
+    </ul>
+    <button class="toggle-strip" aria-label="Toggle side panel" aria-expanded="true" title="Toggle navigation panel">
+        <span class="toggle-arrow" aria-hidden="true">◀</span>
+    </button>
+</nav>
+
+<!-- Sticky Header + Filters Container -->
+<div class="sticky-header-container">
+    <header class="sticky-header">
+        <h1>List Report</h1>
+        <button id="backButton" class="back-button" aria-label="Back to checklist">
+            <span class="button-text">Back</span>
+        </button>
+        <div class="header-buttons-group">
+            <button id="refreshButton" class="header-button" aria-label="Refresh report data">
+                <span class="button-text">Refresh</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Filter Buttons -->
+    <div class="filter-group" role="group" aria-label="Filter tasks by status">
             <button
                 id="filter-completed"
                 class="filter-button"
@@ -92,7 +115,11 @@ renderHTMLHead('List Report');
                 <span class="filter-count" id="count-all">0</span>
             </button>
         </div>
+</div><!-- End sticky-header-container -->
 
+<!-- Main Content -->
+<main role="main">
+    <section id="report" class="report-section">
         <!-- Last Update Timestamp -->
         <h2 id="report-caption" tabindex="-1"><span id="report-type-name">Checklist</span> last updated: <span id="last-update-time">Loading...</span></h2>
 
@@ -119,13 +146,6 @@ renderHTMLHead('List Report');
 
 <!-- Scripts -->
 <script>
-  // Prevent browser from restoring scroll position
-  if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-  }
-  // Reset scroll position immediately
-  window.scrollTo(0, 0);
-
   // Handle skip link - focus without scrolling
   document.addEventListener('DOMContentLoaded', function() {
     const skipLink = document.querySelector('.skip-link');
@@ -200,6 +220,11 @@ function refreshData() {
     reportManager.initialize().then(() => {
         // Update timestamp after successful refresh
         updateTimestamp();
+
+        // Recalculate buffer after refresh
+        if (typeof window.scheduleReportBufferUpdate === 'function') {
+            window.scheduleReportBufferUpdate();
+        }
 
         // After refresh completes
         refreshButton.setAttribute('aria-busy', 'false');

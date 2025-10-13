@@ -52,7 +52,7 @@
 .report-section {
     --theme-color: #666666;
     --header-fill-color: #F7E7D9;
-    padding-top: 10px; /* Creates 30px gap after 70px header */
+    padding-top: 90px; /* Space for h2 positioning */
     padding-bottom: 30px;
     color: var(--theme-color);
     position: relative;
@@ -68,11 +68,11 @@
     color: var(--theme-color);
     font-size: 1.3rem;
     text-align: center;
-    margin-top: 15px; /* Part of 30px gap from filters */
-    margin-bottom: 10px; /* Part of 30px gap to table */
+    margin-top: 0; /* Starts right at bottom edge of filter-group */
+    margin-bottom: 30px; /* 30px gap to table */
+    padding-top: 0; /* No padding - flush with filter-group bottom */
     z-index: 1;
     background-color: transparent;
-    padding: 0;
 }
 
 /* ====================================================================
@@ -275,11 +275,43 @@ td.reports-progress-cell,
     color: #333333 !important;
 }
 
+/* Fixed container for header + filters - REPORT PAGES ONLY */
+.sticky-header-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 2000; /* Above everything */
+    background-color: transparent;
+    pointer-events: none; /* Allow clicks to pass through to side panel below */
+}
+
+/* Header maintains its styling (from header.css) */
+
 .filter-group {
     display: flex;
     gap: 0.75rem;
-    margin-bottom: 15px; /* Part of 30px gap to h2 */
+    margin-bottom: 0; /* No margin - h2 starts right at bottom edge */
+    margin-left: 81px; /* Start where side panel + toggle button ends (60px + 21px) */
     flex-wrap: wrap;
+    pointer-events: auto; /* Re-enable clicks for filter buttons */
+    justify-content: center; /* Center the filter buttons */
+    padding-top: 110px; /* 70px header height + 40px spacing = 110px total */
+    padding-bottom: 30px; /* 30px spacing below buttons before h2 */
+    position: relative;
+}
+
+/* White background for filter area - starts at 81px to avoid covering side panel + toggle button */
+.filter-group::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -81px; /* Extend back to container edge */
+    right: 0;
+    bottom: 0; /* Extend to bottom of filter-group (includes 30px padding-bottom) */
+    background-color: white;
+    z-index: -1; /* Behind the filter buttons */
+    margin-left: 81px; /* Push background to start after side panel + toggle (60px + 21px) */
 }
 
 .filter-button {
@@ -295,6 +327,7 @@ td.reports-progress-cell,
     font-size: 0.95rem;
     font-weight: 600;
     transition: all 0.2s ease;
+    pointer-events: auto; /* Ensure clicks work (parent has pointer-events: none) */
 }
 
 .filter-count {
@@ -316,6 +349,21 @@ td.reports-progress-cell,
     padding: 2rem;
     color: #6c757d;
     font-style: italic;
+}
+
+/* Empty state message in table (merged row) */
+.table-empty-message {
+    text-align: center;
+    padding: 2rem;
+    color: #666666;
+    font-size: 1rem;
+    font-style: normal;
+    vertical-align: middle;
+}
+
+/* Empty state row styling */
+.empty-state-row {
+    height: 75px; /* Match standard row height */
 }
 
 /* ====================================================================

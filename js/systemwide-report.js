@@ -209,7 +209,15 @@ export class ReportsManager {
             const row = document.createElement('tr');
             const cell = document.createElement('td');
             cell.colSpan = 6; // Updated to span all 6 columns (Type, Updated, Key, Status, Progress, Delete)
-            cell.textContent = `No ${this.currentFilter.replace('-', ' ')} reports found`;
+
+            // Custom messages based on filter type
+            const messages = {
+                'completed': 'No tasks done',
+                'in-progress': 'No tasks active',
+                'pending': 'All tasks started'
+            };
+
+            cell.textContent = messages[this.currentFilter] || 'No reports found';
             cell.className = 'table-empty-message';
             row.appendChild(cell);
             this.tableBody.appendChild(row);
@@ -220,6 +228,11 @@ export class ReportsManager {
         for (const checklist of filtered) {
             const row = await this.createChecklistRow(checklist);
             this.tableBody.appendChild(row);
+        }
+
+        // Update buffer after rendering
+        if (typeof window.scheduleReportBufferUpdate === 'function') {
+            window.scheduleReportBufferUpdate();
         }
     }
 

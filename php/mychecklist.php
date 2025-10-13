@@ -18,6 +18,15 @@ renderHTMLHead('Accessibility Checklist', true);
 <!-- Skip Link -->
 <a href="#first-principle" class="skip-link">Skip to checklist</a>
 
+<!-- Immediate Scroll Initialization - Prevents visual stutter -->
+<script>
+  // Disable scroll restoration
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  console.log('🎯 [INLINE SCRIPT] Scroll restoration disabled, waiting for content to build...');
+</script>
+
 <!-- Sticky Header -->
 <header class="sticky-header">
     <h1>Accessibility Checklist</h1>
@@ -65,13 +74,6 @@ renderHTMLHead('Accessibility Checklist', true);
 
 <!-- Scripts -->
 <script>
-  // Prevent browser from restoring scroll position
-  if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-  }
-  // Scroll to checkpoint 1 position (20000px buffer + 0px for checkpoint 1)
-  window.scrollTo(0, 20000);
-
   // Handle skip link - focus on first h2 without scrolling
   document.addEventListener('DOMContentLoaded', function() {
     const skipLink = document.querySelector('.skip-link');
@@ -95,6 +97,7 @@ renderHTMLHead('Accessibility Checklist', true);
 </script>
 <script type="module">
   document.addEventListener('DOMContentLoaded', function() {
+    console.log('🎯 [DOMContentLoaded START] Current scroll position:', window.scrollY, 'px');
 
     try {
       // Initialize UI components
@@ -152,6 +155,20 @@ renderHTMLHead('Accessibility Checklist', true);
       if (loadingText) {
         loadingText.textContent = 'Error loading checklist. Please try again.';
       }
+    }
+
+    console.log('🎯 [DOMContentLoaded END] Current scroll position:', window.scrollY, 'px');
+  });
+
+  // Track final position after all resources loaded
+  window.addEventListener('load', function() {
+    console.log('🎯 [WINDOW LOAD] Final scroll position:', window.scrollY, 'px');
+
+    // Log checkpoint 1 section position for debugging
+    const checkpoint1 = document.querySelector('.checkpoint-1');
+    if (checkpoint1) {
+      console.log('🎯 [WINDOW LOAD] Checkpoint 1 offsetTop:', checkpoint1.offsetTop, 'px');
+      console.log('🎯 [WINDOW LOAD] Checkpoint 1 getBoundingClientRect().top:', checkpoint1.getBoundingClientRect().top, 'px from viewport top');
     }
   });
 </script>

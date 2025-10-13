@@ -106,8 +106,9 @@ async function initializeApp() {
         }
 
         // Initialize side panel with checkpoint data
+        let sidePanel = null;
         if (window.SidePanel) {
-            const sidePanel = new window.SidePanel();
+            sidePanel = new window.SidePanel();
             sidePanel.init(data);
         } else {
             console.error('SidePanel class not available - side panel will not render');
@@ -115,9 +116,17 @@ async function initializeApp() {
 
         // Build content with the fetched data
         await buildContent(data);
+        console.log('🎯 [AFTER buildContent] Current scroll position:', window.scrollY, 'px');
 
-        // Setup Report table event delegation for status buttons and textareas
-        setupReportTableEventDelegation();
+        // Schedule bottom buffer calculation (500ms delay for DOM to settle)
+        if (typeof window.scheduleBufferUpdate === 'function') {
+            window.scheduleBufferUpdate();
+        }
+
+        // Apply selected styling to all checkpoints AFTER content is built
+        if (sidePanel) {
+            sidePanel.applyAllCheckpointsActive();
+        }
 
         // Initialize other functionality
         if (typeof initializeChecklist === 'function') initializeChecklist();
@@ -136,6 +145,8 @@ async function initializeApp() {
         if (!sessionKey && typeof hideLoading === 'function') {
             hideLoading();
         }
+
+        console.log('🎯 [END initializeApp] Final scroll position:', window.scrollY, 'px');
     } catch (error) {
         console.error('Error initializing app:', error);
         const loadingText = document.getElementById('loadingText');

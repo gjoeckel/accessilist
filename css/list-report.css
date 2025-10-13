@@ -66,12 +66,68 @@ th.checkpoint-cell {
     text-align: center !important;
 }
 
-.checkpoint-cell img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
+/* CSS-generated checkpoint icon - matches side panel style */
+.checkpoint-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid #333333;
+    background-color: transparent;
+    color: #333333;
+    font-size: 1.1rem;
+    font-weight: bold;
+    text-decoration: none;
+    cursor: default;
+    transition: none;
+}
+
+/* Selected checkpoint icon - brown fill with white number */
+.checkpoint-icon.selected {
+    background-color: var(--selected-color);
+    border-color: var(--selected-color);
+    color: white;
+}
+
+/* ====================================================================
+   SIDE PANEL "ALL" BUTTON (Three Lines Symbol)
+   ==================================================================== */
+
+/* Three lines button - use ::before with SVG mask for proper layering */
+.checkpoint-all {
+    font-size: 0 !important; /* Hide the ≡ text character */
+    position: relative;
+    /* Explicit dimensions ensure button is clickable even with font-size: 0 */
+    min-width: 30px !important;
+    min-height: 30px !important;
+}
+
+/* Three lines icon as pseudo-element with mask */
+.checkpoint-all::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 15px;
+    -webkit-mask-image: url('/images/three-lines.svg');
+    mask-image: url('/images/three-lines.svg');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    background-color: #333333; /* Icon color - will be masked by SVG shape */
+    pointer-events: none; /* Allow clicks to pass through to parent button */
+}
+
+/* White icon when button has brown background (active state) */
+.checkpoint-all.active::before {
+    background-color: white !important; /* Mask reveals white color */
 }
 
 /* Date column */

@@ -1,0 +1,58 @@
+/**
+ * scroll.css
+ *
+ * Manages scroll buffers using pseudo-elements
+ * Cleaner alternative to large padding values
+ */
+
+/* ====================================================================
+   MYCHECKLIST PAGE - Minimal buffer prevents scrolling above content
+   ==================================================================== */
+
+/* Minimal buffer for header offset - same for all modes */
+body.checklist-page main::before {
+    content: '';
+    display: block;
+    height: 90px;  /* Header offset - content starts at 90px from viewport top */
+}
+
+/* Buffer below content - dynamically calculated to prevent unnecessary scrolling */
+body.checklist-page main::after {
+    content: '';
+    display: block;
+    height: var(--bottom-buffer, 20000px);  /* Fallback to 20000px until calculated */
+    transition: height 0.3s ease;  /* Smooth transition when buffer updates */
+}
+
+/* ====================================================================
+   REPORT PAGES - Smaller buffer for scrollbar visibility
+   ==================================================================== */
+
+/* List Report - buffer for scrollbar consistency when filtering */
+body.report-page.list-report-page main::before {
+    content: '';
+    display: block;
+    height: 120px;  /* Fixed - positions h2 below sticky header/filters */
+}
+
+body.report-page.list-report-page main::after {
+    content: '';
+    display: block;
+    height: var(--bottom-buffer-report, 500px);  /* Dynamic - prevents over-scrolling */
+    transition: height 0.3s ease;  /* Smooth transition when buffer updates */
+}
+
+/* Systemwide Report - buffer for scrollbar with longer content */
+body.report-page.systemwide-report-page main::before {
+    content: '';
+    display: block;
+    height: 120px;  /* Fixed - positions h2 below sticky header/filters */
+}
+
+body.report-page.systemwide-report-page main::after {
+    content: '';
+    display: block;
+    height: var(--bottom-buffer-report, 500px);  /* Dynamic - prevents over-scrolling */
+    transition: height 0.3s ease;  /* Smooth transition when buffer updates */
+}
+

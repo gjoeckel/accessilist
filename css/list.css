@@ -38,37 +38,28 @@
     --selected-color: #AC6628; /* Brown color when checkpoint is selected */
 }
 
-/* Add massive buffer space above all content to allow perfect checkpoint positioning */
-/* ONLY applies to mychecklist.php - allows side panel to scroll any checkpoint to 90px from top */
-body.checklist-page {
-    padding-top: 20000px;
-}
+/* Scroll buffer management removed - now using pseudo-elements */
 
-/* Main content for checklist page only - has side panel */
+/* Main content for checklist page */
 body.checklist-page main {
     grid-area: main;
     max-width: 90%;
     margin-left: 100px;
-    padding-top: 90px; /* Position first section below sticky header */
-    padding-bottom: 20000px; /* Match buffer space - ensures all checkpoints can scroll to 90px position */
 }
 
-/* Main content for non-checklist pages (legacy fallback) */
+/* Main content for report pages */
+body.report-page main {
+    grid-area: main;
+    max-width: 90%;
+    margin-left: 100px; /* Reserve space for side panel */
+}
+
+/* Main content for non-checklist, non-report pages (legacy fallback) */
 body:not(.report-page):not(.checklist-page) main {
     grid-area: main;
     max-width: 90%;
     margin-left: 100px;
     padding-top: 90px;
-    padding-bottom: 100vh;
-}
-
-/* Main content for report pages - no side panel */
-body.report-page main {
-    grid-area: main;
-    max-width: 90%;
-    margin: 0 auto;
-    padding-top: 90px;
-    padding-bottom: 2rem;
 }
 
 /* ====================================================================
@@ -207,7 +198,7 @@ body.checklist-page .checklist-caption {
     background-color: white;
     display: flex;
     flex-direction: column;
-    z-index: 90; /* Under header (100) and footer */
+    z-index: 1999; /* Below header (2000), above filters (500) */
     transform: translateX(-60px); /* Hidden by default */
     transition: transform 0.3s ease;
 }
@@ -256,6 +247,45 @@ body.checklist-page .checklist-caption {
 .checkpoint-btn:is(:hover, :focus) {
     outline: none;
     box-shadow: var(--golden-ring);
+}
+
+/* ====================================================================
+   "ALL" BUTTON (Three Lines Symbol)
+   ==================================================================== */
+
+/* Three lines button - use ::before with SVG mask for proper layering */
+.checkpoint-all {
+    font-size: 0 !important; /* Hide the ≡ text character */
+    position: relative;
+    /* Explicit dimensions ensure button is clickable even with font-size: 0 */
+    min-width: 30px !important;
+    min-height: 30px !important;
+}
+
+/* Three lines icon as pseudo-element with mask */
+.checkpoint-all::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 18px;
+    height: 15px;
+    -webkit-mask-image: url('/images/three-lines.svg');
+    mask-image: url('/images/three-lines.svg');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    background-color: #333333; /* Icon color - will be masked by SVG shape */
+    pointer-events: none; /* Allow clicks to pass through to parent button */
+}
+
+/* White icon when button has brown background (active state) */
+.checkpoint-all.active::before {
+    background-color: white !important; /* Mask reveals white color */
 }
 
 /* Toggle strip - collapse/expand button */
@@ -321,29 +351,41 @@ body.checklist-page .checklist-caption {
     border: 2px solid #333333 !important;
     border-radius: 50%;
     background-color: transparent !important;
-    color: #333333;
-    font-size: 1.2rem;
-    font-weight: bold;
-    line-height: 1;
+    font-size: 0; /* Hide any text content */
     cursor: pointer;
     position: relative;
-    transition: border-color 0.2s, background-color 0.2s, color 0.2s;
+    transition: none; /* No animations */
 }
 
-/* CSS-generated plus icon */
+/* Plus icon using SVG mask for proper color inheritance */
 .principles-button::before {
-    content: '+';
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transform: translateY(-2px);
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 12px;
+    height: 12px;
+    -webkit-mask-image: url('/images/add-plus.svg');
+    mask-image: url('/images/add-plus.svg');
+    -webkit-mask-size: contain;
+    mask-size: contain;
+    -webkit-mask-position: center;
+    mask-position: center;
+    -webkit-mask-repeat: no-repeat;
+    mask-repeat: no-repeat;
+    background-color: #333333; /* Icon color - will be masked by SVG shape */
 }
 
 /* Brown selected color when checkpoint is active */
 .principle-section.active .principles-button {
     border-color: var(--selected-color) !important;
     background-color: var(--selected-color) !important;
-    color: white;
+}
+
+/* White plus icon when selected */
+.principle-section.active .principles-button::before {
+    background-color: white !important; /* Mask reveals white color */
 }
 
 .principles-button:is(:hover, :focus) {

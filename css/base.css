@@ -78,6 +78,11 @@
     font-family: Calibri, sans-serif;
 }
 
+/* Reserve scrollbar space to prevent layout shift when scrollbar appears/disappears */
+html {
+    scrollbar-gutter: stable;
+}
+
 body {
     font-family: Calibri, sans-serif;
     background-color: #fff;

@@ -7,30 +7,43 @@ require_once __DIR__ . '/includes/common-scripts.php';
 renderHTMLHead('Systemwide Report');
 ?>
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/systemwide-report.css?v=<?php echo time(); ?>">
-<body class="report-page">
+<body class="report-page systemwide-report-page">
 <?php require __DIR__ . '/includes/noscript.php'; ?>
 
 <!-- Skip Link -->
 <a href="#reports-caption" class="skip-link">Skip to reports table</a>
 
-<!-- Sticky Header -->
-<header class="sticky-header">
-    <h1>Systemwide Report</h1>
-    <button id="homeButton" class="home-button" aria-label="Go to home page">
-        <span class="button-text">Home</span>
-    </button>
-    <div class="header-buttons-group">
-        <button id="refreshButton" class="header-button" aria-label="Refresh reports data">
-            <span class="button-text">Refresh</span>
-        </button>
-    </div>
-</header>
+<!-- Immediate Scroll Initialization - Prevents visual stutter -->
+<script>
+  // Disable scroll restoration
+  if ('scrollRestoration' in history) {
+    history.scrollRestoration = 'manual';
+  }
+  // Scroll immediately to h2 position (before page renders)
+  // ::before pseudo-element is 120px tall
+  // Scrolling to 120 puts viewport at END of ::before (start of .report-section)
+  // .report-section has 90px padding-top, so h2 is at 120 + 90 = 210
+  // But we scroll slightly less to show h2 just below the filters: 130px
+  window.scrollTo(0, 130);
+  console.log('🎯 [INLINE SCRIPT] Initial scroll to 130, waiting for content to build...');
+</script>
 
-<!-- Main Content -->
-<main role="main">
-    <section id="reports" class="report-section">
-        <!-- Filter Buttons -->
-        <div class="filter-group" role="group" aria-label="Filter reports by status">
+<!-- Sticky Header + Filters Container -->
+<div class="sticky-header-container">
+    <header class="sticky-header">
+        <h1>Systemwide Report</h1>
+        <button id="homeButton" class="home-button" aria-label="Go to home page">
+            <span class="button-text">Home</span>
+        </button>
+        <div class="header-buttons-group">
+            <button id="refreshButton" class="header-button" aria-label="Refresh reports data">
+                <span class="button-text">Refresh</span>
+            </button>
+        </div>
+    </header>
+
+    <!-- Filter Buttons -->
+    <div class="filter-group" role="group" aria-label="Filter reports by status">
             <button
                 id="filter-completed"
                 class="filter-button"
@@ -68,7 +81,11 @@ renderHTMLHead('Systemwide Report');
                 <span class="filter-count" id="count-all">0</span>
             </button>
         </div>
+</div><!-- End sticky-header-container -->
 
+<!-- Main Content -->
+<main role="main">
+    <section id="reports" class="report-section">
         <!-- Last Update Timestamp -->
         <h2 id="reports-caption" tabindex="-1">Last update: <span id="last-update-time">Loading...</span></h2>
 
@@ -117,13 +134,6 @@ renderHTMLHead('Systemwide Report');
 
 <!-- Scripts -->
 <script>
-  // Prevent browser from restoring scroll position
-  if ('scrollRestoration' in history) {
-    history.scrollRestoration = 'manual';
-  }
-  // Reset scroll position immediately
-  window.scrollTo(0, 0);
-
   // Handle skip link - focus without scrolling
   document.addEventListener('DOMContentLoaded', function() {
     const skipLink = document.querySelector('.skip-link');
@@ -216,6 +226,11 @@ function refreshData() {
         reportsManager.loadChecklists().then(() => {
             // Update timestamp after successful refresh
             updateTimestamp();
+
+            // Recalculate buffer after refresh
+            if (typeof window.scheduleReportBufferUpdate === 'function') {
+                window.scheduleReportBufferUpdate();
+            }
 
             // After refresh completes
             refreshButton.setAttribute('aria-busy', 'false');
