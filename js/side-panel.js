@@ -225,7 +225,8 @@ class SidePanel {
     setupToggle() {
         if (!this.toggleBtn) return;
 
-        this.toggleBtn.addEventListener('click', () => {
+        // Toggle function to be used by both click and keyboard
+        const togglePanel = () => {
             const isExpanded = this.panel.getAttribute('aria-expanded') === 'true';
             const newState = !isExpanded;
 
@@ -233,6 +234,17 @@ class SidePanel {
             this.toggleBtn.setAttribute('aria-expanded', newState.toString());
 
             console.log(`Side panel ${newState ? 'expanded' : 'collapsed'}`);
+        };
+
+        // Mouse click support
+        this.toggleBtn.addEventListener('click', togglePanel);
+
+        // Keyboard support (Enter and Space keys)
+        this.toggleBtn.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+                event.preventDefault(); // Prevent space from scrolling page
+                togglePanel();
+            }
         });
     }
 

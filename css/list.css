@@ -399,15 +399,16 @@ body.checklist-page .checklist-caption {
 
 @media (max-width: 768px) {
     .side-panel {
+        /* Maintain fixed positioning and full height */
         position: fixed;
+        top: 0;
         left: 0;
-        width: var(--side-panel-collapsed-width);
-        height: 40vh;
-        z-index: 90;
-        top: 165px;
+        bottom: 0; /* Full height - stays page height */
+        width: 60px; /* Maintain horizontal space */
+        z-index: 1999; /* Below header (2000), above filters (500) */
     }
 
     .side-panel[aria-expanded="false"] {
-        transform: translateX(calc(-1 * var(--side-panel-collapsed-width)));
+        transform: translateX(-60px); /* Hide to left when collapsed */
     }
 }

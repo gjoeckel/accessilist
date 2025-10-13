@@ -8,6 +8,89 @@
 
 ## Entries
 
+### 2025-10-13 17:09:46 UTC - Fix: Side Panel Collapse/Expand Keyboard Support and Responsive Behavior
+
+**Summary:**
+- Added keyboard support for side panel collapse/expand toggle (Enter and Space keys)
+- Fixed responsive behavior to maintain full height and consistent width when viewport shrinks
+- Removed undefined CSS variable causing width issues on narrow viewports
+
+**Issues Fixed:**
+
+1. **No Keyboard Support**:
+   - Toggle button only responded to mouse clicks
+   - Keyboard users (Tab + Enter/Space) could not collapse/expand the side panel
+   - Violated WCAG 2.1 keyboard accessibility requirements
+
+2. **Responsive Height Issue**:
+   - On narrow viewports (≤768px), side panel changed to `height: 40vh`
+   - Panel didn't stay full page height as required
+   - Created visual inconsistency and reduced usability
+
+3. **Responsive Width Issue**:
+   - Used undefined CSS variable `--side-panel-collapsed-width`
+   - Width became unpredictable on narrow viewports
+   - Horizontal space not maintained as specified
+
+**Solutions Implemented:**
+
+1. **Keyboard Support** (`js/side-panel.js`, `js/list-report.js`):
+   - Added `keydown` event listener to toggle button
+   - Responds to Enter key and Space key
+   - `event.preventDefault()` prevents Space from scrolling page
+   - Extracted toggle logic into shared `togglePanel()` function
+   - Both click and keyboard events call the same function
+
+2. **Responsive Behavior** (`css/list.css`):
+   - Changed responsive rule from `height: 40vh` to `bottom: 0` (full height)
+   - Replaced undefined `var(--side-panel-collapsed-width)` with explicit `60px`
+   - Maintained `position: fixed` with `top: 0` and `left: 0`
+   - Collapse transform uses explicit `-60px` instead of calculated variable
+
+**Files Modified:**
+- `js/side-panel.js`:
+  * Lines 225-249: Added keyboard event handling to `setupToggle()`
+  * Enter and Space keys now trigger panel collapse/expand
+  * Shared toggle logic for both mouse and keyboard
+
+- `js/list-report.js`:
+  * Lines 114-134: Added keyboard event handling to toggle button setup
+  * Consistent behavior between mychecklist.php and list-report.php
+
+- `css/list.css`:
+  * Lines 400-414: Fixed responsive styles (@media max-width: 768px)
+  * Changed `height: 40vh` → `bottom: 0` (full height)
+  * Changed `var(--side-panel-collapsed-width)` → `60px` (explicit width)
+  * Removed `top: 165px` override (uses default `top: 0`)
+
+**Before vs. After:**
+
+| Behavior | Before | After |
+|----------|--------|-------|
+| **Keyboard Access** | ❌ No keyboard support | ✅ Enter/Space keys work |
+| **Viewport Height** | ❌ Changes to 40vh at ≤768px | ✅ Stays full height (100%) |
+| **Viewport Width** | ❌ Undefined variable (unpredictable) | ✅ Consistent 60px |
+| **Mouse Click** | ✅ Working | ✅ Working (unchanged) |
+
+**Accessibility Impact:**
+- ✅ WCAG 2.1 Level A: Keyboard accessible (2.1.1)
+- ✅ Consistent behavior across input methods
+- ✅ Predictable collapse/expand functionality
+
+**User Experience:**
+- ✅ Keyboard users can now fully control side panel
+- ✅ Side panel maintains consistent appearance on narrow screens
+- ✅ No unexpected height/width changes when resizing viewport
+
+**Testing:**
+- Keyboard: Tab to toggle button, press Enter or Space
+- Mouse: Click toggle button (existing behavior)
+- Responsive: Resize viewport below 768px, verify full height and 60px width
+
+**Status:** ✅ **IMPLEMENTED** - Ready for testing on ui-updates branch
+
+---
+
 ### 2025-10-13 17:05:04 UTC - UI: Add Placeholder Text for Info Column in Manual Rows
 
 **Summary:**

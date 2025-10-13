@@ -114,10 +114,21 @@ export class UserReportManager {
         // Set up toggle button
         const toggleBtn = document.querySelector('.toggle-strip');
         if (toggleBtn) {
-            toggleBtn.addEventListener('click', () => {
+            const togglePanel = () => {
                 const sidePanel = document.querySelector('.side-panel');
                 const expanded = sidePanel.getAttribute('aria-expanded') === 'true';
                 sidePanel.setAttribute('aria-expanded', !expanded);
+            };
+
+            // Mouse click support
+            toggleBtn.addEventListener('click', togglePanel);
+
+            // Keyboard support (Enter and Space keys)
+            toggleBtn.addEventListener('keydown', (event) => {
+                if (event.key === 'Enter' || event.key === ' ') {
+                    event.preventDefault();
+                    togglePanel();
+                }
             });
         }
     }
