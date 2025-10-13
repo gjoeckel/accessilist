@@ -8,6 +8,48 @@
 
 ## Entries
 
+### 2025-10-13 17:05:04 UTC - UI: Add Placeholder Text for Info Column in Manual Rows
+
+**Summary:**
+- Added "-" placeholder text in Info column for user-added manual rows
+- Manual rows now show "-" instead of an empty/non-functional info button
+- Improves UI clarity by indicating no info resources available for custom tasks
+
+**Issue:**
+- When users added manual rows, the Info column displayed an info button (icon)
+- These buttons had no associated info resources (info modals)
+- Created confusion about whether the button should be clickable
+
+**Solution:**
+- Updated `createTableRow()` function in `js/addRow.js` to conditionally render Info cell
+- Manual rows (`rowData.isManual === true`) now display centered "-" placeholder text
+- Default rows continue to show the info button with icon as before
+
+**Implementation:**
+- Added conditional check for `rowData.isManual` when creating Info cell
+- Manual rows: `infoCell.textContent = '-'` with centered gray styling
+- Default rows: Info button with icon (unchanged behavior)
+
+**Files Modified:**
+- `js/addRow.js`:
+  * Lines 47-67: Added conditional rendering for Info cell
+  * Manual rows: Display "-" placeholder (centered, #666 color)
+  * Default rows: Display info button with icon (existing behavior)
+
+**Visual Impact:**
+- **Before**: Manual rows showed info button icon (but no modal content available)
+- **After**: Manual rows show "-" to indicate no info resources available
+- **Default rows**: No change (still show info button as expected)
+
+**User Experience:**
+- ✅ Clearer visual indicator that custom tasks don't have info resources
+- ✅ Reduces confusion about which rows have info modals available
+- ✅ Maintains consistent styling with other placeholder conventions
+
+**Status:** ✅ **IMPLEMENTED** - Ready for testing on ui-updates branch
+
+---
+
 ### 2025-10-13 16:58:52 UTC - Fix: SVG Image Paths for Production Deployment
 
 **Summary:**
