@@ -8,6 +8,87 @@
 
 ## Entries
 
+### 2025-10-13 15:52:34 UTC - Report Pages Scroll Buffer: Unified 170px Top Buffer
+
+**Summary:**
+- Replaced legacy 5000px top buffer with modern 170px buffer on report pages
+- Unified scroll methodology across all pages (mychecklist.php, list-report.php, systemwide-report.php)
+- Eliminated unnecessary 5000px blank space on page load
+- Updated initial scroll position from 5090px to 180px
+- Synchronized documentation across code, inline comments, and testing guides
+
+**Why This Change:**
+Previously, report pages used a 5000px top buffer while `mychecklist.php` used a 90px buffer. This inconsistency:
+1. Created unnecessary complexity with different scroll methodologies
+2. Required large initial scroll values (5090px) that felt arbitrary
+3. Didn't leverage the proven pattern from `mychecklist.php`
+
+**The Fix:**
+Report pages now use the same pseudo-scroll approach as `mychecklist.php`, just with a larger buffer:
+- `mychecklist.php`: 90px buffer (header only)
+- Report pages: 170px buffer (70px header + 100px filter bar)
+
+**Technical Changes:**
+
+**CSS Updates (`css/scroll.css`):**
+```css
+/* Before: 5000px top buffer, 5000px default bottom buffer */
+body.report-page.list-report-page main::before {
+    height: 5000px;
+}
+body.report-page.list-report-page main::after {
+    height: var(--bottom-buffer-report, 5000px);
+}
+
+/* After: 170px top buffer, 500px default bottom buffer */
+body.report-page.list-report-page main::before {
+    height: 170px;  /* 70px header + 100px filters */
+}
+body.report-page.list-report-page main::after {
+    height: var(--bottom-buffer-report, 500px);
+}
+```
+
+**PHP Updates (`list-report.php`, `systemwide-report.php`):**
+```javascript
+// Before:
+window.scrollTo(0, 5090);
+
+// After:
+window.scrollTo(0, 180);  // 170px buffer + 10px offset
+```
+
+**JavaScript Updates (`js/scroll.js`):**
+```javascript
+// Before:
+const topBuffer = 5000;
+
+// After:
+const topBuffer = 170;  // 70px header + 100px filters
+```
+
+**Files Modified:**
+- `css/scroll.css` - Changed top buffer from 5000px to 170px, bottom buffer default from 5000px to 500px
+- `php/list-report.php` - Changed initial scroll from 5090px to 180px, updated inline comments
+- `php/systemwide-report.php` - Changed initial scroll from 5090px to 180px, updated inline comments
+- `js/scroll.js` - Updated topBuffer constant and documentation
+- `docs/development/BUFFER-TESTING-GUIDE.md` - Updated comparison table and formula documentation
+
+**Testing:**
+1. Load `list-report.php` - Content should appear immediately at correct position (no 5000px blank space)
+2. Load `systemwide-report.php` - Content should appear immediately at correct position
+3. Filter tables - Dynamic bottom buffer prevents over-scrolling
+4. Resize window - Buffer recalculates correctly
+
+**Benefits:**
+1. **Consistency**: All pages now use the same scroll methodology
+2. **Simplicity**: 170px is easy to understand (70px + 100px)
+3. **Reliability**: No more large arbitrary scroll values
+4. **Maintainability**: Single pattern to understand and modify
+5. **User Experience**: No visual blank space on page load
+
+---
+
 ### 2025-10-13 15:29:27 UTC - Dynamic Scroll Buffer System: Content-Aware Buffer Calculation with Automated Testing
 
 **Summary:**

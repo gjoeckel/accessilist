@@ -20,11 +20,12 @@ renderHTMLHead('Systemwide Report');
     history.scrollRestoration = 'manual';
   }
   // Scroll immediately to h2 position (before page renders)
-  // ::before pseudo-element is 5000px tall
-  // Scrolling to 5000 puts viewport at END of ::before (start of .report-section)
-  // .report-section has 90px padding-top, so h2 is at 5000 + 90 = 5090
-  // To show h2 at viewport top, scroll to: 5090
-  window.scrollTo(0, 5090);
+  // ::before pseudo-element is 170px tall
+  // Scrolling to 170 puts viewport at END of ::before (start of .report-section)
+  // .report-section has 90px padding-top, so h2 is at 170 + 90 = 260
+  // But we scroll slightly less to show h2 just below the filters: 180px
+  window.scrollTo(0, 180);
+  console.log('🎯 [INLINE SCRIPT] Initial scroll to 180, waiting for content to build...');
 </script>
 
 <!-- Sticky Header + Filters Container -->
@@ -225,6 +226,11 @@ function refreshData() {
         reportsManager.loadChecklists().then(() => {
             // Update timestamp after successful refresh
             updateTimestamp();
+
+            // Recalculate buffer after refresh
+            if (typeof window.scheduleReportBufferUpdate === 'function') {
+                window.scheduleReportBufferUpdate();
+            }
 
             // After refresh completes
             refreshButton.setAttribute('aria-busy', 'false');

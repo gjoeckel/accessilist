@@ -55,6 +55,11 @@ export class UserReportManager {
             // 5. Render table
             this.renderTable();
 
+            // 6. Calculate buffer after initial render
+            if (typeof window.scheduleReportBufferUpdate === 'function') {
+                window.scheduleReportBufferUpdate();
+            }
+
         } catch (error) {
             console.error('Error initializing report:', error);
             this.showError('Failed to load report data');
@@ -398,6 +403,11 @@ export class UserReportManager {
 
         // Show empty state message if no visible rows
         this.updateEmptyState(visibleCount);
+
+        // Update buffer after filter changes visibility
+        if (typeof window.scheduleReportBufferUpdate === 'function') {
+            window.scheduleReportBufferUpdate();
+        }
     }
 
     /**

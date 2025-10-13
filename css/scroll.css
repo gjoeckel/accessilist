@@ -32,25 +32,27 @@ body.checklist-page main::after {
 body.report-page.list-report-page main::before {
     content: '';
     display: block;
-    height: 5000px;
+    height: 170px;  /* Fixed - positions h2 below sticky header/filters (70px header + 100px filters) */
 }
 
 body.report-page.list-report-page main::after {
     content: '';
     display: block;
-    height: 5000px;
+    height: var(--bottom-buffer-report, 500px);  /* Dynamic - prevents over-scrolling */
+    transition: height 0.3s ease;  /* Smooth transition when buffer updates */
 }
 
 /* Systemwide Report - buffer for scrollbar with longer content */
 body.report-page.systemwide-report-page main::before {
     content: '';
     display: block;
-    height: 5000px;
+    height: 170px;  /* Fixed - positions h2 below sticky header/filters (70px header + 100px filters) */
 }
 
 body.report-page.systemwide-report-page main::after {
     content: '';
     display: block;
-    height: 5000px;
+    height: var(--bottom-buffer-report, 500px);  /* Dynamic - prevents over-scrolling */
+    transition: height 0.3s ease;  /* Smooth transition when buffer updates */
 }
 

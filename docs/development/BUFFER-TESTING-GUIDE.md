@@ -230,6 +230,99 @@ test('buffer calculations are correct', async ({ page }) => {
 });
 ```
 
+## Report Pages Buffer System
+
+### Overview
+
+The report pages (`list-report.php` and `systemwide-report.php`) use the same pseudo-scroll methodology as `mychecklist.php` with adaptations for their table-based content.
+
+### Key Differences from mychecklist.php
+
+| Feature | mychecklist.php | Report Pages |
+|---------|-----------------|--------------|
+| **Top Buffer** | 90px | 170px |
+| **Purpose** | Header offset | Positions h2 below sticky header/filters (70px + 100px) |
+| **Bottom Buffer** | Dynamic (viewport - 500px) | Dynamic (viewport - 500px) |
+| **CSS Property** | `--bottom-buffer` | `--bottom-buffer-report` |
+| **Function** | `updateBottomBufferNow()` | `updateReportBuffer()` |
+| **Target Position** | 500px from top | 500px from top |
+
+### Buffer Calculation Formula
+
+```javascript
+// Report pages calculation
+const topBuffer = 170;  // 70px header + 100px filters
+const targetPosition = 500;  // Last row at 500px from top
+
+if (reportContent > viewport - topBuffer) {
+    buffer = viewport - targetPosition;  // Last row at 500px from top
+} else {
+    buffer = 100;  // Minimal buffer for footer spacing
+}
+```
+
+### Trigger Points
+
+Report buffers update on:
+1. **Page load**: After initial table render
+2. **Filter changes**: When status/checkpoint filters hide/show rows
+3. **Refresh**: After clicking "Refresh" button
+4. **Window resize**: When viewport dimensions change
+
+### Testing
+
+**Manual test in browser console:**
+```javascript
+// Force immediate buffer calculation
+window.updateReportBuffer();
+
+// Or schedule with 500ms debounce
+window.scheduleReportBufferUpdate();
+```
+
+**Check current buffer:**
+```javascript
+getComputedStyle(document.documentElement)
+    .getPropertyValue('--bottom-buffer-report');
+```
+
+### Console Logs
+
+Look for these indicators on report pages:
+```
+🎯 [INLINE SCRIPT] Initial scroll to 5090, waiting for content to build...
+🎯 [Report Buffer Scheduled] Will calculate in 500ms...
+🎯 [Report Buffer Update] {
+  reportContentHeight: 1200,
+  viewportHeight: 1957,
+  visibleRows: 15,
+  optimalBuffer: 1457,
+  targetPosition: '500px from top',
+  logic: 'large-content (dynamic)'
+}
+```
+
+### Expected Behavior
+
+| Scenario | Expected Buffer | Result |
+|----------|-----------------|--------|
+| **Large table** (many rows) | viewport - 500px | Last row stops 500px from viewport top |
+| **Small table** (few rows) | 100px | Minimal buffer for footer spacing |
+| **Filter to 0 rows** | 100px | Empty state message with minimal buffer |
+| **Window resize** | Recalculates | Adapts to new viewport size |
+
+### Visual Verification
+
+1. Load `list-report.php` or `systemwide-report.php`
+2. Scroll to bottom of table
+3. Verify last row stops ~500px from viewport top
+4. Click filter button to show fewer rows
+5. Verify buffer adjusts (no excessive scrolling)
+6. Resize window
+7. Verify buffer recalculates after 500ms
+
+---
+
 ## Related Documentation
 
 - [Scroll Buffer Architecture](../architecture/scroll-system.md)

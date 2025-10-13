@@ -229,6 +229,11 @@ export class ReportsManager {
             const row = await this.createChecklistRow(checklist);
             this.tableBody.appendChild(row);
         }
+
+        // Update buffer after rendering
+        if (typeof window.scheduleReportBufferUpdate === 'function') {
+            window.scheduleReportBufferUpdate();
+        }
     }
 
     /**

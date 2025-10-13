@@ -21,9 +21,10 @@
  *   - Prevents race conditions and ensures accurate measurement
  *
  * Report pages (list-report.php, systemwide-report.php):
- *   - Buffer: 5000px (main::before)
- *   - Scroll to: 5090px (set inline before page renders)
- *   - Target: h2 below fixed header/filters
+ *   - Top buffer: 170px (main::before - fixed, positions h2 below sticky header/filters)
+ *   - Bottom buffer: Dynamic (main::after - calculated based on table content/viewport)
+ *   - Target: Last row at 500px from viewport top when scrolled to max
+ *   - Triggers: Page load, filter changes, refresh, window resize
  */
 
 let bufferUpdateTimeout = null;
@@ -128,14 +129,94 @@ function updateBottomBufferNow() {
     });
 }
 
+/**
+ * Update report page buffer
+ * Simpler than mychecklist - only needs to handle table content
+ * Target: Last row at 500px from viewport top
+ */
+window.updateReportBuffer = function() {
+    const startTime = performance.now();
+
+    const reportSection = document.querySelector('.report-section');
+    if (!reportSection) {
+        console.warn('🎯 [Report Buffer] .report-section not found');
+        return;
+    }
+
+    // Force layout calculation
+    reportSection.offsetHeight;
+
+    // Get table container
+    const table = reportSection.querySelector('.report-table, .reports-table');
+    if (!table) {
+        console.warn('🎯 [Report Buffer] Table not found');
+        return;
+    }
+
+    // Count visible rows (not display:none)
+    const visibleRows = Array.from(table.querySelectorAll('tbody tr'))
+        .filter(row => row.style.display !== 'none');
+
+    const reportContentHeight = reportSection.offsetHeight;
+    const viewportHeight = window.innerHeight;
+    const topBuffer = 170;  // Fixed top buffer for reports (70px header + 100px filters)
+    const targetPosition = 500;  // Last content at 500px from top
+
+    let optimalBuffer;
+
+    if (reportContentHeight > viewportHeight - topBuffer) {
+        // Content larger than viewport
+        // Calculate buffer so last content lands at targetPosition
+        optimalBuffer = Math.max(0, viewportHeight - targetPosition);
+    } else {
+        // Content fits in viewport - minimal buffer for footer spacing
+        optimalBuffer = 100;
+    }
+
+    // Set CSS custom property
+    document.documentElement.style.setProperty('--bottom-buffer-report', `${optimalBuffer}px`);
+
+    const duration = performance.now() - startTime;
+
+    console.log('🎯 [Report Buffer Update]', {
+        reportContentHeight,
+        viewportHeight,
+        visibleRows: visibleRows.length,
+        optimalBuffer,
+        targetPosition: reportContentHeight > viewportHeight - topBuffer ? '500px from top' : 'N/A (fits)',
+        logic: reportContentHeight > viewportHeight - topBuffer ? 'large-content (dynamic)' : 'small-content (minimal)',
+        calculationTime: `${duration.toFixed(2)}ms`
+    });
+};
+
+// Schedule report buffer update with debounce
+let reportBufferTimeout = null;
+window.scheduleReportBufferUpdate = function() {
+    if (reportBufferTimeout) {
+        clearTimeout(reportBufferTimeout);
+    }
+
+    console.log('🎯 [Report Buffer Scheduled] Will calculate in 500ms...');
+
+    reportBufferTimeout = setTimeout(() => {
+        window.updateReportBuffer();
+    }, 500);
+};
+
 // Window resize handler - recalculate buffer when viewport changes
 let resizeTimeout;
 window.addEventListener('resize', () => {
     // Debounce resize events (already has 500ms from scheduleBufferUpdate)
     clearTimeout(resizeTimeout);
     resizeTimeout = setTimeout(() => {
+        // Update mychecklist buffer
         if (typeof window.scheduleBufferUpdate === 'function') {
             window.scheduleBufferUpdate();
+        }
+
+        // Update report buffer
+        if (typeof window.scheduleReportBufferUpdate === 'function') {
+            window.scheduleReportBufferUpdate();
         }
     }, 150); // Wait for resize to stop, then schedule buffer update
 });
@@ -395,5 +476,7 @@ window.testBufferCalculation = async function() {
 window.ScrollManager = {
     scheduleBufferUpdate: window.scheduleBufferUpdate,
     updateImmediate: window.updateBottomBufferImmediate,
+    scheduleReportBufferUpdate: window.scheduleReportBufferUpdate,
+    updateReportBuffer: window.updateReportBuffer,
     runBufferTests: window.testBufferCalculation
 };
