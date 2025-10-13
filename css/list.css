@@ -257,6 +257,9 @@ body.checklist-page .checklist-caption {
 .checkpoint-all {
     font-size: 0 !important; /* Hide the ≡ text character */
     position: relative;
+    /* Explicit dimensions ensure button is clickable even with font-size: 0 */
+    min-width: 30px !important;
+    min-height: 30px !important;
 }
 
 /* Three lines icon as pseudo-element with mask */
@@ -277,6 +280,7 @@ body.checklist-page .checklist-caption {
     -webkit-mask-repeat: no-repeat;
     mask-repeat: no-repeat;
     background-color: #333333; /* Icon color - will be masked by SVG shape */
+    pointer-events: none; /* Allow clicks to pass through to parent button */
 }
 
 /* White icon when button has brown background (active state) */
