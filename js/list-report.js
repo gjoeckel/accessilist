@@ -169,6 +169,12 @@ export class UserReportManager {
         button.classList.add('active');
         button.setAttribute('aria-pressed', 'true');
 
+        // Reset side panel to "All" when filter changes
+        // This ensures users see all matching results, not just from one checkpoint
+        if (this.currentCheckpoint !== 'all') {
+            this.handleCheckpointClick('all');
+        }
+
         // Update current filter and re-render
         this.currentFilter = filter;
         this.applyFilter();

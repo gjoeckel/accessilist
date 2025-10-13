@@ -8,6 +8,86 @@
 
 ## Entries
 
+### 2025-10-13 17:26:53 UTC - UX: Reset Side Panel to "All" When Filter Changes
+
+**Summary:**
+- Side panel now resets to "All" checkpoints when user changes status filter
+- Prevents empty/confusing results when single checkpoint has no matches
+- Provides better context by showing all matching results across checkpoints
+
+**Issue:**
+- User viewing **Checkpoint 2** only, filtering by "Done" status
+- User changes filter to "Ready"
+- **Problem**: Checkpoint 2 might have zero "Ready" tasks → empty table (confusing!)
+- User doesn't understand why filter shows no results
+- Must manually click "All" to see results
+
+**Solution:**
+- When status filter changes, automatically reset checkpoint view to "All"
+- Updates both state (`currentCheckpoint = 'all'`) and visual (side panel buttons)
+- User immediately sees all matching results for the new filter
+
+**User Scenarios:**
+
+| Before (Broken) | After (Fixed) |
+|-----------------|---------------|
+| Checkpoint 2 + "Done" = 2 results | Checkpoint 2 + "Done" = 2 results |
+| User clicks "Ready" filter | User clicks "Ready" filter |
+| Still on Checkpoint 2 → 0 results ❌ | **Resets to All** → 15 results ✓ |
+| User confused, manually clicks "All" | Shows all "Ready" tasks immediately |
+
+**Why This Makes Sense:**
+
+1. **Filter Intent** - Users want to see all items matching the filter, not just from one checkpoint
+2. **Prevents Empty Results** - Single checkpoint might have zero matches for new filter
+3. **Common Pattern** - Most apps reset related filters when one changes
+4. **Better Context** - Shows full picture of filtered results
+
+**Implementation:**
+```javascript
+handleFilterClick(button) {
+    // Update filter button visual state
+    button.classList.add('active');
+    
+    // Reset side panel to "All" when filter changes
+    if (this.currentCheckpoint !== 'all') {
+        this.handleCheckpointClick('all');
+    }
+    
+    // Apply new filter
+    this.currentFilter = filter;
+    this.applyFilter();
+}
+```
+
+**Files Modified:**
+- `js/list-report.js`:
+  * Lines 157-181: Updated `handleFilterClick()` method
+  * Added checkpoint reset logic before applying filter
+  * Calls `handleCheckpointClick('all')` to update state and visuals
+  * Added explanatory comment
+
+**Behavior:**
+- **Status Filter Click** → Side panel resets to "All" ✓
+- **Checkpoint Click** → Status filter stays as-is ✓
+- **"All" Checkpoint Already Active** → No unnecessary updates ✓
+
+**User Experience:**
+- ✅ Never see confusing empty results
+- ✅ Always see full context when filtering
+- ✅ One less click needed (no manual "All" reset)
+- ✅ Matches user mental model
+
+**Example Flow:**
+1. User viewing Checkpoint 3, "Done" filter
+2. User clicks "Ready" filter
+3. **Side panel automatically shows "All"** (visual feedback)
+4. Table shows all "Ready" tasks across all checkpoints ✓
+
+**Status:** ✅ **IMPLEMENTED** - Ready for testing on ui-updates branch
+
+---
+
 ### 2025-10-13 17:20:34 UTC - UX: Auto-Save Before Showing Report
 
 **Summary:**
@@ -38,12 +118,12 @@
 // Report button handler
 reportButton.addEventListener('click', async function(event) {
     event.preventDefault();
-    
+
     // Auto-save if there are unsaved changes
     if (window.unifiedStateManager?.isDirty) {
         await window.unifiedStateManager.saveState('manual');
     }
-    
+
     // Navigate to report
     window.location.href = reportUrl;
 });
