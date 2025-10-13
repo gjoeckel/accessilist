@@ -221,11 +221,14 @@ class SidePanel {
 
     /**
      * Setup toggle button for collapse/expand
+     * Note: Mouse clicks are handled by StateEvents.js global delegation
+     * This method only adds keyboard support (Enter/Space keys)
      */
     setupToggle() {
         if (!this.toggleBtn) return;
 
-        // Toggle function to be used by both click and keyboard
+        // Toggle function for keyboard events only
+        // (Mouse clicks handled by StateEvents.js)
         const togglePanel = () => {
             const isExpanded = this.panel.getAttribute('aria-expanded') === 'true';
             const newState = !isExpanded;
@@ -234,12 +237,15 @@ class SidePanel {
             this.toggleBtn.setAttribute('aria-expanded', newState.toString());
 
             console.log(`Side panel ${newState ? 'expanded' : 'collapsed'}`);
+
+            // Mark dirty for auto-save (same as StateEvents does for clicks)
+            if (window.unifiedStateManager) {
+                window.unifiedStateManager.markDirty();
+            }
         };
 
-        // Mouse click support
-        this.toggleBtn.addEventListener('click', togglePanel);
-
-        // Keyboard support (Enter and Space keys)
+        // Keyboard support only (Enter and Space keys)
+        // Mouse clicks are handled by StateEvents.js
         this.toggleBtn.addEventListener('keydown', (event) => {
             if (event.key === 'Enter' || event.key === ' ') {
                 event.preventDefault(); // Prevent space from scrolling page

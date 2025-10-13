@@ -8,6 +8,65 @@
 
 ## Entries
 
+### 2025-10-13 17:12:21 UTC - Fix: Remove Duplicate Click Handler Causing Toggle Button Malfunction
+
+**Summary:**
+- Fixed mouse click not working on side panel toggle button for mychecklist.php
+- Removed duplicate event handler that was causing panel to toggle twice (appearing broken)
+- Keyboard support continues to work correctly
+
+**Issue:**
+- After adding keyboard support, mouse clicks on toggle button stopped working
+- Clicking the toggle button appeared to do nothing
+- Keyboard (Enter/Space) continued to work correctly
+
+**Root Cause:**
+- Two event handlers were being added to the same toggle button:
+  1. **StateEvents.js** - Global click delegation (catches all `.toggle-strip` clicks)
+  2. **side-panel.js** - Direct click listener (newly added)
+- When user clicked:
+  1. StateEvents caught click first → toggled panel (expanded → collapsed)
+  2. side-panel.js listener ran second → toggled again (collapsed → expanded)
+  3. Net result: Panel toggled twice, appearing to do nothing
+
+**Solution:**
+- **mychecklist.php** (`js/side-panel.js`):
+  * Removed duplicate click event listener from `setupToggle()`
+  * Kept only keyboard event listener (Enter/Space keys)
+  * Mouse clicks now handled exclusively by StateEvents.js
+  * Added `markDirty()` call for keyboard events (matching StateEvents behavior)
+
+- **list-report.php** (`js/list-report.js`):
+  * No changes - keeps both click and keyboard handlers
+  * list-report.php doesn't use StateEvents.js, so no conflict
+
+**Code Changes:**
+```javascript
+// BEFORE (broken - duplicate handlers)
+this.toggleBtn.addEventListener('click', togglePanel);  // ❌ Conflicts with StateEvents
+this.toggleBtn.addEventListener('keydown', ...);        // ✅ Works
+
+// AFTER (fixed - no conflict)
+// Click handler removed - StateEvents.js handles it
+this.toggleBtn.addEventListener('keydown', ...);        // ✅ Works
+```
+
+**Files Modified:**
+- `js/side-panel.js`:
+  * Lines 222-255: Removed click listener, kept keyboard listener
+  * Added comment explaining StateEvents handles mouse clicks
+  * Added `markDirty()` call for keyboard events
+
+**Testing Results:**
+- ✅ Mouse click: Now works correctly (handled by StateEvents.js)
+- ✅ Keyboard (Enter): Works correctly
+- ✅ Keyboard (Space): Works correctly
+- ✅ Auto-save triggered: Both click and keyboard mark state as dirty
+
+**Status:** ✅ **FIXED** - Mouse and keyboard both working on ui-updates branch
+
+---
+
 ### 2025-10-13 17:09:46 UTC - Fix: Side Panel Collapse/Expand Keyboard Support and Responsive Behavior
 
 **Summary:**
