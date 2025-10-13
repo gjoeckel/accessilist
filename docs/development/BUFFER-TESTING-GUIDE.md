@@ -240,8 +240,8 @@ The report pages (`list-report.php` and `systemwide-report.php`) use the same ps
 
 | Feature | mychecklist.php | Report Pages |
 |---------|-----------------|--------------|
-| **Top Buffer** | 90px | 170px |
-| **Purpose** | Header offset | Positions h2 below sticky header/filters (70px + 100px) |
+| **Top Buffer** | 90px | 120px |
+| **Purpose** | Header offset | Positions h2 below sticky header/filters |
 | **Bottom Buffer** | Dynamic (viewport - 500px) | Dynamic (viewport - 500px) |
 | **CSS Property** | `--bottom-buffer` | `--bottom-buffer-report` |
 | **Function** | `updateBottomBufferNow()` | `updateReportBuffer()` |
@@ -251,7 +251,7 @@ The report pages (`list-report.php` and `systemwide-report.php`) use the same ps
 
 ```javascript
 // Report pages calculation
-const topBuffer = 170;  // 70px header + 100px filters
+const topBuffer = 120;  // Fixed top buffer
 const targetPosition = 500;  // Last row at 500px from top
 
 if (reportContent > viewport - topBuffer) {

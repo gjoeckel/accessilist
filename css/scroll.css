@@ -32,7 +32,7 @@ body.checklist-page main::after {
 body.report-page.list-report-page main::before {
     content: '';
     display: block;
-    height: 170px;  /* Fixed - positions h2 below sticky header/filters (70px header + 100px filters) */
+    height: 120px;  /* Fixed - positions h2 below sticky header/filters */
 }
 
 body.report-page.list-report-page main::after {
@@ -46,7 +46,7 @@ body.report-page.list-report-page main::after {
 body.report-page.systemwide-report-page main::before {
     content: '';
     display: block;
-    height: 170px;  /* Fixed - positions h2 below sticky header/filters (70px header + 100px filters) */
+    height: 120px;  /* Fixed - positions h2 below sticky header/filters */
 }
 
 body.report-page.systemwide-report-page main::after {

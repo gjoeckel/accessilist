@@ -44,12 +44,12 @@ renderHTMLHead('List Report');
     history.scrollRestoration = 'manual';
   }
   // Scroll immediately to h2 position (before page renders)
-  // ::before pseudo-element is 170px tall
-  // Scrolling to 170 puts viewport at END of ::before (start of .report-section)
-  // .report-section has 90px padding-top, so h2 is at 170 + 90 = 260
-  // But we scroll slightly less to show h2 just below the filters: 180px
-  window.scrollTo(0, 180);
-  console.log('🎯 [INLINE SCRIPT] Initial scroll to 180, waiting for content to build...');
+  // ::before pseudo-element is 120px tall
+  // Scrolling to 120 puts viewport at END of ::before (start of .report-section)
+  // .report-section has 90px padding-top, so h2 is at 120 + 90 = 210
+  // But we scroll slightly less to show h2 just below the filters: 130px
+  window.scrollTo(0, 130);
+  console.log('🎯 [INLINE SCRIPT] Initial scroll to 130, waiting for content to build...');
 </script>
 
 <!-- Side Panel - Checkpoint Navigation -->

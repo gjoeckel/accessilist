@@ -21,7 +21,7 @@
  *   - Prevents race conditions and ensures accurate measurement
  *
  * Report pages (list-report.php, systemwide-report.php):
- *   - Top buffer: 170px (main::before - fixed, positions h2 below sticky header/filters)
+ *   - Top buffer: 120px (main::before - fixed, positions h2 below sticky header/filters)
  *   - Bottom buffer: Dynamic (main::after - calculated based on table content/viewport)
  *   - Target: Last row at 500px from viewport top when scrolled to max
  *   - Triggers: Page load, filter changes, refresh, window resize
@@ -159,7 +159,7 @@ window.updateReportBuffer = function() {
 
     const reportContentHeight = reportSection.offsetHeight;
     const viewportHeight = window.innerHeight;
-    const topBuffer = 170;  // Fixed top buffer for reports (70px header + 100px filters)
+    const topBuffer = 120;  // Fixed top buffer for reports
     const targetPosition = 500;  // Last content at 500px from top
 
     let optimalBuffer;
