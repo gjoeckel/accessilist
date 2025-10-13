@@ -8,6 +8,103 @@
 
 ## Entries
 
+### 2025-10-13 14:18:47 UTC - Fixed Checkpoint 1 Scroll Position Race Condition
+
+**Summary:**
+- Fixed critical race condition preventing checkpoint 1 from loading at correct position
+- Removed obsolete JavaScript function call causing console errors
+- Fixed footer z-index to appear above side panel
+- Added comprehensive scroll position logging for debugging
+
+**Root Cause Analysis:**
+- **Problem**: Inline script attempted to scroll to 20000px before CSS pseudo-element existed
+- **Result**: Page stayed at scroll position 0px instead of correct position (19910px)
+- **Detection**: Console logging revealed `window.scrollY` remained at 0px throughout entire page load
+- **Cause**: `main::before` pseudo-element (20000px buffer) wasn't rendered when `window.scrollTo()` executed
+
+**Solution:**
+- Moved scroll initialization from inline script to `side-panel.js` `applyAllCheckpointsActive()` method
+- This executes AFTER `buildContent()` completes, when pseudo-element exists
+- Scroll now happens at correct time in page lifecycle
+
+**Scroll Position Calculations:**
+```javascript
+// Correct positioning for checkpoint 1:
+Buffer:  20000px  (main::before pseudo-element height)
+Offset:     -90px  (to position content 90px from viewport top)
+         --------
+Scroll:  19910px  ✅
+
+// Page load: applyAllCheckpointsActive() → 19910px
+// "All" button: showAll() → 19910px
+// Individual checkpoints: goToCheckpoint() → offsetTop - 90px
+```
+
+**Files Modified:**
+
+**php/mychecklist.php**
+- Removed premature `window.scrollTo(0, 40090)` from inline script
+- Kept `history.scrollRestoration = 'manual'` for proper scroll management
+- Added comprehensive scroll position logging throughout page lifecycle
+
+**js/side-panel.js**
+- `applyAllCheckpointsActive()`: Added scroll initialization to 19910px
+- `showAll()`: Updated scroll position from 20000 to 19910px
+- `goToCheckpoint()`: Enhanced logging with offsetTop and target scroll calculations
+- All scroll positions now consistent (90px from viewport top)
+
+**js/main.js**
+- Removed obsolete `setupReportTableEventDelegation()` function call
+- Fixed `ReferenceError: setupReportTableEventDelegation is not defined`
+- Event delegation now properly handled by `StateEvents.js`
+- Added scroll position logging after `buildContent()`
+
+**js/scroll.js**
+- Updated documentation to reflect correct scroll position (19910px)
+- Documented that scroll happens in `side-panel.js` after content is built
+- Clarified target: checkpoint 1 at 90px from viewport top
+
+**css/footer.css**
+- Increased footer z-index from 1000 to 2001
+- Footer now appears above side panel (1999) and header (2000)
+- Updated legacy `#statusMessageContainer` z-index to match
+- Fixed issue where side panel covered footer links
+
+**Debugging Enhancements:**
+- Added 🎯 emoji-prefixed console logs tracking scroll position at key points:
+  - `[INLINE SCRIPT]` - Initial state
+  - `[DOMContentLoaded START/END]` - DOM ready events
+  - `[AFTER buildContent]` - Content rendered
+  - `[BEFORE/AFTER applyAllCheckpointsActive]` - Styling and scroll
+  - `[END initializeApp]` - App initialization complete
+  - `[WINDOW LOAD]` - Final position + checkpoint 1 offsetTop
+  - `[BEFORE/AFTER showAll]` - All button clicks
+  - `[BEFORE/AFTER goToCheckpoint]` - Individual checkpoint clicks
+
+**Z-Index Hierarchy (updated):**
+1. Skip link: 10000 (accessibility)
+2. Loading overlay: 9999
+3. Footer: 2001 ✅ (now above side panel)
+4. Header: 2000
+5. Side panel: 1999
+6. Modals: 1000
+7. Content: 1
+
+**Testing Results:**
+- ✅ Checkpoint 1 loads at correct position (19910px scroll, 90px from viewport top)
+- ✅ Consistent behavior between page load and side panel button clicks
+- ✅ No JavaScript console errors
+- ✅ Footer appears above side panel
+- ✅ Comprehensive logging aids future debugging
+
+**Technical Notes:**
+- CSS pseudo-elements require browser layout/render pass before they affect scrollable area
+- Inline scripts execute before CSS is fully applied
+- Solution: Defer scroll initialization until after DOM manipulation completes
+- This pattern may apply to other scroll-dependent features
+
+---
+
 ### 2025-10-10 11:11:50 UTC - List Report Side Panel Navigation with Checkpoint Filtering
 
 **Summary:**

@@ -116,14 +116,12 @@ async function initializeApp() {
 
         // Build content with the fetched data
         await buildContent(data);
+        console.log('🎯 [AFTER buildContent] Current scroll position:', window.scrollY, 'px');
 
         // Apply selected styling to all checkpoints AFTER content is built
         if (sidePanel) {
             sidePanel.applyAllCheckpointsActive();
         }
-
-        // Setup Report table event delegation for status buttons and textareas
-        setupReportTableEventDelegation();
 
         // Initialize other functionality
         if (typeof initializeChecklist === 'function') initializeChecklist();
@@ -142,6 +140,8 @@ async function initializeApp() {
         if (!sessionKey && typeof hideLoading === 'function') {
             hideLoading();
         }
+
+        console.log('🎯 [END initializeApp] Final scroll position:', window.scrollY, 'px');
     } catch (error) {
         console.error('Error initializing app:', error);
         const loadingText = document.getElementById('loadingText');

@@ -45,7 +45,6 @@ body.checklist-page main {
     grid-area: main;
     max-width: 90%;
     margin-left: 100px;
-    padding-top: 90px; /* Below sticky header */
 }
 
 /* Main content for report pages */

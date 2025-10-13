@@ -67,7 +67,16 @@ class SidePanel {
      * Apply selected styling to all checkpoints (called after content is built)
      */
     applyAllCheckpointsActive() {
+        console.log('🎯 [BEFORE applyAllCheckpointsActive] Current scroll position:', window.scrollY, 'px');
         this.showAllCheckpoints();
+
+        // Set initial scroll position NOW that content exists
+        // Buffer: 20000px (main::before pseudo-element is now rendered)
+        // Target: Checkpoint 1 at 90px from viewport top (below sticky header)
+        // Scroll to: 20000 - 90 = 19910px
+        window.scrollTo(0, 19910);
+        console.log('🎯 [AFTER scroll set] Current scroll position:', window.scrollY, 'px (target: 19910px)');
+
         console.log('Applied selected styling to all checkpoints on page load');
     }
 
@@ -113,6 +122,7 @@ class SidePanel {
      * Show all checkpoints (All button clicked)
      */
     showAll(clickedBtn) {
+        console.log('🎯 [BEFORE showAll] Current scroll position:', window.scrollY, 'px');
         console.log('Showing all checkpoints');
 
         // Update active button
@@ -124,12 +134,14 @@ class SidePanel {
         // Show all checkpoint sections and apply selected styling
         this.showAllCheckpoints();
 
-        // Scroll to checkpoint 1 position (default view)
+        // Scroll to checkpoint 1 position (90px from viewport top)
+        // Buffer: 20000px, Target: 90px offset = 20000 - 90 = 19910px
         window.scrollTo({
-            top: 20000,
+            top: 19910,
             behavior: 'auto' // Instant scroll - no animation
         });
 
+        console.log('🎯 [AFTER showAll] Scrolled to:', window.scrollY, 'px (target: 19910px)');
         console.log('All checkpoints visible with selected styling');
     }
 
@@ -147,6 +159,7 @@ class SidePanel {
      * Navigate to specific checkpoint (hide others)
      */
     goToCheckpoint(checkpointKey, clickedBtn) {
+        console.log(`🎯 [BEFORE goToCheckpoint] Current scroll position:`, window.scrollY, 'px');
         console.log(`Navigating to ${checkpointKey}`);
 
         // Find the checkpoint section
@@ -155,6 +168,8 @@ class SidePanel {
             console.error(`Section ${checkpointKey} not found`);
             return;
         }
+
+        console.log(`🎯 [goToCheckpoint] Section offsetTop:`, section.offsetTop, 'px');
 
         // Update active button
         this.ul.querySelectorAll('.checkpoint-btn').forEach(btn => {
@@ -175,11 +190,14 @@ class SidePanel {
         // Subtract 90 to account for header and match checkpoint 1's initial position
         const targetScroll = section.offsetTop - 90;
 
+        console.log(`🎯 [goToCheckpoint] Target scroll:`, targetScroll, 'px (offsetTop', section.offsetTop, '- 90)');
+
         window.scrollTo({
             top: targetScroll,
             behavior: 'auto' // Instant scroll - no animation
         });
 
+        console.log(`🎯 [AFTER goToCheckpoint] Actual scroll position:`, window.scrollY, 'px');
         console.log(`Scrolled to ${checkpointKey}, hidden other checkpoints`);
 
         // Focus on checkpoint h2

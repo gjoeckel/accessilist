@@ -20,8 +20,11 @@ renderHTMLHead('Systemwide Report');
     history.scrollRestoration = 'manual';
   }
   // Scroll immediately to h2 position (before page renders)
-  // 5000px buffer - 180px container + 70px adjustment = 4890px
-  window.scrollTo(0, 4890);
+  // ::before pseudo-element is 5000px tall
+  // Scrolling to 5000 puts viewport at END of ::before (start of .report-section)
+  // .report-section has 90px padding-top, so h2 is at 5000 + 90 = 5090
+  // To show h2 at viewport top, scroll to: 5090
+  window.scrollTo(0, 5090);
 </script>
 
 <!-- Sticky Header + Filters Container -->

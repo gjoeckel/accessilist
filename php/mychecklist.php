@@ -24,9 +24,7 @@ renderHTMLHead('Accessibility Checklist', true);
   if ('scrollRestoration' in history) {
     history.scrollRestoration = 'manual';
   }
-  // Scroll immediately to checkpoint 1 position (before page renders)
-  // 20000px buffer - 90px target position = 19910px
-  window.scrollTo(0, 19910);
+  console.log('🎯 [INLINE SCRIPT] Scroll restoration disabled, waiting for content to build...');
 </script>
 
 <!-- Sticky Header -->
@@ -99,6 +97,7 @@ renderHTMLHead('Accessibility Checklist', true);
 </script>
 <script type="module">
   document.addEventListener('DOMContentLoaded', function() {
+    console.log('🎯 [DOMContentLoaded START] Current scroll position:', window.scrollY, 'px');
 
     try {
       // Initialize UI components
@@ -156,6 +155,20 @@ renderHTMLHead('Accessibility Checklist', true);
       if (loadingText) {
         loadingText.textContent = 'Error loading checklist. Please try again.';
       }
+    }
+
+    console.log('🎯 [DOMContentLoaded END] Current scroll position:', window.scrollY, 'px');
+  });
+
+  // Track final position after all resources loaded
+  window.addEventListener('load', function() {
+    console.log('🎯 [WINDOW LOAD] Final scroll position:', window.scrollY, 'px');
+
+    // Log checkpoint 1 section position for debugging
+    const checkpoint1 = document.querySelector('.checkpoint-1');
+    if (checkpoint1) {
+      console.log('🎯 [WINDOW LOAD] Checkpoint 1 offsetTop:', checkpoint1.offsetTop, 'px');
+      console.log('🎯 [WINDOW LOAD] Checkpoint 1 getBoundingClientRect().top:', checkpoint1.getBoundingClientRect().top, 'px from viewport top');
     }
   });
 </script>
