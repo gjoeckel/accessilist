@@ -90,7 +90,7 @@ echo ""
 echo -e "${BLUE}📊 Server Configuration:${NC}"
 echo "-------------------------------------------"
 echo "URL: http://localhost/"
-echo "DocumentRoot: /Users/a00288946/Desktop/accessilist"
+echo "DocumentRoot: /Users/a00288946/Projects/accessilist"
 echo "Apache Version: $(apachectl -v | grep "Server version" | cut -d: -f2 | xargs)"
 echo ""
 

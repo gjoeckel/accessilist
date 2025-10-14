@@ -50,4 +50,3 @@ else
     echo -e "${RED}❌ Failed to create symlink${NC}"
     exit 1
 fi
-

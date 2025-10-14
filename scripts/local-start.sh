@@ -52,10 +52,10 @@ echo ""
 echo -e "${BLUE}🚀 Starting PHP development server with router.php...${NC}"
 echo "-------------------------------------------"
 echo "URL: http://localhost:8000"
-echo "Root: /Users/a00288946/Desktop/accessilist"
+echo "Root: /Users/a00288946/Projects/accessilist"
 echo "Router: router.php (enables clean URLs)"
 
-cd /Users/a00288946/Desktop/accessilist
+cd /Users/a00288946/Projects/accessilist
 
 if [ "$BACKGROUND" = true ]; then
     echo "Mode: Background (logging to logs/php-server.log)"
