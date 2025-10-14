@@ -105,8 +105,7 @@ root/ (21 files)
 ├── Core: package.json, index.php, router.php, README.md, changelog.md
 ├── Config: config.json, cursor-settings*.json, jest.config.srd.js
 ├── Workflows: deploy.sh, start.sh, github-push-gate.sh
-├── Docs: DRYing-types.md, fixes.md, USER-STORIES.md, WCAG-compliance-report.md
-├── Reports: reports-page.md, user-report-page.md, LOCAL-TEST-REPORT.md
+├── Docs: USER-STORIES.md, WCAG-compliance-report.md
 └── Review: PRODUCTION-MIRROR-TESTING.md
 
 archive/

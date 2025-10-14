@@ -268,9 +268,10 @@ clean_system() {
         elif [[ "$filename" =~ ^DEPLOYMENT\.md$ ]]; then
             ARCHIVE_FILES+=("$filename → archive/deployment-legacy/")
 
-        # 10. KEEP: Active development docs
-        elif [[ "$filename" =~ ^(DRYing-types|fixes|port-accessilist|LOCAL-TEST-REPORT)\.md$ ]]; then
-            KEEP_FILES+=("$filename")
+        # 10. Moved to appropriate directories (no longer in root)
+        elif [[ "$filename" =~ ^(DRYing-types|fixes|LOCAL-TEST-REPORT|reports-page|user-report-page)\.md$ ]]; then
+            # These files have been moved to docs/ or tests/
+            NO_RECOMMENDATION+=("$filename (already moved)")
 
         # 11. KEEP: Config files
         elif [[ "$filename" =~ ^(config|cursor-settings.*|\.env.*)\.json$ ]]; then
