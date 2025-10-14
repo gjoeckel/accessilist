@@ -8,6 +8,585 @@
 
 ## Entries
 
+### 2025-10-14 13:09:05 UTC - Reports: Scrollable Read-Only Textareas & Dynamic Buffer
+
+**Summary:**
+- Made Tasks and Notes textareas scrollable on list-report.php while maintaining read-only state
+- Updated report pages buffer calculation to stop at 400px from top (allows more scrolling)
+- Added dynamic buffer recalculation on filter/checkpoint button clicks
+- Fixed race condition ensuring buffer is calculated before scrolling
+
+**Issue:**
+- Read-only textareas were disabled, preventing scrollbar interaction when content overflowed
+- Report pages had fixed buffer that didn't adjust when content length changed via filtering
+- Race condition: scroll happened before buffer was calculated, causing incorrect positioning
+
+**Solution:**
+1. **Scrollable Textareas:**
+   - Changed from `disabled` to `readOnly` to enable scrollbar interaction
+   - Added custom scrollbar styling (8px width, visible gray thumb)
+   - Removed all hover effects (golden ring, border changes) from readonly textareas
+   - Kept textareas out of tab order (`tabindex="-1"`) for table navigation
+   - Enabled `pointer-events: auto` to override textarea-completed blocking
+
+2. **Dynamic Buffer Calculation:**
+   - Updated report buffer target from 500px to 400px from viewport top
+   - Added `scheduleReportBufferUpdate()` calls on filter and checkpoint button clicks
+   - Used immediate `updateReportBuffer()` instead of debounced version
+   - Added `requestAnimationFrame()` to ensure buffer CSS is applied before scrolling
+
+3. **Auto-Scroll on Side Panel:**
+   - Added scroll to top (0px) when checkpoint buttons clicked on list-report.php
+   - Matches filter button behavior for consistent UX
+
+**Implementation:**
+
+```javascript
+// Readonly textareas with scrollable content
+const taskTextarea = document.createElement('textarea');
+taskTextarea.readOnly = true;
+taskTextarea.setAttribute('tabindex', '-1');
+
+// Dynamic buffer with sequential execution
+window.updateReportBuffer(); // Immediate calculation
+requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+});
+```
+
+```css
+/* Scrollable readonly textareas */
+.task-cell textarea[readonly],
+.notes-cell textarea[readonly] {
+    overflow-y: auto;
+    pointer-events: auto !important;
+    cursor: default;
+}
+
+/* Remove hover effects */
+.task-cell textarea[readonly]:hover,
+.notes-cell textarea[readonly]:hover {
+    box-shadow: none !important;
+    border: 1px solid white !important;
+    background-color: transparent !important;
+}
+```
+
+**Files Modified:**
+- `js/list-report.js`:
+  * Lines 663-689: Changed textareas from disabled to readonly
+  * Lines 156-168: Added buffer recalculation and sequential scroll for checkpoint clicks
+  * Lines 196-208: Added buffer recalculation and sequential scroll for filter clicks
+  * Enabled scrollbar interaction while keeping textareas out of tab order
+
+- `css/list-report.css`:
+  * Lines 171-207: Added scrollable readonly textarea styles
+  * Custom scrollbar styling (8px width, gray track/thumb)
+  * Override pointer-events to enable scrolling
+  * Remove all hover effects from readonly textareas
+
+- `css/focus.css`:
+  * Line 155: Excluded readonly textareas from golden ring hover effect
+  * `textarea:not([readonly]):is(:hover, :focus)` prevents readonly hover states
+
+- `css/table.css`:
+  * Lines 195-201: Excluded readonly textareas from completed hover styles
+  * `textarea:not([readonly]):hover` prevents readonly interactions
+
+- `js/scroll.js`:
+  * Lines 26, 163, 186: Updated report buffer target from 500px to 400px
+  * Allows users to scroll further down (smaller target = larger buffer)
+  * Updated documentation and console logs
+
+- `js/systemwide-report.js`:
+  * Lines 68-80: Added buffer recalculation and sequential scroll for filter clicks
+  * Matches list-report.js pattern for consistency
+
+**Benefits:**
+- ✅ Users can scroll overflowing Tasks/Notes text with mouse wheel and scrollbar
+- ✅ No visual hover effects on readonly textareas (consistent non-interactive appearance)
+- ✅ Table navigation preserved (textareas not in tab order)
+- ✅ Dynamic buffer adjusts to filtered content length
+- ✅ No race condition: buffer calculated before scroll
+- ✅ Consistent scroll behavior across both report pages
+
+**Testing Notes:**
+- Verify textareas scroll when content overflows
+- Confirm no hover effects on readonly textareas
+- Test buffer recalculates when filtering (check console logs)
+- Verify auto-scroll positions correctly after filter/checkpoint changes
+- Check both list-report.php and systemwide-report.php
+
+### 2025-10-13 17:52:11 UTC - A11y: Update Skip Link to Target Checkpoint 1 Heading
+
+**Summary:**
+- Skip link now specifically targets checkpoint 1 h2 element (`#checkpoint-1-caption`)
+- Previously searched for first h2 generically
+- More reliable and semantically correct skip link implementation
+
+**Issue:**
+- Skip link href was `#first-principle` (non-existent ID)
+- JavaScript searched for first h2 in `.principles-container` (indirect)
+- Not guaranteed to target checkpoint 1 if DOM structure changed
+
+**Solution:**
+- Updated href to `#checkpoint-1-caption` (actual ID of checkpoint 1 h2)
+- Updated JavaScript to use `getElementById('checkpoint-1-caption')`
+- Direct targeting of the intended skip link destination
+
+**Implementation:**
+```html
+<!-- Skip Link -->
+<a href="#checkpoint-1-caption" class="skip-link">Skip to checklist</a>
+
+<script>
+  const target = document.getElementById('checkpoint-1-caption');
+  if (target) {
+    target.focus();
+  }
+</script>
+```
+
+**Files Modified:**
+- `php/mychecklist.php`:
+  * Line 19: Updated href from `#first-principle` to `#checkpoint-1-caption`
+  * Lines 84-86: Updated JavaScript to directly target checkpoint 1 h2 by ID
+  * More reliable and semantically correct
+
+**Benefits:**
+- ✅ Direct targeting of checkpoint 1 h2 (not dependent on DOM structure)
+- ✅ Semantically correct (href matches actual element ID)
+- ✅ More maintainable (clear intent)
+- ✅ WCAG 2.4.1 Bypass Blocks compliance maintained
+
+**Accessibility Impact:**
+- ✅ Keyboard users can skip navigation and go directly to first checkpoint
+- ✅ Screen reader users get clear skip link destination
+- ✅ Focus management works correctly
+
+**Status:** ✅ **IMPLEMENTED** - Ready for testing on ui-updates branch
+
+---
+
+### 2025-10-13 17:26:53 UTC - UX: Reset Side Panel to "All" When Filter Changes
+
+**Summary:**
+- Side panel now resets to "All" checkpoints when user changes status filter
+- Prevents empty/confusing results when single checkpoint has no matches
+- Provides better context by showing all matching results across checkpoints
+
+**Issue:**
+- User viewing **Checkpoint 2** only, filtering by "Done" status
+- User changes filter to "Ready"
+- **Problem**: Checkpoint 2 might have zero "Ready" tasks → empty table (confusing!)
+- User doesn't understand why filter shows no results
+- Must manually click "All" to see results
+
+**Solution:**
+- When status filter changes, automatically reset checkpoint view to "All"
+- Updates both state (`currentCheckpoint = 'all'`) and visual (side panel buttons)
+- User immediately sees all matching results for the new filter
+
+**User Scenarios:**
+
+| Before (Broken) | After (Fixed) |
+|-----------------|---------------|
+| Checkpoint 2 + "Done" = 2 results | Checkpoint 2 + "Done" = 2 results |
+| User clicks "Ready" filter | User clicks "Ready" filter |
+| Still on Checkpoint 2 → 0 results ❌ | **Resets to All** → 15 results ✓ |
+| User confused, manually clicks "All" | Shows all "Ready" tasks immediately |
+
+**Why This Makes Sense:**
+
+1. **Filter Intent** - Users want to see all items matching the filter, not just from one checkpoint
+2. **Prevents Empty Results** - Single checkpoint might have zero matches for new filter
+3. **Common Pattern** - Most apps reset related filters when one changes
+4. **Better Context** - Shows full picture of filtered results
+
+**Implementation:**
+```javascript
+handleFilterClick(button) {
+    // Update filter button visual state
+    button.classList.add('active');
+
+    // Reset side panel to "All" when filter changes
+    if (this.currentCheckpoint !== 'all') {
+        this.handleCheckpointClick('all');
+    }
+
+    // Apply new filter
+    this.currentFilter = filter;
+    this.applyFilter();
+}
+```
+
+**Files Modified:**
+- `js/list-report.js`:
+  * Lines 157-181: Updated `handleFilterClick()` method
+  * Added checkpoint reset logic before applying filter
+  * Calls `handleCheckpointClick('all')` to update state and visuals
+  * Added explanatory comment
+
+**Behavior:**
+- **Status Filter Click** → Side panel resets to "All" ✓
+- **Checkpoint Click** → Status filter stays as-is ✓
+- **"All" Checkpoint Already Active** → No unnecessary updates ✓
+
+**User Experience:**
+- ✅ Never see confusing empty results
+- ✅ Always see full context when filtering
+- ✅ One less click needed (no manual "All" reset)
+- ✅ Matches user mental model
+
+**Example Flow:**
+1. User viewing Checkpoint 3, "Done" filter
+2. User clicks "Ready" filter
+3. **Side panel automatically shows "All"** (visual feedback)
+4. Table shows all "Ready" tasks across all checkpoints ✓
+
+**Status:** ✅ **IMPLEMENTED** - Ready for testing on ui-updates branch
+
+---
+
+### 2025-10-13 17:20:34 UTC - UX: Auto-Save Before Showing Report
+
+**Summary:**
+- Report button now automatically saves unsaved changes before navigating to list-report.php
+- Ensures report always shows current state, not outdated data
+- Prevents user confusion when report doesn't match what they just changed
+
+**Issue:**
+- When user clicked "Report" button with unsaved changes:
+  - Navigation happened immediately
+  - list-report.php loaded data from saved JSON file
+  - Report showed **old state**, not current changes
+  - User confused: "Why doesn't my report show what I just did?"
+  - User might lose unsaved work if they forgot to save
+
+**Solution:**
+- Auto-save before navigation if `isDirty` flag is true
+- Wait for save to complete (`await saveState`)
+- Then navigate to report page
+- Graceful error handling (continues if save fails)
+
+**User Experience:**
+- **Before**: Report might show outdated data if user forgot to save
+- **After**: Report always shows current state (auto-saved first)
+
+**Implementation:**
+```javascript
+// Report button handler
+reportButton.addEventListener('click', async function(event) {
+    event.preventDefault();
+
+    // Auto-save if there are unsaved changes
+    if (window.unifiedStateManager?.isDirty) {
+        await window.unifiedStateManager.saveState('manual');
+    }
+
+    // Navigate to report
+    window.location.href = reportUrl;
+});
+```
+
+**Files Modified:**
+- `php/mychecklist.php`:
+  * Lines 136-165: Updated Report button handler
+  * Changed to async function
+  * Added auto-save check and await
+  * Added console logging for debugging
+  * Graceful error handling
+
+**Benefits:**
+- ✅ Report always shows current state
+- ✅ Prevents data loss from unsaved changes
+- ✅ Meets user expectation (no manual save needed)
+- ✅ Zero friction (seamless, fast)
+- ✅ Safe error handling (continues if save fails)
+
+**User Workflow:**
+1. User makes changes to checklist
+2. User clicks "Report" button
+3. **Auto-save happens** (if changes exist)
+4. Report page loads with current data ✓
+
+**Performance:**
+- Save is async and fast (~100-200ms typical)
+- No visible delay for user
+- Console logs confirm auto-save happened
+
+**Status:** ✅ **IMPLEMENTED** - Ready for testing on ui-updates branch
+
+---
+
+### 2025-10-13 17:17:42 UTC - Tools: Event Handler Conflict Analysis System
+
+**Summary:**
+- Created comprehensive tooling to detect duplicate event handlers
+- Added npm scripts for quick conflict detection
+- Created detailed guide for event handler analysis
+- Integrated with existing validation workflow
+
+**Tools Created:**
+
+1. **Quick Analysis Script** (`scripts/find-duplicate-handlers.sh`):
+   - Scans for potential conflicts between global and direct listeners
+   - Lists all files with event handlers
+   - Shows event type distribution
+   - Runs in ~2 seconds
+   - Bash 3.x compatible (macOS default)
+
+2. **Full Analysis Script** (`scripts/analyze-event-handlers.sh`):
+   - Comprehensive conflict detection
+   - Generates detailed markdown report
+   - Shows event delegation patterns
+   - Risk assessment by element
+   - Complete event handler listing
+
+3. **Developer Guide** (`docs/development/EVENT-HANDLER-ANALYSIS-GUIDE.md`):
+   - Complete analysis methodology (389 lines)
+   - Common conflict patterns with solutions
+   - Current architecture documentation
+   - Troubleshooting guide
+   - Best practices and examples
+   - Quick command reference
+
+**npm Scripts Added:**
+- `npm run analyze:handlers` - Quick conflict check (recommended)
+- `npm run analyze:handlers:full` - Detailed analysis report
+- `npm run validate:full` - Validation + handler check
+
+**Usage:**
+```bash
+# Quick daily check (2 seconds)
+npm run analyze:handlers
+
+# Full detailed report
+npm run analyze:handlers:full
+
+# Validate before committing
+npm run validate:full
+```
+
+**Integration Strategy:**
+- **Level 1 (Implemented)**: npm scripts for manual use
+- **Level 2 (Optional)**: Pre-commit hook for automatic checks
+- **Level 3 (Future)**: Integration with test suite
+
+**Why This Matters:**
+- Prevents conflicts like the toggle-strip issue we just fixed
+- Catches problems early in development
+- Documents event delegation architecture
+- Provides quick reference for developers
+
+**Files Created:**
+- `scripts/find-duplicate-handlers.sh` - Quick analysis tool (116 lines)
+- `scripts/analyze-event-handlers.sh` - Full analysis tool (303 lines)
+- `docs/development/EVENT-HANDLER-ANALYSIS-GUIDE.md` - Complete guide (389 lines)
+
+**Files Modified:**
+- `package.json`: Added analyze:handlers and validate:full commands
+
+**Current Analysis Results:**
+- ✅ No conflicts detected after toggle-strip fix
+- 📊 30 event handlers across 12 files
+- 📊 14 click handlers, 4 keydown handlers
+- 📊 Primary delegation in StateEvents.js (3 global handlers)
+
+**Developer Workflow:**
+1. Before committing JS changes: `npm run analyze:handlers`
+2. Weekly maintenance: `npm run analyze:handlers`
+3. Debugging event issues: Check `EVENT-HANDLER-ANALYSIS-GUIDE.md`
+4. Before deployment: `npm run validate:full`
+
+**Status:** ✅ **COMPLETE** - Tools ready for use on ui-updates branch
+
+---
+
+### 2025-10-13 17:12:21 UTC - Fix: Remove Duplicate Click Handler Causing Toggle Button Malfunction
+
+**Summary:**
+- Fixed mouse click not working on side panel toggle button for mychecklist.php
+- Removed duplicate event handler that was causing panel to toggle twice (appearing broken)
+- Keyboard support continues to work correctly
+
+**Issue:**
+- After adding keyboard support, mouse clicks on toggle button stopped working
+- Clicking the toggle button appeared to do nothing
+- Keyboard (Enter/Space) continued to work correctly
+
+**Root Cause:**
+- Two event handlers were being added to the same toggle button:
+  1. **StateEvents.js** - Global click delegation (catches all `.toggle-strip` clicks)
+  2. **side-panel.js** - Direct click listener (newly added)
+- When user clicked:
+  1. StateEvents caught click first → toggled panel (expanded → collapsed)
+  2. side-panel.js listener ran second → toggled again (collapsed → expanded)
+  3. Net result: Panel toggled twice, appearing to do nothing
+
+**Solution:**
+- **mychecklist.php** (`js/side-panel.js`):
+  * Removed duplicate click event listener from `setupToggle()`
+  * Kept only keyboard event listener (Enter/Space keys)
+  * Mouse clicks now handled exclusively by StateEvents.js
+  * Added `markDirty()` call for keyboard events (matching StateEvents behavior)
+
+- **list-report.php** (`js/list-report.js`):
+  * No changes - keeps both click and keyboard handlers
+  * list-report.php doesn't use StateEvents.js, so no conflict
+
+**Code Changes:**
+```javascript
+// BEFORE (broken - duplicate handlers)
+this.toggleBtn.addEventListener('click', togglePanel);  // ❌ Conflicts with StateEvents
+this.toggleBtn.addEventListener('keydown', ...);        // ✅ Works
+
+// AFTER (fixed - no conflict)
+// Click handler removed - StateEvents.js handles it
+this.toggleBtn.addEventListener('keydown', ...);        // ✅ Works
+```
+
+**Files Modified:**
+- `js/side-panel.js`:
+  * Lines 222-255: Removed click listener, kept keyboard listener
+  * Added comment explaining StateEvents handles mouse clicks
+  * Added `markDirty()` call for keyboard events
+
+**Testing Results:**
+- ✅ Mouse click: Now works correctly (handled by StateEvents.js)
+- ✅ Keyboard (Enter): Works correctly
+- ✅ Keyboard (Space): Works correctly
+- ✅ Auto-save triggered: Both click and keyboard mark state as dirty
+
+**Status:** ✅ **FIXED** - Mouse and keyboard both working on ui-updates branch
+
+---
+
+### 2025-10-13 17:09:46 UTC - Fix: Side Panel Collapse/Expand Keyboard Support and Responsive Behavior
+
+**Summary:**
+- Added keyboard support for side panel collapse/expand toggle (Enter and Space keys)
+- Fixed responsive behavior to maintain full height and consistent width when viewport shrinks
+- Removed undefined CSS variable causing width issues on narrow viewports
+
+**Issues Fixed:**
+
+1. **No Keyboard Support**:
+   - Toggle button only responded to mouse clicks
+   - Keyboard users (Tab + Enter/Space) could not collapse/expand the side panel
+   - Violated WCAG 2.1 keyboard accessibility requirements
+
+2. **Responsive Height Issue**:
+   - On narrow viewports (≤768px), side panel changed to `height: 40vh`
+   - Panel didn't stay full page height as required
+   - Created visual inconsistency and reduced usability
+
+3. **Responsive Width Issue**:
+   - Used undefined CSS variable `--side-panel-collapsed-width`
+   - Width became unpredictable on narrow viewports
+   - Horizontal space not maintained as specified
+
+**Solutions Implemented:**
+
+1. **Keyboard Support** (`js/side-panel.js`, `js/list-report.js`):
+   - Added `keydown` event listener to toggle button
+   - Responds to Enter key and Space key
+   - `event.preventDefault()` prevents Space from scrolling page
+   - Extracted toggle logic into shared `togglePanel()` function
+   - Both click and keyboard events call the same function
+
+2. **Responsive Behavior** (`css/list.css`):
+   - Changed responsive rule from `height: 40vh` to `bottom: 0` (full height)
+   - Replaced undefined `var(--side-panel-collapsed-width)` with explicit `60px`
+   - Maintained `position: fixed` with `top: 0` and `left: 0`
+   - Collapse transform uses explicit `-60px` instead of calculated variable
+
+**Files Modified:**
+- `js/side-panel.js`:
+  * Lines 225-249: Added keyboard event handling to `setupToggle()`
+  * Enter and Space keys now trigger panel collapse/expand
+  * Shared toggle logic for both mouse and keyboard
+
+- `js/list-report.js`:
+  * Lines 114-134: Added keyboard event handling to toggle button setup
+  * Consistent behavior between mychecklist.php and list-report.php
+
+- `css/list.css`:
+  * Lines 400-414: Fixed responsive styles (@media max-width: 768px)
+  * Changed `height: 40vh` → `bottom: 0` (full height)
+  * Changed `var(--side-panel-collapsed-width)` → `60px` (explicit width)
+  * Removed `top: 165px` override (uses default `top: 0`)
+
+**Before vs. After:**
+
+| Behavior | Before | After |
+|----------|--------|-------|
+| **Keyboard Access** | ❌ No keyboard support | ✅ Enter/Space keys work |
+| **Viewport Height** | ❌ Changes to 40vh at ≤768px | ✅ Stays full height (100%) |
+| **Viewport Width** | ❌ Undefined variable (unpredictable) | ✅ Consistent 60px |
+| **Mouse Click** | ✅ Working | ✅ Working (unchanged) |
+
+**Accessibility Impact:**
+- ✅ WCAG 2.1 Level A: Keyboard accessible (2.1.1)
+- ✅ Consistent behavior across input methods
+- ✅ Predictable collapse/expand functionality
+
+**User Experience:**
+- ✅ Keyboard users can now fully control side panel
+- ✅ Side panel maintains consistent appearance on narrow screens
+- ✅ No unexpected height/width changes when resizing viewport
+
+**Testing:**
+- Keyboard: Tab to toggle button, press Enter or Space
+- Mouse: Click toggle button (existing behavior)
+- Responsive: Resize viewport below 768px, verify full height and 60px width
+
+**Status:** ✅ **IMPLEMENTED** - Ready for testing on ui-updates branch
+
+---
+
+### 2025-10-13 17:05:04 UTC - UI: Add Placeholder Text for Info Column in Manual Rows
+
+**Summary:**
+- Added "-" placeholder text in Info column for user-added manual rows
+- Manual rows now show "-" instead of an empty/non-functional info button
+- Improves UI clarity by indicating no info resources available for custom tasks
+
+**Issue:**
+- When users added manual rows, the Info column displayed an info button (icon)
+- These buttons had no associated info resources (info modals)
+- Created confusion about whether the button should be clickable
+
+**Solution:**
+- Updated `createTableRow()` function in `js/addRow.js` to conditionally render Info cell
+- Manual rows (`rowData.isManual === true`) now display centered "-" placeholder text
+- Default rows continue to show the info button with icon as before
+
+**Implementation:**
+- Added conditional check for `rowData.isManual` when creating Info cell
+- Manual rows: `infoCell.textContent = '-'` with centered gray styling
+- Default rows: Info button with icon (unchanged behavior)
+
+**Files Modified:**
+- `js/addRow.js`:
+  * Lines 47-67: Added conditional rendering for Info cell
+  * Manual rows: Display "-" placeholder (centered, #666 color)
+  * Default rows: Display info button with icon (existing behavior)
+
+**Visual Impact:**
+- **Before**: Manual rows showed info button icon (but no modal content available)
+- **After**: Manual rows show "-" to indicate no info resources available
+- **Default rows**: No change (still show info button as expected)
+
+**User Experience:**
+- ✅ Clearer visual indicator that custom tasks don't have info resources
+- ✅ Reduces confusion about which rows have info modals available
+- ✅ Maintains consistent styling with other placeholder conventions
+
+**Status:** ✅ **IMPLEMENTED** - Ready for testing on ui-updates branch
+
+---
+
 ### 2025-10-13 16:58:52 UTC - Fix: SVG Image Paths for Production Deployment
 
 **Summary:**

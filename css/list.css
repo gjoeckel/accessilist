@@ -123,10 +123,10 @@ body.checklist-page .principle-section h2 {
     margin: 0 auto;
 }
 
-/* Checklist page (mychecklist.php) - left-align h2 to match table edge */
+/* Checklist page (mychecklist.php) - center h2 above table */
 body.checklist-page .checklist-caption {
-    justify-content: flex-start;
-    margin: 0;
+    justify-content: center;
+    margin: 0 auto;
 }
 
 /* CSS-generated number circle - outline mode (default) */
@@ -399,15 +399,26 @@ body.checklist-page .checklist-caption {
 
 @media (max-width: 768px) {
     .side-panel {
+        /* Maintain fixed positioning and full height */
         position: fixed;
+        top: 0;
         left: 0;
-        width: var(--side-panel-collapsed-width);
-        height: 40vh;
-        z-index: 90;
-        top: 165px;
+        bottom: 0; /* Full height - stays page height */
+        width: 60px; /* Maintain horizontal space */
+        z-index: 1999; /* Below header (2000), above filters (500) */
     }
 
     .side-panel[aria-expanded="false"] {
-        transform: translateX(calc(-1 * var(--side-panel-collapsed-width)));
+        transform: translateX(-60px); /* Hide to left when collapsed */
+    }
+
+    /* Responsive: Keep icon and text on same line, allow text to wrap */
+    body.checklist-page .checklist-caption {
+        flex-direction: row;  /* Keep horizontal layout */
+        align-items: flex-start;  /* Top-align icon with text */
+        justify-content: flex-start;  /* Left-align container */
+        margin: 0;  /* Remove centering in mobile */
+        white-space: normal;  /* Allow text to wrap */
+        max-width: 100%;  /* Allow full width usage */
     }
 }

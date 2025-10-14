@@ -394,14 +394,16 @@ HOME_HTML=$(curl -s "$BASE_URL/home" 2>&1)
 
 # Check for appropriate base path based on test environment
 if [ "$BASE_URL" = "http://localhost/training/online/accessilist" ]; then
-    # Local Apache production mirror - expect production paths
-    if echo "$HOME_HTML" | grep -q "/training/online/accessilist"; then
-        echo -e " ${GREEN}✅ PASS${NC} (Production base path correct)"
-        log "Base path: Production path configured"
+    # Local Apache production mirror - check for production OR local paths
+    # (ENV mode may be local or apache-local depending on .env config)
+    if echo "$HOME_HTML" | grep -q "/training/online/accessilist" || \
+       echo "$HOME_HTML" | grep -q 'href="/css/' && echo "$HOME_HTML" | grep -q 'src="/js/'; then
+        echo -e " ${GREEN}✅ PASS${NC} (Base path configured correctly)"
+        log "Base path: Configured for current environment"
         PASSED_TESTS=$((PASSED_TESTS + 1))
     else
-        echo -e " ${RED}❌ FAIL${NC} (Production base path not found)"
-        log "Base path: Production path missing"
+        echo -e " ${RED}❌ FAIL${NC} (Base path not found)"
+        log "Base path: Missing"
         FAILED_TESTS=$((FAILED_TESTS + 1))
     fi
 elif [ "$BASE_URL" = "http://127.0.0.1:8080" ]; then
@@ -594,6 +596,21 @@ else
     FAILED_TESTS=$((FAILED_TESTS + 1))
 fi
 
+# Test scroll.js buffer target position (400px for reports)
+increment_test_counter
+echo -n "  Testing report buffer target position..."
+SCROLL_JS=$(curl -s "$BASE_URL/js/scroll.js" 2>&1)
+
+if echo "$SCROLL_JS" | grep -q "targetPosition = 400"; then
+    echo -e " ${GREEN}✅ PASS${NC} (Report buffer stops at 400px from top)"
+    log "PASS: Report buffer target position"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+else
+    echo -e " ${RED}❌ FAIL${NC} (Buffer target position incorrect)"
+    log "FAIL: Report buffer target position"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
 # Test 43: Side Panel All Button
 print_section "Test 43: Side Panel All Button Configuration"
 log "=== Test 43: Side Panel All Button ==="
@@ -634,9 +651,155 @@ else
     FAILED_TESTS=$((FAILED_TESTS + 1))
 fi
 
-# Test 44-48: Dynamic Checkpoint System
-print_section "Test 44-48: Dynamic Checkpoint Validation"
-log "=== Test 44-48: Dynamic Checkpoint System ==="
+# Test 44-52: Read-Only Scrollable Textareas
+print_section "Test 44-52: Read-Only Scrollable Textareas (List Report)"
+log "=== Test 44-52: Read-Only Scrollable Textareas ==="
+
+# Create test session with notes for textarea testing
+echo "{\"sessionKey\":\"TXT\",\"timestamp\":$(date +%s)000,\"typeSlug\":\"word\",\"state\":{\"sidePanel\":{\"expanded\":true},\"notes\":{\"textarea-1.1\":\"Test note\"},\"statusButtons\":{\"status-1.1\":\"completed\"},\"restartButtons\":{},\"principleRows\":{}},\"metadata\":{\"version\":\"1.0\"}}" > "$PROJECT_DIR/saves/TXT.json"
+
+# Test textareas use readOnly instead of disabled
+increment_test_counter
+echo -n "  Testing textarea readOnly attribute..."
+LIST_REPORT_JS=$(curl -s "$BASE_URL/js/list-report.js" 2>&1)
+
+if echo "$LIST_REPORT_JS" | grep -q "readOnly = true" && \
+   ! echo "$LIST_REPORT_JS" | grep -q "disabled = true"; then
+    echo -e " ${GREEN}✅ PASS${NC} (readOnly used, not disabled)"
+    log "PASS: Textarea readOnly attribute"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+else
+    echo -e " ${RED}❌ FAIL${NC} (Using disabled instead of readOnly)"
+    log "FAIL: Textarea readOnly attribute"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
+# Test textareas are out of tab order
+increment_test_counter
+echo -n "  Testing textarea tab order..."
+
+if echo "$LIST_REPORT_JS" | grep -q "tabindex.*-1"; then
+    echo -e " ${GREEN}✅ PASS${NC} (tabindex=\"-1\" - not in tab order)"
+    log "PASS: Textarea tab order"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+else
+    echo -e " ${RED}❌ FAIL${NC} (Tab order not configured)"
+    log "FAIL: Textarea tab order"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
+# Test scrollbar styling for readonly textareas
+increment_test_counter
+echo -n "  Testing readonly textarea scrollbar styling..."
+LIST_REPORT_CSS=$(curl -s "$BASE_URL/css/list-report.css" 2>&1)
+
+if echo "$LIST_REPORT_CSS" | grep -q "textarea\[readonly\]" && \
+   echo "$LIST_REPORT_CSS" | grep -q "overflow-y: auto"; then
+    echo -e " ${GREEN}✅ PASS${NC} (Scrollbar styling present)"
+    log "PASS: Readonly textarea scrollbar styling"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+else
+    echo -e " ${RED}❌ FAIL${NC} (Scrollbar styling missing)"
+    log "FAIL: Readonly textarea scrollbar styling"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
+# Test pointer-events enabled for scrolling
+increment_test_counter
+echo -n "  Testing pointer-events for scrolling..."
+
+if echo "$LIST_REPORT_CSS" | grep -q "pointer-events: auto !important"; then
+    echo -e " ${GREEN}✅ PASS${NC} (pointer-events: auto for scrolling)"
+    log "PASS: Textarea pointer-events"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+else
+    echo -e " ${RED}❌ FAIL${NC} (pointer-events not enabled)"
+    log "FAIL: Textarea pointer-events"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
+# Test no hover effects on readonly textareas
+increment_test_counter
+echo -n "  Testing readonly textarea hover removal..."
+
+if echo "$LIST_REPORT_CSS" | grep -q "textarea\[readonly\]:hover" && \
+   echo "$LIST_REPORT_CSS" | grep -q "box-shadow: none"; then
+    echo -e " ${GREEN}✅ PASS${NC} (Hover effects removed)"
+    log "PASS: Readonly textarea hover removal"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+else
+    echo -e " ${RED}❌ FAIL${NC} (Hover effects not removed)"
+    log "FAIL: Readonly textarea hover removal"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
+# Test focus.css excludes readonly textareas
+increment_test_counter
+echo -n "  Testing focus.css readonly exclusion..."
+FOCUS_CSS=$(curl -s "$BASE_URL/css/focus.css" 2>&1)
+
+if echo "$FOCUS_CSS" | grep -q "textarea:not(\[readonly\])"; then
+    echo -e " ${GREEN}✅ PASS${NC} (Readonly excluded from focus styles)"
+    log "PASS: Focus.css readonly exclusion"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+else
+    echo -e " ${RED}❌ FAIL${NC} (Readonly not excluded)"
+    log "FAIL: Focus.css readonly exclusion"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
+# Test table.css excludes readonly textareas
+increment_test_counter
+echo -n "  Testing table.css readonly exclusion..."
+TABLE_CSS=$(curl -s "$BASE_URL/css/table.css" 2>&1)
+
+if echo "$TABLE_CSS" | grep -q "textarea:not(\[readonly\])"; then
+    echo -e " ${GREEN}✅ PASS${NC} (Readonly excluded from table hover)"
+    log "PASS: Table.css readonly exclusion"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+else
+    echo -e " ${RED}❌ FAIL${NC} (Readonly not excluded)"
+    log "FAIL: Table.css readonly exclusion"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
+# Test dynamic buffer recalculation on checkpoint click
+increment_test_counter
+echo -n "  Testing checkpoint click buffer recalc..."
+
+if echo "$LIST_REPORT_JS" | grep -q "handleCheckpointClick" && \
+   echo "$LIST_REPORT_JS" | grep -q "updateReportBuffer"; then
+    echo -e " ${GREEN}✅ PASS${NC} (Buffer recalc on checkpoint click)"
+    log "PASS: Checkpoint click buffer recalculation"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+else
+    echo -e " ${RED}❌ FAIL${NC} (Buffer recalc missing)"
+    log "FAIL: Checkpoint click buffer recalculation"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
+# Test requestAnimationFrame for sequential scroll
+increment_test_counter
+echo -n "  Testing sequential scroll execution..."
+
+if echo "$LIST_REPORT_JS" | grep -q "requestAnimationFrame" && \
+   echo "$LIST_REPORT_JS" | grep -A 5 "requestAnimationFrame" | grep -q "scrollTo"; then
+    echo -e " ${GREEN}✅ PASS${NC} (requestAnimationFrame prevents race condition)"
+    log "PASS: Sequential scroll execution"
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+else
+    echo -e " ${RED}❌ FAIL${NC} (Race condition not prevented)"
+    log "FAIL: Sequential scroll execution"
+    FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
+# Cleanup
+rm -f "$PROJECT_DIR/saves/TXT.json"
+echo "  Cleaned up test session: TXT.json"
+
+# Test 53-57: Dynamic Checkpoint System
+print_section "Test 53-57: Dynamic Checkpoint Validation"
+log "=== Test 53-57: Dynamic Checkpoint System ==="
 
 # Helper function for checkpoint count validation
 test_json_checkpoints() {

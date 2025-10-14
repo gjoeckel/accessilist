@@ -48,13 +48,22 @@ function createTableRow(rowData, tableType) {
         const infoCell = document.createElement('td');
         infoCell.className = 'info-cell';
         infoCell.setAttribute('role', 'cell');
-        const infoButton = document.createElement('button');
-        infoButton.className = 'info-link';
-        infoButton.setAttribute('aria-label', `Show example for ${rowData.task || 'this task'}`);
-        const infoImgPath = window.getImagePath('info-.svg');
-        infoButton.innerHTML = `<img src="${infoImgPath}" alt="">`;
-        // TODO: Add event listeners (hover, focus, click for modal) - Likely attached elsewhere
-        infoCell.appendChild(infoButton);
+
+        if (rowData.isManual) {
+            // Manual rows: no info resources available, show placeholder
+            infoCell.textContent = '-';
+            infoCell.style.textAlign = 'center';
+            infoCell.style.color = '#666';
+        } else {
+            // Default rows: info button with icon
+            const infoButton = document.createElement('button');
+            infoButton.className = 'info-link';
+            infoButton.setAttribute('aria-label', `Show example for ${rowData.task || 'this task'}`);
+            const infoImgPath = window.getImagePath('info-.svg');
+            infoButton.innerHTML = `<img src="${infoImgPath}" alt="">`;
+            // TODO: Add event listeners (hover, focus, click for modal) - Likely attached elsewhere
+            infoCell.appendChild(infoButton);
+        }
         tr.appendChild(infoCell);
 
         // 3. Notes Cell

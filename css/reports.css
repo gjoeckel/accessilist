@@ -69,7 +69,7 @@
     font-size: 1.3rem;
     text-align: center;
     margin-top: 0; /* Starts right at bottom edge of filter-group */
-    margin-bottom: 30px; /* 30px gap to table */
+    margin-bottom: 20px; /* 20px gap to table */
     padding-top: 0; /* No padding - flush with filter-group bottom */
     z-index: 1;
     background-color: transparent;
@@ -292,7 +292,7 @@ td.reports-progress-cell,
     display: flex;
     gap: 0.75rem;
     margin-bottom: 0; /* No margin - h2 starts right at bottom edge */
-    margin-left: 81px; /* Start where side panel + toggle button ends (60px + 21px) */
+    margin-left: 100px; /* Start where side panel + toggle button ends (60px + 21px + margin) */
     flex-wrap: wrap;
     pointer-events: auto; /* Re-enable clicks for filter buttons */
     justify-content: center; /* Center the filter buttons */
@@ -301,17 +301,17 @@ td.reports-progress-cell,
     position: relative;
 }
 
-/* White background for filter area - starts at 81px to avoid covering side panel + toggle button */
+/* White background for filter area - starts at 100px to avoid covering side panel + toggle button */
 .filter-group::before {
     content: '';
     position: absolute;
     top: 0;
-    left: -81px; /* Extend back to container edge */
+    left: -100px; /* Extend back to container edge */
     right: 0;
     bottom: 0; /* Extend to bottom of filter-group (includes 30px padding-bottom) */
     background-color: white;
     z-index: -1; /* Behind the filter buttons */
-    margin-left: 81px; /* Push background to start after side panel + toggle (60px + 21px) */
+    margin-left: 100px; /* Push background to start after side panel + toggle (60px + 21px + margin) */
 }
 
 .filter-button {
@@ -328,6 +328,13 @@ td.reports-progress-cell,
     font-weight: 600;
     transition: all 0.2s ease;
     pointer-events: auto; /* Ensure clicks work (parent has pointer-events: none) */
+}
+
+/* Active filter button state */
+.filter-button.active {
+    background-color: #333333;
+    border-color: #333333;
+    color: white;
 }
 
 .filter-count {
@@ -359,6 +366,24 @@ td.reports-progress-cell,
     font-size: 1rem;
     font-style: normal;
     vertical-align: middle;
+}
+
+/* Inline checkpoint icon for empty state messages */
+.checkpoint-icon-inline[data-number]::before {
+    content: attr(data-number);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    border: 2px solid var(--selected-color);
+    background-color: var(--selected-color);
+    color: white;
+    font-size: 1.1rem;
+    font-weight: bold;
+    vertical-align: middle;
+    margin: 0 0.25rem;
 }
 
 /* Empty state row styling */
