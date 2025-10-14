@@ -15,7 +15,7 @@ CYAN='\033[0;36m'
 NC='\033[0m'
 
 PRODUCTION_URL="https://webaim.org/training/online/accessilist"
-PROJECT_DIR="/Users/a00288946/Desktop/accessilist"
+PROJECT_DIR="/Users/a00288946/Projects/accessilist"
 
 # Test counters
 TOTAL_TESTS=0

@@ -14,7 +14,7 @@ RED='\033[0;31m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-PROJECT_DIR="/Users/a00288946/Desktop/accessilist"
+PROJECT_DIR="/Users/a00288946/Projects/accessilist"
 PUSH_TOKEN="push to github"
 
 echo -e "${BLUE}╔════════════════════════════════════════════════════════╗${NC}"
