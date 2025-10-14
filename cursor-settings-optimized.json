@@ -1,0 +1,155 @@
+{
+  "// Editor Settings": "Optimized for autonomous development workflow",
+  "editor.fontSize": 14,
+  "editor.lineHeight": 2,
+  "editor.fontFamily": "SF Mono, Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace",
+  "editor.tabSize": 2,
+  "editor.insertSpaces": true,
+  "editor.wordWrap": "on",
+  "editor.minimap.enabled": true,
+  "editor.minimap.maxColumn": 120,
+  "editor.rulers": [80, 120],
+  "editor.bracketPairColorization.enabled": true,
+  "editor.guides.bracketPairs": true,
+  "editor.suggestSelection": "first",
+  "editor.acceptSuggestionOnCommitCharacter": false,
+  "editor.acceptSuggestionOnEnter": "on",
+  "editor.quickSuggestions": {
+    "other": true,
+    "comments": false,
+    "strings": true
+  },
+
+  "// File Management": "Optimized for autonomous file operations",
+  "files.autoSave": "afterDelay",
+  "files.autoSaveDelay": 1000,
+  "files.trimTrailingWhitespace": true,
+  "files.insertFinalNewline": true,
+  "files.trimFinalNewlines": true,
+  "files.autoSaveWhenNoErrors": true,
+  "files.watcherExclude": {
+    "**/node_modules/**": true,
+    "**/logs/**": true,
+    "**/saves/**": true,
+    "**/tests/screenshots/**": true,
+    "**/.git/**": true
+  },
+
+  "// Terminal Settings": "Optimized for autonomous command execution",
+  "terminal.integrated.fontSize": 13,
+  "terminal.integrated.lineHeight": 2,
+  "terminal.integrated.fontFamily": "SF Mono, Monaco, 'Cascadia Code', monospace",
+  "terminal.integrated.shell.osx": "/bin/zsh",
+  "terminal.integrated.cwd": "${workspaceFolder}",
+  "terminal.integrated.env.osx": {
+    "PATH": "${env:PATH}:/opt/homebrew/bin:/usr/local/bin"
+  },
+
+  "// Workbench": "Optimized for autonomous development",
+  "workbench.colorTheme": "Default Dark+",
+  "workbench.iconTheme": "vs-seti",
+  "workbench.startupEditor": "none",
+  "workbench.editor.enablePreview": false,
+  "workbench.editor.enablePreviewFromQuickOpen": false,
+  "workbench.editor.closeOnFileDelete": true,
+  "workbench.editor.highlightModifiedTabs": true,
+
+  "// Git Integration": "Optimized for autonomous git operations",
+  "git.enableSmartCommit": true,
+  "git.confirmSync": false,
+  "git.autofetch": true,
+  "git.autofetchPeriod": 180,
+  "git.enableCommitSigning": false,
+  "git.autoStash": true,
+  "git.allowCommitSigning": false,
+
+  "// Extensions": "Optimized for autonomous development",
+  "extensions.autoUpdate": true,
+  "extensions.autoCheckUpdates": true,
+  "extensions.ignoreRecommendations": false,
+
+  "// Telemetry": "Disabled for privacy",
+  "telemetry.telemetryLevel": "off",
+
+  "// Cursor AI Settings": "Optimized for autonomous development",
+  "cursor.ai.enabled": true,
+  "cursor.ai.autoComplete": true,
+  "cursor.ai.chat.enabled": true,
+  "cursor.ai.codeGeneration": true,
+  "cursor.ai.terminalAccess": true,
+  "cursor.ai.fileSystemAccess": true,
+  "cursor.ai.shellAccess": true,
+  "cursor.ai.autoExecute": true,
+  "cursor.ai.confirmationLevel": "none",
+  "cursor.ai.maxTokens": 4000,
+  "cursor.ai.temperature": 0.7,
+  "cursor.ai.contextWindow": 128000,
+
+  "// Language-specific settings": "Optimized for project languages",
+  "[javascript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
+  },
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.fixAll.eslint": true
+    }
+  },
+  "[php]": {
+    "editor.defaultFormatter": "DEVSENSE.phptools-vscode",
+    "editor.formatOnSave": true
+  },
+  "[json]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[html]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+  "[css]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode",
+    "editor.formatOnSave": true
+  },
+
+  "// Search and Navigation": "Optimized for large codebases",
+  "search.exclude": {
+    "**/node_modules": true,
+    "**/logs": true,
+    "**/saves": true,
+    "**/tests/screenshots": true,
+    "**/.git": true,
+    "**/coverage": true
+  },
+  "files.exclude": {
+    "**/node_modules": true,
+    "**/logs": true,
+    "**/saves": true,
+    "**/tests/screenshots": true,
+    "**/.git": true,
+    "**/coverage": true
+  },
+
+  "// Performance": "Optimized for large projects",
+  "typescript.preferences.includePackageJsonAutoImports": "auto",
+  "typescript.suggest.autoImports": true,
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.suggest.autoImports": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+
+  "// Debugging": "Optimized for autonomous debugging",
+  "debug.console.fontSize": 13,
+  "debug.console.lineHeight": 2,
+  "debug.openDebug": "openOnDebugBreak",
+  "debug.inlineValues": true,
+
+  "// Testing": "Optimized for autonomous testing",
+  "jest.autoRun": "off",
+  "jest.showCoverageOnLoad": false,
+  "jest.autoRevealOutput": "on-exec-error"
+}
