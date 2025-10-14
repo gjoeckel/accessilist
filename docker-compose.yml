@@ -1,0 +1,28 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: accessilist-production-mirror
+    ports:
+      - "8080:80"
+    volumes:
+      # Mount project files (read-write for development)
+      - ./:/var/www/html
+    environment:
+      # Match production environment
+      - APACHE_DOCUMENT_ROOT=/var/www/html
+      - APP_ENV=production
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost/"]
+      interval: 10s
+      timeout: 5s
+      retries: 3
+      start_period: 10s
+    networks:
+      - accessilist-network
+
+networks:
+  accessilist-network:
+    driver: bridge
+

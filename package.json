@@ -26,6 +26,11 @@
     "deploy:verify-env": "./scripts/deployment/verify-production-env.sh",
     "deploy:status": "./scripts/github-push-gate.sh status",
     "generate:user-stories": "node scripts/generate-user-stories.js",
+    "docker:up": "docker compose up -d",
+    "docker:down": "docker compose down",
+    "docker:logs": "docker compose logs -f web",
+    "docker:rebuild": "docker compose up -d --build",
+    "docker:test": "docker compose up -d && sleep 3 && BASE_URL=http://localhost:8080 ./scripts/test-production-mirror.sh && docker compose down",
     "verify:routes": "bash scripts/verify-routes.sh all",
     "verify:routes:php": "bash scripts/verify-routes.sh php",
     "verify:routes:apache": "bash scripts/verify-routes.sh apache"

@@ -1,0 +1,16 @@
+# Don't copy these into Docker container
+node_modules/
+.git/
+.gitignore
+logs/*.log
+saves/*.json
+php/saves/*.json
+tests/screenshots/
+*.md
+.DS_Store
+.env.local
+*.backup
+docker-compose.yml
+Dockerfile
+.dockerignore
+
