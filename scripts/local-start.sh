@@ -64,7 +64,7 @@ if [ "$BACKGROUND" = true ]; then
     php -S localhost:8000 router.php > logs/php-server.log 2>&1 &
     SERVER_PID=$!
     sleep 1
-    
+
     # Verify server started
     if ps -p $SERVER_PID > /dev/null; then
         echo -e "${GREEN}✅ Server running (PID: $SERVER_PID)${NC}"
@@ -83,4 +83,3 @@ else
     echo ""
     php -S localhost:8000 router.php
 fi
-

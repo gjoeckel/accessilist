@@ -25,4 +25,3 @@ services:
 networks:
   accessilist-network:
     driver: bridge
-

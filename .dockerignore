@@ -13,4 +13,3 @@ tests/screenshots/
 docker-compose.yml
 Dockerfile
 .dockerignore
-

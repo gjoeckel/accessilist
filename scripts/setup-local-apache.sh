@@ -302,4 +302,3 @@ echo ""
 echo -e "${YELLOW}💡 To restore original config:${NC}"
 echo "sudo cp /etc/apache2/httpd.conf.backup /etc/apache2/httpd.conf"
 echo ""
-
