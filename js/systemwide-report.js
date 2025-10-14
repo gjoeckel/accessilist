@@ -64,6 +64,20 @@ export class ReportsManager {
         // Update current filter and re-render
         this.currentFilter = filter;
         this.renderTable();
+
+        // Recalculate buffer immediately, then scroll
+        if (typeof window.updateReportBuffer === 'function') {
+            window.updateReportBuffer(); // Immediate update (no debounce)
+        }
+
+        // Scroll to top after buffer is calculated
+        // Use requestAnimationFrame to ensure buffer CSS is applied
+        requestAnimationFrame(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'auto' // Instant scroll - no animation
+            });
+        });
     }
 
     /**

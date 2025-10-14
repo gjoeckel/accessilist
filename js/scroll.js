@@ -23,7 +23,7 @@
  * Report pages (list-report.php, systemwide-report.php):
  *   - Top buffer: 120px (main::before - fixed, positions h2 below sticky header/filters)
  *   - Bottom buffer: Dynamic (main::after - calculated based on table content/viewport)
- *   - Target: Last row at 500px from viewport top when scrolled to max
+ *   - Target: Last row at 400px from viewport top when scrolled to max
  *   - Triggers: Page load, filter changes, refresh, window resize
  */
 
@@ -160,7 +160,7 @@ window.updateReportBuffer = function() {
     const reportContentHeight = reportSection.offsetHeight;
     const viewportHeight = window.innerHeight;
     const topBuffer = 120;  // Fixed top buffer for reports
-    const targetPosition = 500;  // Last content at 500px from top
+    const targetPosition = 400;  // Last content at 400px from top
 
     let optimalBuffer;
 
@@ -183,7 +183,7 @@ window.updateReportBuffer = function() {
         viewportHeight,
         visibleRows: visibleRows.length,
         optimalBuffer,
-        targetPosition: reportContentHeight > viewportHeight - topBuffer ? '500px from top' : 'N/A (fits)',
+        targetPosition: reportContentHeight > viewportHeight - topBuffer ? '400px from top' : 'N/A (fits)',
         logic: reportContentHeight > viewportHeight - topBuffer ? 'large-content (dynamic)' : 'small-content (minimal)',
         calculationTime: `${duration.toFixed(2)}ms`
     });

@@ -152,6 +152,20 @@ export class UserReportManager {
         // Update current checkpoint and apply filter
         this.currentCheckpoint = checkpoint;
         this.applyCheckpointFilter();
+
+        // Recalculate buffer immediately, then scroll
+        if (typeof window.updateReportBuffer === 'function') {
+            window.updateReportBuffer(); // Immediate update (no debounce)
+        }
+
+        // Scroll to top after buffer is calculated
+        // Use requestAnimationFrame to ensure buffer CSS is applied
+        requestAnimationFrame(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'auto' // Instant scroll - no animation
+            });
+        });
     }
 
     /**
@@ -178,6 +192,20 @@ export class UserReportManager {
         // Update current filter and re-render
         this.currentFilter = filter;
         this.applyFilter();
+
+        // Recalculate buffer immediately, then scroll
+        if (typeof window.updateReportBuffer === 'function') {
+            window.updateReportBuffer(); // Immediate update (no debounce)
+        }
+
+        // Scroll to top after buffer is calculated
+        // Use requestAnimationFrame to ensure buffer CSS is applied
+        requestAnimationFrame(() => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'auto' // Instant scroll - no animation
+            });
+        });
     }
 
     /**
@@ -451,16 +479,43 @@ export class UserReportManager {
             row.className = 'empty-state-row';
             const cell = document.createElement('td');
             cell.colSpan = 4; // Span all columns (Checkpoint, Tasks, Notes, Status)
+            cell.className = 'table-empty-message';
 
             // Custom messages based on filter type
-            const messages = {
-                'completed': 'No tasks done',
-                'in-progress': 'No tasks active',
-                'pending': 'All tasks started'
+            const statusMessages = {
+                'completed': 'tasks done',
+                'in-progress': 'tasks active',
+                'pending': 'tasks started'
             };
+            const statusText = statusMessages[this.currentFilter] || 'tasks found';
 
-            cell.textContent = messages[this.currentFilter] || 'No tasks found';
-            cell.className = 'table-empty-message';
+            // Check if checkpoint-specific or "All"
+            if (this.currentCheckpoint === 'all') {
+                // Simple message for "All" checkpoint
+                const prefix = this.currentFilter === 'pending' ? 'All' : 'No';
+                cell.textContent = `${prefix} ${statusText}`;
+            } else {
+                // Checkpoint-specific message with CSS icon
+                const prefix = this.currentFilter === 'pending' ? 'All' : 'No';
+
+                // Create icon span with data-number attribute for CSS styling
+                const iconSpan = document.createElement('span');
+                iconSpan.className = 'checkpoint-icon-inline';
+                iconSpan.setAttribute('data-number', this.currentCheckpoint);
+                iconSpan.setAttribute('aria-hidden', 'true'); // Hide icon from screen readers
+
+                // Add screen reader text
+                const srText = document.createElement('span');
+                srText.className = 'sr-only';
+                srText.textContent = `checkpoint ${this.currentCheckpoint}`;
+
+                // Build message: "No [icon] tasks done"
+                cell.appendChild(document.createTextNode(`${prefix} `));
+                cell.appendChild(iconSpan);
+                cell.appendChild(srText);
+                cell.appendChild(document.createTextNode(` ${statusText}`));
+            }
+
             row.appendChild(cell);
             this.tableBody.appendChild(row);
         }
@@ -627,7 +682,7 @@ export class UserReportManager {
         checkpointCell.appendChild(checkpointCircle);
         row.appendChild(checkpointCell);
 
-        // 2. Task cell with textarea (read-only, matches mychecklist.php disabled style)
+        // 2. Task cell with textarea (read-only, scrollbar interactive but not in tab order)
         const taskCell = document.createElement('td');
         taskCell.className = 'task-cell';
         taskCell.setAttribute('role', 'cell');
@@ -635,13 +690,13 @@ export class UserReportManager {
         const taskTextarea = document.createElement('textarea');
         taskTextarea.className = 'notes-textarea textarea-completed';
         taskTextarea.value = task.task;
-        taskTextarea.disabled = true;
-        taskTextarea.setAttribute('aria-hidden', 'true');
-        taskTextarea.setAttribute('tabindex', '-1');
+        taskTextarea.readOnly = true;
+        taskTextarea.setAttribute('aria-readonly', 'true');
+        taskTextarea.setAttribute('tabindex', '-1'); // Not in tab order; navigate via table instead
         taskCell.appendChild(taskTextarea);
         row.appendChild(taskCell);
 
-        // 3. Notes cell with textarea (read-only, matches mychecklist.php disabled style)
+        // 3. Notes cell with textarea (read-only, scrollbar interactive but not in tab order)
         const notesCell = document.createElement('td');
         notesCell.className = 'notes-cell';
         notesCell.setAttribute('role', 'cell');
@@ -649,9 +704,9 @@ export class UserReportManager {
         const notesTextarea = document.createElement('textarea');
         notesTextarea.className = 'notes-textarea textarea-completed';
         notesTextarea.value = task.notes || '';
-        notesTextarea.disabled = true;
-        notesTextarea.setAttribute('aria-hidden', 'true');
-        notesTextarea.setAttribute('tabindex', '-1');
+        notesTextarea.readOnly = true;
+        notesTextarea.setAttribute('aria-readonly', 'true');
+        notesTextarea.setAttribute('tabindex', '-1'); // Not in tab order; navigate via table instead
         notesCell.appendChild(notesTextarea);
         row.appendChild(notesCell);
 

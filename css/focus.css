@@ -152,7 +152,7 @@ select:focus {
 .report-delete-button:is(:hover, :focus),
 .reports-delete-button:is(:hover, :focus),
 .instance-link:is(:hover, :focus),
-textarea:is(:hover, :focus) {
+textarea:not([readonly]):is(:hover, :focus) {
     box-shadow: var(--golden-ring) !important;
     outline: none;
 }

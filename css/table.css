@@ -192,9 +192,9 @@ td.notes-cell {
     transition: none !important; /* Remove animation */
 }
 
-.completed textarea:hover,
-.report-task-cell.completed textarea:hover,
-.report-notes-cell.completed textarea:hover {
+.completed textarea:not([readonly]):hover,
+.report-task-cell.completed textarea:not([readonly]):hover,
+.report-notes-cell.completed textarea:not([readonly]):hover {
     border: 1px solid white !important;
     background: #fff !important;
     cursor: default;

@@ -8,6 +8,115 @@
 
 ## Entries
 
+### 2025-10-14 13:09:05 UTC - Reports: Scrollable Read-Only Textareas & Dynamic Buffer
+
+**Summary:**
+- Made Tasks and Notes textareas scrollable on list-report.php while maintaining read-only state
+- Updated report pages buffer calculation to stop at 400px from top (allows more scrolling)
+- Added dynamic buffer recalculation on filter/checkpoint button clicks
+- Fixed race condition ensuring buffer is calculated before scrolling
+
+**Issue:**
+- Read-only textareas were disabled, preventing scrollbar interaction when content overflowed
+- Report pages had fixed buffer that didn't adjust when content length changed via filtering
+- Race condition: scroll happened before buffer was calculated, causing incorrect positioning
+
+**Solution:**
+1. **Scrollable Textareas:**
+   - Changed from `disabled` to `readOnly` to enable scrollbar interaction
+   - Added custom scrollbar styling (8px width, visible gray thumb)
+   - Removed all hover effects (golden ring, border changes) from readonly textareas
+   - Kept textareas out of tab order (`tabindex="-1"`) for table navigation
+   - Enabled `pointer-events: auto` to override textarea-completed blocking
+
+2. **Dynamic Buffer Calculation:**
+   - Updated report buffer target from 500px to 400px from viewport top
+   - Added `scheduleReportBufferUpdate()` calls on filter and checkpoint button clicks
+   - Used immediate `updateReportBuffer()` instead of debounced version
+   - Added `requestAnimationFrame()` to ensure buffer CSS is applied before scrolling
+
+3. **Auto-Scroll on Side Panel:**
+   - Added scroll to top (0px) when checkpoint buttons clicked on list-report.php
+   - Matches filter button behavior for consistent UX
+
+**Implementation:**
+
+```javascript
+// Readonly textareas with scrollable content
+const taskTextarea = document.createElement('textarea');
+taskTextarea.readOnly = true;
+taskTextarea.setAttribute('tabindex', '-1');
+
+// Dynamic buffer with sequential execution
+window.updateReportBuffer(); // Immediate calculation
+requestAnimationFrame(() => {
+    window.scrollTo({ top: 0, behavior: 'auto' });
+});
+```
+
+```css
+/* Scrollable readonly textareas */
+.task-cell textarea[readonly],
+.notes-cell textarea[readonly] {
+    overflow-y: auto;
+    pointer-events: auto !important;
+    cursor: default;
+}
+
+/* Remove hover effects */
+.task-cell textarea[readonly]:hover,
+.notes-cell textarea[readonly]:hover {
+    box-shadow: none !important;
+    border: 1px solid white !important;
+    background-color: transparent !important;
+}
+```
+
+**Files Modified:**
+- `js/list-report.js`:
+  * Lines 663-689: Changed textareas from disabled to readonly
+  * Lines 156-168: Added buffer recalculation and sequential scroll for checkpoint clicks
+  * Lines 196-208: Added buffer recalculation and sequential scroll for filter clicks
+  * Enabled scrollbar interaction while keeping textareas out of tab order
+
+- `css/list-report.css`:
+  * Lines 171-207: Added scrollable readonly textarea styles
+  * Custom scrollbar styling (8px width, gray track/thumb)
+  * Override pointer-events to enable scrolling
+  * Remove all hover effects from readonly textareas
+
+- `css/focus.css`:
+  * Line 155: Excluded readonly textareas from golden ring hover effect
+  * `textarea:not([readonly]):is(:hover, :focus)` prevents readonly hover states
+
+- `css/table.css`:
+  * Lines 195-201: Excluded readonly textareas from completed hover styles
+  * `textarea:not([readonly]):hover` prevents readonly interactions
+
+- `js/scroll.js`:
+  * Lines 26, 163, 186: Updated report buffer target from 500px to 400px
+  * Allows users to scroll further down (smaller target = larger buffer)
+  * Updated documentation and console logs
+
+- `js/systemwide-report.js`:
+  * Lines 68-80: Added buffer recalculation and sequential scroll for filter clicks
+  * Matches list-report.js pattern for consistency
+
+**Benefits:**
+- ✅ Users can scroll overflowing Tasks/Notes text with mouse wheel and scrollbar
+- ✅ No visual hover effects on readonly textareas (consistent non-interactive appearance)
+- ✅ Table navigation preserved (textareas not in tab order)
+- ✅ Dynamic buffer adjusts to filtered content length
+- ✅ No race condition: buffer calculated before scroll
+- ✅ Consistent scroll behavior across both report pages
+
+**Testing Notes:**
+- Verify textareas scroll when content overflows
+- Confirm no hover effects on readonly textareas
+- Test buffer recalculates when filtering (check console logs)
+- Verify auto-scroll positions correctly after filter/checkpoint changes
+- Check both list-report.php and systemwide-report.php
+
 ### 2025-10-13 17:52:11 UTC - A11y: Update Skip Link to Target Checkpoint 1 Heading
 
 **Summary:**
