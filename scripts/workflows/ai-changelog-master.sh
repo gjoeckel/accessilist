@@ -190,37 +190,144 @@ show_status() {
     echo "=================================="
 }
 
-# Function to clean old files
+# Function to clean old files and evaluate root directory
 clean_system() {
-    echo -e "${BLUE}🧹 Cleaning AI Changelog System...${NC}"
+    echo -e "${BLUE}🧹 Root Directory Cleanup & Organization${NC}"
+    echo ""
 
-    CHANGELOG_DIR="$HOME/.ai-changelogs"
+    PROJECT_ROOT="$SCRIPT_DIR"
 
-    if [ -d "$CHANGELOG_DIR" ]; then
-        # Remove old session files (older than 30 days)
-        OLD_SESSIONS=$(find "$CHANGELOG_DIR" -name "session-*.md" -mtime +30 2>/dev/null | wc -l)
-        if [ "$OLD_SESSIONS" -gt 0 ]; then
-            find "$CHANGELOG_DIR" -name "session-*.md" -mtime +30 -delete
-            echo -e "${GREEN}✅ Removed $OLD_SESSIONS old session files${NC}"
+    # Arrays for categorizing files
+    declare -a KEEP_FILES
+    declare -a ARCHIVE_FILES
+    declare -a NEW_DIR_FILES
+    declare -a DELETE_FILES
+    declare -a NO_RECOMMENDATION
+
+    # Core files that should stay
+    CORE_PATTERNS=(
+        "package.json"
+        "package-lock.json"
+        "README.md"
+        "changelog.md"
+        "index.php"
+        "router.php"
+        "docker-compose.yml"
+        "jest.config.srd.js"
+        ".gitignore"
+        ".eslintrc.srd.js"
+        ".prettierrc.srd"
+        "template.md"
+    )
+
+    # Iterate through files in root directory
+    for file in "$PROJECT_ROOT"/*; do
+        # Skip directories
+        [ -d "$file" ] && continue
+
+        filename=$(basename "$file")
+
+        # Skip hidden files that start with .
+        [[ "$filename" =~ ^\. ]] && [ "$filename" != ".gitignore" ] && [ "$filename" != ".eslintrc.srd.js" ] && [ "$filename" != ".prettierrc.srd" ] && continue
+
+        # Categorize based on patterns
+
+        # 1. KEEP: Core project files
+        if [[ " ${CORE_PATTERNS[@]} " =~ " ${filename} " ]]; then
+            KEEP_FILES+=("$filename")
+
+        # 2. ARCHIVE: Completed reports/analysis (one-off documentation)
+        elif [[ "$filename" =~ ^(TESTING-COMPLETE-REPORT|PHASE-1-IMPLEMENTATION-COMPLETE|FINAL-TEST-SUMMARY|TEST-SUMMARY|TEST-REPORT-.*|SESSION-SUMMARY-.*|PRODUCTION-MIRROR-TEST-RESULTS|SKIP-LINK-ANALYSIS|EVENT_HANDLERS_ANALYSIS|JSON-v0\.8-UPDATE-ANALYSIS|SIDE-PANEL-DYNAMIC-COMPLETE|DEPLOYMENT-UPDATES-COMPLETE|DEPLOYMENT-OPTIMIZATION-SUMMARY|DEPLOYMENT-READY-SUMMARY|VALIDATION-REPORT|MCP-VALIDATION-REPORT|MCP-CONFIG-UPDATE-SUMMARY)\.md$ ]]; then
+            ARCHIVE_FILES+=("$filename → archive/historical-reports/")
+
+        # 3. ARCHIVE: Implementation/planning docs (completed work)
+        elif [[ "$filename" =~ ^(REPORTS-FEATURE-IMPLEMENTATION-PLAN|DETAILED-TEST-SPECIFICATIONS|PROPOSED-TEST-UPDATES|DEPLOYMENT-FLOW-ANALYSIS|DEPLOYMENT-OPTIMIZATION-PROPOSAL|ROOT-FILES-ANALYSIS-SUMMARY|TESTING-INFRASTRUCTURE-ANALYSIS-.*)\.md$ ]]; then
+            ARCHIVE_FILES+=("$filename → archive/planning-docs/")
+
+        # 4. ARCHIVE: Deployment/setup guides (reference material)
+        elif [[ "$filename" =~ ^(APACHE-SETUP-GUIDE|AUTONOMOUS-DEPLOYMENT-GUIDE|DEPLOYMENT-SETUP|DEMO-FILES-GUIDE|DEPLOY-PSEUDO-SCROLL|SERVER-COMMANDS|CURSOR-YOLO-MODE-CONFIG)\.md$ ]]; then
+            ARCHIVE_FILES+=("$filename → archive/setup-guides/")
+
+        # 5. NEW DIRECTORY: AI/Automation docs (group together)
+        elif [[ "$filename" =~ ^(AI-CHANGELOG-INTEGRATION|ai-changelog-automation|autonomous-execution-verification|autonomy-test-results|CONFIGURATION-SUMMARY|CURSOR-GLOBAL|cursor-ide-template-mac|MCP-40-TOOL-LIMIT-SOLUTION|MCP-AUTONOMOUS-SOLUTION|MCP-AUTONOMY-TEST-REPORT|MINIMAL-SERVERS-SUMMARY|mcp-tool-strategy)\.md$ ]]; then
+            NEW_DIR_FILES+=("$filename → docs/ai-automation/")
+
+        # 6. NEW DIRECTORY: Workflow scripts (consolidate)
+        elif [[ "$filename" =~ \.(sh)$ ]] && [[ ! "$filename" =~ ^(start|deploy|github-push-gate)\.sh$ ]]; then
+            NEW_DIR_FILES+=("$filename → scripts/workflows/")
+
+        # 7. KEEP: Active workflow scripts
+        elif [[ "$filename" =~ ^(ai-changelog-master|session-start|session-end|session-update|session-local|compress-context|configure-cursor-autonomy|setup-mcp-servers|setup-mcp-simple|srd-dev-setup|start|deploy|github-push-gate)\.sh$ ]]; then
+            KEEP_FILES+=("$filename")
+
+        # 8. NEW DIRECTORY: Rebuild/migration docs
+        elif [[ "$filename" =~ ^(REBUILD-COMPLETE-REPORT|LEGACY-REBUILD-ANALYSIS|REPOSITORY-MIGRATION-SUCCESS|INSTANCE_REFERENCES_ANALYSIS|ROLLBACK_PLAN|ROLLBACK_SAVE_BEFORE_CLOSE|REMOTE-CONFIGURATION-STATUS)\.md$ ]]; then
+            NEW_DIR_FILES+=("$filename → docs/migration/")
+
+        # 9. ARCHIVE: Deployment docs (completed)
+        elif [[ "$filename" =~ ^DEPLOYMENT\.md$ ]]; then
+            ARCHIVE_FILES+=("$filename → archive/deployment-legacy/")
+
+        # 10. KEEP: Active development docs
+        elif [[ "$filename" =~ ^(DRYing-types|fixes|port-accessilist|LOCAL-TEST-REPORT)\.md$ ]]; then
+            KEEP_FILES+=("$filename")
+
+        # 11. KEEP: Config files
+        elif [[ "$filename" =~ ^(config|cursor-settings.*|\.env.*)\.json$ ]]; then
+            KEEP_FILES+=("$filename")
+
+        # 12. DELETE: Temporary/one-off files
+        elif [[ "$filename" =~ ^(root-files-analysis\.json|accessilist|compare-h2\.js|inspect-systemwide\.js|production-etc-htaccess\.txt)$ ]]; then
+            DELETE_FILES+=("$filename (one-off/temporary file)")
+
+        # 13. KEEP: User-facing docs
+        elif [[ "$filename" =~ ^(USER-STORIES|WCAG-compliance-report|reports-page|user-report-page)\.md$ ]]; then
+            KEEP_FILES+=("$filename")
+
         else
-            echo -e "${GREEN}✅ No old session files to remove${NC}"
+            NO_RECOMMENDATION+=("$filename")
         fi
+    done
 
-        # Compress large files
-        find "$CHANGELOG_DIR" -name "*.md" -size +1M -exec gzip {} \;
-        echo -e "${GREEN}✅ Compressed large files${NC}"
+    # Report findings
+    echo -e "${GREEN}📋 File Organization Analysis${NC}"
+    echo "=================================="
+    echo ""
 
-        # Create backup
-        BACKUP_DIR="$CHANGELOG_DIR/backups/backup-$(date +%Y%m%d-%H%M%S)"
-        mkdir -p "$BACKUP_DIR"
-        cp -r "$CHANGELOG_DIR"/*.md "$BACKUP_DIR/" 2>/dev/null || true
-        echo -e "${GREEN}✅ Created backup: $BACKUP_DIR${NC}"
-
-    else
-        echo -e "${RED}❌ System not initialized${NC}"
+    if [ ${#KEEP_FILES[@]} -gt 0 ]; then
+        echo -e "${GREEN}1️⃣  KEEP (${#KEEP_FILES[@]} files) - Core project files:${NC}"
+        printf '   • %s\n' "${KEEP_FILES[@]}"
+        echo ""
     fi
 
-    echo -e "${GREEN}✅ Cleanup complete${NC}"
+    if [ ${#ARCHIVE_FILES[@]} -gt 0 ]; then
+        echo -e "${YELLOW}2️⃣  MOVE TO ARCHIVE (${#ARCHIVE_FILES[@]} files) - Completed/historical docs:${NC}"
+        printf '   • %s\n' "${ARCHIVE_FILES[@]}"
+        echo ""
+    fi
+
+    if [ ${#NEW_DIR_FILES[@]} -gt 0 ]; then
+        echo -e "${BLUE}3️⃣  MOVE TO NEW DIRECTORY (${#NEW_DIR_FILES[@]} files) - Group similar files:${NC}"
+        printf '   • %s\n' "${NEW_DIR_FILES[@]}"
+        echo ""
+    fi
+
+    if [ ${#DELETE_FILES[@]} -gt 0 ]; then
+        echo -e "${RED}4️⃣  DELETE (${#DELETE_FILES[@]} files) - One-off/temporary:${NC}"
+        printf '   • %s\n' "${DELETE_FILES[@]}"
+        echo ""
+    fi
+
+    if [ ${#NO_RECOMMENDATION[@]} -gt 0 ]; then
+        echo -e "${YELLOW}5️⃣  NO RECOMMENDATION (${#NO_RECOMMENDATION[@]} files) - Needs manual review:${NC}"
+        printf '   • %s\n' "${NO_RECOMMENDATION[@]}"
+        echo ""
+    fi
+
+    echo "=================================="
+    echo ""
+    echo -e "${YELLOW}⏸️  WAITING FOR USER AUTHORIZATION${NC}"
+    echo -e "${YELLOW}This analysis is for review only. No files have been moved or deleted.${NC}"
 }
 
 # Main command handling
@@ -314,5 +421,3 @@ case "${1:-help}" in
         show_usage
         ;;
 esac
-
-
