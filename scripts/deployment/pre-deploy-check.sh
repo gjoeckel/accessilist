@@ -62,8 +62,9 @@ REQUIRED_FILES=(
     ".htaccess"
     "index.php"
     "php/home.php"
-    "php/reports.php"
-    "php/report.php"
+    "php/systemwide-report.php"
+    "php/list-report.php"
+    "php/mychecklist.php"
     "php/api/save.php"
     "php/api/restore.php"
 )
