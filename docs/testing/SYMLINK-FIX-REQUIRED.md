@@ -8,13 +8,13 @@ The production mirror symlink currently points to an outdated project location t
 
 **Current symlink:**
 ```bash
-/Library/WebServer/Documents/training/online/accessilist 
+/Library/WebServer/Documents/training/online/accessilist
 → /Users/a00288946/Desktop/accessilist  # ❌ OLD PATH (doesn't exist)
 ```
 
 **Should point to:**
 ```bash
-/Library/WebServer/Documents/training/online/accessilist 
+/Library/WebServer/Documents/training/online/accessilist
 → /Users/a00288946/Projects/accessilist  # ✅ CURRENT PROJECT
 ```
 
@@ -71,7 +71,6 @@ sudo apachectl stop
 
 ---
 
-**Created:** 2025-10-14  
-**Priority:** Medium (required before production mirror testing)  
+**Created:** 2025-10-14
+**Priority:** Medium (required before production mirror testing)
 **Requires:** Sudo privileges
-
