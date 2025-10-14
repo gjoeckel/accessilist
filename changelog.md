@@ -66,7 +66,7 @@
 ```bash
 # Enhanced ai-clean workflow
 ./ai-clean
-# Reports: 
+# Reports:
 # - 23 files to keep (core project files)
 # - 32 files to archive (completed/historical)
 # - 29 files to new directories (AI docs, migration docs, workflow scripts)
