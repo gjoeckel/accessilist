@@ -150,4 +150,3 @@ echo ""
 echo -e "${GREEN}🚀 Ready to deploy!${NC}"
 echo ""
 exit 0
-
