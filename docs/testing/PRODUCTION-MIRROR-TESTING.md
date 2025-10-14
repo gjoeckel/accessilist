@@ -228,7 +228,7 @@ cat .env | grep BASE_PATH
 ls -la /Library/WebServer/Documents/training/online/
 
 # Should show:
-# accessilist -> /Users/a00288946/Desktop/accessilist
+# accessilist -> /Users/a00288946/Projects/accessilist
 ```
 
 ### PHP not executing
