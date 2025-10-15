@@ -61,7 +61,7 @@ GITHUB_TOKEN=your_github_token_here
 ANTHROPIC_API_KEY=your_anthropic_key_here
 
 # Project Configuration
-PROJECT_ROOT=/Users/a00288946/Desktop/template
+PROJECT_ROOT=/Users/a00288946/Projects/accessilist
 NODE_ENV=development
 EOF
     echo "✅ Created .env file template"
@@ -79,7 +79,7 @@ if ! grep -q "CURSOR_MCP_ENV" ~/.zshrc 2>/dev/null; then
 
 # Cursor MCP Environment Setup
 export CURSOR_MCP_ENV=1
-export PROJECT_ROOT=/Users/a00288946/Desktop/template
+export PROJECT_ROOT=/Users/a00288946/Projects/accessilist
 
 # Load environment variables if .env exists
 if [ -f "$PROJECT_ROOT/.env" ]; then

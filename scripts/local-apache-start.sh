@@ -17,7 +17,7 @@ echo -e "${BLUE}🚀 Starting Both Servers (PHP + Apache)${NC}"
 echo "=============================================="
 echo ""
 
-PROJECT_DIR="/Users/a00288946/Desktop/accessilist"
+PROJECT_DIR="/Users/a00288946/Projects/accessilist"
 
 # Check we're in the right directory
 if [ ! -d "$PROJECT_DIR" ]; then
@@ -200,4 +200,3 @@ echo "  Stop Apache: sudo apachectl stop"
 echo "  Stop Both:   kill $PHP_PID && sudo apachectl stop"
 echo ""
 echo -e "${GREEN}✅ Ready for development and testing!${NC}"
-

@@ -11,7 +11,7 @@ echo "=================================================="
 echo "📦 Using remote repository: https://github.com/gjoeckel/my-mcp-servers"
 
 # Set environment variables
-export PROJECT_ROOT="/Users/a00288946/Desktop/accessilist"
+export PROJECT_ROOT="/Users/a00288946/Projects/accessilist"
 export CURSOR_MCP_ENV=1
 
 # Load environment variables if .env exists

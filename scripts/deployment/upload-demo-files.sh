@@ -14,7 +14,7 @@ RED='\033[0;31m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-PROJECT_DIR="/Users/a00288946/Desktop/accessilist"
+PROJECT_DIR="/Users/a00288946/Projects/accessilist"
 PEM_FILE="/Users/a00288946/Developer/projects/GeorgeWebAIMServerKey.pem"
 SERVER="george@ec2-3-20-59-76.us-east-2.compute.amazonaws.com"
 REMOTE_SAVES="/var/websites/webaim/htdocs/training/online/accessilist/saves"
@@ -160,4 +160,3 @@ echo "  • Demo files will NOT be overwritten by future deploys"
 echo "  • Safe to deploy normally: npm run deploy:full"
 echo ""
 exit 0
-

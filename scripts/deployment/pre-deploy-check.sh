@@ -14,7 +14,7 @@ RED='\033[0;31m'
 CYAN='\033[0;36m'
 NC='\033[0m'
 
-PROJECT_DIR="/Users/a00288946/Desktop/accessilist"
+PROJECT_DIR="/Users/a00288946/Projects/accessilist"
 
 echo -e "${BLUE}╔════════════════════════════════════════════════════════╗${NC}"
 echo -e "${BLUE}║           Pre-Deployment Validation Check             ║${NC}"
@@ -149,4 +149,3 @@ echo ""
 echo -e "${GREEN}🚀 Ready to deploy!${NC}"
 echo ""
 exit 0
-

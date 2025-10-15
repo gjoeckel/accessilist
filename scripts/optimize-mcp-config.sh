@@ -23,9 +23,9 @@ cat > "/Users/a00288946/.config/mcp/cursor-config.json" << 'EOF'
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/a00288946/Desktop/template"],
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/a00288946/Projects/accessilist"],
       "env": {
-        "ALLOWED_PATHS": "/Users/a00288946/Desktop/template",
+        "ALLOWED_PATHS": "/Users/a00288946/Projects/accessilist",
         "READ_ONLY": "false"
       }
     },
@@ -60,7 +60,7 @@ fi
 
 # Create simplified health check
 echo "🏥 Creating simplified MCP health check..."
-cat > "/Users/a00288946/Desktop/template/scripts/check-mcp-simple.sh" << 'EOF'
+cat > "/Users/a00288946/Projects/accessilist/scripts/check-mcp-simple.sh" << 'EOF'
 #!/bin/bash
 # Simplified MCP Health Check - Focus on Core Functionality
 
@@ -75,7 +75,7 @@ for server in "${CORE_SERVERS[@]}"; do
 
     case "$server" in
         "filesystem")
-            if [ -r "/Users/a00288946/Desktop/template" ] && [ -w "/Users/a00288946/Desktop/template" ]; then
+            if [ -r "/Users/a00288946/Projects/accessilist" ] && [ -w "/Users/a00288946/Projects/accessilist" ]; then
                 echo "  ✅ Filesystem access: READ/WRITE"
             else
                 echo "  ❌ Filesystem access: FAILED"
@@ -102,14 +102,14 @@ echo "✅ Memory MCP available for context persistence"
 echo "✅ Puppeteer MCP ready for browser automation"
 EOF
 
-chmod +x "/Users/a00288946/Desktop/template/scripts/check-mcp-simple.sh"
+chmod +x "/Users/a00288946/Projects/accessilist/scripts/check-mcp-simple.sh"
 echo "✅ Simplified health check created"
 
 # Update startup script to use simplified MCP check
 echo "🚀 Updating startup script..."
-if [ -f "/Users/a00288946/Desktop/template/scripts/startup-runbook.sh" ]; then
+if [ -f "/Users/a00288946/Projects/accessilist/scripts/startup-runbook.sh" ]; then
     # Replace MCP health check with simplified version
-    sed -i.bak 's|./scripts/check-mcp-health.sh|./scripts/check-mcp-simple.sh|g' "/Users/a00288946/Desktop/template/scripts/startup-runbook.sh"
+    sed -i.bak 's|./scripts/check-mcp-health.sh|./scripts/check-mcp-simple.sh|g' "/Users/a00288946/Projects/accessilist/scripts/startup-runbook.sh"
     echo "✅ Startup script updated"
 fi
 

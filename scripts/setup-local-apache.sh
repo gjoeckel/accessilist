@@ -32,7 +32,7 @@ if [[ "$OSTYPE" != "darwin"* ]]; then
 fi
 
 # Get project directory
-PROJECT_DIR="/Users/a00288946/Desktop/accessilist"
+PROJECT_DIR="/Users/a00288946/Projects/accessilist"
 if [ ! -d "$PROJECT_DIR" ]; then
     echo -e "${RED}❌ Project directory not found: $PROJECT_DIR${NC}"
     exit 1
@@ -302,4 +302,3 @@ echo ""
 echo -e "${YELLOW}💡 To restore original config:${NC}"
 echo "sudo cp /etc/apache2/httpd.conf.backup /etc/apache2/httpd.conf"
 echo ""
-

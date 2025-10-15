@@ -29,7 +29,7 @@ PASSED_TESTS=0
 FAILED_TESTS=0
 
 # Project directory
-PROJECT_DIR="/Users/a00288946/Desktop/accessilist"
+PROJECT_DIR="/Users/a00288946/Projects/accessilist"
 # Allow BASE_URL override via environment variable (for Docker testing)
 BASE_URL="${BASE_URL:-http://localhost/training/online/accessilist}"
 
@@ -869,4 +869,3 @@ else
     log "RESULT: $FAILED_TESTS TESTS FAILED"
     exit 1
 fi
-

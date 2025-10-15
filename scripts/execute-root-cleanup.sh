@@ -168,7 +168,7 @@ echo ""
 python3 << 'PYTHON_PROCESS' > /tmp/files_to_categorize.txt
 import json
 
-with open('/Users/a00288946/Desktop/accessilist/cleanup-analysis.json', 'r') as f:
+with open('/Users/a00288946/Projects/accessilist/cleanup-analysis.json', 'r') as f:
     data = json.load(f)
 
 # Collect all files to process
@@ -286,12 +286,12 @@ python3 << 'PYTHON_DELETE'
 import json
 import os
 
-with open('/Users/a00288946/Desktop/accessilist/cleanup-recommendations.json', 'r') as f:
+with open('/Users/a00288946/Projects/accessilist/cleanup-recommendations.json', 'r') as f:
     data = json.load(f)
 
 deleted = 0
 for item in data['delete']:
-    filepath = f"/Users/a00288946/Desktop/accessilist/{item['file']}"
+    filepath = f"/Users/a00288946/Projects/accessilist/{item['file']}"
     if os.path.exists(filepath):
         os.remove(filepath)
         print(f"  ✓ Deleted: {item['file']}")
@@ -310,13 +310,13 @@ import json
 import shutil
 import os
 
-with open('/Users/a00288946/Desktop/accessilist/cleanup-recommendations.json', 'r') as f:
+with open('/Users/a00288946/Projects/accessilist/cleanup-recommendations.json', 'r') as f:
     data = json.load(f)
 
 archived = 0
 for item in data['archive']:
     filename = item['file']
-    source = f"/Users/a00288946/Desktop/accessilist/{filename}"
+    source = f"/Users/a00288946/Projects/accessilist/{filename}"
 
     if not os.path.exists(source):
         print(f"  ⚠ Not found: {filename}")
@@ -324,13 +324,13 @@ for item in data['archive']:
 
     # Determine destination based on filename patterns
     if any(x in filename for x in ['REPORT', 'SUMMARY', 'COMPLETE', 'SUCCESS']):
-        dest_dir = "/Users/a00288946/Desktop/accessilist/docs/historical/reports"
+        dest_dir = "/Users/a00288946/Projects/accessilist/docs/historical/reports"
     elif any(x in filename for x in ['ANALYSIS', 'EVALUATION', 'PROPOSAL']):
-        dest_dir = "/Users/a00288946/Desktop/accessilist/docs/historical/analysis"
+        dest_dir = "/Users/a00288946/Projects/accessilist/docs/historical/analysis"
     elif any(x in filename for x in ['DEPLOYMENT', 'MIGRATION', 'PACKAGE']):
-        dest_dir = "/Users/a00288946/Desktop/accessilist/docs/historical/deployment"
+        dest_dir = "/Users/a00288946/Projects/accessilist/docs/historical/deployment"
     else:
-        dest_dir = "/Users/a00288946/Desktop/accessilist/docs/historical/configuration"
+        dest_dir = "/Users/a00288946/Projects/accessilist/docs/historical/configuration"
 
     dest = f"{dest_dir}/{filename}"
     shutil.move(source, dest)

@@ -7,7 +7,7 @@ set -euo pipefail
 echo "🔍 VERIFYING MCP AUTONOMOUS OPERATION"
 echo "====================================="
 
-PROJECT_ROOT="/Users/a00288946/Desktop/template"
+PROJECT_ROOT="/Users/a00288946/Projects/accessilist"
 
 # Check if MCP configuration exists
 if [ -f "$PROJECT_ROOT/.cursor/mcp.json" ]; then

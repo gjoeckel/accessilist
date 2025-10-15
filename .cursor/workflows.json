@@ -1,76 +1,51 @@
 {
-  "ai-start": {
-    "description": "Load AI session context and initialize environment",
-    "commands": [
-      "./scripts/session/session-start.sh"
-    ],
-    "auto_approve": true,
-    "working_directory": "/Users/a00288946/Desktop/accessilist",
-    "timeout": 30000,
-    "on_error": "continue"
-  },
-  "ai-end": {
-    "description": "Save session context and generate changelog",
-    "commands": [
-      "./scripts/session/session-end.sh"
-    ],
-    "auto_approve": true,
-    "working_directory": "/Users/a00288946/Desktop/accessilist",
-    "timeout": 20000,
-    "on_error": "continue"
-  },
-  "ai-update": {
-    "description": "Record mid-session progress",
-    "commands": [
-      "./scripts/session/session-update.sh"
-    ],
-    "auto_approve": true,
-    "working_directory": "/Users/a00288946/Desktop/accessilist",
-    "timeout": 20000,
-    "on_error": "continue"
-  },
-  "ai-repeat": {
-    "description": "Reload session context",
-    "commands": [
-      "./scripts/session/session-start.sh"
-    ],
-    "auto_approve": true,
-    "working_directory": "/Users/a00288946/Desktop/accessilist",
-    "timeout": 20000,
-    "on_error": "continue"
-  },
-  "ai-clean": {
-    "description": "Clean temporary files and logs",
-    "commands": [
-      "rm -f logs/*.log",
-      "rm -rf node_modules/.cache",
-      "find . -name '.DS_Store' -delete",
-      "echo '✅ Project cleaned'"
-    ],
-    "auto_approve": true,
-    "working_directory": "/Users/a00288946/Desktop/accessilist",
-    "timeout": 10000,
-    "on_error": "continue"
-  },
-  "ai-dry": {
-    "description": "Run duplicate code detection",
+  "proj-dry": {
+    "description": "Run duplicate code detection (AccessiList-specific)",
     "commands": [
       "./scripts/ai-dry.sh"
     ],
     "auto_approve": true,
-    "working_directory": "/Users/a00288946/Desktop/accessilist",
     "timeout": 60000,
     "on_error": "continue"
   },
-  "ai-compress": {
-    "description": "Compress session context into summary",
+  "proj-deploy-check": {
+    "description": "Run pre-deployment validation",
     "commands": [
-      "./scripts/utils/compress-context.sh"
+      "./scripts/deployment/pre-deploy-check.sh"
     ],
     "auto_approve": true,
-    "working_directory": "/Users/a00288946/Desktop/accessilist",
     "timeout": 30000,
+    "on_error": "continue"
+  },
+  "proj-test-mirror": {
+    "description": "Test production mirror configuration (Docker Apache)",
+    "commands": [
+      "docker compose up -d",
+      "sleep 8",
+      "BASE_URL=http://127.0.0.1:8080 ./scripts/test-production-mirror.sh"
+    ],
+    "auto_approve": true,
+    "timeout": 120000,
+    "on_error": "continue"
+  },
+  "proj-docker-up": {
+    "description": "Start Docker Apache server",
+    "commands": [
+      "docker compose up -d",
+      "echo '✅ Docker Apache started on http://127.0.0.1:8080'"
+    ],
+    "auto_approve": true,
+    "timeout": 30000,
+    "on_error": "continue"
+  },
+  "proj-docker-down": {
+    "description": "Stop Docker Apache server",
+    "commands": [
+      "docker compose down",
+      "echo '✅ Docker Apache stopped'"
+    ],
+    "auto_approve": true,
+    "timeout": 20000,
     "on_error": "continue"
   }
 }
-

@@ -28,15 +28,15 @@ echo -e "${GREEN}✅ SRD directory structure created${NC}"
 echo -e "${BLUE}⚙️  Setting up SRD configuration files...${NC}"
 
 # Copy ESLint config
-cp /Users/a00288946/Desktop/template/.eslintrc.srd.js ~/Developer/srd-templates/configs/eslint/
+cp /Users/a00288946/Projects/accessilist/.eslintrc.srd.js ~/Developer/srd-templates/configs/eslint/
 echo -e "${GREEN}✅ ESLint SRD config copied${NC}"
 
 # Copy Prettier config
-cp /Users/a00288946/Desktop/template/.prettierrc.srd ~/Developer/srd-templates/configs/prettier/
+cp /Users/a00288946/Projects/accessilist/.prettierrc.srd ~/Developer/srd-templates/configs/prettier/
 echo -e "${GREEN}✅ Prettier SRD config copied${NC}"
 
 # Copy Jest config
-cp /Users/a00288946/Desktop/template/jest.config.srd.js ~/Developer/srd-templates/configs/jest/
+cp /Users/a00288946/Projects/accessilist/jest.config.srd.js ~/Developer/srd-templates/configs/jest/
 echo -e "${GREEN}✅ Jest SRD config copied${NC}"
 
 # Create SRD package.json template

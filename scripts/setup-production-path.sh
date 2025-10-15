@@ -14,7 +14,7 @@ NC='\033[0m'
 echo -e "${BLUE}Setting up production path mirror...${NC}"
 echo ""
 
-PROJECT_DIR="/Users/a00288946/Desktop/accessilist"
+PROJECT_DIR="/Users/a00288946/Projects/accessilist"
 
 # Check if running as root
 if [ "$EUID" -ne 0 ]; then
@@ -50,4 +50,3 @@ else
     echo -e "${RED}❌ Failed to create symlink${NC}"
     exit 1
 fi
-

@@ -22,9 +22,9 @@ cat > "/Users/a00288946/.cursor/mcp.json" << 'EOF'
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/a00288946/Desktop/template"],
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/a00288946/Projects/accessilist"],
       "env": {
-        "ALLOWED_PATHS": "/Users/a00288946/Desktop/template:/Users/a00288946/.cursor:/Users/a00288946/.config/mcp",
+        "ALLOWED_PATHS": "/Users/a00288946/Projects/accessilist:/Users/a00288946/.cursor:/Users/a00288946/.config/mcp",
         "READ_ONLY": "false"
       }
     },
@@ -48,7 +48,7 @@ cat > "/Users/a00288946/.cursor/mcp.json" << 'EOF'
       "args": ["-y", "@modelcontextprotocol/server-shell"],
       "env": {
         "ALLOWED_COMMANDS": "npm,git,node,php,composer,curl,wget,ls,cat,grep,find,chmod,chown,mkdir,rm,cp,mv",
-        "WORKING_DIRECTORY": "/Users/a00288946/Desktop/template"
+        "WORKING_DIRECTORY": "/Users/a00288946/Projects/accessilist"
       }
     }
   }
@@ -59,7 +59,7 @@ echo "✅ Optimized MCP configuration created"
 
 # Create environment setup script
 echo "🔧 Creating environment setup script..."
-cat > "/Users/a00288946/Desktop/template/scripts/setup-cursor-env.sh" << 'EOF'
+cat > "/Users/a00288946/Projects/accessilist/scripts/setup-cursor-env.sh" << 'EOF'
 #!/bin/bash
 # Environment setup for Cursor MCP optimization
 
@@ -88,11 +88,11 @@ fi
 echo "✅ Environment setup complete"
 EOF
 
-chmod +x "/Users/a00288946/Desktop/template/scripts/setup-cursor-env.sh"
+chmod +x "/Users/a00288946/Projects/accessilist/scripts/setup-cursor-env.sh"
 
 # Create MCP health check
 echo "🏥 Creating MCP health check..."
-cat > "/Users/a00288946/Desktop/template/scripts/check-cursor-mcp.sh" << 'EOF'
+cat > "/Users/a00288946/Projects/accessilist/scripts/check-cursor-mcp.sh" << 'EOF'
 #!/bin/bash
 # Cursor MCP Health Check
 
@@ -121,7 +121,7 @@ for server in "${MCP_SERVERS[@]}"; do
 
     case "$server" in
         "filesystem")
-            if [ -r "/Users/a00288946/Desktop/template" ] && [ -w "/Users/a00288946/Desktop/template" ]; then
+            if [ -r "/Users/a00288946/Projects/accessilist" ] && [ -w "/Users/a00288946/Projects/accessilist" ]; then
                 echo "  ✅ Filesystem access: READ/WRITE"
             else
                 echo "  ❌ Filesystem access: FAILED"
@@ -162,7 +162,7 @@ echo "✅ Project-specific configuration"
 echo "✅ Shell access for command execution"
 EOF
 
-chmod +x "/Users/a00288946/Desktop/template/scripts/check-cursor-mcp.sh"
+chmod +x "/Users/a00288946/Projects/accessilist/scripts/check-cursor-mcp.sh"
 
 echo ""
 echo "🎯 Cursor MCP Optimization Complete!"
