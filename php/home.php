@@ -30,26 +30,29 @@ renderHTMLHead('Accessibility Checklists');
           <button id="demo" class="checklist-button">Demo</button>
         </div>
       </div>
-      <div class="checklist-group">
-        <h2>Microsoft</h2>
-        <div class="checklist-buttons-row">
-          <button id="word" class="checklist-button">Word</button>
-          <button id="powerpoint" class="checklist-button">PowerPoint</button>
-          <button id="excel" class="checklist-button">Excel</button>
+
+      <div class="checklist-groups-row">
+        <div class="checklist-group">
+          <h2>Microsoft</h2>
+          <div class="checklist-buttons-row">
+            <button id="word" class="checklist-button">Word</button>
+            <button id="powerpoint" class="checklist-button">PowerPoint</button>
+            <button id="excel" class="checklist-button">Excel</button>
+          </div>
         </div>
-      </div>
-      <div class="checklist-group">
-        <h2>Google</h2>
-        <div class="checklist-buttons-row">
-          <button id="docs" class="checklist-button">Docs</button>
-          <button id="slides" class="checklist-button">Slides</button>
+        <div class="checklist-group">
+          <h2>Google</h2>
+          <div class="checklist-buttons-row">
+            <button id="docs" class="checklist-button">Docs</button>
+            <button id="slides" class="checklist-button">Slides</button>
+          </div>
         </div>
-      </div>
-      <div class="checklist-group">
-        <h2>Other</h2>
-        <div class="checklist-buttons-row">
-          <button id="camtasia" class="checklist-button">Camtasia</button>
-          <button id="dojo" class="checklist-button">Dojo</button>
+        <div class="checklist-group">
+          <h2>Other</h2>
+          <div class="checklist-buttons-row">
+            <button id="camtasia" class="checklist-button">Camtasia</button>
+            <button id="dojo" class="checklist-button">Dojo</button>
+          </div>
         </div>
       </div>
     </div>

@@ -22,7 +22,24 @@ main[role="main"] {
   justify-content: center;
   align-items: center;
   margin-top: 100px;
-  gap: 20px;
+  gap: 30px;
+}
+
+.landing-content.checklist-groups-container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 30px;
+}
+
+/* Horizontal layout for main category groups */
+.checklist-groups-row {
+  display: flex;
+  gap: 40px;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
 }
 
 .checklist-buttons-row {
