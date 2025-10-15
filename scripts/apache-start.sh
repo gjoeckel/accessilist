@@ -156,4 +156,3 @@ echo ""
 
 echo -e "${GREEN}✅ Apache production simulation ready!${NC}"
 echo -e "${YELLOW}💡 Use Ctrl+C to return to shell (Apache runs in background)${NC}"
-

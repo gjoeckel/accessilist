@@ -7,7 +7,7 @@ set -euo pipefail
 echo "🔄 RESTARTING MCP SERVERS"
 echo "=========================="
 
-PROJECT_ROOT="/Users/a00288946/Desktop/template"
+PROJECT_ROOT="/Users/a00288946/Projects/accessilist"
 
 # Stop existing servers
 echo "🛑 Stopping existing MCP servers..."

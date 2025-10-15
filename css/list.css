@@ -216,6 +216,12 @@ body.checklist-page .checklist-caption {
     flex-direction: column;
     align-items: center;
     gap: 35px;
+    /* Scroll only when needed */
+    overflow-y: auto;
+    /* Reserve space for scrollbar so content doesn't shift/overlay */
+    scrollbar-gutter: stable both-edges;
+    /* Constrain to viewport height above footer */
+    max-height: calc(100vh - var(--footer-height, 50px) - var(--sidepanel-bottom-gap, 12px));
 }
 
 /* Checkpoint button */
@@ -250,42 +256,63 @@ body.checklist-page .checklist-caption {
 }
 
 /* ====================================================================
-   "ALL" BUTTON (Three Lines Symbol)
+   "ALL" BUTTON (Three Checkpoint Lines)
    ==================================================================== */
 
-/* Three lines button - use ::before with SVG mask for proper layering */
+/* All checkpoints button - scaled from 120px to 30px (0.25x scale) */
 .checkpoint-all {
-    font-size: 0 !important; /* Hide the ≡ text character */
+    font-size: 0 !important; /* Hide any text */
     position: relative;
-    /* Explicit dimensions ensure button is clickable even with font-size: 0 */
+    /* Explicit dimensions ensure button is clickable */
+    width: 30px !important;
+    height: 30px !important;
     min-width: 30px !important;
     min-height: 30px !important;
+    border-width: 1.5px !important; /* Scaled from 5px */
 }
 
-/* Three lines icon as pseudo-element with mask */
+/* Draw 3 checkpoint lines using pseudo-element */
 .checkpoint-all::before {
     content: '';
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    width: 18px;
-    height: 15px;
-    -webkit-mask-image: url('../images/three-lines.svg');
-    mask-image: url('../images/three-lines.svg');
-    -webkit-mask-size: contain;
-    mask-size: contain;
-    -webkit-mask-position: center;
-    mask-position: center;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    background-color: #333333; /* Icon color - will be masked by SVG shape */
-    pointer-events: none; /* Allow clicks to pass through to parent button */
+    width: 17px;
+    height: 12px;
+    pointer-events: none;
+
+    /* Each row: 3px square (0.5px border) + 1.5px gap + 12.5px line (2px tall) + 2.5px row spacing */
+    background:
+        /* Row 1 - Task line (solid rectangle) */
+        linear-gradient(currentColor, currentColor) 4.5px 0.5px / 12.5px 2px no-repeat,
+        /* Row 1 - Square border (hollow) */
+        linear-gradient(currentColor, currentColor) 0 0 / 3px 0.5px no-repeat,
+        linear-gradient(currentColor, currentColor) 0 2.5px / 3px 0.5px no-repeat,
+        linear-gradient(currentColor, currentColor) 0 0.5px / 0.5px 2px no-repeat,
+        linear-gradient(currentColor, currentColor) 2.5px 0.5px / 0.5px 2px no-repeat,
+
+        /* Row 2 - Task line */
+        linear-gradient(currentColor, currentColor) 4.5px 5px / 12.5px 2px no-repeat,
+        /* Row 2 - Square border */
+        linear-gradient(currentColor, currentColor) 0 4.5px / 3px 0.5px no-repeat,
+        linear-gradient(currentColor, currentColor) 0 7px / 3px 0.5px no-repeat,
+        linear-gradient(currentColor, currentColor) 0 5px / 0.5px 2px no-repeat,
+        linear-gradient(currentColor, currentColor) 2.5px 5px / 0.5px 2px no-repeat,
+
+        /* Row 3 - Task line */
+        linear-gradient(currentColor, currentColor) 4.5px 9.5px / 12.5px 2px no-repeat,
+        /* Row 3 - Square border */
+        linear-gradient(currentColor, currentColor) 0 9px / 3px 0.5px no-repeat,
+        linear-gradient(currentColor, currentColor) 0 11.5px / 3px 0.5px no-repeat,
+        linear-gradient(currentColor, currentColor) 0 9.5px / 0.5px 2px no-repeat,
+        linear-gradient(currentColor, currentColor) 2.5px 9.5px / 0.5px 2px no-repeat;
+
+    color: #333333;
 }
 
-/* White icon when button has brown background (active state) */
 .checkpoint-all.active::before {
-    background-color: white !important; /* Mask reveals white color */
+    color: white !important;
 }
 
 /* Toggle strip - collapse/expand button */

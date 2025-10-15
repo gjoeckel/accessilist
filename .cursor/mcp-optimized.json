@@ -2,9 +2,9 @@
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/a00288946/Desktop/template"],
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/a00288946/Projects/accessilist"],
       "env": {
-        "ALLOWED_PATHS": "/Users/a00288946/Desktop/template:/Users/a00288946/.cursor:/Users/a00288946/.config/mcp",
+        "ALLOWED_PATHS": "/Users/a00288946/Projects/accessilist:/Users/a00288946/.cursor:/Users/a00288946/.config/mcp",
         "READ_ONLY": "false"
       }
     },

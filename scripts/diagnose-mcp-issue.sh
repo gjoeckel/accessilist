@@ -59,7 +59,7 @@ echo "🔍 Checking for alternative MCP configuration locations..."
 ALTERNATIVE_LOCATIONS=(
     "/Users/a00288946/.config/mcp"
     "/Users/a00288946/.cursor/mcp"
-    "/Users/a00288946/Desktop/template/.cursor"
+    "/Users/a00288946/Projects/accessilist/.cursor"
 )
 
 for location in "${ALTERNATIVE_LOCATIONS[@]}"; do

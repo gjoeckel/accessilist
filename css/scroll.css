@@ -55,4 +55,3 @@ body.report-page.systemwide-report-page main::after {
     height: var(--bottom-buffer-report, 500px);  /* Dynamic - prevents over-scrolling */
     transition: height 0.3s ease;  /* Smooth transition when buffer updates */
 }
-

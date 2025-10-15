@@ -7,7 +7,7 @@ set -euo pipefail
 echo "🎯 OPTIMIZING MCP FOR 40-TOOL LIMIT"
 echo "===================================="
 
-PROJECT_ROOT="/Users/a00288946/Desktop/template"
+PROJECT_ROOT="/Users/a00288946/Projects/accessilist"
 
 # Backup current configuration
 if [ -f "$PROJECT_ROOT/.cursor/mcp.json" ]; then
@@ -23,9 +23,9 @@ cat > "$PROJECT_ROOT/.cursor/mcp.json" << 'EOF'
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/a00288946/Desktop/template"],
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/a00288946/Projects/accessilist"],
       "env": {
-        "ALLOWED_PATHS": "/Users/a00288946/Desktop/template:/Users/a00288946/.cursor:/Users/a00288946/.config/mcp",
+        "ALLOWED_PATHS": "/Users/a00288946/Projects/accessilist:/Users/a00288946/.cursor:/Users/a00288946/.config/mcp",
         "READ_ONLY": "false"
       }
     },
@@ -71,9 +71,9 @@ cat > "$PROJECT_ROOT/.cursor/mcp-with-github.json" << 'EOF'
   "mcpServers": {
     "filesystem": {
       "command": "npx",
-      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/a00288946/Desktop/template"],
+      "args": ["-y", "@modelcontextprotocol/server-filesystem", "/Users/a00288946/Projects/accessilist"],
       "env": {
-        "ALLOWED_PATHS": "/Users/a00288946/Desktop/template:/Users/a00288946/.cursor:/Users/a00288946/.config/mcp",
+        "ALLOWED_PATHS": "/Users/a00288946/Projects/accessilist:/Users/a00288946/.cursor:/Users/a00288946/.config/mcp",
         "READ_ONLY": "false"
       }
     },
@@ -104,7 +104,7 @@ set -euo pipefail
 echo "🚀 STARTING OPTIMIZED MCP SERVERS"
 echo "================================="
 
-PROJECT_ROOT="/Users/a00288946/Desktop/template"
+PROJECT_ROOT="/Users/a00288946/Projects/accessilist"
 
 # Stop any existing MCP servers
 echo "🛑 Stopping existing MCP servers..."
@@ -126,7 +126,7 @@ echo "🚀 Starting optimized MCP servers..."
 
 # Filesystem MCP
 echo "Starting filesystem MCP server..."
-nohup npx -y @modelcontextprotocol/server-filesystem /Users/a00288946/Desktop/template > "$PROJECT_ROOT/logs/mcp-filesystem.log" 2>&1 &
+nohup npx -y @modelcontextprotocol/server-filesystem /Users/a00288946/Projects/accessilist > "$PROJECT_ROOT/logs/mcp-filesystem.log" 2>&1 &
 echo $! > "$PROJECT_ROOT/.cursor/filesystem.pid"
 echo "✅ Filesystem MCP server started (PID: $!)"
 

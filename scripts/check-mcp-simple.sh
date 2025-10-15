@@ -12,7 +12,7 @@ for server in "${CORE_SERVERS[@]}"; do
     
     case "$server" in
         "filesystem")
-            if [ -r "/Users/a00288946/Desktop/template" ] && [ -w "/Users/a00288946/Desktop/template" ]; then
+            if [ -r "/Users/a00288946/Projects/accessilist" ] && [ -w "/Users/a00288946/Projects/accessilist" ]; then
                 echo "  ✅ Filesystem access: READ/WRITE"
             else
                 echo "  ❌ Filesystem access: FAILED"

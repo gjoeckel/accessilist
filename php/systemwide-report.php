@@ -7,6 +7,67 @@ require_once __DIR__ . '/includes/common-scripts.php';
 renderHTMLHead('Systemwide Report');
 ?>
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/systemwide-report.css?v=<?php echo time(); ?>">
+<style>
+    /* CSS overrides scoped to systemwide-report page only */
+
+    /* Remove sticky-header-container wrapper and extend header height */
+    .systemwide-report-page .sticky-header {
+        height: 150px;
+    }
+
+    /* Position h1 with pixel values instead of percentage */
+    .systemwide-report-page .sticky-header h1 {
+        position: absolute;
+        left: 50%;
+        top: 25px;
+        transform: translateX(-50%);
+        margin: 0;
+        font-size: 1.5rem;
+    }
+
+    /* Position Home button with pixel values */
+    .systemwide-report-page #homeButton {
+        position: absolute;
+        left: 2rem;
+        top: 35px;
+        transform: translateY(-50%);
+    }
+
+    /* Position Refresh button group with pixel values */
+    .systemwide-report-page .header-buttons-group {
+        position: absolute;
+        right: 1rem;
+        top: 35px;
+        transform: translateY(-50%);
+    }
+
+    /* Move filter-group inside header, position at 80px, full width, no background */
+    .systemwide-report-page .filter-group {
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background-color: transparent;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin: 0;
+    }
+
+    /* Remove white background pseudo-element from filter-group */
+    .systemwide-report-page .filter-group::before {
+        display: none;
+    }
+
+    /* Adjust report section spacing */
+    .systemwide-report-page .report-section {
+        padding-top: 60px;
+    }
+
+    /* Reduce h2 margin-bottom */
+    .systemwide-report-page #reports-caption {
+        margin-bottom: 10px;
+    }
+</style>
 <body class="report-page systemwide-report-page">
 <?php require __DIR__ . '/includes/noscript.php'; ?>
 
@@ -28,60 +89,58 @@ renderHTMLHead('Systemwide Report');
   console.log('🎯 [INLINE SCRIPT] Initial scroll to 130, waiting for content to build...');
 </script>
 
-<!-- Sticky Header + Filters Container -->
-<div class="sticky-header-container">
-    <header class="sticky-header">
-        <h1>Systemwide Report</h1>
-        <button id="homeButton" class="home-button" aria-label="Go to home page">
-            <span class="button-text">Home</span>
+<!-- Sticky Header with Filters Inside -->
+<header class="sticky-header">
+    <h1>Systemwide Report</h1>
+    <button id="homeButton" class="home-button" aria-label="Go to home page">
+        <span class="button-text">Home</span>
+    </button>
+    <div class="header-buttons-group">
+        <button id="refreshButton" class="header-button" aria-label="Refresh reports data">
+            <span class="button-text">Refresh</span>
         </button>
-        <div class="header-buttons-group">
-            <button id="refreshButton" class="header-button" aria-label="Refresh reports data">
-                <span class="button-text">Refresh</span>
-            </button>
-        </div>
-    </header>
+    </div>
 
     <!-- Filter Buttons -->
     <div class="filter-group" role="group" aria-label="Filter reports by status">
-            <button
-                id="filter-completed"
-                class="filter-button"
-                data-filter="completed"
-                aria-pressed="false"
-                aria-label="Show completed reports">
-                <span class="filter-label">Done</span>
-                <span class="filter-count" id="count-completed">0</span>
-            </button>
-            <button
-                id="filter-in-progress"
-                class="filter-button"
-                data-filter="in-progress"
-                aria-pressed="false"
-                aria-label="Show in progress reports">
-                <span class="filter-label">Active</span>
-                <span class="filter-count" id="count-in-progress">0</span>
-            </button>
-            <button
-                id="filter-pending"
-                class="filter-button"
-                data-filter="pending"
-                aria-pressed="false"
-                aria-label="Show reports where all tasks are not started">
-                <span class="filter-label">Not Started</span>
-                <span class="filter-count" id="count-pending">0</span>
-            </button>
-            <button
-                id="filter-all"
-                class="filter-button active"
-                data-filter="all"
-                aria-pressed="true"
-                aria-label="Show all reports">
-                <span class="filter-label">All</span>
-                <span class="filter-count" id="count-all">0</span>
-            </button>
-        </div>
-</div><!-- End sticky-header-container -->
+        <button
+            id="filter-completed"
+            class="filter-button"
+            data-filter="completed"
+            aria-pressed="false"
+            aria-label="Show completed reports">
+            <span class="filter-label">Done</span>
+            <span class="filter-count" id="count-completed">0</span>
+        </button>
+        <button
+            id="filter-in-progress"
+            class="filter-button"
+            data-filter="in-progress"
+            aria-pressed="false"
+            aria-label="Show in progress reports">
+            <span class="filter-label">Active</span>
+            <span class="filter-count" id="count-in-progress">0</span>
+        </button>
+        <button
+            id="filter-pending"
+            class="filter-button"
+            data-filter="pending"
+            aria-pressed="false"
+            aria-label="Show reports where all tasks are not started">
+            <span class="filter-label">Not Started</span>
+            <span class="filter-count" id="count-pending">0</span>
+        </button>
+        <button
+            id="filter-all"
+            class="filter-button active"
+            data-filter="all"
+            aria-pressed="true"
+            aria-label="Show all reports">
+            <span class="filter-label">All</span>
+            <span class="filter-count" id="count-all">0</span>
+        </button>
+    </div>
+</header>
 
 <!-- Main Content -->
 <main role="main">

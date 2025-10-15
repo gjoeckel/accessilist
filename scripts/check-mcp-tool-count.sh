@@ -16,7 +16,7 @@ echo "🔍 MCP Configuration files found:"
 
 # Check for MCP configs in various locations
 config_locations=(
-    "/Users/a00288946/Desktop/template/.cursor/mcp.json"
+    "/Users/a00288946/Projects/accessilist/.cursor/mcp.json"
     "/Users/a00288946/.cursor/mcp.json"
     "/Users/a00288946/.config/mcp/mcp.json"
     "/Users/a00288946/.config/mcp/cursor-config.json"

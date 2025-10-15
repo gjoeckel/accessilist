@@ -166,7 +166,7 @@ cat > "$HOME/Developer/.ai-workspace-config" << 'EOF'
       }
     },
     "workspace": {
-      "root": "/Users/a00288946/Desktop/template",
+      "root": "/Users/a00288946/Projects/accessilist",
       "template": "template.md",
       "output": "$HOME/Developer"
     }
@@ -190,7 +190,7 @@ echo "🚀 Starting macOS Tahoe Development Environment Setup..."
 echo "🤖 AI Agent has full autonomy to execute all phases"
 
 # Get the template directory
-TEMPLATE_DIR="/Users/a00288946/Desktop/template"
+TEMPLATE_DIR="/Users/a00288946/Projects/accessilist"
 TEMPLATE_FILE="$TEMPLATE_DIR/template.md"
 
 if [ ! -f "$TEMPLATE_FILE" ]; then
@@ -226,7 +226,7 @@ echo "   • AI agent workspace configuration"
 echo "   • Template execution script"
 echo ""
 echo -e "${YELLOW}🚀 Next Steps:${NC}"
-echo "   1. Open Cursor IDE: cursor /Users/a00288946/Desktop/template"
+echo "   1. Open Cursor IDE: cursor /Users/a00288946/Projects/accessilist"
 echo "   2. Ask the AI: 'Please implement the macOS Tahoe development environment setup from template.md'"
 echo "   3. The AI will now have full autonomy to execute all phases"
 echo ""

@@ -200,4 +200,3 @@ echo "  Stop Apache: sudo apachectl stop"
 echo "  Stop Both:   kill $PHP_PID && sudo apachectl stop"
 echo ""
 echo -e "${GREEN}✅ Ready for development and testing!${NC}"
-
