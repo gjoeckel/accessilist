@@ -116,23 +116,28 @@ th.checkpoint-cell {
   border-color: var(--selected-color) !important;
 }
 
-/* Arrow icon using Unicode characters */
+/* ===== SVG MASK "ALL" BUTTON DESIGN ===== */
+/* Default state - show-one-1.svg (single square) */
 .checkpoint-all::before {
-  content: "▶"; /* Right arrow - single checkpoint visible */
+  content: "";
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  font-size: 1rem;
-  line-height: 1;
+  width: 30px;
+  height: 30px;
+  mask-image: url("../images/show-one-1.svg");
+  mask-size: 30px 30px;
+  mask-repeat: no-repeat;
+  mask-position: center;
+  background-color: #333333;
   pointer-events: none;
-  color: #333333; /* Dark arrow on transparent background */
 }
 
-/* Active state - down arrow (all checkpoints visible) */
+/* Active state - show-all-1.svg (three squares) */
 .checkpoint-all.active::before {
-  content: "▼"; /* Down arrow - all visible */
-  color: white; /* White arrow on brown background */
+  mask-image: url("../images/show-all-1.svg");
+  background-color: white;
 }
 
 /* Non-interactive state when all checkpoints shown */
