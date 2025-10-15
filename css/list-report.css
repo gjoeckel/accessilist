@@ -107,7 +107,7 @@ th.checkpoint-cell {
   border-width: 1.5px !important; /* Scaled from 5px */
 }
 
-/* Draw 3 checkpoint lines using pseudo-element */
+/* Draw 3 checkpoint lines using SVG icon */
 .checkpoint-all::before {
   content: "";
   position: absolute;
@@ -117,41 +117,14 @@ th.checkpoint-cell {
   width: 17px;
   height: 14px;
   pointer-events: none;
-
-  /* Each row: 3px square (0.5px border) + 1.5px gap + 12.5px line (2px tall) + 2.5px row spacing */
-  background:
-        /* Row 1 - Task line (solid rectangle) */ linear-gradient(
-        currentColor,
-        currentColor
-      )
-      4.5px 0.5px / 12.5px 2px no-repeat,
-    /* Row 1 - Square border (hollow) */
-      linear-gradient(currentColor, currentColor) 0 0 / 3px 0.5px no-repeat,
-    linear-gradient(currentColor, currentColor) 0 2.5px / 3px 0.5px no-repeat,
-    linear-gradient(currentColor, currentColor) 0 0.5px / 0.5px 2px no-repeat,
-    linear-gradient(currentColor, currentColor) 2.5px 0.5px / 0.5px 2px
-      no-repeat,
-    /* Row 2 - Task line */ linear-gradient(currentColor, currentColor) 4.5px
-      5px / 12.5px 2px no-repeat,
-    /* Row 2 - Square border */ linear-gradient(currentColor, currentColor) 0
-      4.5px / 3px 0.5px no-repeat,
-    linear-gradient(currentColor, currentColor) 0 7px / 3px 0.5px no-repeat,
-    linear-gradient(currentColor, currentColor) 0 5px / 0.5px 2px no-repeat,
-    linear-gradient(currentColor, currentColor) 2.5px 5px / 0.5px 2px no-repeat,
-    /* Row 3 - Task line */ linear-gradient(currentColor, currentColor) 4.5px
-      9.5px / 12.5px 2px no-repeat,
-    /* Row 3 - Square border */ linear-gradient(currentColor, currentColor) 0
-      9px / 3px 0.5px no-repeat,
-    linear-gradient(currentColor, currentColor) 0 11.5px / 3px 0.5px no-repeat,
-    linear-gradient(currentColor, currentColor) 0 9.5px / 0.5px 2px no-repeat,
-    linear-gradient(currentColor, currentColor) 2.5px 9.5px / 0.5px 2px
-      no-repeat;
-
-  color: #333333;
+  background-image: url("../images/all-0.svg");
+  background-size: contain;
+  background-position: center;
+  background-repeat: no-repeat;
 }
 
 .checkpoint-all.active::before {
-  color: white !important;
+  background-image: url("../images/all-1.svg");
 }
 
 /* Date column */
