@@ -181,7 +181,7 @@ export class ReportsManager {
       counts["all"]++; // Count all checklists
 
       // Count demo sessions
-      if (checklist.type === "demo") {
+      if (checklist.typeSlug === "demo") {
         counts["demos"]++;
       }
     });
@@ -209,9 +209,9 @@ export class ReportsManager {
     if (this.currentFilter === "all") {
       filtered = this.allChecklists;
     } else if (this.currentFilter === "demos") {
-      // Filter by type for demo sessions
+      // Filter by typeSlug for demo sessions
       filtered = this.allChecklists.filter(
-        (checklist) => checklist.type === "demo"
+        (checklist) => checklist.typeSlug === "demo"
       );
     } else {
       // Filter by calculated status (completed, in-progress, pending)
