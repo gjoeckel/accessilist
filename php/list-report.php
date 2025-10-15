@@ -250,7 +250,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (backButton) {
         backButton.addEventListener('click', function() {
             const basePath = window.basePath || '';
-            window.location.href = `${basePath}/?session=${sessionKey}`;
+            window.location.href = `${basePath}/?=${sessionKey}`;
         });
     }
 

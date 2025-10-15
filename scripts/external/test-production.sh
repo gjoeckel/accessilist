@@ -239,22 +239,31 @@ else
     record_pass "list-report short-form URLs" "(Uses list-report)"
 fi
 
-# Check Back button in list-report uses root path (not /mychecklist)
-# Note: We check the mychecklist page which has links to list-report, then verify
-# list-report's Back button code uses root path. Since production requires valid sessions,
-# we verify by checking if the page source contains the correct pattern.
-echo -n "  Checking Back button JavaScript uses root path..."
+# Check Back button uses minimal format (/?=) not full format (/?session=)
+echo -n "  Checking Back button uses minimal format (/?=)..."
 increment_test_counter
-# Fetch list-report page source (even with 404, the page template contains the JS)
-content=$(curl -s "$PROD_URL/php/list-report.php" 2>&1)
-if echo "$content" | grep -q 'window\.location\.href.*mychecklist?session='; then
-    record_fail "Back button uses root path" "(Found /mychecklist, should use /?session=)"
-elif echo "$content" | grep -q 'window\.location\.href.*/?session='; then
-    record_pass "Back button uses root path" "(Uses /?session= correctly)"
+# Use reserved test session AAA for consistent testing
+content=$(curl -s "$PROD_URL/list-report?session=AAA" 2>&1)
+if echo "$content" | grep -q 'window\.location\.href.*/?session='; then
+    record_fail "Back button minimal format" "(Uses /?session= instead of /?=)"
+elif echo "$content" | grep -q 'window\.location\.href.*/?='; then
+    record_pass "Back button minimal format" "(Uses minimal format /?=)"
 else
-    # If neither pattern found, maybe page structure changed, but that's still a pass
-    # as long as the old wrong pattern isn't there
-    record_pass "Back button uses root path" "(No hardcoded /mychecklist found)"
+    record_fail "Back button minimal format" "(Code not found or changed)"
+fi
+
+# Test that minimal URL format actually works (behavioral test)
+echo -n "  Testing minimal URL navigation (/?=AAA)..."
+increment_test_counter
+http_code=$(curl -s -o /dev/null -w "%{http_code}" -L "$PROD_URL/?=AAA")
+if [ "$http_code" = "200" ]; then
+    record_pass "Minimal URL works" "(HTTP 200, checklist loads)"
+elif [ "$http_code" = "404" ]; then
+    record_fail "Minimal URL works" "(HTTP 404, test session AAA not found)"
+elif [ "$http_code" = "302" ]; then
+    record_fail "Minimal URL works" "(HTTP 302, redirects incorrectly)"
+else
+    record_fail "Minimal URL works" "(HTTP $http_code)"
 fi
 
 # Check systemwide-report page for short-form URLs

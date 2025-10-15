@@ -1,0 +1,39 @@
+{
+  "session": "AAA",
+  "type": "word",
+  "checkpoints": [
+    {
+      "id": "c1-heading-levels",
+      "principle": "Perceivable",
+      "checkpoint": "Heading Levels",
+      "status": "completed",
+      "notes": "Test checkpoint - completed"
+    },
+    {
+      "id": "c2-lists",
+      "principle": "Perceivable",
+      "checkpoint": "Lists",
+      "status": "in-progress",
+      "notes": "Test checkpoint - in progress"
+    },
+    {
+      "id": "c3-tables",
+      "principle": "Perceivable",
+      "checkpoint": "Tables",
+      "status": "pending",
+      "notes": "Test checkpoint - pending"
+    },
+    {
+      "id": "c4-alt-text",
+      "principle": "Perceivable",
+      "checkpoint": "Alternative Text",
+      "status": "pending",
+      "notes": ""
+    }
+  ],
+  "updated": "2025-10-15T00:00:00.000Z",
+  "metadata": {
+    "purpose": "Reserved test session for automated testing",
+    "do_not_delete": true
+  }
+}

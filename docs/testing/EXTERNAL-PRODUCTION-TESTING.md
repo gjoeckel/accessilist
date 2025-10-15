@@ -89,18 +89,19 @@ cd /Users/a00288946/Projects/accessilist
 - 404 for missing pages
 - 400/404 for invalid sessions (accepts either error code)
 
-### 11. URL Format Validation (5 tests)
+### 11. URL Format Validation (6 tests)
 - Mychecklist page uses short-form URLs (no .php)
 - List-report links use short-form
-- **Back button uses root path (/?session= not /mychecklist?session=)** ✨
-- Reports page uses short-form URLs
+- **Back button uses minimal format (/?= not /?session=)** ✨
+- **Minimal URL format works (/?=AAA loads checklist)** ✨ NEW
+- Systemwide-report page uses short-form URLs
 - Navigation uses short-form URLs
 
 ### 12. Security & Headers (2 tests)
 - HTTPS enabled
 - Content-Type headers
 
-**Total**: 41 tests
+**Total**: 42 tests
 
 ---
 
@@ -110,8 +111,8 @@ cd /Users/a00288946/Projects/accessilist
 **Production URL**: https://webaim.org/training/online/accessilist
 
 ```
-Total Tests:   41 (updated from 36)
-Expected Pass: 41/41 (100%)
+Total Tests:   42 (updated from 36)
+Expected Pass: 42/42 (100%)
 ```
 
 ### Recent Updates
@@ -303,7 +304,7 @@ open https://github.com/gjoeckel/accessilist/actions
 
 **File**: `scripts/external/test-production.sh`
 
-**Tests**: 41 total
+**Tests**: 42 total
 - Connectivity: 3 tests
 - Routes: 4 tests
 - APIs: 2 tests
@@ -314,7 +315,7 @@ open https://github.com/gjoeckel/accessilist/actions
 - Features: 4 tests
 - Deployment: 2 tests
 - Errors: 2 tests
-- URL Format: 5 tests (includes Back button validation)
+- URL Format: 6 tests (includes Back button + behavioral validation)
 - Security: 2 tests
 
 **Output**: Color-coded results with summary
@@ -347,8 +348,8 @@ Production Server:
 ║              Test Results Summary                      ║
 ╚════════════════════════════════════════════════════════╝
 
-Total Tests:    41
-Passed:         41
+Total Tests:    42
+Passed:         42
 Failed:         0
 Success Rate:   100%
 
