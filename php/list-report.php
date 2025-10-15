@@ -116,7 +116,6 @@ renderHTMLHead('List Report');
   // .report-section has 90px padding-top, so h2 is at 120 + 90 = 210
   // But we scroll slightly less to show h2 just below the filters: 130px
   window.scrollTo(0, 130);
-  console.log('🎯 [INLINE SCRIPT] Initial scroll to 130, waiting for content to build...');
 </script>
 
 <!-- Side Panel - Checkpoint Navigation -->
@@ -166,8 +165,8 @@ renderHTMLHead('List Report');
             class="filter-button"
             data-filter="pending"
             aria-pressed="false"
-            aria-label="Show not started tasks">
-            <span class="filter-label">Not Started</span>
+            aria-label="Show ready tasks">
+            <span class="filter-label">Ready</span>
             <span class="filter-count" id="count-pending">0</span>
         </button>
         <button
@@ -238,8 +237,6 @@ import { UserReportManager } from '<?php echo $basePath; ?>/js/list-report.js?v=
 const sessionKey = '<?php echo htmlspecialchars($sessionKey, ENT_QUOTES, 'UTF-8'); ?>';
 
 document.addEventListener('DOMContentLoaded', function() {
-
-    console.log('Initializing user report page for session:', sessionKey);
 
     // Update timestamp on page load
     updateTimestamp();
