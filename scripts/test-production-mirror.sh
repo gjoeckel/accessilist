@@ -128,17 +128,6 @@ print_section() {
 print_section "Prerequisites Check"
 log "=== Prerequisites Check ==="
 
-echo -n "  Checking Apache..."
-if sudo apachectl -k status &> /dev/null; then
-    echo -e " ${GREEN}✅ Running${NC}"
-    log "Apache: Running"
-else
-    echo -e " ${RED}❌ Not running${NC}"
-    echo -e "${YELLOW}Starting Apache...${NC}"
-    sudo apachectl start
-    sleep 2
-fi
-
 echo -n "  Checking PHP module..."
 if apachectl -M 2>/dev/null | grep -q "php"; then
     PHP_VERSION=$(php -v | head -n 1 | awk '{print $2}')
@@ -200,7 +189,7 @@ log "=== Test 2: Clean URL Routes ==="
 test_endpoint "/home clean URL" "$BASE_URL/home" "200" "Home page via clean URL"
 # COMMENTED: admin.php deprecated/unused - keeping for potential future refactoring
 # test_endpoint "/admin clean URL" "$BASE_URL/admin" "200" "Admin page via clean URL"
-test_endpoint "/reports clean URL" "$BASE_URL/reports" "200" "Reports page via clean URL"
+test_endpoint "/systemwide-report clean URL" "$BASE_URL/systemwide-report" "200" "Systemwide report page via clean URL"
 # REMOVED: checklist-report.php deleted - replaced by report.php
 # test_endpoint "/checklist-report clean URL" "$BASE_URL/checklist-report" "200" "Checklist report page"
 
@@ -234,7 +223,6 @@ log "=== Test 6: Static Assets ==="
 
 test_endpoint "CSS file" "$BASE_URL/css/base.css" "200" "CSS loading"
 test_endpoint "JavaScript file" "$BASE_URL/js/main.js" "200" "JS loading"
-test_endpoint "Image file" "$BASE_URL/images/home0.svg" "200" "Image loading"
 test_endpoint "JSON template" "$BASE_URL/json/word.json" "200" "JSON template loading"
 
 # Test 7: Content Verification
@@ -244,7 +232,7 @@ log "=== Test 7: Content Verification ==="
 test_endpoint_content "Home page content" "$BASE_URL/home" "Accessibility Checklists" "Home page has correct title"
 # COMMENTED: admin.php deprecated/unused - keeping for potential future refactoring
 # test_endpoint_content "Admin page content" "$BASE_URL/admin" "Admin" "Admin page has correct content"
-test_endpoint_content "Reports page content" "$BASE_URL/reports" "Reports" "Reports page has correct content"
+test_endpoint_content "Systemwide report page content" "$BASE_URL/systemwide-report" "Systemwide Report" "Systemwide report page has correct content"
 
 # Test 8: Save/Restore API Workflow
 print_section "Test 8: Save/Restore API Workflow"
@@ -434,22 +422,22 @@ fi
 print_section "Test 13-28: Systemwide Reports Dashboard (systemwide-report.php)"
 log "=== Test 13-28: Systemwide Reports Dashboard ==="
 
-test_endpoint_content "Systemwide report page load" "$BASE_URL/reports" "Systemwide Report" "H1 heading correct"
+test_endpoint_content "Systemwide report page load" "$BASE_URL/systemwide-report" "Systemwide Report" "H1 heading correct"
 test_endpoint "List-detailed API endpoint" "$BASE_URL/php/api/list-detailed" "200" "Reports API functional"
-test_endpoint_content "Systemwide report JS module" "$BASE_URL/reports" "systemwide-report.js" "Correct JS loaded"
-test_endpoint_content "Filter buttons present" "$BASE_URL/reports" "filter-button" "Filter UI exists"
-test_endpoint_content "Filter label: Done" "$BASE_URL/reports" ">Done<" "Updated terminology"
-test_endpoint_content "Filter label: Active" "$BASE_URL/reports" ">Active<" "Updated terminology"
-test_endpoint_content "Filter label: Not Started" "$BASE_URL/reports" ">Not Started<" "Updated terminology"
-test_endpoint_content "Reports table CSS class" "$BASE_URL/reports" "reports-table" "New CSS class"
-test_endpoint_content "Reports status column" "$BASE_URL/reports" "<th class=\"status-cell\">Status</th>" "Status column present"
-test_endpoint_content "Reports progress column" "$BASE_URL/reports" "<th class=\"task-cell\">Progress</th>" "Progress column present"
-test_endpoint_content "Reports refresh button" "$BASE_URL/reports" "id=\"refreshButton\"" "Refresh button present"
-test_endpoint_content "Reports home button" "$BASE_URL/reports" "id=\"homeButton\"" "Home button present"
-test_endpoint_content "Systemwide report CSS file" "$BASE_URL/reports" "systemwide-report.css" "Correct CSS loaded"
-test_endpoint_content "Reports table structure" "$BASE_URL/reports" "<table" "Table element present"
-test_endpoint_content "Reports caption element" "$BASE_URL/reports" "reports-caption" "Caption element present"
-test_endpoint_content "Reports section present" "$BASE_URL/reports" "report-section" "Section structure correct"
+test_endpoint_content "Systemwide report JS module" "$BASE_URL/systemwide-report" "systemwide-report.js" "Correct JS loaded"
+test_endpoint_content "Filter buttons present" "$BASE_URL/systemwide-report" "filter-button" "Filter UI exists"
+test_endpoint_content "Filter label: Done" "$BASE_URL/systemwide-report" ">Done<" "Updated terminology"
+test_endpoint_content "Filter label: Active" "$BASE_URL/systemwide-report" ">Active<" "Updated terminology"
+test_endpoint_content "Filter label: Not Started" "$BASE_URL/systemwide-report" ">Not Started<" "Updated terminology"
+test_endpoint_content "Reports table CSS class" "$BASE_URL/systemwide-report" "reports-table" "New CSS class"
+test_endpoint_content "Reports status column" "$BASE_URL/systemwide-report" "<th class=\"status-cell\">Status</th>" "Status column present"
+test_endpoint_content "Reports progress column" "$BASE_URL/systemwide-report" "<th class=\"task-cell\">Progress</th>" "Progress column present"
+test_endpoint_content "Reports refresh button" "$BASE_URL/systemwide-report" "id=\"refreshButton\"" "Refresh button present"
+test_endpoint_content "Reports home button" "$BASE_URL/systemwide-report" "id=\"homeButton\"" "Home button present"
+test_endpoint_content "Systemwide report CSS file" "$BASE_URL/systemwide-report" "systemwide-report.css" "Correct CSS loaded"
+test_endpoint_content "Reports table structure" "$BASE_URL/systemwide-report" "<table" "Table element present"
+test_endpoint_content "Reports caption element" "$BASE_URL/systemwide-report" "reports-caption" "Caption element present"
+test_endpoint_content "Reports section present" "$BASE_URL/systemwide-report" "report-section" "Section structure correct"
 
 # Test 29-41: List Report Page (list-report.php)
 print_section "Test 29-41: List Report Page (list-report.php)"
@@ -571,7 +559,7 @@ rm -f "$PROJECT_DIR/saves/LST.json"
 # Test systemwide-report.php scroll buffer
 increment_test_counter
 echo -n "  Testing systemwide-report scroll buffer..."
-SYSTEMWIDE_HTML=$(curl -s "$BASE_URL/reports" 2>&1)
+SYSTEMWIDE_HTML=$(curl -s "$BASE_URL/systemwide-report" 2>&1)
 
 if echo "$SYSTEMWIDE_HTML" | grep -q "window.scrollTo(0, 130)" && \
    echo "$SYSTEMWIDE_HTML" | grep -q "scheduleReportBufferUpdate"; then

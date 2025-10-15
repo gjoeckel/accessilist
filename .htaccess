@@ -11,34 +11,21 @@ Options -MultiViews
   RewriteCond %{REQUEST_FILENAME} -d
   RewriteRule ^ - [L]
 
-  # --- Clean URL Routes (IMPORTANT: Specific routes must come before general patterns) ---
-  # These provide user-friendly URLs without /php/ prefix or .php extension
+  # --- Simplified Routing: Remove .php extension ---
+  # All PHP files in /php directory can be accessed without .php extension
 
-  # Home page: /home → /php/home.php
-  RewriteRule ^home/?$ php/home.php [L]
-
-  # Admin page: /admin → /php/admin.php
-  RewriteRule ^admin/?$ php/admin.php [L]
-
-  # Systemwide Report page: /reports → /php/systemwide-report.php
-  RewriteRule ^reports/?$ php/systemwide-report.php [L]
-
-  # List Report page: /list-report → /php/list-report.php
-  RewriteRule ^list-report/?$ php/list-report.php [L]
-
-  # My Checklist page: /mychecklist → /php/mychecklist.php
-  RewriteRule ^mychecklist/?$ php/mychecklist.php [L]
-
-  # User report page: /report → /php/report.php
-  RewriteRule ^report/?$ php/report.php [L,QSA]
-
-  # --- API Routes: extensionless to .php (preserve method) ---
-  # Matches /php/api/save → /php/api/save.php (and similarly for restore, list, delete, health)
+  # API Routes: /php/api/save → /php/api/save.php
   RewriteRule ^php/api/([^/.]+)$ php/api/$1.php [L]
 
-  # --- General PHP Routes: extensionless to .php for files under /php ---
-  # This is the catch-all pattern and must come LAST
+  # General PHP Routes: /php/filename → /php/filename.php
+  # Examples: /php/home → /php/home.php, /php/systemwide-report → /php/systemwide-report.php
   RewriteRule ^php/([^/.]+)$ php/$1.php [L]
+
+  # Root-level clean URLs (no /php/ prefix)
+  # Matches: /home, /systemwide-report, /list-report, /mychecklist, etc.
+  RewriteCond %{REQUEST_FILENAME} !-f
+  RewriteCond %{REQUEST_FILENAME} !-d
+  RewriteRule ^([^/.]+)$ php/$1.php [L]
 
   # Fallback: do nothing special; rely on actual files or above rules
 </IfModule>

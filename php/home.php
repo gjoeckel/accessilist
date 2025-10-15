@@ -118,11 +118,11 @@ renderHTMLHead('Accessibility Checklists');
       statusContent.textContent = 'Select a checklist type';
     }
 
-    // Connect Reports button to redirect to reports
+    // Connect Reports button to redirect to systemwide report
     const reportsButton = document.getElementById('reportsButton');
     if (reportsButton) {
       reportsButton.addEventListener('click', function() {
-        window.location.href = '<?php echo $basePath; ?>/reports';
+        window.location.href = '<?php echo $basePath; ?>/systemwide-report';
       });
     }
 

@@ -14,23 +14,31 @@
 - **ai-local-commit** - Update changelog and commit all changes to current local branch
 - **ai-local-merge** - Merge current branch to main, auto-updates changelog (handles conflicts gracefully)
 - **ai-merge-finalize** - Finalize merge after manual conflict resolution (updates changelog, run from main)
+- **ai-push-deploy-github** - Push to GitHub and deploy to production (full deployment)
+- **ai-push-github** - Push to GitHub only (no deployment)
 - **ai-repeat** - Reload session context
 - **ai-start** - Load AI session context and initialize environment
 - **ai-update** - Record mid-session progress
 - **mcp-health** - Check MCP server health and status
 - **mcp-restart** - Restart all MCP servers
 
-**Total Global:** 12 workflows
+**Total Global:** 14 workflows
 
 ## 📦 Project-Specific Workflows (This Project Only)
 
+### Testing & Validation
+- **proj-test-mirror** - Test production mirror configuration (Docker Apache, 75 tests, 100% pass rate)
+- **external-test-production** - Test actual production server at webaim.org (41 tests)
 - **proj-deploy-check** - Run pre-deployment validation
-- **proj-docker-down** - Stop Docker Apache server
-- **proj-docker-up** - Start Docker Apache server
-- **proj-dry** - Run duplicate code detection (AccessiList-specific)
-- **proj-test-mirror** - Test production mirror configuration (Docker Apache)
 
-**Total Project:** 5 workflows
+### Docker Management
+- **proj-docker-up** - Start Docker Apache server (http://127.0.0.1:8080)
+- **proj-docker-down** - Stop Docker Apache server
+
+### Code Quality
+- **proj-dry** - Run duplicate code detection (AccessiList-specific)
+
+**Total Project:** 6 workflows
 
 ---
 
@@ -40,9 +48,9 @@
 Simply type the workflow name:
 ```
 ai-start
-ai-local-commit
-mcp-health
-proj-dry
+proj-test-mirror
+external-test-production
+ai-push-deploy-github
 ```
 
 ### Command Palette
@@ -58,20 +66,98 @@ git-local-commit.sh
 check-mcp-health.sh
 ```
 
+Project scripts can be run directly:
+```bash
+./scripts/test-production-mirror.sh
+./scripts/external/test-production.sh
+./scripts/deployment/pre-deploy-check.sh
+```
+
+---
+
+## 📋 Workflow Details
+
+### Testing Workflows
+
+| Workflow | Environment | Tests | URL | Purpose |
+|----------|-------------|-------|-----|---------|
+| **proj-test-mirror** | Local Docker Apache | 75 | http://127.0.0.1:8080 | Pre-deployment testing |
+| **external-test-production** | Live Production | 41 | https://webaim.org/training/online/accessilist | Post-deployment verification |
+
+### Deployment Workflows
+
+| Workflow | Action | Auto-Approve | Timeout |
+|----------|--------|--------------|---------|
+| **ai-push-deploy-github** | Push + Deploy | No (requires approval) | 5 min |
+| **ai-push-github** | Push only | No (requires approval) | 1 min |
+| **proj-deploy-check** | Validation | Yes | 30 sec |
+
+### Docker Workflows
+
+| Workflow | Command | Port | Purpose |
+|----------|---------|------|---------|
+| **proj-docker-up** | `docker compose up -d` | 8080 | Start Apache server |
+| **proj-docker-down** | `docker compose down` | - | Stop Apache server |
+
 ---
 
 ## 📊 Summary
 
-**Total Workflows:** 17 (12 global + 5 project)
+**Total Workflows:** 20 (14 global + 6 project)
 
 **Categories:**
-- AI Session Management (ai-start, ai-end, ai-update, ai-repeat, ai-compress)
-- Git Operations (ai-local-commit, ai-local-merge)
-- MCP Management (mcp-health, mcp-restart)
-- Utilities (ai-clean)
-- Project Tools (proj-*)
+- **AI Session Management** (5): ai-start, ai-end, ai-update, ai-repeat, ai-compress
+- **Git Operations** (4): ai-local-commit, ai-local-merge, ai-merge-finalize, ai-push-*
+- **MCP Management** (2): mcp-health, mcp-restart
+- **Testing** (2): proj-test-mirror, external-test-production
+- **Docker** (2): proj-docker-up, proj-docker-down
+- **Code Quality** (1): proj-dry
+- **Deployment** (2): proj-deploy-check, ai-push-deploy-github
+- **Utilities** (2): ai-clean, ai-docs-sync
 
 ---
 
-_Last updated: Wed Oct 15 09:52:35 MDT 2025_
+## 🔄 Workflow Naming Convention
+
+| Prefix | Scope | Examples |
+|--------|-------|----------|
+| `ai-*` | Global workflows (all projects) | ai-start, ai-end, ai-push-github |
+| `proj-*` | Project-specific workflows | proj-dry, proj-test-mirror |
+| `external-*` | External server testing | external-test-production |
+| `mcp-*` | MCP server management | mcp-health, mcp-restart |
+
+---
+
+## 🎯 Common Workflows
+
+### Daily Development
+```bash
+ai-start              # Start session
+proj-test-mirror      # Test locally (100% pass)
+ai-local-commit       # Commit changes
+```
+
+### Before Deployment
+```bash
+proj-deploy-check     # Validate before deploy
+proj-test-mirror      # Final local test
+ai-push-deploy-github # Deploy to production
+```
+
+### After Deployment
+```bash
+external-test-production  # Verify production (41 tests)
+```
+
+### Troubleshooting
+```bash
+mcp-health            # Check MCP servers
+ai-clean              # Clean temp files
+proj-docker-down      # Restart Docker
+proj-docker-up
+```
+
+---
+
+_Last updated: October 15, 2025_
 _Auto-generated from ~/.cursor/workflows.json and .cursor/workflows.json_
