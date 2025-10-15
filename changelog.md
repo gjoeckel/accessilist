@@ -8,6 +8,45 @@
 
 ## Entries
 
+### 2025-10-15 07:18:40 UTC - Reports UI: Header Layout Lock-In, "All" Button Redesign, Side Panel Scroll
+
+**Summary:**
+- Finalized report page header layout (150px) with filter group integrated into `<header>` and pixel-based positioning for consistent visuals.
+- Matched `list-report.php` header to `systemwide-report.php` (identical structure/placement).
+- Redesigned side panel "All" button to a 3-line motif composed via CSS gradients (scaled from 120px spec to 30px control) with precise spacing; prevented bottom cut-off.
+- Enabled scrolling for side panel buttons with reserved scrollbar gutter and height constrained above footer via CSS variables.
+
+**Details:**
+1. **Header/Layout Updates**
+   - Removed `div.sticky-header-container` on report pages.
+   - `<header>` height set to 150px; h1 at 25px from top; nav buttons (Home/Back, Refresh) at 35px.
+   - Moved `.filter-group` inside `<header>` at 80px from top; full width; centered; no background overlay.
+   - Scoped all page-specific overrides to `.systemwide-report-page` or `.list-report-page` style blocks.
+
+2. **Side Panel "All" Button**
+   - Implemented 3 stacked checkpoint rows using CSS backgrounds:
+     - Square 3×3px with 0.5px border, 1.5px gap, 12.5×2px task line; 2.5px vertical spacing between rows.
+   - Active state uses `currentColor` → white; default uses #333.
+   - Increased pseudo-element height to 12px to avoid clipping.
+
+3. **Side Panel Scroll Behavior**
+   - `.side-panel ul` now `overflow-y: auto` with `scrollbar-gutter: stable both-edges`.
+   - Constrained height: `max-height: calc(100vh - var(--footer-height, 50px) - var(--sidepanel-bottom-gap, 12px))` to avoid overlapping footer.
+   - Kept existing 185px top padding on `list-report.php` to account for taller header.
+
+**Files Modified:**
+- `php/systemwide-report.php`: Inline, page-scoped CSS overrides; simplified header; moved filters into header.
+- `php/list-report.php`: Added identical header structure; page-scoped CSS; moved filters into header; adjusted side panel padding.
+- `css/list.css`: New scroll behavior for `.side-panel ul`; redesigned `.checkpoint-all::before` icon; spacing tweaks.
+- `css/list-report.css`: Synchronized `.checkpoint-all` icon implementation.
+
+**Benefits:**
+- Consistent header across report pages; cleaner DOM.
+- Crisp, scalable "All" icon matching spec at 30px size.
+- Side panel remains usable on small viewports; scrollbar appears only when content would extend past the visible area above the footer.
+
+---
+
 ### 2025-10-14 15:11:16 UTC - Project Cleanup: Root Directory Reorganization & AI Workflow Integration
 
 **Summary:**
