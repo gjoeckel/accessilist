@@ -27,19 +27,19 @@
    ==================================================================== */
 
 .report-header-info {
-    margin: 2rem 0 1.5rem 0;
-    padding: 0;
+  margin: 2rem 0 1.5rem 0;
+  padding: 0;
 }
 
 .report-header-info h2 {
-    margin: 0 0 0.5rem 0;
+  margin: 0 0 0.5rem 0;
 }
 
 .subtitle {
-    font-size: 0.9rem;
-    color: #666;
-    margin: 0 0 1.5rem 0;
-    font-weight: normal;
+  font-size: 0.9rem;
+  color: #666;
+  margin: 0 0 1.5rem 0;
+  font-weight: normal;
 }
 
 /* ====================================================================
@@ -51,44 +51,44 @@
 .checkpoint-cell,
 .report-status-cell,
 .report-delete-cell {
-    width: 75px; /* Fixed width = height for perfect squares */
-    min-width: 75px;
-    max-width: 75px;
-    min-height: 75px;
-    text-align: center;
-    vertical-align: middle;
-    position: relative;
+  width: 75px; /* Fixed width = height for perfect squares */
+  min-width: 75px;
+  max-width: 75px;
+  min-height: 75px;
+  text-align: center;
+  vertical-align: middle;
+  position: relative;
 }
 
 /* Checkpoint header needs reduced padding due to narrow width */
 th.checkpoint-cell {
-    padding: 8px; /* Reduced from 1rem to fit text in 75px width */
-    text-align: center !important;
+  padding: 8px; /* Reduced from 1rem to fit text in 75px width */
+  text-align: center !important;
 }
 
 /* CSS-generated checkpoint icon - matches side panel style */
 .checkpoint-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 2px solid #333333;
-    background-color: transparent;
-    color: #333333;
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-decoration: none;
-    cursor: default;
-    transition: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #333333;
+  background-color: transparent;
+  color: #333333;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: default;
+  transition: none;
 }
 
 /* Selected checkpoint icon - brown fill with white number */
 .checkpoint-icon.selected {
-    background-color: var(--selected-color);
-    border-color: var(--selected-color);
-    color: white;
+  background-color: var(--selected-color);
+  border-color: var(--selected-color);
+  color: white;
 }
 
 /* ====================================================================
@@ -97,92 +97,95 @@ th.checkpoint-cell {
 
 /* All checkpoints button - scaled from 120px to 30px (0.25x scale) */
 .checkpoint-all {
-    font-size: 0 !important; /* Hide any text */
-    position: relative;
-    /* Explicit dimensions ensure button is clickable */
-    width: 30px !important;
-    height: 30px !important;
-    min-width: 30px !important;
-    min-height: 30px !important;
-    border-width: 1.5px !important; /* Scaled from 5px */
+  font-size: 0 !important; /* Hide any text */
+  position: relative;
+  /* Explicit dimensions ensure button is clickable */
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+  border-width: 1.5px !important; /* Scaled from 5px */
 }
 
 /* Draw 3 checkpoint lines using pseudo-element */
 .checkpoint-all::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 17px;
-    height: 12px;
-    pointer-events: none;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 17px;
+  height: 14px;
+  pointer-events: none;
 
-    /* Each row: 3px square (0.5px border) + 1.5px gap + 12.5px line (2px tall) + 2.5px row spacing */
-    background:
-        /* Row 1 - Task line (solid rectangle) */
-        linear-gradient(currentColor, currentColor) 4.5px 0.5px / 12.5px 2px no-repeat,
-        /* Row 1 - Square border (hollow) */
-        linear-gradient(currentColor, currentColor) 0 0 / 3px 0.5px no-repeat,
-        linear-gradient(currentColor, currentColor) 0 2.5px / 3px 0.5px no-repeat,
-        linear-gradient(currentColor, currentColor) 0 0.5px / 0.5px 2px no-repeat,
-        linear-gradient(currentColor, currentColor) 2.5px 0.5px / 0.5px 2px no-repeat,
+  /* Each row: 3px square (0.5px border) + 1.5px gap + 12.5px line (2px tall) + 2.5px row spacing */
+  background:
+        /* Row 1 - Task line (solid rectangle) */ linear-gradient(
+        currentColor,
+        currentColor
+      )
+      4.5px 0.5px / 12.5px 2px no-repeat,
+    /* Row 1 - Square border (hollow) */
+      linear-gradient(currentColor, currentColor) 0 0 / 3px 0.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 2.5px / 3px 0.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 0.5px / 0.5px 2px no-repeat,
+    linear-gradient(currentColor, currentColor) 2.5px 0.5px / 0.5px 2px
+      no-repeat,
+    /* Row 2 - Task line */ linear-gradient(currentColor, currentColor) 4.5px
+      5px / 12.5px 2px no-repeat,
+    /* Row 2 - Square border */ linear-gradient(currentColor, currentColor) 0
+      4.5px / 3px 0.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 7px / 3px 0.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 5px / 0.5px 2px no-repeat,
+    linear-gradient(currentColor, currentColor) 2.5px 5px / 0.5px 2px no-repeat,
+    /* Row 3 - Task line */ linear-gradient(currentColor, currentColor) 4.5px
+      9.5px / 12.5px 2px no-repeat,
+    /* Row 3 - Square border */ linear-gradient(currentColor, currentColor) 0
+      9px / 3px 0.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 11.5px / 3px 0.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 9.5px / 0.5px 2px no-repeat,
+    linear-gradient(currentColor, currentColor) 2.5px 9.5px / 0.5px 2px
+      no-repeat;
 
-        /* Row 2 - Task line */
-        linear-gradient(currentColor, currentColor) 4.5px 5px / 12.5px 2px no-repeat,
-        /* Row 2 - Square border */
-        linear-gradient(currentColor, currentColor) 0 4.5px / 3px 0.5px no-repeat,
-        linear-gradient(currentColor, currentColor) 0 7px / 3px 0.5px no-repeat,
-        linear-gradient(currentColor, currentColor) 0 5px / 0.5px 2px no-repeat,
-        linear-gradient(currentColor, currentColor) 2.5px 5px / 0.5px 2px no-repeat,
-
-        /* Row 3 - Task line */
-        linear-gradient(currentColor, currentColor) 4.5px 9.5px / 12.5px 2px no-repeat,
-        /* Row 3 - Square border */
-        linear-gradient(currentColor, currentColor) 0 9px / 3px 0.5px no-repeat,
-        linear-gradient(currentColor, currentColor) 0 11.5px / 3px 0.5px no-repeat,
-        linear-gradient(currentColor, currentColor) 0 9.5px / 0.5px 2px no-repeat,
-        linear-gradient(currentColor, currentColor) 2.5px 9.5px / 0.5px 2px no-repeat;
-
-    color: #333333;
+  color: #333333;
 }
 
 .checkpoint-all.active::before {
-    color: white !important;
+  color: white !important;
 }
 
 /* Date column */
 .report-date-cell {
-    width: 75px; /* Fixed width = height for square cell */
-    min-width: 75px;
-    max-width: 75px;
-    min-height: 75px;
-    text-align: center;
-    vertical-align: middle;
+  width: 75px; /* Fixed width = height for square cell */
+  min-width: 75px;
+  max-width: 75px;
+  min-height: 75px;
+  text-align: center;
+  vertical-align: middle;
 }
 
 /* Task column */
 .report-task-cell {
-    width: auto; /* Fills remaining space after fixed-width cells */
-    min-height: 75px; /* Match row height with interactive cells */
-    vertical-align: middle;
+  width: auto; /* Fills remaining space after fixed-width cells */
+  min-height: 75px; /* Match row height with interactive cells */
+  vertical-align: middle;
 }
 
 td.report-task-cell {
-    text-align: left; /* Data cells left-aligned, headers inherit center from base th */
+  text-align: left; /* Data cells left-aligned, headers inherit center from base th */
 }
 
 /* Notes column */
 .report-notes-cell {
-    width: 30%;
-    min-height: 75px; /* Match row height with interactive cells */
-    vertical-align: middle;
-    white-space: normal;
-    word-wrap: break-word;
+  width: 30%;
+  min-height: 75px; /* Match row height with interactive cells */
+  vertical-align: middle;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 td.report-notes-cell {
-    text-align: left; /* Data cells left-aligned, headers inherit center from base th */
+  text-align: left; /* Data cells left-aligned, headers inherit center from base th */
 }
 
 /* ====================================================================
@@ -192,47 +195,47 @@ td.report-notes-cell {
 /* Read-only textareas in report view - allow scrolling when content overflows */
 .task-cell textarea[readonly],
 .notes-cell textarea[readonly] {
-    overflow-y: auto; /* Enable vertical scrollbar when needed */
-    cursor: default; /* Show default cursor, not text cursor */
-    resize: none; /* Prevent resizing */
-    pointer-events: auto !important; /* Override textarea-completed's pointer-events: none to allow scrolling */
+  overflow-y: auto; /* Enable vertical scrollbar when needed */
+  cursor: default; /* Show default cursor, not text cursor */
+  resize: none; /* Prevent resizing */
+  pointer-events: auto !important; /* Override textarea-completed's pointer-events: none to allow scrolling */
 }
 
 /* Remove hover effects from readonly textareas */
 .task-cell textarea[readonly]:hover,
 .notes-cell textarea[readonly]:hover {
-    box-shadow: none !important; /* No golden ring on hover */
-    border: 1px solid white !important; /* White border to prevent visual shift */
-    background-color: transparent !important; /* No background on hover */
+  box-shadow: none !important; /* No golden ring on hover */
+  border: 1px solid white !important; /* White border to prevent visual shift */
+  background-color: transparent !important; /* No background on hover */
 }
 
 /* Maintain disabled visual style for readonly textareas */
 .task-cell textarea[readonly].textarea-completed,
 .notes-cell textarea[readonly].textarea-completed {
-    background-color: #f5f5f5; /* Light gray background like disabled */
-    color: #666; /* Dimmed text color */
-    border: 1px solid #ddd; /* Subtle border */
-    user-select: text; /* Allow text selection for copying */
+  background-color: #f5f5f5; /* Light gray background like disabled */
+  color: #666; /* Dimmed text color */
+  border: 1px solid #ddd; /* Subtle border */
+  user-select: text; /* Allow text selection for copying */
 }
 
 /* Ensure scrollbar is visible and styled */
 .task-cell textarea[readonly]::-webkit-scrollbar,
 .notes-cell textarea[readonly]::-webkit-scrollbar {
-    width: 8px;
+  width: 8px;
 }
 
 .task-cell textarea[readonly]::-webkit-scrollbar-track,
 .notes-cell textarea[readonly]::-webkit-scrollbar-track {
-    background: #e9e9e9;
+  background: #e9e9e9;
 }
 
 .task-cell textarea[readonly]::-webkit-scrollbar-thumb,
 .notes-cell textarea[readonly]::-webkit-scrollbar-thumb {
-    background: #999;
-    border-radius: 4px;
+  background: #999;
+  border-radius: 4px;
 }
 
 .task-cell textarea[readonly]::-webkit-scrollbar-thumb:hover,
 .notes-cell textarea[readonly]::-webkit-scrollbar-thumb:hover {
-    background: #777;
+  background: #777;
 }

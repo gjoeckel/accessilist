@@ -35,31 +35,31 @@
 
 /* Global selected color variable */
 :root {
-    --selected-color: #AC6628; /* Brown color when checkpoint is selected */
+  --selected-color: #ac6628; /* Brown color when checkpoint is selected */
 }
 
 /* Scroll buffer management removed - now using pseudo-elements */
 
 /* Main content for checklist page */
 body.checklist-page main {
-    grid-area: main;
-    max-width: 90%;
-    margin-left: 100px;
+  grid-area: main;
+  max-width: 90%;
+  margin-left: 100px;
 }
 
 /* Main content for report pages */
 body.report-page main {
-    grid-area: main;
-    max-width: 90%;
-    margin-left: 100px; /* Reserve space for side panel */
+  grid-area: main;
+  max-width: 90%;
+  margin-left: 100px; /* Reserve space for side panel */
 }
 
 /* Main content for non-checklist, non-report pages (legacy fallback) */
 body:not(.report-page):not(.checklist-page) main {
-    grid-area: main;
-    max-width: 90%;
-    margin-left: 100px;
-    padding-top: 90px;
+  grid-area: main;
+  max-width: 90%;
+  margin-left: 100px;
+  padding-top: 90px;
 }
 
 /* ====================================================================
@@ -67,121 +67,121 @@ body:not(.report-page):not(.checklist-page) main {
    ==================================================================== */
 
 section {
-    color: var(--theme-color);
-    position: relative;
-    z-index: 1;
-    margin-bottom: 60px;
-    scroll-margin-top: 90px; /* Offset for sticky header when scrolling to section */
+  color: var(--theme-color);
+  position: relative;
+  z-index: 1;
+  margin-bottom: 60px;
+  scroll-margin-top: 90px; /* Offset for sticky header when scrolling to section */
 }
 
 .principle-section {
-    position: relative;
-    z-index: 1;
+  position: relative;
+  z-index: 1;
 }
 
 /* First section has no extra margin */
 .principle-section.checkpoint-1,
 .principle-section.checklist-1 {
-    margin-top: 0;
+  margin-top: 0;
 }
 
 /* Checkpoint Color Themes */
 .principle-section {
-    --theme-color: #333333; /* Default for all checkpoints */
-    /* --selected-color inherited from :root */
+  --theme-color: #333333; /* Default for all checkpoints */
+  /* --selected-color inherited from :root */
 }
 
 /* Section Headers */
 .principle-section h2 {
-    color: var(--theme-color);
-    font-size: 1.3rem;
-    text-align: center;
-    margin-bottom: 2rem;
-    z-index: 1;
-    background-color: transparent;
-    padding: 4px;
+  color: var(--theme-color);
+  font-size: 1.3rem;
+  text-align: center;
+  margin-bottom: 2rem;
+  z-index: 1;
+  background-color: transparent;
+  padding: 4px;
 }
 
 /* Checklist page (mychecklist.php) - smaller h2 text and reduced spacing */
 body.checklist-page .principle-section h2 {
-    font-size: 1rem;
-    margin-bottom: 15px;
+  font-size: 1rem;
+  margin-bottom: 15px;
 }
 
 /* Checklist Caption (clickable section heading) */
 .checklist-caption {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0.5rem;
-    cursor: pointer;
-    border-radius: 6px;
-    padding: calc(0.5rem + 4px) calc(1rem + 4px);
-    transition: box-shadow 0.2s ease;
-    max-width: fit-content;
-    white-space: nowrap;
-    margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  border-radius: 6px;
+  padding: calc(0.5rem + 4px) calc(1rem + 4px);
+  transition: box-shadow 0.2s ease;
+  max-width: fit-content;
+  white-space: nowrap;
+  margin: 0 auto;
 }
 
 /* Checklist page (mychecklist.php) - center h2 above table */
 body.checklist-page .checklist-caption {
-    justify-content: center;
-    margin: 0 auto;
+  justify-content: center;
+  margin: 0 auto;
 }
 
 /* CSS-generated number circle - outline mode (default) */
 .checklist-caption[data-number]::before {
-    content: attr(data-number);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    border-radius: 50%;
-    border: 2px solid var(--theme-color);
-    background-color: transparent;
-    color: var(--theme-color);
-    font-size: 1rem;
-    font-weight: bold;
-    flex-shrink: 0;
+  content: attr(data-number);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 2px solid var(--theme-color);
+  background-color: transparent;
+  color: var(--theme-color);
+  font-size: 1rem;
+  font-weight: bold;
+  flex-shrink: 0;
 }
 
 /* CSS-generated number circle - filled mode (when selected via side panel) */
 .principle-section.active .checklist-caption[data-number]::before {
-    background-color: var(--selected-color);
-    border-color: var(--selected-color);
-    color: white;
+  background-color: var(--selected-color);
+  border-color: var(--selected-color);
+  color: white;
 }
 
 /* Keep focus state with default theme color for keyboard navigation */
 .checklist-caption[data-number]:focus::before {
-    background-color: var(--theme-color);
-    border-color: var(--theme-color);
-    color: white;
+  background-color: var(--theme-color);
+  border-color: var(--theme-color);
+  color: white;
 }
 
 .checklist-caption:focus,
 .checklist-caption:hover {
-    outline: none;
-    box-shadow: var(--golden-ring) !important;
+  outline: none;
+  box-shadow: var(--golden-ring) !important;
 }
 
 /* Screen Reader Only */
 .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 /* Hidden sections (shown dynamically by JS) */
 [id$="-section"] {
-    display: none;
+  display: none;
 }
 
 /* ====================================================================
@@ -190,69 +190,71 @@ body.checklist-page .checklist-caption {
 
 /* Side panel container - full height, slides in from left */
 .side-panel {
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    width: 60px;
-    background-color: white;
-    display: flex;
-    flex-direction: column;
-    z-index: 1999; /* Below header (2000), above filters (500) */
-    transform: translateX(-60px); /* Hidden by default */
-    transition: transform 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  width: 60px;
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  z-index: 1999; /* Below header (2000), above filters (500) */
+  transform: translateX(-60px); /* Hidden by default */
+  transition: transform 0.3s ease;
 }
 
 .side-panel[aria-expanded="true"] {
-    transform: translateX(0); /* Visible */
+  transform: translateX(0); /* Visible */
 }
 
 /* Checkpoint button list */
 .side-panel ul {
-    list-style: none;
-    padding: 105px 0 0 0; /* 70px header + 35px spacing */
-    margin: 0;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 35px;
-    /* Scroll only when needed */
-    overflow-y: auto;
-    /* Reserve space for scrollbar so content doesn't shift/overlay */
-    scrollbar-gutter: stable both-edges;
-    /* Constrain to viewport height above footer */
-    max-height: calc(100vh - var(--footer-height, 50px) - var(--sidepanel-bottom-gap, 12px));
+  list-style: none;
+  padding: 105px 0 0 0; /* 70px header + 35px spacing */
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 35px;
+  /* Scroll only when needed */
+  overflow-y: auto;
+  /* Reserve space for scrollbar so content doesn't shift/overlay */
+  scrollbar-gutter: stable both-edges;
+  /* Constrain to viewport height above footer */
+  max-height: calc(
+    100vh - var(--footer-height, 50px) - var(--sidepanel-bottom-gap, 12px)
+  );
 }
 
 /* Checkpoint button */
 .checkpoint-btn {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 2px solid #333333;
-    background-color: transparent;
-    color: #333333;
-    font-size: 1.1rem;
-    font-weight: bold;
-    text-decoration: none;
-    cursor: pointer;
-    transition: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid #333333;
+  background-color: transparent;
+  color: #333333;
+  font-size: 1.1rem;
+  font-weight: bold;
+  text-decoration: none;
+  cursor: pointer;
+  transition: none;
 }
 
 /* Active checkpoint - filled circle with white number (brown when selected) */
 .checkpoint-btn.active {
-    background-color: var(--selected-color);
-    border-color: var(--selected-color);
-    color: white;
+  background-color: var(--selected-color);
+  border-color: var(--selected-color);
+  color: white;
 }
 
 /* Hover/focus golden ring */
 .checkpoint-btn:is(:hover, :focus) {
-    outline: none;
-    box-shadow: var(--golden-ring);
+  outline: none;
+  box-shadow: var(--golden-ring);
 }
 
 /* ====================================================================
@@ -261,91 +263,93 @@ body.checklist-page .checklist-caption {
 
 /* All checkpoints button - scaled from 120px to 30px (0.25x scale) */
 .checkpoint-all {
-    font-size: 0 !important; /* Hide any text */
-    position: relative;
-    /* Explicit dimensions ensure button is clickable */
-    width: 30px !important;
-    height: 30px !important;
-    min-width: 30px !important;
-    min-height: 30px !important;
-    border-width: 1.5px !important; /* Scaled from 5px */
+  font-size: 0 !important; /* Hide any text */
+  position: relative;
+  /* Explicit dimensions ensure button is clickable */
+  width: 30px !important;
+  height: 30px !important;
+  min-width: 30px !important;
+  min-height: 30px !important;
+  border-width: 1.5px !important; /* Scaled from 5px */
 }
 
 /* Draw 3 checkpoint lines using pseudo-element */
 .checkpoint-all::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 17px;
-    height: 12px;
-    pointer-events: none;
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 17px;
+  height: 14px;
+  pointer-events: none;
 
-    /* Each row: 3px square (0.5px border) + 1.5px gap + 12.5px line (2px tall) + 2.5px row spacing */
-    background:
-        /* Row 1 - Task line (solid rectangle) */
-        linear-gradient(currentColor, currentColor) 4.5px 0.5px / 12.5px 2px no-repeat,
-        /* Row 1 - Square border (hollow) */
-        linear-gradient(currentColor, currentColor) 0 0 / 3px 0.5px no-repeat,
-        linear-gradient(currentColor, currentColor) 0 2.5px / 3px 0.5px no-repeat,
-        linear-gradient(currentColor, currentColor) 0 0.5px / 0.5px 2px no-repeat,
-        linear-gradient(currentColor, currentColor) 2.5px 0.5px / 0.5px 2px no-repeat,
+  /* Each row: 3px square (0.5px border) + 1.5px gap + 12.5px line (2px tall) + 2.5px row spacing */
+  background:
+        /* Row 1 - Task line (solid rectangle) */ linear-gradient(
+        currentColor,
+        currentColor
+      )
+      4.5px 0.5px / 12.5px 2px no-repeat,
+    /* Row 1 - Square border (hollow) */
+      linear-gradient(currentColor, currentColor) 0 0 / 3px 0.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 2.5px / 3px 0.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 0.5px / 0.5px 2px no-repeat,
+    linear-gradient(currentColor, currentColor) 2.5px 0.5px / 0.5px 2px
+      no-repeat,
+    /* Row 2 - Task line */ linear-gradient(currentColor, currentColor) 4.5px
+      5px / 12.5px 2px no-repeat,
+    /* Row 2 - Square border */ linear-gradient(currentColor, currentColor) 0
+      4.5px / 3px 0.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 7px / 3px 0.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 5px / 0.5px 2px no-repeat,
+    linear-gradient(currentColor, currentColor) 2.5px 5px / 0.5px 2px no-repeat,
+    /* Row 3 - Task line */ linear-gradient(currentColor, currentColor) 4.5px
+      9.5px / 12.5px 2px no-repeat,
+    /* Row 3 - Square border */ linear-gradient(currentColor, currentColor) 0
+      9px / 3px 0.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 11.5px / 3px 0.5px no-repeat,
+    linear-gradient(currentColor, currentColor) 0 9.5px / 0.5px 2px no-repeat,
+    linear-gradient(currentColor, currentColor) 2.5px 9.5px / 0.5px 2px
+      no-repeat;
 
-        /* Row 2 - Task line */
-        linear-gradient(currentColor, currentColor) 4.5px 5px / 12.5px 2px no-repeat,
-        /* Row 2 - Square border */
-        linear-gradient(currentColor, currentColor) 0 4.5px / 3px 0.5px no-repeat,
-        linear-gradient(currentColor, currentColor) 0 7px / 3px 0.5px no-repeat,
-        linear-gradient(currentColor, currentColor) 0 5px / 0.5px 2px no-repeat,
-        linear-gradient(currentColor, currentColor) 2.5px 5px / 0.5px 2px no-repeat,
-
-        /* Row 3 - Task line */
-        linear-gradient(currentColor, currentColor) 4.5px 9.5px / 12.5px 2px no-repeat,
-        /* Row 3 - Square border */
-        linear-gradient(currentColor, currentColor) 0 9px / 3px 0.5px no-repeat,
-        linear-gradient(currentColor, currentColor) 0 11.5px / 3px 0.5px no-repeat,
-        linear-gradient(currentColor, currentColor) 0 9.5px / 0.5px 2px no-repeat,
-        linear-gradient(currentColor, currentColor) 2.5px 9.5px / 0.5px 2px no-repeat;
-
-    color: #333333;
+  color: #333333;
 }
 
 .checkpoint-all.active::before {
-    color: white !important;
+  color: white !important;
 }
 
 /* Toggle strip - collapse/expand button */
 .toggle-strip {
-    position: absolute;
-    right: -21px;
-    top: 0;
-    bottom: 0;
-    width: 21px;
-    background-color: #ccc;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0;
-    font-size: 1rem;
-    z-index: 91;
+  position: absolute;
+  right: -21px;
+  top: 0;
+  bottom: 0;
+  width: 21px;
+  background-color: #ccc;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  font-size: 1rem;
+  z-index: 91;
 }
 
 .toggle-strip:is(:hover, :focus) {
-    outline: none;
-    box-shadow: var(--golden-ring);
+  outline: none;
+  box-shadow: var(--golden-ring);
 }
 
 .toggle-arrow {
-    transition: transform 0.3s ease;
+  transition: transform 0.3s ease;
 }
 
 .side-panel[aria-expanded="false"] .toggle-arrow {
-    transform: rotate(180deg);
+  transform: rotate(180deg);
 }
-
 
 /* ====================================================================
    PRINCIPLES TABLE SPECIFIC
@@ -353,71 +357,71 @@ body.checklist-page .checklist-caption {
 
 .principles-table th:nth-child(3),
 .principles-table td:nth-child(3) {
-    display: table-cell;
+  display: table-cell;
 }
 
 .principles-table-wrapper {
-    margin-bottom: 1rem;
+  margin-bottom: 1rem;
 }
 
 .principles-buttons {
-    display: flex;
-    justify-content: flex-start;
-    margin-top: 0.5rem;
-    gap: 0.5rem;
+  display: flex;
+  justify-content: flex-start;
+  margin-top: 0.5rem;
+  gap: 0.5rem;
 }
 
 /* Add Row Buttons - smaller size, matches h2 number icons */
 .principles-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    border: 2px solid #333333 !important;
-    border-radius: 50%;
-    background-color: transparent !important;
-    font-size: 0; /* Hide any text content */
-    cursor: pointer;
-    position: relative;
-    transition: none; /* No animations */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  border: 2px solid #333333 !important;
+  border-radius: 50%;
+  background-color: transparent !important;
+  font-size: 0; /* Hide any text content */
+  cursor: pointer;
+  position: relative;
+  transition: none; /* No animations */
 }
 
 /* Plus icon using SVG mask for proper color inheritance */
 .principles-button::before {
-    content: '';
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 12px;
-    height: 12px;
-    -webkit-mask-image: url('../images/add-plus.svg');
-    mask-image: url('../images/add-plus.svg');
-    -webkit-mask-size: contain;
-    mask-size: contain;
-    -webkit-mask-position: center;
-    mask-position: center;
-    -webkit-mask-repeat: no-repeat;
-    mask-repeat: no-repeat;
-    background-color: #333333; /* Icon color - will be masked by SVG shape */
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 12px;
+  height: 12px;
+  -webkit-mask-image: url("../images/add-plus.svg");
+  mask-image: url("../images/add-plus.svg");
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  -webkit-mask-position: center;
+  mask-position: center;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  background-color: #333333; /* Icon color - will be masked by SVG shape */
 }
 
 /* Brown selected color when checkpoint is active */
 .principle-section.active .principles-button {
-    border-color: var(--selected-color) !important;
-    background-color: var(--selected-color) !important;
+  border-color: var(--selected-color) !important;
+  background-color: var(--selected-color) !important;
 }
 
 /* White plus icon when selected */
 .principle-section.active .principles-button::before {
-    background-color: white !important; /* Mask reveals white color */
+  background-color: white !important; /* Mask reveals white color */
 }
 
 .principles-button:is(:hover, :focus) {
-    outline: none;
-    box-shadow: var(--golden-ring) !important;
+  outline: none;
+  box-shadow: var(--golden-ring) !important;
 }
 
 /* ====================================================================
@@ -425,27 +429,27 @@ body.checklist-page .checklist-caption {
    ==================================================================== */
 
 @media (max-width: 768px) {
-    .side-panel {
-        /* Maintain fixed positioning and full height */
-        position: fixed;
-        top: 0;
-        left: 0;
-        bottom: 0; /* Full height - stays page height */
-        width: 60px; /* Maintain horizontal space */
-        z-index: 1999; /* Below header (2000), above filters (500) */
-    }
+  .side-panel {
+    /* Maintain fixed positioning and full height */
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0; /* Full height - stays page height */
+    width: 60px; /* Maintain horizontal space */
+    z-index: 1999; /* Below header (2000), above filters (500) */
+  }
 
-    .side-panel[aria-expanded="false"] {
-        transform: translateX(-60px); /* Hide to left when collapsed */
-    }
+  .side-panel[aria-expanded="false"] {
+    transform: translateX(-60px); /* Hide to left when collapsed */
+  }
 
-    /* Responsive: Keep icon and text on same line, allow text to wrap */
-    body.checklist-page .checklist-caption {
-        flex-direction: row;  /* Keep horizontal layout */
-        align-items: flex-start;  /* Top-align icon with text */
-        justify-content: flex-start;  /* Left-align container */
-        margin: 0;  /* Remove centering in mobile */
-        white-space: normal;  /* Allow text to wrap */
-        max-width: 100%;  /* Allow full width usage */
-    }
+  /* Responsive: Keep icon and text on same line, allow text to wrap */
+  body.checklist-page .checklist-caption {
+    flex-direction: row; /* Keep horizontal layout */
+    align-items: flex-start; /* Top-align icon with text */
+    justify-content: flex-start; /* Left-align container */
+    margin: 0; /* Remove centering in mobile */
+    white-space: normal; /* Allow text to wrap */
+    max-width: 100%; /* Allow full width usage */
+  }
 }
