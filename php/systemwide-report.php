@@ -86,7 +86,6 @@ renderHTMLHead('Systemwide Report');
   // .report-section has 90px padding-top, so h2 is at 120 + 90 = 210
   // But we scroll slightly less to show h2 just below the filters: 130px
   window.scrollTo(0, 130);
-  console.log('🎯 [INLINE SCRIPT] Initial scroll to 130, waiting for content to build...');
 </script>
 
 <!-- Sticky Header with Filters Inside -->
@@ -225,8 +224,6 @@ import { ReportsManager } from '<?php echo $basePath; ?>/js/systemwide-report.js
 let reportsManager;
 
 document.addEventListener('DOMContentLoaded', function() {
-
-    console.log('Initializing reports page');
 
     // Update timestamp on page load
     updateTimestamp();

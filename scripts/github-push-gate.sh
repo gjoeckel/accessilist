@@ -127,19 +127,12 @@ EOF
 
 # Function to wait for GitHub Actions deployment
 wait_for_deployment() {
-    echo -e "${BLUE}━━━ Step 3: Waiting for GitHub Actions Deployment ━━━${NC}"
+    echo -e "${BLUE}━━━ Step 3: GitHub Actions Deployment ━━━${NC}"
     echo ""
     echo -e "${CYAN}GitHub Actions is deploying to production...${NC}"
     echo "  • Monitor: https://github.com/gjoeckel/accessilist/actions"
     echo ""
-    echo -e "${YELLOW}Waiting 90 seconds for deployment to complete...${NC}"
-
-    # Show countdown
-    for i in {90..1}; do
-        echo -ne "\r  ${CYAN}Time remaining: ${i}s${NC} "
-        sleep 1
-    done
-    echo -e "\r  ${GREEN}✅ Deployment time elapsed${NC}                    "
+    echo -e "${YELLOW}Deployment in progress - GitHub will notify when complete${NC}"
     echo ""
 }
 
@@ -255,16 +248,13 @@ secure_git_push() {
     echo -e "${GREEN}✅ Pushed to GitHub successfully!${NC}"
     echo ""
 
-    # === STEP 3: Wait for GitHub Actions ===
+    # === STEP 3: GitHub Actions Deployment ===
     wait_for_deployment
 
-    # === STEP 4: Verify Deployment ===
-    verify_deployment
-
-    # === FINAL SUCCESS ===
+    # === FINAL MESSAGE ===
     echo ""
     echo -e "${GREEN}╔════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${GREEN}║          🎉 DEPLOYMENT COMPLETE! 🎉                    ║${NC}"
+    echo -e "${GREEN}║          🚀 DEPLOYMENT INITIATED! 🚀                   ║${NC}"
     echo -e "${GREEN}╚════════════════════════════════════════════════════════╝${NC}"
     echo ""
     echo -e "${CYAN}Production Site:${NC}"
@@ -273,10 +263,7 @@ secure_git_push() {
     echo -e "${CYAN}GitHub Actions:${NC}"
     echo "  📊 https://github.com/gjoeckel/accessilist/actions"
     echo ""
-    echo -e "${CYAN}Next Steps:${NC}"
-    echo "  1. Test production site manually"
-    echo "  2. Verify scroll buffer functionality"
-    echo "  3. Test All button clickability on report pages"
+    echo -e "${YELLOW}GitHub will notify when deployment succeeds or fails${NC}"
     echo ""
 
     return 0

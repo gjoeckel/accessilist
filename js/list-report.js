@@ -26,8 +26,6 @@ export class UserReportManager {
      * Initialize the report manager
      */
     async initialize() {
-        console.log('Initializing UserReportManager for session:', this.sessionKey);
-
         // Cache DOM elements
         this.tableBody = document.querySelector('.report-table tbody');
         this.filterButtons = document.querySelectorAll('.filter-button');
@@ -137,8 +135,6 @@ export class UserReportManager {
      * Handle checkpoint button click in side panel
      */
     handleCheckpointClick(checkpoint) {
-        console.log('Checkpoint clicked:', checkpoint);
-
         // Update active state on side panel buttons
         this.checkpointButtons.forEach(btn => {
             const btnCheckpoint = btn.getAttribute('data-checkpoint');
@@ -212,8 +208,6 @@ export class UserReportManager {
      * Load checklist data from API
      */
     async loadChecklistData() {
-        console.log('Loading checklist data for session:', this.sessionKey);
-
         const apiPath = window.getAPIPath
             ? window.getAPIPath('restore')
             : '/php/api/restore.php';
@@ -225,7 +219,6 @@ export class UserReportManager {
         }
 
         const result = await response.json();
-        console.log('Checklist data loaded:', result);
 
         if (!result.success || !result.data) {
             throw new Error('Invalid API response');
@@ -239,11 +232,8 @@ export class UserReportManager {
      * Load principles structure from type JSON
      */
     async loadPrinciplesStructure() {
-        console.log('Loading principles structure for type:', this.typeSlug);
-
         // Get JSON filename for this type
         const jsonFile = await window.TypeManager.getJsonFileName(this.typeSlug);
-        console.log('Loading principles from file:', jsonFile);
 
         const jsonPath = window.getJSONPath
             ? window.getJSONPath(jsonFile)
@@ -256,11 +246,9 @@ export class UserReportManager {
         }
 
         const rawData = await response.json();
-        console.log('Raw checklist data loaded:', rawData);
 
         // Convert checklist-N structure to principles array
         this.principlesData = this.convertToPrinciples(rawData);
-        console.log('Converted principles data:', this.principlesData);
     }
 
     /**
@@ -339,7 +327,6 @@ export class UserReportManager {
 
         // Group tasks by principle
         const grouped = this.groupTasksByPrinciple();
-        console.log('Grouped principles:', grouped.length, grouped);
 
         // Check if we have any data
         if (grouped.length === 0) {
@@ -349,7 +336,6 @@ export class UserReportManager {
 
         // Render all tasks in ONE table and store rows with status
         grouped.forEach(section => {
-            console.log(`Adding tasks from: ${section.title}, count: ${section.tasks.length}`);
 
             // Add all task rows from this section
             section.tasks.forEach(task => {
@@ -368,8 +354,6 @@ export class UserReportManager {
                 });
             });
         });
-
-        console.log('Report rendered successfully');
 
         // Update filter counts
         this.updateFilterCounts();
@@ -443,8 +427,6 @@ export class UserReportManager {
                 item.row.classList.add('row-hidden');
             }
         });
-
-        console.log(`Checkpoint filter applied: checkpoint=${this.currentCheckpoint}, status=${this.currentFilter}, visible rows: ${visibleCount}`);
 
         // Show empty state message if no visible rows
         this.updateEmptyState(visibleCount);

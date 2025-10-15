@@ -107,14 +107,6 @@
         };
     }
 
-    // Export environment info for debugging
-    if (window.ENV && window.ENV.debug) {
-        console.log('Path Utils Loaded:', {
-            environment: window.ENV.environment,
-            basePath: getBasePath(),
-            apiExtension: getAPIExtension()
-        });
-    }
 })();
 
 

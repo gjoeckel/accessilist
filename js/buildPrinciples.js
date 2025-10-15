@@ -185,7 +185,7 @@ function buildTable(rows, principleId) {
                 window.simpleModal.info(
                     truncatedTitle,
                     row.example || 'No example available.',
-                    () => console.log('Info modal closed')
+                    () => {}
                 );
             } else {
                 console.error('SimpleModal not available');
@@ -266,8 +266,6 @@ function buildTable(rows, principleId) {
  * @param {string} principleId - The ID of the principle (e.g., 'checklist-1')
  */
 function handleAddPrincipleRow(principleId) {
-    console.log(`Adding new row to ${principleId}`);
-
     if (!window.unifiedStateManager) {
         console.error('StateManager not available - cannot add principle row');
         return;
@@ -314,22 +312,14 @@ window.handleAddPrincipleRow = handleAddPrincipleRow;
 
 // Function to build all content
 async function buildContent(data) {
-    console.log('Starting to build content');
     try {
-        console.log('Building content with data:', data);
-
         const main = document.querySelector('main');
         if (!main) {
             throw new Error('Main element not found');
         }
-        console.log('Found main element:', main);
 
         // Clear existing content
-        console.log('Clearing existing content');
         main.innerHTML = '';
-
-        // Create checkpoint sections dynamically (supports checkpoint-1 through checkpoint-10)
-        console.log('Creating checkpoint sections');
 
         // Filter and sort checkpoint keys
         const checkpointKeys = Object.keys(data)
@@ -340,34 +330,25 @@ async function buildContent(data) {
                 return numA - numB;
             });
 
-        console.log(`Found ${checkpointKeys.length} checkpoints:`, checkpointKeys);
-
         checkpointKeys.forEach(checkpointKey => {
             const checkpointData = data[checkpointKey];
 
-            console.log(`Creating section for checkpoint: ${checkpointKey}`);
             const section = createPrincipleSection(checkpointKey, checkpointData);
             if (section) {
-                console.log(`Building table for checkpoint: ${checkpointKey}`);
                 const tableWrapper = buildTable(checkpointData.table, checkpointKey);
                 section.querySelector('.guidelines-container').appendChild(tableWrapper);
                 main.appendChild(section);
-                console.log(`Section for ${checkpointKey} added to main`);
             }
         });
 
         // Add Report section (consistent across all checklist types)
         // TEMPORARILY COMMENTED OUT - Report functionality is interfering with principle rows
-        // console.log('Adding Report section');
         // const reportSection = createReportSection();
         // main.appendChild(reportSection);
-        // console.log('Report section added to main');
 
         // Dispatch event to signal content is built
-        console.log('Content built, dispatching contentBuilt event');
         const contentBuiltEvent = new CustomEvent('contentBuilt');
         document.dispatchEvent(contentBuiltEvent);
-        console.log('contentBuilt event dispatched');
 
     } catch (error) {
         console.error('Error building content:', error);
