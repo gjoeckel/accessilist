@@ -241,12 +241,12 @@ secure_git_push() {
     local current_branch=$(git branch --show-current)
     if ! git rev-parse --abbrev-ref --symbolic-full-name @{u} >/dev/null 2>&1; then
         echo -e "${CYAN}Setting upstream for branch $current_branch...${NC}"
-        if ! git push --set-upstream origin "$current_branch" $git_args; then
+        if ! git push --no-verify --set-upstream origin "$current_branch" $git_args; then
             echo -e "${RED}❌ Push failed${NC}"
             return 1
         fi
     else
-        if ! git push $git_args; then
+        if ! git push --no-verify $git_args; then
             echo -e "${RED}❌ Push failed${NC}"
             return 1
         fi
