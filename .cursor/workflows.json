@@ -1,18 +1,14 @@
 {
   "proj-dry": {
     "description": "Run duplicate code detection (AccessiList-specific)",
-    "commands": [
-      "./scripts/ai-dry.sh"
-    ],
+    "commands": ["./scripts/ai-dry.sh"],
     "auto_approve": true,
     "timeout": 60000,
     "on_error": "continue"
   },
   "proj-deploy-check": {
     "description": "Run pre-deployment validation",
-    "commands": [
-      "./scripts/deployment/pre-deploy-check.sh"
-    ],
+    "commands": ["./scripts/deployment/pre-deploy-check.sh"],
     "auto_approve": true,
     "timeout": 30000,
     "on_error": "continue"
@@ -40,12 +36,34 @@
   },
   "proj-docker-down": {
     "description": "Stop Docker Apache server",
-    "commands": [
-      "docker compose down",
-      "echo '✅ Docker Apache stopped'"
-    ],
+    "commands": ["docker compose down", "echo '✅ Docker Apache stopped'"],
     "auto_approve": true,
     "timeout": 20000,
+    "on_error": "continue"
+  },
+  "ai-push-deploy-github": {
+    "description": "Push to GitHub and deploy to production (full deployment)",
+    "commands": [
+      "./scripts/deployment/pre-deploy-check.sh",
+      "./scripts/github-push-gate.sh secure-push 'push to github'",
+      "echo '✅ Pushed to GitHub - GitHub Actions will deploy automatically'",
+      "echo '⏳ Waiting for GitHub Actions deployment...'",
+      "sleep 30",
+      "./scripts/deployment/post-deploy-verify.sh"
+    ],
+    "auto_approve": false,
+    "timeout": 300000,
+    "on_error": "continue"
+  },
+  "ai-push-github": {
+    "description": "Push to GitHub only (no deployment)",
+    "commands": [
+      "./scripts/github-push-gate.sh secure-push 'push to github'",
+      "echo '✅ Pushed to GitHub successfully'",
+      "echo 'ℹ️  No deployment triggered - code pushed to repository only'"
+    ],
+    "auto_approve": false,
+    "timeout": 60000,
     "on_error": "continue"
   }
 }
