@@ -46,21 +46,33 @@ function loadEnv($filePath) {
     return true;
 }
 
-// Load .env file (REQUIRED) - prefer external production path if present
+// Load .env file (REQUIRED) - priority order:
+// 1. Global cursor-global config (machine-specific, survives across projects)
+// 2. Production external config (AWS server only)
+// 3. Project local config (legacy fallback)
+$globalEnvPath = '/Users/a00288946/cursor-global/config/.env';
 $externalEnvPath = '/var/websites/webaim/htdocs/training/online/etc/.env';
+$projectEnvPath = __DIR__ . '/../../.env';
 $envLoaded = false;
 
-if (file_exists($externalEnvPath)) {
+// Try global config first (preferred for local development)
+if (file_exists($globalEnvPath)) {
+    $envLoaded = loadEnv($globalEnvPath);
+}
+
+// Try production external config (AWS server)
+if (!$envLoaded && file_exists($externalEnvPath)) {
     $envLoaded = loadEnv($externalEnvPath);
 }
 
-if (!$envLoaded) {
-    $envLoaded = loadEnv(__DIR__ . '/../../.env');
+// Try project local config (legacy fallback)
+if (!$envLoaded && file_exists($projectEnvPath)) {
+    $envLoaded = loadEnv($projectEnvPath);
 }
 
 if (!$envLoaded) {
     http_response_code(500);
-    die('Configuration Error: .env file not found. Expected external etc/.env or project .env.');
+    die('Configuration Error: .env file not found. Expected locations: ' . $globalEnvPath . ' OR ' . $externalEnvPath . ' OR ' . $projectEnvPath);
 }
 
 // Use .env configuration (no auto-detection fallback)
@@ -90,4 +102,3 @@ $envConfig = [
     'isProduction' => $environment === 'production',
     'isLocal' => $environment === 'local'
 ];
-
