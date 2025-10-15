@@ -74,11 +74,12 @@ button.checklist-button {
   background-color: #478f00;
   color: white;
   border: none;
+  font-weight: normal;
 }
 
 #demo:hover,
 #demo:focus {
-  background-color: #3a7300;
+  box-shadow: var(--golden-ring);
 }
 
 .clear-data-button {
