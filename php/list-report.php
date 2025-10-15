@@ -31,6 +31,73 @@ if (!file_exists($sessionFile)) {
 renderHTMLHead('List Report');
 ?>
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/list-report.css?v=<?php echo time(); ?>">
+<style>
+    /* CSS overrides scoped to list-report page only */
+
+    /* Remove sticky-header-container wrapper and extend header height */
+    .list-report-page .sticky-header {
+        height: 150px;
+    }
+
+    /* Position h1 with pixel values instead of percentage */
+    .list-report-page .sticky-header h1 {
+        position: absolute;
+        left: 50%;
+        top: 25px;
+        transform: translateX(-50%);
+        margin: 0;
+        font-size: 1.5rem;
+    }
+
+    /* Position Back button with pixel values */
+    .list-report-page #backButton {
+        position: absolute;
+        left: 2rem;
+        top: 35px;
+        transform: translateY(-50%);
+    }
+
+    /* Position Refresh button group with pixel values */
+    .list-report-page .header-buttons-group {
+        position: absolute;
+        right: 1rem;
+        top: 35px;
+        transform: translateY(-50%);
+    }
+
+    /* Move filter-group inside header, position at 80px, full width, no background */
+    .list-report-page .filter-group {
+        position: absolute;
+        top: 80px;
+        left: 0;
+        width: 100%;
+        background-color: transparent;
+        padding-top: 0;
+        padding-bottom: 0;
+        margin: 0;
+    }
+
+    /* Remove white background pseudo-element from filter-group */
+    .list-report-page .filter-group::before {
+        display: none;
+    }
+
+    /* Adjust report section spacing */
+    .list-report-page .report-section {
+        padding-top: 60px;
+    }
+
+    /* Reduce h2 margin-bottom */
+    .list-report-page #report-caption {
+        margin-bottom: 10px;
+    }
+
+    /* Move side panel buttons down to accommodate new header height */
+    /* Old: 105px (70px header + 35px spacing), New: 185px (150px header + 35px spacing) */
+    .list-report-page .side-panel ul {
+        padding-top: 185px;
+    }
+</style>
 <body class="report-page list-report-page">
 <?php require __DIR__ . '/includes/noscript.php'; ?>
 
@@ -62,60 +129,58 @@ renderHTMLHead('List Report');
     </button>
 </nav>
 
-<!-- Sticky Header + Filters Container -->
-<div class="sticky-header-container">
-    <header class="sticky-header">
-        <h1>List Report</h1>
-        <button id="backButton" class="back-button" aria-label="Back to checklist">
-            <span class="button-text">Back</span>
+<!-- Sticky Header with Filters Inside -->
+<header class="sticky-header">
+    <h1>List Report</h1>
+    <button id="backButton" class="back-button" aria-label="Back to checklist">
+        <span class="button-text">Back</span>
+    </button>
+    <div class="header-buttons-group">
+        <button id="refreshButton" class="header-button" aria-label="Refresh report data">
+            <span class="button-text">Refresh</span>
         </button>
-        <div class="header-buttons-group">
-            <button id="refreshButton" class="header-button" aria-label="Refresh report data">
-                <span class="button-text">Refresh</span>
-            </button>
-        </div>
-    </header>
+    </div>
 
     <!-- Filter Buttons -->
     <div class="filter-group" role="group" aria-label="Filter tasks by status">
-            <button
-                id="filter-completed"
-                class="filter-button"
-                data-filter="completed"
-                aria-pressed="false"
-                aria-label="Show completed tasks">
-                <span class="filter-label">Done</span>
-                <span class="filter-count" id="count-completed">0</span>
-            </button>
-            <button
-                id="filter-in-progress"
-                class="filter-button"
-                data-filter="in-progress"
-                aria-pressed="false"
-                aria-label="Show in progress tasks">
-                <span class="filter-label">Active</span>
-                <span class="filter-count" id="count-in-progress">0</span>
-            </button>
-            <button
-                id="filter-pending"
-                class="filter-button"
-                data-filter="pending"
-                aria-pressed="false"
-                aria-label="Show not started tasks">
-                <span class="filter-label">Not Started</span>
-                <span class="filter-count" id="count-pending">0</span>
-            </button>
-            <button
-                id="filter-all"
-                class="filter-button active"
-                data-filter="all"
-                aria-pressed="true"
-                aria-label="Show all tasks">
-                <span class="filter-label">All</span>
-                <span class="filter-count" id="count-all">0</span>
-            </button>
-        </div>
-</div><!-- End sticky-header-container -->
+        <button
+            id="filter-completed"
+            class="filter-button"
+            data-filter="completed"
+            aria-pressed="false"
+            aria-label="Show completed tasks">
+            <span class="filter-label">Done</span>
+            <span class="filter-count" id="count-completed">0</span>
+        </button>
+        <button
+            id="filter-in-progress"
+            class="filter-button"
+            data-filter="in-progress"
+            aria-pressed="false"
+            aria-label="Show in progress tasks">
+            <span class="filter-label">Active</span>
+            <span class="filter-count" id="count-in-progress">0</span>
+        </button>
+        <button
+            id="filter-pending"
+            class="filter-button"
+            data-filter="pending"
+            aria-pressed="false"
+            aria-label="Show not started tasks">
+            <span class="filter-label">Not Started</span>
+            <span class="filter-count" id="count-pending">0</span>
+        </button>
+        <button
+            id="filter-all"
+            class="filter-button active"
+            data-filter="all"
+            aria-pressed="true"
+            aria-label="Show all tasks">
+            <span class="filter-label">All</span>
+            <span class="filter-count" id="count-all">0</span>
+        </button>
+    </div>
+</header>
 
 <!-- Main Content -->
 <main role="main">
@@ -274,4 +339,3 @@ function updateTimestamp() {
 
 </body>
 </html>
-
