@@ -25,6 +25,12 @@ renderHTMLHead('Accessibility Checklists');
 <main role="main">
     <div class="landing-content checklist-groups-container" id="checklist-groups" tabindex="-1">
       <div class="checklist-group">
+        <h2>Start Here</h2>
+        <div class="checklist-buttons-row">
+          <button id="demo" class="checklist-button">Demo</button>
+        </div>
+      </div>
+      <div class="checklist-group">
         <h2>Microsoft</h2>
         <div class="checklist-buttons-row">
           <button id="word" class="checklist-button">Word</button>

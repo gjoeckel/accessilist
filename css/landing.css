@@ -2,111 +2,124 @@
 
 /* Main content height on home page */
 main[role="main"] {
-    height: 1080px;
+  height: 1080px;
 }
 
 /* Ensure checklist groups stay visible when focused (skip link target) */
 #checklist-groups {
-    scroll-margin-top: 120px; /* 70px header + 50px breathing room */
+  scroll-margin-top: 120px; /* 70px header + 50px breathing room */
 }
 
 #checklist-groups:focus {
-    outline: none;
-    box-shadow: var(--golden-ring);
-    border-radius: 6px;
+  outline: none;
+  box-shadow: var(--golden-ring);
+  border-radius: 6px;
 }
 
 .landing-content {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    margin-top: 100px;
-    gap: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
+  gap: 20px;
 }
 
 .checklist-buttons-row {
-    display: flex;
-    gap: 20px;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
 }
 
 .checklist-button {
-    width: 8rem;
-    padding: 6px;
-    font-size: 18px;
-    cursor: pointer;
-    background-color: transparent;
-    color: #333333;
-    border: 1px solid #333333;
-    border-radius: 4px;
-    transition: background-color 0.3s, box-shadow 0.2s, border-color 0.2s, color 0.2s;
+  width: 8rem;
+  padding: 6px;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: transparent;
+  color: #333333;
+  border: 1px solid #333333;
+  border-radius: 4px;
+  transition: background-color 0.3s, box-shadow 0.2s, border-color 0.2s,
+    color 0.2s;
 }
 
 button.checklist-button {
-    background: #ffffff;
-    border: #333 solid 2px;
-    color: #333;
-    font-weight: bold;
+  background: #ffffff;
+  border: #333 solid 2px;
+  color: #333;
+  font-weight: bold;
+}
+
+/* Demo button - green styling like Save button, same width as other checklist buttons */
+#demo {
+  background-color: #478f00;
+  color: white;
+  border: none;
+}
+
+#demo:hover,
+#demo:focus {
+  background-color: #3a7300;
 }
 
 .clear-data-button {
-    width: 180px;
-    padding: 15px;
-    font-size: 18px;
-    cursor: pointer;
-    background-color: #bf1712; /* Apply button-red normal */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    transition: background-color 0.3s;
-    margin-top: 25px;
+  width: 180px;
+  padding: 15px;
+  font-size: 18px;
+  cursor: pointer;
+  background-color: #bf1712; /* Apply button-red normal */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+  margin-top: 25px;
 }
 
 .camtasia-button {
-    /* Positioned absolute in multiple.css block */
-    position: absolute;
-    top: 150px;
-    left: 50%;
-    transform: translateX(-50%);
-    padding: 0.75rem 1.5rem; /* from multiple.css */
-    font-size: 1.1rem; /* from multiple.css */
-    background-color: var(--primary-color); /* from multiple.css */
-    /* background-color: #8B4513; /* Brown color from checklist.css */
-    color: white;
-    border: none;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: background-color 0.2s;
-    text-align: center; /* from checklist.css */
+  /* Positioned absolute in multiple.css block */
+  position: absolute;
+  top: 150px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 0.75rem 1.5rem; /* from multiple.css */
+  font-size: 1.1rem; /* from multiple.css */
+  background-color: var(--primary-color); /* from multiple.css */
+  /* background-color: #8B4513; /* Brown color from checklist.css */
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+  text-align: center; /* from checklist.css */
 }
 
 .heading-content {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 0; /* controlled by zones */
-    text-align: center; /* from multiple.css */
-    padding: 0; /* remove direct padding; use zones instead */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0; /* controlled by zones */
+  text-align: center; /* from multiple.css */
+  padding: 0; /* remove direct padding; use zones instead */
 }
 
 .heading-left-zone,
 .heading-right-zone {
-    display: flex;
-    align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .heading-left-zone {
-    padding-left: 30px; /* 30px from the left of the image */
+  padding-left: 30px; /* 30px from the left of the image */
 }
 
 .heading-right-zone {
-    padding-right: 30px; /* 30px from the right of the text */
+  padding-right: 30px; /* 30px from the right of the text */
 }
 
 .heading-left-zone img {
-    margin-right: 10px;
+  margin-right: 10px;
 }
 
 /* Removed focus/hover styles - Handled by focus.css */
@@ -205,4 +218,3 @@ button.checklist-button {
     font-size: 14px;
   }
 }
-
