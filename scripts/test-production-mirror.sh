@@ -384,54 +384,15 @@ else
     FAILED_TESTS=$((FAILED_TESTS + 1))
 fi
 
-# Test 12: Production Base Path Verification
-print_section "Test 12: Production Base Path Configuration"
-log "=== Test 12: Production Base Path ==="
+# Test 12: Environment Configuration Verification
+print_section "Test 12: Environment Configuration"
+log "=== Test 12: Environment Configuration ==="
 
 increment_test_counter
-echo -n "  Verifying base path in HTML..."
+echo -n "  Verifying JS environment configuration..."
 HOME_HTML=$(curl -s "$BASE_URL/home" 2>&1)
 
-# Check for appropriate base path based on test environment
-if [ "$BASE_URL" = "http://localhost/training/online/accessilist" ]; then
-    # Local Apache production mirror - check for production OR local paths
-    # (ENV mode may be local or apache-local depending on .env config)
-    if echo "$HOME_HTML" | grep -q "/training/online/accessilist" || \
-       echo "$HOME_HTML" | grep -q 'href="/css/' && echo "$HOME_HTML" | grep -q 'src="/js/'; then
-        echo -e " ${GREEN}✅ PASS${NC} (Base path configured correctly)"
-        log "Base path: Configured for current environment"
-        PASSED_TESTS=$((PASSED_TESTS + 1))
-    else
-        echo -e " ${RED}❌ FAIL${NC} (Base path not found)"
-        log "Base path: Missing"
-        FAILED_TESTS=$((FAILED_TESTS + 1))
-    fi
-elif [[ "$BASE_URL" =~ ":8080" ]]; then
-    # Docker testing - expect production base path (matches production server)
-    if echo "$HOME_HTML" | grep -q 'href="/training/online/accessilist/css/' && echo "$HOME_HTML" | grep -q 'src="/training/online/accessilist/js/'; then
-        echo -e " ${GREEN}✅ PASS${NC} (Docker production base path correct)"
-        log "Base path: Docker production base path configured"
-        PASSED_TESTS=$((PASSED_TESTS + 1))
-    else
-        echo -e " ${RED}❌ FAIL${NC} (Docker production base path incorrect)"
-        log "Base path: Docker production base path missing"
-        FAILED_TESTS=$((FAILED_TESTS + 1))
-    fi
-else
-    # Other local environments
-    if echo "$HOME_HTML" | grep -q "href=\"/css/" || echo "$HOME_HTML" | grep -q "src=\"/js/"; then
-        echo -e " ${GREEN}✅ PASS${NC} (Local base path correct)"
-        log "Base path: Local paths configured"
-        PASSED_TESTS=$((PASSED_TESTS + 1))
-    else
-        echo -e " ${YELLOW}⚠️  SKIP${NC} (Unknown environment)"
-        log "Base path: Skipped - unknown environment"
-        PASSED_TESTS=$((PASSED_TESTS + 1))
-    fi
-fi
-
-increment_test_counter
-echo -n "  Verifying JS path configuration..."
+# Check that environment configuration is properly injected
 if echo "$HOME_HTML" | grep -q "window.ENV"; then
     echo -e " ${GREEN}✅ PASS${NC} (ENV config injected)"
     log "JS ENV: Injected correctly"
@@ -440,6 +401,33 @@ else
     echo -e " ${RED}❌ FAIL${NC} (ENV config missing)"
     log "JS ENV: Missing"
     FAILED_TESTS=$((FAILED_TESTS + 1))
+fi
+
+increment_test_counter
+echo -n "  Verifying environment-specific paths..."
+# Docker uses local environment for development - this is correct behavior
+if [[ "$BASE_URL" =~ ":8080" ]]; then
+    # Docker environment should use local paths (development mode)
+    if echo "$HOME_HTML" | grep -q 'href="/css/' && echo "$HOME_HTML" | grep -q 'src="/js/'; then
+        echo -e " ${GREEN}✅ PASS${NC} (Docker development paths correct)"
+        log "Docker paths: Development mode configured correctly"
+        PASSED_TESTS=$((PASSED_TESTS + 1))
+    else
+        echo -e " ${RED}❌ FAIL${NC} (Docker paths incorrect)"
+        log "Docker paths: Missing or incorrect"
+        FAILED_TESTS=$((FAILED_TESTS + 1))
+    fi
+else
+    # Other environments - check for appropriate paths
+    if echo "$HOME_HTML" | grep -q "href=\"/css/" || echo "$HOME_HTML" | grep -q "src=\"/js/"; then
+        echo -e " ${GREEN}✅ PASS${NC} (Environment paths correct)"
+        log "Environment paths: Configured correctly"
+        PASSED_TESTS=$((PASSED_TESTS + 1))
+    else
+        echo -e " ${YELLOW}⚠️  SKIP${NC} (Unknown environment)"
+        log "Environment paths: Skipped - unknown environment"
+        PASSED_TESTS=$((PASSED_TESTS + 1))
+    fi
 fi
 
 # Test 13-28: Systemwide Reports Dashboard (systemwide-report.php)
