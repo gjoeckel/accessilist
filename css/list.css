@@ -261,7 +261,7 @@ body.checklist-page .checklist-caption {
    "ALL" BUTTON (Three Checkpoint Lines)
    ==================================================================== */
 
-/* All checkpoints button - scaled from 120px to 30px (0.25x scale) */
+/* All checkpoints button - matches numbered checkpoint styling */
 .checkpoint-all {
   font-size: 0 !important; /* Hide any text */
   position: relative;
@@ -270,28 +270,44 @@ body.checklist-page .checklist-caption {
   height: 30px !important;
   min-width: 30px !important;
   min-height: 30px !important;
-  border-width: 1.5px !important; /* Scaled from 5px */
+  /* Match numbered checkpoint buttons */
+  border: 2px solid #333333 !important;
+  border-radius: 50%;
+  background-color: transparent;
 }
 
-/* Draw 3 checkpoint lines using SVG icon */
+/* Active state - brown background with white icon (matches numbered checkpoints) */
+.checkpoint-all.active {
+  background-color: var(--selected-color) !important;
+  border-color: var(--selected-color) !important;
+}
+
+/* Arrow icon using Unicode characters */
 .checkpoint-all::before {
-  content: "";
+  content: "▶"; /* Right arrow - single checkpoint visible */
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 17px;
-  height: 14px;
+  font-size: 1rem;
+  line-height: 1;
   pointer-events: none;
-  background-image: url("../images/all-0.svg");
-  background-size: contain;
-  background-position: center;
-  background-repeat: no-repeat;
+  color: #333333; /* Dark arrow on transparent background */
 }
 
+/* Active state - down arrow (all checkpoints visible) */
 .checkpoint-all.active::before {
-  background-image: url("../images/all-1.svg");
+  content: "▼"; /* Down arrow - all visible */
+  color: white; /* White arrow on brown background */
 }
+
+/* Non-interactive state when all checkpoints shown */
+.checkpoint-all.active {
+  pointer-events: none;
+  cursor: default;
+}
+
+/* All checkpoint numbers remain visible - no hiding */
 
 /* Toggle strip - collapse/expand button */
 .toggle-strip {
