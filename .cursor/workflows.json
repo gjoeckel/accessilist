@@ -65,5 +65,12 @@
     "auto_approve": false,
     "timeout": 60000,
     "on_error": "continue"
+  },
+  "external-test-production": {
+    "description": "Test actual production server at webaim.org",
+    "commands": ["./scripts/external/test-production.sh"],
+    "auto_approve": true,
+    "timeout": 120000,
+    "on_error": "continue"
   }
 }
