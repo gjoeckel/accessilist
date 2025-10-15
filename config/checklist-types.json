@@ -1,18 +1,75 @@
 {
   "types": {
-    "word": { "displayName": "Word", "jsonFile": "word.json", "buttonId": "word", "category": "Microsoft" },
-    "powerpoint": { "displayName": "PowerPoint", "jsonFile": "powerpoint.json", "buttonId": "powerpoint", "category": "Microsoft" },
-    "excel": { "displayName": "Excel", "jsonFile": "excel.json", "buttonId": "excel", "category": "Microsoft" },
-    "docs": { "displayName": "Docs", "jsonFile": "docs.json", "buttonId": "docs", "category": "Google" },
-    "slides": { "displayName": "Slides", "jsonFile": "slides.json", "buttonId": "slides", "category": "Google" },
-    "camtasia": { "displayName": "Camtasia", "jsonFile": "camtasia.json", "buttonId": "camtasia", "category": "Other" },
-    "dojo": { "displayName": "Dojo", "jsonFile": "dojo.json", "buttonId": "dojo", "category": "Other" },
-    "test-5": { "displayName": "Test-5-Checkpoints", "jsonFile": "test-5.json", "buttonId": "test-5", "category": "Testing" },
-    "test-7": { "displayName": "Test-7-Checkpoints", "jsonFile": "test-7.json", "buttonId": "test-7", "category": "Testing" },
-    "test-10-checkpoints": { "displayName": "Test-10-Checkpoints", "jsonFile": "test-10-checkpoints.json", "buttonId": "test-10", "category": "Testing" }
+    "demo": {
+      "displayName": "Demo",
+      "jsonFile": "demo.json",
+      "buttonId": "demo",
+      "category": "Tutorial"
+    },
+    "word": {
+      "displayName": "Word",
+      "jsonFile": "word.json",
+      "buttonId": "word",
+      "category": "Microsoft"
+    },
+    "powerpoint": {
+      "displayName": "PowerPoint",
+      "jsonFile": "powerpoint.json",
+      "buttonId": "powerpoint",
+      "category": "Microsoft"
+    },
+    "excel": {
+      "displayName": "Excel",
+      "jsonFile": "excel.json",
+      "buttonId": "excel",
+      "category": "Microsoft"
+    },
+    "docs": {
+      "displayName": "Docs",
+      "jsonFile": "docs.json",
+      "buttonId": "docs",
+      "category": "Google"
+    },
+    "slides": {
+      "displayName": "Slides",
+      "jsonFile": "slides.json",
+      "buttonId": "slides",
+      "category": "Google"
+    },
+    "camtasia": {
+      "displayName": "Camtasia",
+      "jsonFile": "camtasia.json",
+      "buttonId": "camtasia",
+      "category": "Other"
+    },
+    "dojo": {
+      "displayName": "Dojo",
+      "jsonFile": "dojo.json",
+      "buttonId": "dojo",
+      "category": "Other"
+    },
+    "test-5": {
+      "displayName": "Test-5-Checkpoints",
+      "jsonFile": "test-5.json",
+      "buttonId": "test-5",
+      "category": "Testing"
+    },
+    "test-7": {
+      "displayName": "Test-7-Checkpoints",
+      "jsonFile": "test-7.json",
+      "buttonId": "test-7",
+      "category": "Testing"
+    },
+    "test-10-checkpoints": {
+      "displayName": "Test-10-Checkpoints",
+      "jsonFile": "test-10-checkpoints.json",
+      "buttonId": "test-10",
+      "category": "Testing"
+    }
   },
   "defaultType": "camtasia",
   "categories": {
+    "Tutorial": ["demo"],
     "Microsoft": ["word", "powerpoint", "excel"],
     "Google": ["docs", "slides"],
     "Other": ["camtasia", "dojo"],

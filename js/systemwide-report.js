@@ -170,6 +170,7 @@ export class ReportsManager {
       pending: 0,
       "in-progress": 0,
       all: 0,
+      demos: 0,
     };
 
     this.allChecklists.forEach((checklist) => {
@@ -178,6 +179,11 @@ export class ReportsManager {
         counts[status]++;
       }
       counts["all"]++; // Count all checklists
+
+      // Count demo sessions
+      if (checklist.type === "demo") {
+        counts["demos"]++;
+      }
     });
 
     // Update count badges
@@ -199,12 +205,20 @@ export class ReportsManager {
     }
 
     // Filter checklists by current filter
-    const filtered =
-      this.currentFilter === "all"
-        ? this.allChecklists
-        : this.allChecklists.filter(
-            (checklist) => checklist.calculatedStatus === this.currentFilter
-          );
+    let filtered;
+    if (this.currentFilter === "all") {
+      filtered = this.allChecklists;
+    } else if (this.currentFilter === "demos") {
+      // Filter by type for demo sessions
+      filtered = this.allChecklists.filter(
+        (checklist) => checklist.type === "demo"
+      );
+    } else {
+      // Filter by calculated status (completed, in-progress, pending)
+      filtered = this.allChecklists.filter(
+        (checklist) => checklist.calculatedStatus === this.currentFilter
+      );
+    }
 
     // Clear table
     this.tableBody.innerHTML = "";
@@ -220,6 +234,7 @@ export class ReportsManager {
         completed: "No tasks done",
         "in-progress": "No tasks active",
         pending: "All tasks started",
+        demos: "No demo sessions found",
       };
 
       cell.textContent = messages[this.currentFilter] || "No reports found";

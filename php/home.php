@@ -25,6 +25,12 @@ renderHTMLHead('Accessibility Checklists');
 <main role="main">
     <div class="landing-content checklist-groups-container" id="checklist-groups" tabindex="-1">
       <div class="checklist-group">
+        <h2>Start Here</h2>
+        <div class="checklist-buttons-row">
+          <button id="demo" class="header-button">Demo</button>
+        </div>
+      </div>
+      <div class="checklist-group">
         <h2>Microsoft</h2>
         <div class="checklist-buttons-row">
           <button id="word" class="checklist-button">Word</button>
@@ -116,6 +122,34 @@ renderHTMLHead('Accessibility Checklists');
     const statusContent = document.querySelector('.status-content');
     if (statusContent) {
       statusContent.textContent = 'Select a checklist type';
+    }
+
+    // Connect Demo button to create demo instance
+    const demoButton = document.getElementById('demo');
+    if (demoButton) {
+      demoButton.addEventListener('click', async function() {
+        const sessionId = generateAlphanumericSessionId();
+
+        // Create demo session
+        const apiPath = window.getAPIPath('instantiate');
+        const response = await fetch(apiPath, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            sessionKey: sessionId,
+            typeSlug: 'demo'
+          })
+        });
+
+        if (!response.ok) {
+          console.error('Failed to create demo session:', await response.text());
+          alert('Failed to create demo session. Please try again.');
+          return;
+        }
+
+        // Redirect to minimal URL format
+        window.location.href = `<?php echo $basePath; ?>/?=${sessionId}`;
+      });
     }
 
     // Connect Reports button to redirect to systemwide report

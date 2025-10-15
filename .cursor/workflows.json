@@ -41,6 +41,21 @@
     "timeout": 20000,
     "on_error": "continue"
   },
+  "proj-user-testing": {
+    "description": "Start PHP dev server for manual testing (port 8000, doesn't conflict with Docker)",
+    "commands": [
+      "pkill -f 'php -S localhost:8000' 2>/dev/null || true",
+      "php -S localhost:8000 router.php > /tmp/accessilist-server.log 2>&1 &",
+      "sleep 2",
+      "echo '✅ PHP dev server started on http://localhost:8000'",
+      "echo '📝 Test the demo: http://localhost:8000/home'",
+      "echo '🔍 View logs: tail -f /tmp/accessilist-server.log'",
+      "echo '🛑 Stop server: pkill -f \"php -S localhost:8000\"'"
+    ],
+    "auto_approve": true,
+    "timeout": 10000,
+    "on_error": "continue"
+  },
   "ai-push-deploy-github": {
     "description": "Push to GitHub and deploy to production (full deployment)",
     "commands": [

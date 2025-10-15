@@ -28,17 +28,18 @@
 
 ### Testing & Validation
 - **proj-test-mirror** - Test production mirror configuration (Docker Apache, 75 tests, 100% pass rate)
-- **external-test-production** - Test actual production server at webaim.org (41 tests)
+- **external-test-production** - Test actual production server at webaim.org (42 tests)
 - **proj-deploy-check** - Run pre-deployment validation
 
-### Docker Management
-- **proj-docker-up** - Start Docker Apache server (http://127.0.0.1:8080)
+### Development Servers
+- **proj-user-testing** - Start PHP dev server for manual testing (port 8000)
+- **proj-docker-up** - Start Docker Apache server (port 8080)
 - **proj-docker-down** - Stop Docker Apache server
 
 ### Code Quality
 - **proj-dry** - Run duplicate code detection (AccessiList-specific)
 
-**Total Project:** 6 workflows
+**Total Project:** 7 workflows
 
 ---
 
@@ -92,18 +93,24 @@ Project scripts can be run directly:
 | **ai-push-github** | Push only | No (requires approval) | 1 min |
 | **proj-deploy-check** | Validation | Yes | 30 sec |
 
-### Docker Workflows
+### Development Server Workflows
 
 | Workflow | Command | Port | Purpose |
 |----------|---------|------|---------|
-| **proj-docker-up** | `docker compose up -d` | 8080 | Start Apache server |
+| **proj-user-testing** | `php -S localhost:8000 router.php` | 8000 | Manual testing (doesn't conflict with Docker) |
+| **proj-docker-up** | `docker compose up -d` | 8080 | Start Apache server (automated testing) |
 | **proj-docker-down** | `docker compose down` | - | Stop Apache server |
+
+**Port Assignment**:
+- Port 8000: PHP dev server (manual testing)
+- Port 8080: Docker Apache (automated testing)
+- **Both can run simultaneously!** ✨
 
 ---
 
 ## 📊 Summary
 
-**Total Workflows:** 20 (14 global + 6 project)
+**Total Workflows:** 21 (14 global + 7 project)
 
 **Categories:**
 - **AI Session Management** (5): ai-start, ai-end, ai-update, ai-repeat, ai-compress
@@ -133,7 +140,9 @@ Project scripts can be run directly:
 ### Daily Development
 ```bash
 ai-start              # Start session
-proj-test-mirror      # Test locally (100% pass)
+proj-user-testing     # Start dev server for manual testing
+# Visit http://localhost:8000/home
+proj-test-mirror      # Run automated tests (100% pass)
 ai-local-commit       # Commit changes
 ```
 

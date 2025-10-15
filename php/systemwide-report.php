@@ -138,6 +138,15 @@ renderHTMLHead('Systemwide Report');
             <span class="filter-label">All</span>
             <span class="filter-count" id="count-all">0</span>
         </button>
+        <button
+            id="filter-demos"
+            class="filter-button"
+            data-filter="demos"
+            aria-pressed="false"
+            aria-label="Show demo sessions only">
+            <span class="filter-label">Demos</span>
+            <span class="filter-count" id="count-demos">0</span>
+        </button>
     </div>
 </header>
 

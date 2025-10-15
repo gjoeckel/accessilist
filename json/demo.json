@@ -1,0 +1,327 @@
+{
+  "type": "demo",
+  "name": "AccessiList Tutorial",
+  "description": "Interactive tutorial for learning how to use accessibility checklists",
+  "checkpoints": [
+    {
+      "id": "c1",
+      "heading": "Checkpoint 1",
+      "principle": "Getting Started",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Task 1",
+          "notes": ""
+        },
+        {
+          "id": "t2",
+          "text": "Task 2",
+          "notes": ""
+        },
+        {
+          "id": "t3",
+          "text": "Task 3",
+          "notes": ""
+        },
+        {
+          "id": "t4",
+          "text": "Task 4",
+          "notes": ""
+        },
+        {
+          "id": "t5",
+          "text": "Task 5",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "c2",
+      "heading": "Checkpoint 2",
+      "principle": "Getting Started",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Task 1",
+          "notes": ""
+        },
+        {
+          "id": "t2",
+          "text": "Task 2",
+          "notes": ""
+        },
+        {
+          "id": "t3",
+          "text": "Task 3",
+          "notes": ""
+        },
+        {
+          "id": "t4",
+          "text": "Task 4",
+          "notes": ""
+        },
+        {
+          "id": "t5",
+          "text": "Task 5",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "c3",
+      "heading": "Checkpoint 3",
+      "principle": "Getting Started",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Task 1",
+          "notes": ""
+        },
+        {
+          "id": "t2",
+          "text": "Task 2",
+          "notes": ""
+        },
+        {
+          "id": "t3",
+          "text": "Task 3",
+          "notes": ""
+        },
+        {
+          "id": "t4",
+          "text": "Task 4",
+          "notes": ""
+        },
+        {
+          "id": "t5",
+          "text": "Task 5",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "c4",
+      "heading": "Checkpoint 4",
+      "principle": "Getting Started",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Task 1",
+          "notes": ""
+        },
+        {
+          "id": "t2",
+          "text": "Task 2",
+          "notes": ""
+        },
+        {
+          "id": "t3",
+          "text": "Task 3",
+          "notes": ""
+        },
+        {
+          "id": "t4",
+          "text": "Task 4",
+          "notes": ""
+        },
+        {
+          "id": "t5",
+          "text": "Task 5",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "c5",
+      "heading": "Checkpoint 5",
+      "principle": "Getting Started",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Task 1",
+          "notes": ""
+        },
+        {
+          "id": "t2",
+          "text": "Task 2",
+          "notes": ""
+        },
+        {
+          "id": "t3",
+          "text": "Task 3",
+          "notes": ""
+        },
+        {
+          "id": "t4",
+          "text": "Task 4",
+          "notes": ""
+        },
+        {
+          "id": "t5",
+          "text": "Task 5",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "c6",
+      "heading": "Checkpoint 6",
+      "principle": "Getting Started",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Task 1",
+          "notes": ""
+        },
+        {
+          "id": "t2",
+          "text": "Task 2",
+          "notes": ""
+        },
+        {
+          "id": "t3",
+          "text": "Task 3",
+          "notes": ""
+        },
+        {
+          "id": "t4",
+          "text": "Task 4",
+          "notes": ""
+        },
+        {
+          "id": "t5",
+          "text": "Task 5",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "c7",
+      "heading": "Checkpoint 7",
+      "principle": "Getting Started",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Task 1",
+          "notes": ""
+        },
+        {
+          "id": "t2",
+          "text": "Task 2",
+          "notes": ""
+        },
+        {
+          "id": "t3",
+          "text": "Task 3",
+          "notes": ""
+        },
+        {
+          "id": "t4",
+          "text": "Task 4",
+          "notes": ""
+        },
+        {
+          "id": "t5",
+          "text": "Task 5",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "c8",
+      "heading": "Checkpoint 8",
+      "principle": "Getting Started",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Task 1",
+          "notes": ""
+        },
+        {
+          "id": "t2",
+          "text": "Task 2",
+          "notes": ""
+        },
+        {
+          "id": "t3",
+          "text": "Task 3",
+          "notes": ""
+        },
+        {
+          "id": "t4",
+          "text": "Task 4",
+          "notes": ""
+        },
+        {
+          "id": "t5",
+          "text": "Task 5",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "c9",
+      "heading": "Checkpoint 9",
+      "principle": "Getting Started",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Task 1",
+          "notes": ""
+        },
+        {
+          "id": "t2",
+          "text": "Task 2",
+          "notes": ""
+        },
+        {
+          "id": "t3",
+          "text": "Task 3",
+          "notes": ""
+        },
+        {
+          "id": "t4",
+          "text": "Task 4",
+          "notes": ""
+        },
+        {
+          "id": "t5",
+          "text": "Task 5",
+          "notes": ""
+        }
+      ]
+    },
+    {
+      "id": "c10",
+      "heading": "Checkpoint 10",
+      "principle": "Getting Started",
+      "tasks": [
+        {
+          "id": "t1",
+          "text": "Task 1",
+          "notes": ""
+        },
+        {
+          "id": "t2",
+          "text": "Task 2",
+          "notes": ""
+        },
+        {
+          "id": "t3",
+          "text": "Task 3",
+          "notes": ""
+        },
+        {
+          "id": "t4",
+          "text": "Task 4",
+          "notes": ""
+        },
+        {
+          "id": "t5",
+          "text": "Task 5",
+          "notes": ""
+        }
+      ]
+    }
+  ]
+}
