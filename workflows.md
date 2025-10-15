@@ -12,14 +12,15 @@
 - **ai-docs-sync** - Generate project workflows.md from global and project configs
 - **ai-end** - Save session context and generate changelog
 - **ai-local-commit** - Update changelog and commit all changes to current local branch
-- **ai-local-merge** - Merge current branch to main, delete source branch
+- **ai-local-merge** - Merge current branch to main, auto-updates changelog (handles conflicts gracefully)
+- **ai-merge-finalize** - Finalize merge after manual conflict resolution (updates changelog, run from main)
 - **ai-repeat** - Reload session context
 - **ai-start** - Load AI session context and initialize environment
 - **ai-update** - Record mid-session progress
 - **mcp-health** - Check MCP server health and status
 - **mcp-restart** - Restart all MCP servers
 
-**Total Global:** 11 workflows
+**Total Global:** 12 workflows
 
 ## 📦 Project-Specific Workflows (This Project Only)
 
@@ -61,7 +62,7 @@ check-mcp-health.sh
 
 ## 📊 Summary
 
-**Total Workflows:** 16 (11 global + 5 project)
+**Total Workflows:** 17 (12 global + 5 project)
 
 **Categories:**
 - AI Session Management (ai-start, ai-end, ai-update, ai-repeat, ai-compress)
@@ -72,5 +73,5 @@ check-mcp-health.sh
 
 ---
 
-_Last updated: Wed Oct 15 09:43:37 MDT 2025_
+_Last updated: Wed Oct 15 09:52:35 MDT 2025_
 _Auto-generated from ~/.cursor/workflows.json and .cursor/workflows.json_
