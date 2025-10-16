@@ -13,56 +13,7 @@ import { buildContent } from "./buildCheckpoints.js";
 import { initializeCheckpointAddRowButtons } from "./addRow.js";
 
 // Legacy functions completely removed - StateEvents.js handles all interactions
-
-// Function to handle report row delete button clicks
-// Already expects the button as an argument
-function handleDeleteReportRowClick(event) {
-  const button = event.currentTarget;
-  const row = button.closest(".report-row");
-  if (!row) return;
-
-  // Remove the row from the table
-  row.remove();
-
-  // Trigger save after deleting row
-  if (window.saveRestoreOrchestrator) {
-    window.saveRestoreOrchestrator.saveState().catch((error) => {
-      console.error("Failed to save state after deleting row:", error);
-    });
-  }
-}
-
-// Function to handle delete row button
-function handleDeleteRow(event) {
-  event.preventDefault();
-  const manualRows = document.querySelectorAll(".report-table tbody tr.manual");
-  if (manualRows.length > 0) {
-    // Remove the last manual row
-    manualRows[manualRows.length - 1].remove();
-
-    // Set focus to the Report link in the side panel
-    const reportLink = document.querySelector('.side-panel a[href="#report"]');
-    if (reportLink) {
-      reportLink.focus();
-    }
-  }
-}
-
-// Function to handle task completion
-function handleTaskCompletion(event) {
-  const button = event.currentTarget;
-  const row = button.closest(".report-row");
-  if (!row) return;
-
-  const statusSelect = row.querySelector(".report-status");
-  if (!statusSelect) return;
-
-  const currentStatus = statusSelect.value;
-  const statuses = ["Not Started", "In Progress", "Completed"];
-  const currentIndex = statuses.indexOf(currentStatus);
-  const nextIndex = (currentIndex + 1) % statuses.length;
-  statusSelect.value = statuses[nextIndex];
-}
+// Report section removed - now on separate page (list-report.php)
 
 // --- Debounced Save Helper ---
 // Note: debouncedSaveContent is now defined in save-restore.js using the debounce utility

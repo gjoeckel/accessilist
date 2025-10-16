@@ -64,72 +64,7 @@ class ModalActions {
     );
   }
 
-  /**
-   * Show delete confirmation modal for report rows
-   */
-  deleteReportRow(rowId, taskText, row) {
-    if (!window.simpleModal) {
-      console.error("SimpleModal not available");
-      return;
-    }
-
-    // Store the triggering button for cancel focus restoration
-    const triggeringButton = document.activeElement;
-
-    window.simpleModal.delete(
-      "Delete Row",
-      `Do you want to delete "${taskText}"?`,
-      () => {
-        // Execute delete
-        this.stateManager.deleteReportRow(rowId, row);
-
-        // Focus on the nearest interactive element after delete
-        setTimeout(() => {
-          // Try to focus on delete button above the deleted row
-          const tableBody = row.closest("tbody");
-          if (tableBody) {
-            const allRows = Array.from(tableBody.querySelectorAll("tr"));
-            const currentRowIndex = allRows.indexOf(row);
-
-            // Look for delete button in row above
-            if (currentRowIndex > 0) {
-              const rowAbove = allRows[currentRowIndex - 1];
-              const deleteButtonAbove = rowAbove.querySelector(
-                ".report-delete-button"
-              );
-              if (deleteButtonAbove) {
-                deleteButtonAbove.focus();
-                console.log(
-                  "ModalActions: Focused on delete button above after deletion"
-                );
-                return;
-              }
-            }
-          }
-
-          // Fallback: Focus on Home button if no more rows or no delete button above
-          const homeButton = document.getElementById("homeButton");
-          if (homeButton) {
-            homeButton.focus();
-            console.log(
-              "ModalActions: Focused on Home button after deletion (no more rows)"
-            );
-          }
-        }, 100);
-      },
-      () => {
-        // Cancel - restore focus to triggering button
-        setTimeout(() => {
-          if (triggeringButton) {
-            triggeringButton.focus();
-            console.log(
-              "ModalActions: Restored focus to triggering button after cancel"
-            );
-          }
-        }, 100);
-      }
-    );
-  }
+  // deleteReportRow() removed - report functionality moved to separate page (list-report.php)
 }
 
 // Export for use in StateEvents

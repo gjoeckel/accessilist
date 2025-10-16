@@ -269,17 +269,9 @@ class StateEvents {
    * Handle delete button click (Report table)
    */
   handleDelete(deleteButton) {
-    const row = deleteButton.closest("tr");
-    if (!row) return;
-
-    const rowId = row.getAttribute("data-id");
-    const taskCell = row.querySelector(".report-task-cell");
-    const taskText = taskCell ? taskCell.textContent : "this row";
-
-    // Show modal confirmation
-    if (this.modalActions) {
-      this.modalActions.deleteReportRow(rowId, taskText, row);
-    }
+    // Report row deletion removed - reports now on separate page (list-report.php)
+    // This method stub kept for backward compatibility but does nothing
+    console.log('StateEvents: handleDelete called but report functionality removed');
   }
 
   /**

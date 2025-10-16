@@ -615,14 +615,9 @@ class UnifiedStateManager {
     const row = statusButton.closest("tr");
     if (!row) return;
 
-    const isReportRow = row.querySelector(
-      ".report-task-cell, .report-notes-cell"
-    );
-
-    if (false) {
-      // Report table removed - no longer needed
-      // Report table handling removed
-    } else {
+    // Report table removed - reports now on separate page (list-report.php)
+    // Only handle Checkpoints table: Notes column AND Task column for manual rows
+    {
       // Handle Checkpoints table: Notes column AND Task column for manual rows
       const textarea = row.querySelector(
         '.notes-textarea, textarea[id^="textarea-"]'
