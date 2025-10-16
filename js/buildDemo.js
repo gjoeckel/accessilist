@@ -18,19 +18,45 @@ const TABLE_CONFIG = {
 };
 
 /**
- * Process inline images in text
- * Replaces [image-name.svg] with actual <img> tag
+ * Process inline images and CSS icons in text
+ * Replaces [image-name.svg] with actual <img> tag (50% UI size)
+ * Replaces [text CSS] with CSS-generated icon
  */
 function processInlineImages(text) {
   if (!text || typeof text !== "string") return text;
 
-  // Replace [imagename.svg] with <img> tag
-  return text.replace(/\[([^\]]+\.svg)\]/g, (match, imageName) => {
+  let processed = text;
+
+  // 1. Replace CSS icons: [add row CSS] or [number 1 CSS]
+  processed = processed.replace(/\[([^\]]+)\s+CSS\]/gi, (match, cssText) => {
+    const cleanText = cssText.trim();
+
+    // Handle "number X" pattern for checkpoint-style circles
+    const numberMatch = cleanText.match(/^number\s+(\d+)$/i);
+    if (numberMatch) {
+      const num = numberMatch[1];
+      return `<span class="inline-css-icon checkpoint-icon" style="display: inline-flex; align-items: center; justify-content: center; width: 1.5em; height: 1.5em; border-radius: 50%; background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%); color: white; font-weight: bold; font-size: 0.9em; vertical-align: middle; margin: 0 4px;">${num}</span>`;
+    }
+
+    // Handle "add row" pattern for plus icon
+    if (cleanText.toLowerCase() === "add row") {
+      return `<span class="inline-css-icon add-icon" style="display: inline-flex; align-items: center; justify-content: center; width: 1.5em; height: 1.5em; border-radius: 50%; background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%); color: white; font-weight: bold; font-size: 1.2em; vertical-align: middle; margin: 0 4px; line-height: 1;">+</span>`;
+    }
+
+    // Generic CSS icon with text
+    return `<span class="inline-css-icon" style="display: inline-flex; align-items: center; justify-content: center; padding: 2px 6px; border-radius: 3px; background: #e8f4f8; color: #357abd; font-size: 0.85em; font-weight: 500; vertical-align: middle; margin: 0 4px;">${cleanText}</span>`;
+  });
+
+  // 2. Replace SVG images: [imagename.svg]
+  processed = processed.replace(/\[([^\]]+\.svg)\]/g, (match, imageName) => {
     const imagePath = window.getImagePath
       ? window.getImagePath(imageName)
       : `/images/${imageName}`;
-    return `<img src="${imagePath}" alt="${imageName}" class="inline-demo-image" style="height: 1.2em; vertical-align: middle; margin: 0 4px;">`;
+    // 50% of UI size (0.6em instead of 1.2em)
+    return `<img src="${imagePath}" alt="${imageName}" class="inline-demo-image" style="height: 0.6em; vertical-align: middle; margin: 0 4px;">`;
   });
+
+  return processed;
 }
 
 // State management functions
