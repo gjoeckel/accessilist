@@ -8,6 +8,16 @@
 
 ## Entries
 
+### 2025-10-16 15:51:28 UTC - Merged demo to main
+
+**Action:** Local branch merge
+**Source Branch:** demo
+**Target Branch:** main
+**Status:** [pending]
+
+---
+
+
 ### 2025-10-16 15:50:58 UTC - Local Commit: 15 files on demo
 
 **Branch:** demo
@@ -22,7 +32,7 @@
 - js/buildDemo.js
 - json/demo.json
 - php/includes/html-head.php\n- ... and 5 more files
-**Commit:** [pending]
+**Commit:** ef031a9
 
 ---
 
