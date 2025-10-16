@@ -89,8 +89,8 @@ function processInlineImages(text) {
     const imagePath = window.getImagePath
       ? window.getImagePath(imageName)
       : `/images/${imageName}`;
-    // 2rem size for visible inline icons
-    return `<img src="${imagePath}" alt="${imageName}" class="inline-demo-image" style="height: 2rem; vertical-align: middle; margin: 0 4px;">`;
+    // 3.5rem size for prominent inline icons
+    return `<img src="${imagePath}" alt="${imageName}" class="inline-demo-image" style="height: 3.5rem; vertical-align: middle; margin: 0 4px;">`;
   });
 
   return processed;
