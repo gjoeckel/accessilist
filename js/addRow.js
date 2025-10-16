@@ -172,9 +172,10 @@ window.createTableRow = createTableRow;
  * Should be called after the DOM is loaded and the buttons exist.
  */
 function initializeCheckpointAddRowButtons() {
-  // Support both checkpoint- and checklist- naming conventions
+  // Select ONLY Add Row buttons (not side panel navigation buttons)
+  // Add Row buttons have class 'checkpoints-button' and data-checkpoint attribute
   const checkpointButtons = document.querySelectorAll(
-    'button[data-checkpoint^="checklist-"], button[data-checkpoint^="checkpoint-"]'
+    'button.checkpoints-button[data-checkpoint^="checklist-"], button.checkpoints-button[data-checkpoint^="checkpoint-"]'
   );
   console.log(`Found ${checkpointButtons.length} checkpoint add row buttons`);
 
