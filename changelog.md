@@ -8,6 +8,37 @@
 
 ## Entries
 
+
+### 2025-10-16 15:51:28 UTC - Merged demo to main
+
+**Action:** Local branch merge
+**Source Branch:** demo
+**Target Branch:** main
+**Status:** [pending]
+
+---
+
+
+### 2025-10-16 15:50:58 UTC - Local Commit: 15 files on demo
+
+**Branch:** demo
+**Files Modified:** 15
+- .cursor/filesystem.pid
+- .cursor/github-minimal.pid
+- .cursor/mcp-status.json
+- .cursor/memory.pid
+- .cursor/puppeteer-minimal.pid
+- .cursor/shell-minimal.pid
+- css/simple-modal.css
+- js/buildDemo.js
+- json/demo.json
+- php/includes/html-head.php\n- ... and 5 more files
+**Commit:** ef031a9
+
+---
+
+
+
 ### 2025-10-16 - Naming Convention Refactor: Status Values + URL Simplification ✅ COMPLETE
 
 **Branch:** naming-convention-updates
