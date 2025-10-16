@@ -7,28 +7,28 @@
     "table": [
       {
         "id": "1.1",
-        "task": "User interface optimized for accessibility - keyboard navigation, screen reader support, WCAG compliant design",
-        "info": "Built with accessibility best practices from the ground up. Every feature is keyboard accessible and works with assistive technologies."
+        "task": "Use AccessiList with a mouse, keyboard, and/or assistive techonolgy.",
+        "info": "Built with accessibility best practices from the ground up. All features available to keyboard-only users, and the assistive technologies that use standard keyboard commands."
       },
       {
         "id": "1.2",
-        "task": "No account needed - just remember your 3-digit session key (like [Save default CSS] ABC) to return to your saved checklist anytime",
-        "info": "Your session key is generated when you save. Bookmark the URL or write down your key - no passwords, no login required!"
+        "task": "Save your list and return anytime with your 3-digit key. No account needed.",
+        "info": "Each list you create has a 3-digit key with numbers and/or letters. Your key is unique and is found at the end of the web address for your list. For example: https://webaim.org/training/online/accessilist/?=AAA."
       },
       {
         "id": "1.3",
-        "task": "Ability to add your own tasks using [add row default CSS] - customize checklists to match your workflow",
-        "info": "Every checkpoint has an Add Row button at the bottom. Create as many custom tasks as you need."
+        "task": "Tasks are organized into 'Checkpoints', which group tasks by common objective, and you can add custom tasks.",
+        "info": "Add your own tasks using the add row ([add row default CSS]) button found after the last task row in every checkpoint. Add as many as you need."
       },
       {
         "id": "1.4",
-        "task": "Track progress with visual status indicators: [ready-1.svg] Ready → [active-1.svg] Active → [done-1.svg] Done",
-        "info": "Click status buttons to cycle through states. See your progress at a glance with color-coded icons."
+        "task": "Track progress with three levels of visual status indicators:\nReady ([ready-1.svg]) → Active ([active-1.svg]) → Done ([done-1.svg]).",
+        "info": "Click status buttons to move to the next level. See your progress at a glance with color-coded, labeled icons."
       },
       {
         "id": "1.5",
-        "task": "Comprehensive reports showing all completed tasks across all checkpoints - export or print your work",
-        "info": "Click the [Report default CSS] button in the header to view your progress summary and completed items."
+        "task": "View a report showing all completed tasks across all checkpoints.",
+        "info": "Click the Report ([Report default CSS]) button in the header to view your progress summary and completed items."
       }
     ]
   },
@@ -37,57 +37,17 @@
     "table": [
       {
         "id": "2.1",
-        "task": "Add a custom task using the Add Row [add row default CSS] button at the bottom of each checkpoint",
-        "info": "Each checkpoint has an [add row CSS] button to create custom tasks"
-      },
-      {
-        "id": "2.2",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "2.3",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "2.4",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "2.5",
-        "task": "placeholder",
+        "task": "coming soon",
         "info": "placeholder"
       }
     ]
   },
   "checkpoint-3": {
-    "caption": "Understanding Accessibility - Core Concepts",
+    "caption": "Notes",
     "table": [
       {
         "id": "3.1",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "3.2",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "3.3",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "3.4",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "3.5",
-        "task": "placeholder",
+        "task": "coming soon",
         "info": "placeholder"
       }
     ]
@@ -97,147 +57,37 @@
     "table": [
       {
         "id": "4.1",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "4.2",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "4.3",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "4.4",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "4.5",
-        "task": "placeholder",
+        "task": "coming soon",
         "info": "placeholder"
       }
     ]
   },
   "checkpoint-5": {
-    "caption": "Notes",
+    "caption": "Reset",
     "table": [
       {
         "id": "5.1",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "5.2",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "5.3",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "5.4",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "5.5",
-        "task": "placeholder",
+        "task": "coming soon",
         "info": "placeholder"
       }
     ]
   },
   "checkpoint-6": {
-    "caption": "Reset",
+    "caption": "Side Panel",
     "table": [
       {
         "id": "6.1",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "6.2",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "6.3",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "6.4",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "6.5",
-        "task": "placeholder",
+        "task": "coming soon",
         "info": "placeholder"
       }
     ]
   },
   "checkpoint-7": {
-    "caption": "Side Panel",
-    "table": [
-      {
-        "id": "7.1",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "7.2",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "7.3",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "7.4",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "7.5",
-        "task": "placeholder",
-        "info": "placeholder"
-      }
-    ]
-  },
-  "checkpoint-8": {
     "caption": "Report",
     "table": [
       {
-        "id": "8.1",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "8.2",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "8.3",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "8.4",
-        "task": "placeholder",
-        "info": "placeholder"
-      },
-      {
-        "id": "8.5",
-        "task": "placeholder",
+        "id": "7.1",
+        "task": "coming soon",
         "info": "placeholder"
       }
     ]
