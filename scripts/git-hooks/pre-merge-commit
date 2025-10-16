@@ -1,0 +1,30 @@
+#!/bin/bash
+# Pre-merge-commit hook - Run tests before merging to main
+
+# Detect if we're merging into main
+CURRENT_BRANCH=$(git branch --show-current)
+
+# Check if we're on main branch (merge target)
+if [[ "$CURRENT_BRANCH" == "main" ]]; then
+    echo "🧪 Running production mirror tests before merge to main..."
+    
+    # Start Docker if not running
+    docker compose up -d > /dev/null 2>&1
+    sleep 3
+    
+    # Run tests
+    BASE_URL=http://127.0.0.1:8080 ./scripts/test-production-mirror.sh
+    
+    TEST_EXIT_CODE=$?
+    
+    if [ $TEST_EXIT_CODE -ne 0 ]; then
+        echo "❌ Tests failed! Merge to main aborted."
+        echo "Fix the issues or use 'git merge --no-verify' to bypass (not recommended)"
+        exit 1
+    fi
+    
+    echo "✅ All tests passed! Proceeding with merge to main."
+fi
+
+exit 0
+

@@ -87,5 +87,31 @@
     "auto_approve": true,
     "timeout": 120000,
     "on_error": "continue"
+  },
+  "ai-local-commit-safe": {
+    "description": "Run tests and commit if passing (enforced testing)",
+    "commands": [
+      "docker compose up -d",
+      "sleep 8",
+      "BASE_URL=http://127.0.0.1:8080 ./scripts/test-production-mirror.sh",
+      "git add -A",
+      "git commit"
+    ],
+    "auto_approve": false,
+    "timeout": 180000,
+    "on_error": "stop"
+  },
+  "ai-merge-to-main": {
+    "description": "Run tests and merge current branch to main if passing",
+    "commands": [
+      "docker compose up -d",
+      "sleep 8",
+      "BASE_URL=http://127.0.0.1:8080 ./scripts/test-production-mirror.sh",
+      "git checkout main",
+      "git merge -"
+    ],
+    "auto_approve": false,
+    "timeout": 180000,
+    "on_error": "stop"
   }
 }

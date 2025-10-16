@@ -144,21 +144,37 @@ CSS is organized into individual files for maintainability and follows the Singl
 
 All PHP files include these CSS files individually in the correct order for proper cascading.
 
-### Testing (MCP-first)
+### Testing
 
-- **Clean URL Testing (Recommended)**:
+#### Automated Test Enforcement
+
+**Install git hooks** (enforces testing before commits):
+```bash
+npm run hooks:install
+```
+
+This installs hooks that:
+- ✅ Run **75 tests** automatically before EVERY commit
+- ✅ Block commits if tests fail
+- ✅ Validate merges to main branch
+
+See **[Testing Guide](docs/development/TESTING.md)** for complete documentation.
+
+#### Manual Testing
+
+- **Production Mirror Tests (Recommended)**:
+  ```bash
+  npm run test:pre-commit
+  # or use Cursor workflow: proj-test-mirror
+  ```
+
+- **Clean URL Testing**:
   - Start server with `php -S localhost:8000 router.php`
   - Test clean URLs: `http://localhost:8000/home`, `http://localhost:8000/admin`
-  - `router.php` mimics Apache .htaccess for local testing
 
-- Minimal (preferred default for constrained agents):
-  - Start server with `./tests/start_server.sh`
-  - Use Chrome MCP to navigate to base URL and perform a simple health check if available; otherwise verify HTTP 200 for `/index.php`
-
-- Comprehensive (on demand):
+- **Comprehensive Suite**:
   - `php tests/run_comprehensive_tests.php`
   - `php tests/chrome-mcp/run_chrome_mcp_tests.php`
-  - Startup tokens: `./scripts/startup-runbook.sh [quick|new|full]`
 
 ### Configuration
 

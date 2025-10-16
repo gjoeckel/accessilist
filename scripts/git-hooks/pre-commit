@@ -1,0 +1,23 @@
+#!/bin/bash
+# Pre-commit hook - Run production mirror tests before commit
+
+echo "🧪 Running production mirror tests before commit..."
+
+# Start Docker if not running
+docker compose up -d > /dev/null 2>&1
+sleep 3
+
+# Run tests
+BASE_URL=http://127.0.0.1:8080 ./scripts/test-production-mirror.sh
+
+TEST_EXIT_CODE=$?
+
+if [ $TEST_EXIT_CODE -ne 0 ]; then
+    echo "❌ Tests failed! Commit aborted."
+    echo "Fix the issues or use 'git commit --no-verify' to bypass (not recommended)"
+    exit 1
+fi
+
+echo "✅ All tests passed! Proceeding with commit."
+exit 0
+

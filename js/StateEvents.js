@@ -271,7 +271,9 @@ class StateEvents {
   handleDelete(deleteButton) {
     // Report row deletion removed - reports now on separate page (list-report.php)
     // This method stub kept for backward compatibility but does nothing
-    console.log('StateEvents: handleDelete called but report functionality removed');
+    console.log(
+      "StateEvents: handleDelete called but report functionality removed"
+    );
   }
 
   /**
