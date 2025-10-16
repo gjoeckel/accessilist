@@ -17,10 +17,10 @@ echo -e "${BLUE}╚════════════════════�
 echo ""
 
 # Configuration
-SERVER_USER="${SSH_USER:-george}"         # Set SSH_USER env var or defaults to george
-SERVER_HOST="${SSH_HOST:-webaim.org}"     # Set SSH_HOST env var or defaults to webaim.org
+SERVER_USER="${SSH_USER:-george}"         # AWS EC2 user
+SERVER_HOST="${SSH_HOST:-ec2-3-20-59-76.us-east-2.compute.amazonaws.com}"
 DEPLOY_PATH="/var/websites/webaim/htdocs/training/online/accessilist"
-SSH_KEY="$HOME/.ssh/accessilist_deploy"
+SSH_KEY="$HOME/.ssh/GeorgeWebAIMServerKey.pem"
 
 # Check if SSH key exists
 if [ ! -f "$SSH_KEY" ]; then
@@ -35,12 +35,14 @@ echo "  Path: $DEPLOY_PATH"
 echo "  SSH Key: $SSH_KEY"
 echo ""
 
-# Confirm before proceeding
-read -p "Proceed with migration? (y/n) " -n 1 -r
-echo
-if [[ ! $REPLY =~ ^[Yy]$ ]]; then
-    echo -e "${YELLOW}Migration cancelled${NC}"
-    exit 0
+# Auto-approve if AUTO_APPROVE env var is set, otherwise confirm
+if [ "$AUTO_APPROVE" != "true" ]; then
+  read -p "Proceed with migration? (y/n) " -n 1 -r
+  echo
+  if [[ ! $REPLY =~ ^[Yy]$ ]]; then
+      echo -e "${YELLOW}Migration cancelled${NC}"
+      exit 0
+  fi
 fi
 
 echo -e "${BLUE}🚀 Starting migration...${NC}"
