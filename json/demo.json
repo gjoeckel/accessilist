@@ -22,8 +22,8 @@
       },
       {
         "id": "1.4",
-        "task": "Track progress with three levels of visual status indicators:\nReady ([ready-1.svg]) → Active ([active-1.svg]) → Done ([done-1.svg]).",
-        "info": "Click status buttons to move to the next level. See your progress at a glance with color-coded, labeled icons."
+        "task": "Track progress with three indicators: Ready ([ready-1.svg]) → Active ([active-1.svg]) → Done ([done-1.svg]).",
+        "info": "Click buttons in the Status column to update your progress.to move to the next level. Check your progress at a glance with color-coded, labeled icons."
       },
       {
         "id": "1.5",
