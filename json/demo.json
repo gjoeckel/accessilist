@@ -7,8 +7,8 @@
     "table": [
       {
         "id": "1.1",
-        "task": "Navigate using the side panel numbered buttons [number 1 CSS] [number 2 CSS] [number 3 CSS]",
-        "info": "Click checkpoint numbers to jump between sections"
+        "task": "Navigate using the side panel: click [number 1 selected CSS] (current) or [number 2 default CSS] [number 3 default CSS] (other sections)",
+        "info": "Checkpoint numbers help you jump between sections. Selected checkpoint shows in orange, others in blue."
       },
       {
         "id": "1.2",
@@ -37,8 +37,8 @@
     "table": [
       {
         "id": "2.1",
-        "task": "Add a custom task using the Add Row [add row CSS] button",
-        "info": "Each checkpoint allows you to add your own custom tasks"
+        "task": "Add a custom task using the Add Row [add row default CSS] button at the bottom of each checkpoint",
+        "info": "Each checkpoint has an [add row CSS] button to create custom tasks"
       },
       {
         "id": "2.2",

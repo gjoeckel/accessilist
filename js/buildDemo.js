@@ -20,31 +20,52 @@ const TABLE_CONFIG = {
 /**
  * Process inline images and CSS icons in text
  * Replaces [image-name.svg] with actual <img> tag (50% UI size)
- * Replaces [text CSS] with CSS-generated icon
+ * Replaces [text CSS], [text default CSS], [text selected CSS] with CSS-generated icons
  */
 function processInlineImages(text) {
   if (!text || typeof text !== "string") return text;
 
   let processed = text;
 
-  // 1. Replace CSS icons: [add row CSS] or [number 1 CSS]
-  processed = processed.replace(/\[([^\]]+)\s+CSS\]/gi, (match, cssText) => {
+  // Color scheme - consistent across all CSS icons
+  const COLORS = {
+    default: {
+      background: 'linear-gradient(135deg, #4a90e2 0%, #357abd 100%)',
+      color: 'white',
+      border: 'none'
+    },
+    selected: {
+      background: 'linear-gradient(135deg, #f39c12 0%, #e67e22 100%)', // Orange gradient
+      color: 'white',
+      border: '2px solid #d35400'
+    }
+  };
+
+  // 1. Replace CSS icons: [text CSS], [text default CSS], [text selected CSS]
+  processed = processed.replace(/\[([^\]]+?)\s+(default\s+|selected\s+)?CSS\]/gi, (match, cssText, stateText) => {
     const cleanText = cssText.trim();
+    const state = stateText ? stateText.trim().toLowerCase() : 'default';
+    const colorScheme = COLORS[state] || COLORS.default;
 
     // Handle "number X" pattern for checkpoint-style circles
     const numberMatch = cleanText.match(/^number\s+(\d+)$/i);
     if (numberMatch) {
       const num = numberMatch[1];
-      return `<span class="inline-css-icon checkpoint-icon" style="display: inline-flex; align-items: center; justify-content: center; width: 1.5em; height: 1.5em; border-radius: 50%; background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%); color: white; font-weight: bold; font-size: 0.9em; vertical-align: middle; margin: 0 4px;">${num}</span>`;
+      return `<span class="inline-css-icon checkpoint-icon" style="display: inline-flex; align-items: center; justify-content: center; width: 1.5em; height: 1.5em; border-radius: 50%; background: ${colorScheme.background}; color: ${colorScheme.color}; ${colorScheme.border !== 'none' ? 'border: ' + colorScheme.border + ';' : ''} font-weight: bold; font-size: 0.9em; vertical-align: middle; margin: 0 4px;">${num}</span>`;
     }
 
     // Handle "add row" pattern for plus icon
     if (cleanText.toLowerCase() === "add row") {
-      return `<span class="inline-css-icon add-icon" style="display: inline-flex; align-items: center; justify-content: center; width: 1.5em; height: 1.5em; border-radius: 50%; background: linear-gradient(135deg, #4a90e2 0%, #357abd 100%); color: white; font-weight: bold; font-size: 1.2em; vertical-align: middle; margin: 0 4px; line-height: 1;">+</span>`;
+      return `<span class="inline-css-icon add-icon" style="display: inline-flex; align-items: center; justify-content: center; width: 1.5em; height: 1.5em; border-radius: 50%; background: ${colorScheme.background}; color: ${colorScheme.color}; ${colorScheme.border !== 'none' ? 'border: ' + colorScheme.border + ';' : ''} font-weight: bold; font-size: 1.2em; vertical-align: middle; margin: 0 4px; line-height: 1;">+</span>`;
     }
 
     // Generic CSS icon with text
-    return `<span class="inline-css-icon" style="display: inline-flex; align-items: center; justify-content: center; padding: 2px 6px; border-radius: 3px; background: #e8f4f8; color: #357abd; font-size: 0.85em; font-weight: 500; vertical-align: middle; margin: 0 4px;">${cleanText}</span>`;
+    // For generic icons, use lighter background versions
+    const genericColors = state === 'selected' 
+      ? { bg: '#fef5e7', color: '#e67e22', border: '1px solid #f39c12' }
+      : { bg: '#e8f4f8', color: '#357abd', border: '1px solid #4a90e2' };
+    
+    return `<span class="inline-css-icon" style="display: inline-flex; align-items: center; justify-content: center; padding: 2px 6px; border-radius: 3px; background: ${genericColors.bg}; color: ${genericColors.color}; border: ${genericColors.border}; font-size: 0.85em; font-weight: 500; vertical-align: middle; margin: 0 4px;">${cleanText}</span>`;
   });
 
   // 2. Replace SVG images: [imagename.svg]
