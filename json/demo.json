@@ -7,28 +7,28 @@
     "table": [
       {
         "id": "1.1",
-        "task": "Navigate using the side panel: click [number 1 selected CSS] (current) or [number 2 default CSS] [number 3 default CSS] (other sections)",
-        "info": "Checkpoint numbers help you jump between sections. Selected checkpoint shows in orange, others in blue."
+        "task": "User interface optimized for accessibility - keyboard navigation, screen reader support, WCAG compliant design",
+        "info": "Built with accessibility best practices from the ground up. Every feature is keyboard accessible and works with assistive technologies."
       },
       {
         "id": "1.2",
-        "task": "Practice changing task status from Ready [ready-1.svg] to Active [active-1.svg] to Done [done-1.svg]",
-        "info": "Click the status button to cycle through states"
+        "task": "No account needed - just remember your 3-digit session key (like [Save default CSS] ABC) to return to your saved checklist anytime",
+        "info": "Your session key is generated when you save. Bookmark the URL or write down your key - no passwords, no login required!"
       },
       {
         "id": "1.3",
-        "task": "placeholder",
-        "info": "placeholder"
+        "task": "Ability to add your own tasks using [add row default CSS] - customize checklists to match your workflow",
+        "info": "Every checkpoint has an Add Row button at the bottom. Create as many custom tasks as you need."
       },
       {
         "id": "1.4",
-        "task": "Try clicking the Info [info-.svg] button to see helpful examples",
-        "info": "Info buttons provide context and examples for each task"
+        "task": "Track progress with visual status indicators: [ready-1.svg] Ready → [active-1.svg] Active → [done-1.svg] Done",
+        "info": "Click status buttons to cycle through states. See your progress at a glance with color-coded icons."
       },
       {
         "id": "1.5",
-        "task": "Reset a task using the Reset [reset.svg] button",
-        "info": "The reset button appears when a task is Active or Done"
+        "task": "Comprehensive reports showing all completed tasks across all checkpoints - export or print your work",
+        "info": "Click the [Report default CSS] button in the header to view your progress summary and completed items."
       }
     ]
   },
