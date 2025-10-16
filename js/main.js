@@ -50,11 +50,13 @@ async function initializeApp() {
     // Make checklist data globally available
     window.checklistData = data;
 
-    // Update document title and header
-    document.title = `${data.type} Accessibility Checklist`;
+    // Update document title and header using title from JSON
+    // Falls back to type if title is not available
+    const checklistTitle = data.title || `${data.type} Accessibility Checklist`;
+    document.title = checklistTitle;
     const header = document.querySelector(".sticky-header h1");
     if (header) {
-      header.textContent = `${data.type} Accessibility Checklist`;
+      header.textContent = checklistTitle;
     }
 
     // Initialize side panel with checkpoint data
