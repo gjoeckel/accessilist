@@ -32,6 +32,7 @@ window.basePath = window.ENV.basePath;
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/form-elements.css<?php echo $includeLoadingStyles ? '' : '?v=' . time(); ?>">
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/table.css<?php echo $includeLoadingStyles ? '' : '?v=' . time(); ?>">
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/list.css<?php echo $includeLoadingStyles ? '' : '?v=' . time(); ?>">
+<link rel="stylesheet" href="<?php echo $basePath; ?>/css/demo-inline-icons.css<?php echo $includeLoadingStyles ? '' : '?v=' . time(); ?>">
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/scroll.css<?php echo $includeLoadingStyles ? '' : '?v=' . time(); ?>">
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/footer.css<?php echo $includeLoadingStyles ? '' : '?v=' . time(); ?>">
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/header.css<?php echo $includeLoadingStyles ? '' : '?v=' . time(); ?>">
@@ -43,4 +44,3 @@ window.basePath = window.ENV.basePath;
     <?php
 }
 ?>
-
