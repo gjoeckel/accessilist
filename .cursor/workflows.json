@@ -101,8 +101,8 @@
     "timeout": 180000,
     "on_error": "stop"
   },
-  "ai-merge-to-main": {
-    "description": "Run tests and merge current branch to main if passing",
+  "ai-local-merge-safe": {
+    "description": "Merge current branch to main with enforced testing (safe variant)",
     "commands": [
       "docker compose up -d",
       "sleep 8",
@@ -113,5 +113,40 @@
     "auto_approve": false,
     "timeout": 180000,
     "on_error": "stop"
+  },
+  "proj-level-1": {
+    "description": "Level 1: Analyze root directory (shows ALL files - no changes made)",
+    "commands": ["./scripts/organize-level-1-root.sh"],
+    "auto_approve": true,
+    "timeout": 60000,
+    "on_error": "continue"
+  },
+  "proj-level-1-apply": {
+    "description": "Level 1: APPLY root organization (Cursor will ask for approval)",
+    "commands": ["./scripts/organize-level-1-apply.sh"],
+    "auto_approve": false,
+    "timeout": 60000,
+    "on_error": "stop"
+  },
+  "proj-level-2": {
+    "description": "Level 2: Analyze folder structure (shows ALL folders - no changes made)",
+    "commands": ["./scripts/organize-level-2-folders.sh"],
+    "auto_approve": true,
+    "timeout": 60000,
+    "on_error": "continue"
+  },
+  "proj-level-2-apply": {
+    "description": "Level 2: APPLY folder organization (Cursor will ask for approval)",
+    "commands": ["./scripts/organize-level-2-apply.sh"],
+    "auto_approve": false,
+    "timeout": 60000,
+    "on_error": "stop"
+  },
+  "proj-level-3": {
+    "description": "Level 3: Comprehensive global analysis and recommendations (READ ONLY)",
+    "commands": ["./scripts/organize-level-3-global.sh"],
+    "auto_approve": true,
+    "timeout": 60000,
+    "on_error": "continue"
   }
 }

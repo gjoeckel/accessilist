@@ -1,0 +1,35 @@
+╔════════════════════════════════════════════════════════╗
+║     Level 2: Folder Analysis - Summary                ║
+╚════════════════════════════════════════════════════════╝
+
+📊 Analysis Complete: Thu Oct 16 17:42:36 MDT 2025
+
+Folders Analyzed: 21
+
+✅ Keep Structure:      16 folders
+🔄 Consolidate:         3 folders
+⚠️  Unusual/Review:      2 folders
+📭 Empty:               0 folders
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+🔄 Folders to Consolidate:
+   _notes/ → Move → docs/notes/
+   backups/ → Consolidate → archive/backups/
+   cleanup-archive/ → Consolidate → archive/cleanup/
+
+⚠️  Unusual Folders Found:
+   my-mcp-servers/ - Uncommon folder (17367 files) - manual review recommended
+   ~/ - Uncommon folder (2 files) - manual review recommended
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+📄 Full Report: .organize-reports/folder-level-comprehensive-20251016-174234.md
+
+⚠️  REVIEW COMPLETE LIST ABOVE
+
+You will be asked to approve applying these changes.
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━

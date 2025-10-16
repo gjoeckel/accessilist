@@ -1,0 +1,62 @@
+{
+  "generated": "2025-10-16T23:28:39Z",
+  "level": 1,
+  "summary": {
+    "total_files": 43,
+    "keep": 10,
+    "move": 33,
+    "delete": 0
+  },
+  "actions": {
+    "keep": [
+      {"file": ".env.example", "reason": "Core project file (required)"},
+      {"file": ".gitignore", "reason": "Core project file (required)"},
+      {"file": "Dockerfile", "reason": "Core project file (required)"},
+      {"file": "README.md", "reason": "Core project file (required)"},
+      {"file": "changelog.md", "reason": "Core project file (required)"},
+      {"file": "config.json", "reason": "Core project file (required)"},
+      {"file": "docker-compose.yml", "reason": "Core project file (required)"},
+      {"file": "package-lock.json", "reason": "Core project file (required)"},
+      {"file": "package.json", "reason": "Core project file (required)"},
+      {"file": "workflows.md", "reason": "Core project file (required)"}
+    ],
+    "move": [
+      {"file": "AI-MERGE-WORKFLOW-ENHANCED.md", "destination": "docs/status-reports/"},
+      {"file": "APACHE-FIX-REQUIRED.md", "destination": "docs/status-reports"},
+      {"file": "APACHE-PHP-FIX-REQUIRED.md", "destination": "docs/status-reports"},
+      {"file": "APACHE-TESTING-METHODS-RESEARCH.md", "destination": "docs/analysis"},
+      {"file": "CURSOR-GLOBAL-MIGRATION.md", "destination": "docs/implementation"},
+      {"file": "DOCKER-APACHE-SETUP-COMPLETE.md", "destination": "docs/status-reports"},
+      {"file": "DOCKER-PRODUCTION-MIRROR-SUCCESS.md", "destination": "docs/status-reports"},
+      {"file": "GIT-WORKFLOWS-IMPLEMENTATION.md", "destination": "docs/implementation"},
+      {"file": "GLOBAL-ENV-IMPLEMENTATION.md", "destination": "docs/implementation"},
+      {"file": "GLOBAL-FUNCTIONS-ANALYSIS.md", "destination": "docs/analysis"},
+      {"file": "GLOBAL-IMPLEMENTATION-COMPLETE.md", "destination": "docs/implementation"},
+      {"file": "MCP-RESTART-REQUIRED.md", "destination": "docs/status-reports"},
+      {"file": "MCP-VALIDATION-COMPLETE.md", "destination": "docs/status-reports"},
+      {"file": "OPTIONAL-WORKFLOW-IMPROVEMENTS.md", "destination": "docs/status-reports/"},
+      {"file": "ORGANIZATION-WORKFLOWS-FIXED.md", "destination": "docs/status-reports/"},
+      {"file": "PORTABILITY-COMPLETE.md", "destination": "docs/status-reports"},
+      {"file": "ROUTING-SIMPLIFICATION-SUMMARY.md", "destination": "docs/status-reports/"},
+      {"file": "SESSION-SUMMARY-2025-10-15.md", "destination": "docs/sessions"},
+      {"file": "SESSION-SUMMARY.md", "destination": "docs/sessions"},
+      {"file": "URL-ROUTING-MAP.md", "destination": "docs/status-reports/"},
+      {"file": "USER-STORIES.md", "destination": "docs/status-reports/"},
+      {"file": "WCAG-compliance-report.md", "destination": "docs/status-reports/"},
+      {"file": "WORKFLOW-ENHANCEMENT-COMPLETE.md", "destination": "docs/workflows"},
+      {"file": "WORKFLOW-NAMING-ANALYSIS.md", "destination": "docs/workflows"},
+      {"file": "WORKFLOW-SYNC-SOLUTION.md", "destination": "docs/workflows"},
+      {"file": "console-logs.md", "destination": "docs/development"},
+      {"file": "demo-json.txt", "destination": "docs/development/"},
+      {"file": "deploy.sh", "destination": "scripts/"},
+      {"file": "github-push-gate.sh", "destination": "scripts/"},
+      {"file": "index.php", "destination": "src/"},
+      {"file": "jest.config.srd.js", "destination": "src/"},
+      {"file": "router.php", "destination": "src/"},
+      {"file": "start.sh", "destination": "scripts/"}
+    ],
+    "delete": [
+
+    ]
+  }
+}
