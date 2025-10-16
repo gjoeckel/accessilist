@@ -12,8 +12,8 @@
       },
       {
         "id": "1.2",
-        "task": "placeholder",
-        "info": "placeholder"
+        "task": "Practice changing task status from Ready [ready-1.svg] to Active [active-1.svg] to Done [done-1.svg]",
+        "info": "Click the status button to cycle through states"
       },
       {
         "id": "1.3",
@@ -22,13 +22,13 @@
       },
       {
         "id": "1.4",
-        "task": "placeholder",
-        "info": "placeholder"
+        "task": "Try clicking the Info [info-.svg] button to see helpful examples",
+        "info": "Info buttons provide context and examples for each task"
       },
       {
         "id": "1.5",
-        "task": "placeholder",
-        "info": "placeholder"
+        "task": "Reset a task using the Reset [reset.svg] button",
+        "info": "The reset button appears when a task is Active or Done"
       }
     ]
   },

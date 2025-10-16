@@ -8,7 +8,8 @@
  * 4. Coordinating functionality from other modules
  */
 
-import { buildContent } from "./buildCheckpoints.js";
+import { buildContent as buildCheckpointsContent } from "./buildCheckpoints.js";
+import { buildContent as buildDemoContent } from "./buildDemo.js";
 // buildReportsSection import removed - reports now handled on separate page
 import { initializeCheckpointAddRowButtons } from "./addRow.js";
 
@@ -71,7 +72,12 @@ async function initializeApp() {
     }
 
     // Build content with the fetched data
-    await buildContent(data);
+    // Use demo-specific builder for demo checklist, standard builder for others
+    if (checklistType === "demo") {
+      await buildDemoContent(data);
+    } else {
+      await buildCheckpointsContent(data);
+    }
 
     // Schedule bottom buffer calculation (500ms delay for DOM to settle)
     if (typeof window.scheduleBufferUpdate === "function") {
