@@ -20,7 +20,7 @@
    INPUT & TEXTAREA STYLES
    ==================================================================== */
 
-/* Task input for manual principle rows */
+/* Task input for manual checkpoint rows */
 .task-input {
   width: 100%;
   min-height: 59px; /* 75px cell - 8px top padding - 8px bottom padding */
@@ -44,7 +44,7 @@
   box-shadow: 0 0 0 2px rgba(0, 124, 186, 0.2);
 }
 
-/* Textareas - used in principle and report tables */
+/* Textareas - used in checkpoint and report tables */
 textarea,
 .notes-textarea,
 .report-task-textarea,

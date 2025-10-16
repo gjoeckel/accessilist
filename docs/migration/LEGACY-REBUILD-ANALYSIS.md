@@ -30,7 +30,7 @@ accessilist-legacy/
 ├── js/                     # ES6 modules
 │   ├── main.js            # Entry point
 │   ├── StateManager.js    # State management
-│   ├── buildPrinciples.js # Content builder
+│   ├── buildCheckpoints.js # Content builder
 │   └── [15 other modules]
 ├── css/                    # Individual CSS files
 │   ├── modal.css          # Modal dialogs

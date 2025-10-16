@@ -159,7 +159,7 @@ renderHTMLHead('Systemwide Report');
 
         <!-- Table Container -->
         <div class="report-container">
-            <table class="principles-table reports-table" aria-labelledby="reports-caption">
+            <table class="checkpoints-table reports-table" aria-labelledby="reports-caption">
                 <thead>
                     <tr>
                         <th class="task-cell">Type</th>

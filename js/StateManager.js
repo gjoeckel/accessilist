@@ -145,27 +145,27 @@ class UnifiedStateManager {
   }
 
   initializeGlobalStateObjects() {
-    // Initialize principle table state for manual rows only
-    if (!window.principleTableState) {
+    // Initialize checkpoint table state for manual rows only
+    if (!window.checkpointTableState) {
       // Dynamic initialization based on JSON checkpoints
-      const principleRows = {};
+      const checkpointRows = {};
 
       if (window.checklistData) {
         // Find all checkpoint-* or checklist-* keys
         Object.keys(window.checklistData).forEach((key) => {
           if (key.startsWith("checkpoint-") || key.startsWith("checklist-")) {
-            principleRows[key] = [];
+            checkpointRows[key] = [];
           }
         });
       }
 
       // Fallback to empty object if no checklistData available yet
-      window.principleTableState =
-        Object.keys(principleRows).length > 0 ? principleRows : {};
+      window.checkpointTableState =
+        Object.keys(checkpointRows).length > 0 ? checkpointRows : {};
 
       console.log(
-        "Initialized principleTableState:",
-        window.principleTableState
+        "Initialized checkpointTableState:",
+        window.checkpointTableState
       );
     }
   }
@@ -248,7 +248,7 @@ class UnifiedStateManager {
       notes: this.collectNotesState(),
       statusButtons: this.collectStatusButtonsState(),
       restartButtons: this.collectRestartButtonsState(),
-      principleRows: this.collectPrincipleRowsState(),
+      checkpointRows: this.collectCheckpointRowsState(),
     };
   }
 
@@ -324,24 +324,24 @@ class UnifiedStateManager {
     return restartButtons;
   }
 
-  collectPrincipleRowsState() {
-    if (!window.principleTableState) return {};
+  collectCheckpointRowsState() {
+    if (!window.checkpointTableState) return {};
 
-    const principleRows = {};
+    const checkpointRows = {};
 
     // Dynamic checkpoint detection from JSON data
     const checkpointKeys = window.checklistData
       ? Object.keys(window.checklistData).filter(
           (key) => key.startsWith("checkpoint-") || key.startsWith("checklist-")
         )
-      : Object.keys(window.principleTableState); // Fallback to existing state keys
+      : Object.keys(window.checkpointTableState); // Fallback to existing state keys
 
-    checkpointKeys.forEach((principleId) => {
+    checkpointKeys.forEach((checkpointId) => {
       // Only collect manually added rows (not default static rows)
-      principleRows[principleId] =
-        window.principleTableState[principleId] || [];
+      checkpointRows[checkpointId] =
+        window.checkpointTableState[checkpointId] || [];
     });
-    return principleRows;
+    return checkpointRows;
   }
 
   // ============================================================
@@ -467,9 +467,9 @@ class UnifiedStateManager {
     this.restoreNotesState(state.notes);
     this.restoreStatusButtonsState(state.statusButtons);
     this.restoreRestartButtonsState(state.restartButtons);
-    // TEMPORARILY COMMENTED OUT - Report functionality is interfering with principle rows
+    // TEMPORARILY COMMENTED OUT - Report functionality is interfering with checkpoint rows
     // this.restoreReportRowsState(state.reportRows);
-    this.restorePrincipleRowsState(state.principleRows);
+    this.restoreCheckpointRowsState(state.checkpointRows);
 
     // FINALLY: Set side panel state
     this.restoreSidePanelUIState(state.sidePanel);
@@ -623,7 +623,7 @@ class UnifiedStateManager {
       // Report table removed - no longer needed
       // Report table handling removed
     } else {
-      // Handle Principles table: Notes column AND Task column for manual rows
+      // Handle Checkpoints table: Notes column AND Task column for manual rows
       const textarea = row.querySelector(
         '.notes-textarea, textarea[id^="textarea-"]'
       );
@@ -680,17 +680,17 @@ class UnifiedStateManager {
     });
   }
 
-  restorePrincipleRowsState(principleRows) {
-    if (!principleRows) return;
+  restoreCheckpointRowsState(checkpointRows) {
+    if (!checkpointRows) return;
 
-    Object.keys(principleRows).forEach((principleId) => {
-      const rows = principleRows[principleId];
+    Object.keys(checkpointRows).forEach((checkpointId) => {
+      const rows = checkpointRows[checkpointId];
       if (Array.isArray(rows)) {
-        // Update window.principleTableState with restored data
-        if (!window.principleTableState) {
-          window.principleTableState = {};
+        // Update window.checkpointTableState with restored data
+        if (!window.checkpointTableState) {
+          window.checkpointTableState = {};
         }
-        window.principleTableState[principleId] = rows.filter(
+        window.checkpointTableState[checkpointId] = rows.filter(
           (row) => row.isManual
         );
 
@@ -702,7 +702,7 @@ class UnifiedStateManager {
               `tr[data-id="${rowData.id}"]`
             );
             if (!existingRow) {
-              this.renderSinglePrincipleRow(rowData);
+              this.renderSingleCheckpointRow(rowData);
             } else {
               console.log(
                 `Row ${rowData.id} already exists, skipping restoration`
@@ -917,10 +917,10 @@ class UnifiedStateManager {
    * @returns {string} Flag value ('text-manual', 'active-auto', 'active-manual')
    */
   getStatusFlag(taskId) {
-    // First check if task exists in principleTableState (manual rows)
-    if (window.principleTableState) {
-      for (const principleId in window.principleTableState) {
-        const rows = window.principleTableState[principleId];
+    // First check if task exists in checkpointTableState (manual rows)
+    if (window.checkpointTableState) {
+      for (const checkpointId in window.checkpointTableState) {
+        const rows = window.checkpointTableState[checkpointId];
         const taskRow = rows.find((row) => row.id === taskId);
         if (taskRow) {
           return taskRow.statusFlag || "text-manual";
@@ -944,10 +944,10 @@ class UnifiedStateManager {
    * @param {string} flag - Flag value ('text-manual', 'active-auto', 'active-manual')
    */
   setStatusFlag(taskId, flag) {
-    // First try to update in principleTableState (manual rows)
-    if (window.principleTableState) {
-      for (const principleId in window.principleTableState) {
-        const rows = window.principleTableState[principleId];
+    // First try to update in checkpointTableState (manual rows)
+    if (window.checkpointTableState) {
+      for (const checkpointId in window.checkpointTableState) {
+        const rows = window.checkpointTableState[checkpointId];
         const taskRow = rows.find((row) => row.id === taskId);
         if (taskRow) {
           taskRow.statusFlag = flag;
@@ -982,9 +982,9 @@ class UnifiedStateManager {
    * @returns {Object|null} Task state object or null
    */
   getTaskState(taskId) {
-    if (window.principleTableState) {
-      for (const principleId in window.principleTableState) {
-        const rows = window.principleTableState[principleId];
+    if (window.checkpointTableState) {
+      for (const checkpointId in window.checkpointTableState) {
+        const rows = window.checkpointTableState[checkpointId];
         const taskRow = rows.find((row) => row.id === taskId);
         if (taskRow) {
           return taskRow;
@@ -1000,9 +1000,9 @@ class UnifiedStateManager {
    * @param {string} notes - New notes value
    */
   updateTaskNotes(taskId, notes) {
-    if (window.principleTableState) {
-      for (const principleId in window.principleTableState) {
-        const rows = window.principleTableState[principleId];
+    if (window.checkpointTableState) {
+      for (const checkpointId in window.checkpointTableState) {
+        const rows = window.checkpointTableState[checkpointId];
         const taskRow = rows.find((row) => row.id === taskId);
         if (taskRow) {
           taskRow.notes = notes;
@@ -1018,9 +1018,9 @@ class UnifiedStateManager {
    * @param {string} status - New status value
    */
   updateTaskStatus(taskId, status) {
-    if (window.principleTableState) {
-      for (const principleId in window.principleTableState) {
-        const rows = window.principleTableState[principleId];
+    if (window.checkpointTableState) {
+      for (const checkpointId in window.checkpointTableState) {
+        const rows = window.checkpointTableState[checkpointId];
         const taskRow = rows.find((row) => row.id === taskId);
         if (taskRow) {
           taskRow.status = status;
@@ -1030,8 +1030,8 @@ class UnifiedStateManager {
     }
   }
 
-  createPrincipleRowData({
-    principleId,
+  createCheckpointRowData({
+    checkpointId,
     task = "",
     notes = "",
     status = "ready",
@@ -1048,23 +1048,23 @@ class UnifiedStateManager {
       // Generate new ID (for new rows)
       // Count only manual rows in the state to avoid conflicts
       const existingManualRows =
-        window.principleTableState && window.principleTableState[principleId]
-          ? window.principleTableState[principleId].filter(
+        window.checkpointTableState && window.checkpointTableState[checkpointId]
+          ? window.checkpointTableState[checkpointId].filter(
               (row) => row.isManual
             )
           : [];
 
       // Count existing DOM rows to get the next sequential number
       const existingRows = document.querySelectorAll(
-        `#${principleId} .principles-table tbody tr`
+        `#${checkpointId} .checkpoints-table tbody tr`
       );
       const nextRowNumber = existingRows.length + 1;
-      rowId = `${principleId.split("-")[1]}.${nextRowNumber}`;
+      rowId = `${checkpointId.split("-")[1]}.${nextRowNumber}`;
     }
 
     return {
       id: rowId,
-      principleId: principleId,
+      checkpointId: checkpointId,
       task: task,
       notes: notes,
       status: status,
@@ -1074,12 +1074,12 @@ class UnifiedStateManager {
     };
   }
 
-  addPrincipleRow(rowData, saveImmediately = true) {
-    console.log("StateManager: Adding principle row:", rowData);
+  addCheckpointRow(rowData, saveImmediately = true) {
+    console.log("StateManager: Adding checkpoint row:", rowData);
 
     // Validate required global dependencies
-    if (!window.principleTableState) {
-      console.error("StateManager: principleTableState not available");
+    if (!window.checkpointTableState) {
+      console.error("StateManager: checkpointTableState not available");
       return;
     }
 
@@ -1089,17 +1089,17 @@ class UnifiedStateManager {
     }
 
     // Add to state
-    if (!window.principleTableState[rowData.principleId]) {
-      window.principleTableState[rowData.principleId] = [];
+    if (!window.checkpointTableState[rowData.checkpointId]) {
+      window.checkpointTableState[rowData.checkpointId] = [];
     }
-    window.principleTableState[rowData.principleId].push(rowData);
+    window.checkpointTableState[rowData.checkpointId].push(rowData);
     console.log(
-      "StateManager: Added to principleTableState, total rows:",
-      window.principleTableState[rowData.principleId].length
+      "StateManager: Added to checkpointTableState, total rows:",
+      window.checkpointTableState[rowData.checkpointId].length
     );
 
     // Render the new row
-    this.renderSinglePrincipleRow(rowData);
+    this.renderSingleCheckpointRow(rowData);
 
     // Save if requested
     if (saveImmediately) {
@@ -1108,17 +1108,17 @@ class UnifiedStateManager {
       });
     }
 
-    console.log("StateManager: Principle row added successfully");
+    console.log("StateManager: Checkpoint row added successfully");
   }
 
-  renderSinglePrincipleRow(rowData) {
-    const principleId = rowData.principleId;
+  renderSingleCheckpointRow(rowData) {
+    const checkpointId = rowData.checkpointId;
     const currentTable = document.querySelector(
-      `#${principleId} .principles-table tbody`
+      `#${checkpointId} .checkpoints-table tbody`
     );
 
     if (!currentTable) {
-      console.error(`Table not found for ${principleId}`);
+      console.error(`Table not found for ${checkpointId}`);
       return;
     }
 
@@ -1130,7 +1130,7 @@ class UnifiedStateManager {
     }
 
     if (typeof window.createTableRow === "function") {
-      const newRowElement = window.createTableRow(rowData, "principle");
+      const newRowElement = window.createTableRow(rowData, "checkpoint");
       currentTable.appendChild(newRowElement);
 
       // Apply the saved status state after rendering
@@ -1139,7 +1139,7 @@ class UnifiedStateManager {
       }
 
       console.log(
-        `Principle row rendered: ${rowData.id} with status: ${rowData.status}`
+        `Checkpoint row rendered: ${rowData.id} with status: ${rowData.status}`
       );
     } else {
       console.error("createTableRow function not available");

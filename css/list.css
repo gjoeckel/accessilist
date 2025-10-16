@@ -5,10 +5,10 @@
 
    CONTAINS:
    - Main content layout and positioning
-   - Principle sections with checkpoint color themes
+   - Checkpoint sections with checkpoint color themes
    - Section headers and captions
    - Side panel navigation (collapsible)
-   - Principles table wrapper
+   - Checkpoints table wrapper
    - Add row buttons for checklists
    - Screen reader utilities
 
@@ -74,25 +74,25 @@ section {
   scroll-margin-top: 90px; /* Offset for sticky header when scrolling to section */
 }
 
-.principle-section {
+.checkpoint-section {
   position: relative;
   z-index: 1;
 }
 
 /* First section has no extra margin */
-.principle-section.checkpoint-1,
-.principle-section.checklist-1 {
+.checkpoint-section.checkpoint-1,
+.checkpoint-section.checklist-1 {
   margin-top: 0;
 }
 
 /* Checkpoint Color Themes */
-.principle-section {
+.checkpoint-section {
   --theme-color: #333333; /* Default for all checkpoints */
   /* --selected-color inherited from :root */
 }
 
 /* Section Headers */
-.principle-section h2 {
+.checkpoint-section h2 {
   color: var(--theme-color);
   font-size: 1.3rem;
   text-align: center;
@@ -103,7 +103,7 @@ section {
 }
 
 /* Checklist page (list.php) - smaller h2 text and reduced spacing */
-body.checklist-page .principle-section h2 {
+body.checklist-page .checkpoint-section h2 {
   font-size: 1rem;
   margin-bottom: 15px;
 }
@@ -147,7 +147,7 @@ body.checklist-page .checklist-caption {
 }
 
 /* CSS-generated number circle - filled mode (when selected via side panel) */
-.principle-section.active .checklist-caption[data-number]::before {
+.checkpoint-section.active .checklist-caption[data-number]::before {
   background-color: var(--selected-color);
   border-color: var(--selected-color);
   color: white;
@@ -349,16 +349,16 @@ body.checklist-page .checklist-caption {
    PRINCIPLES TABLE SPECIFIC
    ==================================================================== */
 
-.principles-table th:nth-child(3),
-.principles-table td:nth-child(3) {
+.checkpoints-table th:nth-child(3),
+.checkpoints-table td:nth-child(3) {
   display: table-cell;
 }
 
-.principles-table-wrapper {
+.checkpoints-table-wrapper {
   margin-bottom: 1rem;
 }
 
-.principles-buttons {
+.checkpoints-buttons {
   display: flex;
   justify-content: flex-start;
   margin-top: 0.5rem;
@@ -366,7 +366,7 @@ body.checklist-page .checklist-caption {
 }
 
 /* Add Row Buttons - smaller size, matches h2 number icons */
-.principles-button {
+.checkpoints-button {
   display: flex;
   align-items: center;
   justify-content: center;
@@ -383,7 +383,7 @@ body.checklist-page .checklist-caption {
 }
 
 /* Plus icon using SVG mask for proper color inheritance */
-.principles-button::before {
+.checkpoints-button::before {
   content: "";
   position: absolute;
   top: 50%;
@@ -403,17 +403,17 @@ body.checklist-page .checklist-caption {
 }
 
 /* Brown selected color when checkpoint is active */
-.principle-section.active .principles-button {
+.checkpoint-section.active .checkpoints-button {
   border-color: var(--selected-color) !important;
   background-color: var(--selected-color) !important;
 }
 
 /* White plus icon when selected */
-.principle-section.active .principles-button::before {
+.checkpoint-section.active .checkpoints-button::before {
   background-color: white !important; /* Mask reveals white color */
 }
 
-.principles-button:is(:hover, :focus) {
+.checkpoints-button:is(:hover, :focus) {
   outline: none;
   box-shadow: var(--golden-ring) !important;
 }

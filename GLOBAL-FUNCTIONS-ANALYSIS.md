@@ -166,7 +166,7 @@ These should NEVER be globally available:
 | Item | Type | Reason |
 |------|------|--------|
 | **API endpoints** | PHP | Project-specific business logic |
-| **buildPrinciples.js** | JavaScript | AccessiList checklist logic |
+| **buildCheckpoints.js** | JavaScript | AccessiList checklist logic |
 | **addRow.js** | JavaScript | AccessiList UI components |
 | **StatusManager.js** | JavaScript | AccessiList-specific state |
 | **saves/** directory | Data | Project-specific session storage |

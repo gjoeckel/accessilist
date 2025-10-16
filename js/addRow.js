@@ -7,22 +7,22 @@
 /**
  * Creates a table row element (<tr>) with appropriate cells (<td>) based on the table type.
  * @param {object} rowData - Data for the row (e.g., { id, task, notes, status, date, infoLink, isManual }).
- * @param {string} tableType - Type of table ('principle' or 'report').
+ * @param {string} tableType - Type of table ('checkpoint' or 'report').
  * @returns {HTMLTableRowElement} The created table row element.
  */
 function createTableRow(rowData, tableType) {
   const tr = document.createElement("tr");
   tr.setAttribute("data-id", rowData.id || `manual-${Date.now()}`); // Use provided ID or generate one for manual
 
-  if (tableType === "principle") {
-    tr.className = "principle-row";
+  if (tableType === "checkpoint") {
+    tr.className = "checkpoint-row";
     if (rowData.isManual) {
       tr.classList.add("manual-row");
     }
     tr.setAttribute("role", "row");
 
-    // --- Principle Cells ---
-    // Order: Task, Info, Notes, Status, Restart (matching buildPrinciples.js thead order)
+    // --- Checkpoint Cells ---
+    // Order: Task, Info, Notes, Status, Restart (matching buildCheckpoints.js thead order)
 
     // 1. Task Cell
     const taskCell = document.createElement("td");
@@ -168,35 +168,35 @@ function createTableRow(rowData, tableType) {
 window.createTableRow = createTableRow;
 
 /**
- * Attaches event listeners to all principle add row buttons.
+ * Attaches event listeners to all checkpoint add row buttons.
  * Should be called after the DOM is loaded and the buttons exist.
  */
-function initializePrincipleAddRowButtons() {
+function initializeCheckpointAddRowButtons() {
   // Support both checkpoint- and checklist- naming conventions
-  const principleButtons = document.querySelectorAll(
-    'button[data-principle^="checklist-"], button[data-principle^="checkpoint-"]'
+  const checkpointButtons = document.querySelectorAll(
+    'button[data-checkpoint^="checklist-"], button[data-checkpoint^="checkpoint-"]'
   );
-  console.log(`Found ${principleButtons.length} principle add row buttons`);
+  console.log(`Found ${checkpointButtons.length} checkpoint add row buttons`);
 
-  principleButtons.forEach((button) => {
-    const principleId = button.getAttribute("data-principle");
-    console.log(`Initializing button for ${principleId}`);
+  checkpointButtons.forEach((button) => {
+    const checkpointId = button.getAttribute("data-checkpoint");
+    console.log(`Initializing button for ${checkpointId}`);
 
     // Add event listener for the Add Row button
     button.addEventListener("click", (event) => {
       event.preventDefault();
-      console.log(`Add button clicked for ${principleId}`);
-      if (typeof window.handleAddPrincipleRow === "function") {
-        window.handleAddPrincipleRow(principleId);
+      console.log(`Add button clicked for ${checkpointId}`);
+      if (typeof window.handleAddCheckpointRow === "function") {
+        window.handleAddCheckpointRow(checkpointId);
       } else {
-        console.error("handleAddPrincipleRow function not available");
+        console.error("handleAddCheckpointRow function not available");
       }
     });
 
-    console.log(`Event listener attached to button for ${principleId}`);
+    console.log(`Event listener attached to button for ${checkpointId}`);
   });
 
-  console.log("All principle add row buttons initialized");
+  console.log("All checkpoint add row buttons initialized");
 }
 
 // Initialization logic:
@@ -209,4 +209,4 @@ function initializePrincipleAddRowButtons() {
 
 // Export the function(s) needed by other modules (if any)
 // Let's export the initializer for potential use by main.js.
-export { initializePrincipleAddRowButtons };
+export { initializeCheckpointAddRowButtons };

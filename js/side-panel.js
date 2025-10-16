@@ -172,7 +172,7 @@ class SidePanel {
    * Show all checkpoints with selected styling
    */
   showAllCheckpoints() {
-    document.querySelectorAll(".principle-section").forEach((section) => {
+    document.querySelectorAll(".checkpoint-section").forEach((section) => {
       section.style.display = "block"; // Make visible
       section.classList.add("active"); // Apply selected styling (brown h2 circles, brown add-row buttons)
     });
@@ -216,7 +216,7 @@ class SidePanel {
       });
 
     // Hide all sections, then show only the selected one with active styling
-    document.querySelectorAll(".principle-section").forEach((sec) => {
+    document.querySelectorAll(".checkpoint-section").forEach((sec) => {
       sec.classList.remove("active");
       sec.style.display = "none"; // Hide all
     });

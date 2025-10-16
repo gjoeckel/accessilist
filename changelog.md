@@ -26,7 +26,7 @@
 - `"completed"` → `"done"` (matches user-facing "Done" label)
 
 **Files Updated:**
-- **JavaScript (9):** StateManager.js, StateEvents.js, addRow.js, buildPrinciples.js, systemwide-report.js, list-report.js, ModalActions.js, simple-modal.js, generate-demo-files.js
+- **JavaScript (9):** StateManager.js, StateEvents.js, addRow.js, buildCheckpoints.js, systemwide-report.js, list-report.js, ModalActions.js, simple-modal.js, generate-demo-files.js
 - **PHP (2):** systemwide-report.php, list-report.php
 - **CSS (6):** systemwide-report.css, reports.css, list-report.css, form-elements.css, table.css, list.css
 - **Data (12+):** All JSON checklist files, saved sessions
@@ -82,7 +82,7 @@
 **Files Modified:** 6
 - js/StateManager.js - Added statusFlag system, flag management methods, DOM attribute support
 - js/StateEvents.js - Implemented auto-status change logic with flag awareness
-- js/buildPrinciples.js - Initialize data-status-flag attribute for template rows
+- js/buildCheckpoints.js - Initialize data-status-flag attribute for template rows
 - js/addRow.js - Initialize data-status-flag attribute for manual rows
 - json/demo.json - Fixed structure to match expected format
 - docs/features/note-status-logic.md - Complete feature specification
@@ -555,8 +555,8 @@ requestAnimationFrame(() => {
 - More reliable and semantically correct skip link implementation
 
 **Issue:**
-- Skip link href was `#first-principle` (non-existent ID)
-- JavaScript searched for first h2 in `.principles-container` (indirect)
+- Skip link href was `#first-checkpoint` (non-existent ID)
+- JavaScript searched for first h2 in `.checkpoints-container` (indirect)
 - Not guaranteed to target checkpoint 1 if DOM structure changed
 
 **Solution:**
@@ -579,7 +579,7 @@ requestAnimationFrame(() => {
 
 **Files Modified:**
 - `php/list.php`:
-  * Line 19: Updated href from `#first-principle` to `#checkpoint-1-caption`
+  * Line 19: Updated href from `#first-checkpoint` to `#checkpoint-1-caption`
   * Lines 84-86: Updated JavaScript to directly target checkpoint 1 h2 by ID
   * More reliable and semantically correct
 
@@ -1460,7 +1460,7 @@ html {
 - `js/scroll.js` - Core buffer calculation with 500ms debounce, test suite, resize handler
 - `js/main.js` - Triggers buffer update after content build
 - `js/side-panel.js` - Triggers buffer update on checkpoint navigation
-- `js/buildPrinciples.js` - Triggers buffer update on manual row addition
+- `js/buildCheckpoints.js` - Triggers buffer update on manual row addition
 - `js/StateManager.js` - Triggers buffer update after save
 - `css/scroll.css` - Dynamic CSS custom property `--bottom-buffer`
 - `css/base.css` - Added scrollbar-gutter for layout stability
@@ -2007,7 +2007,7 @@ Scroll:  19910px  ✅
 - ✅ **No Visual Impact**: Text content remains the same, only container width standardized
 
 **Table Spacing Fix:**
-- ✅ **Margin-Top Issue**: Systemwide report used `.principles-table reports-table` (no margin-top), list report used `.report-table` (20px margin-top)
+- ✅ **Margin-Top Issue**: Systemwide report used `.checkpoints-table reports-table` (no margin-top), list report used `.report-table` (20px margin-top)
 - ✅ **CSS Solution**: Added `.reports-table { margin-top: 20px; }` to match .report-table spacing
 - ✅ **Result**: Both report pages now have consistent 30px spacing between h2 and table (10px h2 margin-bottom + 20px table margin-top)
 
@@ -2109,10 +2109,10 @@ Scroll:  19910px  ✅
 - ✅ **No Side Panel Space**: Report pages use full viewport width
 
 **Bug Fixes:**
-- ✅ **list-report.php Table Population**: Fixed convertToPrinciples() looking for "checklist-" instead of "checkpoint-"
+- ✅ **list-report.php Table Population**: Fixed convertToCheckpoints() looking for "checklist-" instead of "checkpoint-"
 - ✅ **Status Icon Paths**: Added icon mapping for ready/active/done → ready/active/done
 - ✅ **Back Button Path**: Fixed to use /?session=${sessionKey} for proper checklist navigation
-- ✅ **CSS Scope**: Changed .principles-table to .reports-table to prevent global interference
+- ✅ **CSS Scope**: Changed .checkpoints-table to .reports-table to prevent global interference
 - ✅ **Table Class**: Removed duplicate class="report-table report-table"
 
 **Files Modified (18):**
@@ -2245,7 +2245,7 @@ dojo.json         - 4 checkpoints (14 tasks total)
 - **Issue #2**: `offsetTop` returns 0 for hidden elements in `StateManager.js`
   - `scrollSectionToPosition()` method calculates wrong position when element has `display: none`
   - Causes scroll to position 0 instead of correct offset
-- **Issue #3**: Dynamic DOM creation skipped in `buildPrinciples.js`
+- **Issue #3**: Dynamic DOM creation skipped in `buildCheckpoints.js`
   - When `showRobust = false`, checklist-4 section never created in DOM
   - Side panel link has no target to scroll to even after becoming visible
 - **Issue #4**: No layout recalculation after visibility toggle in `main.js`
@@ -2311,7 +2311,7 @@ dojo.json         - 4 checkpoints (14 tasks total)
   - `/js/report.js` (470 lines) - Report management class
 - ✅ **Core Features**:
   - Single checklist view with all tasks in one table
-  - Checkpoint icons showing principle grouping
+  - Checkpoint icons showing checkpoint grouping
   - Read-only textareas matching list.php styling
   - Status icons (non-interactive)
   - Filter buttons UI (ready for Phase 2 wiring)
@@ -3194,7 +3194,7 @@ DEBUG_PRODUCTION=false
 - Tested with Camtasia (3 checklists) and Word (4 checklists) configurations
 
 **Changes Made:**
-- **js/buildPrinciples.js**: Added logic in buildContent() to skip checklist-4 section creation when data.showRobust is false
+- **js/buildCheckpoints.js**: Added logic in buildContent() to skip checklist-4 section creation when data.showRobust is false
 - **JSON Configuration**: Confirmed existing pattern where complete checklists have "showRobust": true and incomplete ones omit this property
 - **Side Panel Integration**: Leveraged existing hiding logic in js/main.js that manages checklist-4-section visibility
 - **Testing**: Verified Camtasia shows 3 sections (hides checklist-4) and Word shows all 4 sections
@@ -3876,7 +3876,7 @@ DEBUG_PRODUCTION=false
 **JavaScript Path Updates:**
 - `js/path-utils.js`: `getAPIPath()` appends `.php` only for local dev when given extensionless names
 - `js/StateManager.js`: Use `getAPIPath('save')` and `getAPIPath('restore')`
-- `js/buildPrinciples.js`: Use `window.getImagePath(iconName)` for add-row icons (fixes missing icons)
+- `js/buildCheckpoints.js`: Use `window.getImagePath(iconName)` for add-row icons (fixes missing icons)
 - `js/admin.js`: Use `getPHPPath('list.php')` for links and extensionless `getAPIPath('list'|'delete')`
 
 **Simulated Production Validation:**
@@ -3963,7 +3963,7 @@ DEBUG_PRODUCTION=false
 ### 2025-10-01 15:47:00 UTC - Manual Row Save/Restore Fixes + Legacy Overlay Code Removal
 
 **Summary:**
-- Fixed critical save/restore issues with manually added principle rows
+- Fixed critical save/restore issues with manually added checkpoint rows
 - Resolved status restoration problems (done status reverting to active)
 - Eliminated duplicate row restoration during page reload
 - Removed all legacy text overlay code from JavaScript and CSS
@@ -3971,12 +3971,12 @@ DEBUG_PRODUCTION=false
 
 **Manual Row Save/Restore Fixes:**
 - **Status Restoration Issue**: Fixed done status reverting to "active" on restore
-  - **Root Cause**: `renderSinglePrincipleRow` method only created DOM but didn't apply saved status state
+  - **Root Cause**: `renderSingleCheckpointRow` method only created DOM but didn't apply saved status state
   - **Solution**: Added `applyDoneStateToRow` method to properly restore done status
   - **Result**: Done rows now maintain proper status, restart button visibility, and textarea disabled state
 - **Duplicate Row Issue**: Fixed rows being restored twice during page reload
-  - **Root Cause**: `restorePrincipleRowsState` called multiple times without checking for existing rows
-  - **Solution**: Added duplicate detection in both `restorePrincipleRowsState` and `renderSinglePrincipleRow`
+  - **Root Cause**: `restoreCheckpointRowsState` called multiple times without checking for existing rows
+  - **Solution**: Added duplicate detection in both `restoreCheckpointRowsState` and `renderSingleCheckpointRow`
   - **Result**: Each manual row restored exactly once, no duplicates
 - **Missing Attributes**: Fixed status and restart buttons missing `data-id` attributes
   - **Solution**: Added proper `data-id` attributes in `createTableRow` function
@@ -3998,8 +3998,8 @@ DEBUG_PRODUCTION=false
 - **Architecture Change**: Moved Report table from `list.php` to dedicated `reports.php` page
 - **Navigation Updated**: Report link now points to `reports.php` instead of `#report`
 - **State Management Simplified**: Removed all report row save/restore logic from main checklist
-- **Separation of Concerns**: Checklist handles principles, Reports page handles report generation
-- **Result**: Eliminated save/restore conflicts between report and principle rows
+- **Separation of Concerns**: Checklist handles checkpoints, Reports page handles report generation
+- **Result**: Eliminated save/restore conflicts between report and checkpoint rows
 
 **Technical Improvements:**
 - **New Method**: `applyDoneTextareaStateForRestore` - applies done styling without creating overlays
@@ -4086,7 +4086,7 @@ DEBUG_PRODUCTION=false
   - Notes Cells: 3 definitions → 1 multi-selector (-30 lines)
   - Text Overlays: 5 definitions → 1 multi-selector (-25 lines)
 - **User Preference Applied**: line-height: 2 for all multiline text
-  - Applied to all textareas (notes, tasks in principles & report tables)
+  - Applied to all textareas (notes, tasks in checkpoints & report tables)
   - Applied to all text overlays
   - Consistent reading experience throughout app
 - **Impact**: -97 lines CSS duplication, single source of truth
@@ -4155,7 +4155,7 @@ DEBUG_PRODUCTION=false
 - **Impact**: Fixed both reset task and delete report row functionality that were completely broken
 
 **Application File Refactoring:**
-- **`buildPrinciples.js`**: Removed legacy event handlers for status buttons, textarea input, reset buttons (now in StateEvents.js)
+- **`buildCheckpoints.js`**: Removed legacy event handlers for status buttons, textarea input, reset buttons (now in StateEvents.js)
 - **`main.js`**: Removed duplicate report table event delegation, status change handlers, delete handlers
 - **`addRow.js`**: Updated to use new unified state manager for save operations
 - **`list.php`**: Updated script imports to load new ES6 modules, removed references to deprecated files
@@ -4183,7 +4183,7 @@ DEBUG_PRODUCTION=false
 
 **Files Modified:**
 - `js/modal-manager.js` - Fixed callback execution order (critical bug fix)
-- `js/buildPrinciples.js` - Removed legacy event handlers
+- `js/buildCheckpoints.js` - Removed legacy event handlers
 - `js/main.js` - Removed duplicate event delegation
 - `js/addRow.js` - Updated to use unified state manager
 - `php/list.php` - Updated script imports for ES6 modules
@@ -4248,7 +4248,7 @@ DEBUG_PRODUCTION=false
 
 **Report Table Save/Restore:**
 - **State Collection**: Extended to capture `.report-task-textarea` and `.report-notes-textarea` values
-- **Status Buttons**: Collects both `.status-button` (Principles) and `.report-status-button` (Report)
+- **Status Buttons**: Collects both `.status-button` (Checkpoints) and `.report-status-button` (Report)
 - **Report Rows**: Initialized `window.reportTableState.rows` to track manual Report rows
 - **Restoration**: Added `window.renderReportTable()` to recreate rows from saved state
 - **Done State**: Automatically applies inactive state to both columns when status = done
@@ -4290,7 +4290,7 @@ DEBUG_PRODUCTION=false
 6. On restore, Report row recreated with done state fully preserved
 
 **Impact:**
-- Report table now has feature parity with Principles tables for done status
+- Report table now has feature parity with Checkpoints tables for done status
 - DRY button styling ensures visual consistency across all tables
 - Complete save/restore support for Report table manual rows
 - Improved code maintainability with proper state management
@@ -4350,7 +4350,7 @@ DEBUG_PRODUCTION=false
 **Files Modified:**
 - `css/focus.css`, `css/landing.css`, `css/side-panel.css`, `css/table.css`, `css/header.css`
 - `php/list.php`, `php/home.php`, `php/admin.php`
-- `js/buildPrinciples.js`, `js/buildReport.js`, `js/main.js`
+- `js/buildCheckpoints.js`, `js/buildReport.js`, `js/main.js`
 
 **Impact:**
 - Consistent, accessible focus/hover visuals; WCAG focus visibility improved.
@@ -4652,7 +4652,7 @@ DEBUG_PRODUCTION=false
 
 **Files Modified:**
 - `php/home.php`, `php/list.php`, `php/index.php`, `php/admin.php`
-- `js/admin.js`, `js/save-restore.js`, `js/buildReport.js`, `js/buildPrinciples.js`, `js/addRow.js`
+- `js/admin.js`, `js/save-restore.js`, `js/buildReport.js`, `js/buildCheckpoints.js`, `js/addRow.js`
 
 **Validation:**
 - All absolute paths verified and corrected
@@ -4667,11 +4667,11 @@ DEBUG_PRODUCTION=false
 
 **Solution:**
 - Standardized all image paths to use consistent `/training/online/accessilist/images/` pattern
-- Fixed image references in buildPrinciples.js, save-restore.js, and admin.js
+- Fixed image references in buildCheckpoints.js, save-restore.js, and admin.js
 - All images now load correctly without 404 errors
 
 **Files Modified:**
-- `js/buildPrinciples.js`: Fixed number icons and info icons (6 paths)
+- `js/buildCheckpoints.js`: Fixed number icons and info icons (6 paths)
 - `js/save-restore.js`: Fixed status icons (1 path)
 - `js/admin.js`: Fixed delete icon (1 path)
 
@@ -4694,7 +4694,7 @@ DEBUG_PRODUCTION=false
 - Modified PHP files to handle different path contexts (local vs production)
 
 **Files Modified:**
-- `js/addRow.js`, `js/admin.js`, `js/buildPrinciples.js`, `js/buildReport.js`, `js/main.js`, `js/save-restore.js`
+- `js/addRow.js`, `js/admin.js`, `js/buildCheckpoints.js`, `js/buildReport.js`, `js/main.js`, `js/save-restore.js`
 - `php/admin.php`, `php/home.php`, `php/index.php`, `php/list.php`
 
 **New Files Added:**

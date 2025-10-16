@@ -169,7 +169,7 @@ child.addEventListener('click', (e) => {
 **addRow.js:**
 - Add row buttons (click)
 
-**buildPrinciples.js:**
+**buildCheckpoints.js:**
 - `.info-link` - Info modal buttons (click)
 
 ---

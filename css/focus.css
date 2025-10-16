@@ -5,7 +5,7 @@ textarea:focus,
 button:focus,
 input:focus,
 select:focus {
-    outline: none;
+  outline: none;
 }
 
 /* === Standardized Table Interaction Styles (Refactored) === */
@@ -14,13 +14,13 @@ select:focus {
 /* Apply transitions to all elements that will have focus/hover styles */
 /* Using :is() to group related elements for transitions */
 :is(
-  .principles-table .info-link,
-  .principles-table .notes-textarea,
-  .principles-table .status-button,
+  .checkpoints-table .info-link,
+  .checkpoints-table .notes-textarea,
+  .checkpoints-table .status-button,
   .report-delete-button, /* Report delete button - same as status buttons */
   .reports-delete-button, /* Systemwide reports delete button */
-  .principles-table .restart-button,
-  .principles-button,
+  .checkpoints-table .restart-button,
+  .checkpoints-button,
   .modal-button,
   #cancelRestart, #confirmRestartYes, #cancelDeleteReportRow, #confirmDeleteReportRow,
   .button-confirm,
@@ -44,7 +44,8 @@ select:focus {
   button:not(#homeButton), /* Exclude home button from generic button transitions */
   textarea
 ) {
-  transition: background-color 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease, transform 0.2s ease;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease,
+    border-color 0.2s ease, transform 0.2s ease;
 }
 
 /* Default focus styles removed */
@@ -70,8 +71,8 @@ select:focus {
 /* --- Specific Hover Background Adjustments (Retained from original) --- */
 /* Keep subtle background change for most buttons on hover */
 :is(
-  .principles-table .status-button,
-  .principles-table .restart-button,
+  .checkpoints-table .status-button,
+  .checkpoints-table .restart-button,
   .report-delete-button, /* Report delete button - same as status buttons */
   .reports-delete-button, /* Systemwide reports delete button */
   .modal-button,
@@ -97,11 +98,9 @@ select:focus {
   background-color: inherit; /* Prevent generic darkening */
 }
 
-
-
 /* Unified green background for modal action buttons */
 #yesButton:is(:hover, :focus) {
-    background-color: #478F00;
+  background-color: #478f00;
 }
 /* Note: #refreshButton and #saveButton maintain same green in header.css */
 
@@ -118,7 +117,6 @@ select:focus {
 }
 
 /* Instance link hover removed - using unified golden ring pattern */
-
 
 /* --- Side Panel Focus/Hover Indicator (Circular Border) --- */
 /* Unchanged from original focus.css */
@@ -137,7 +135,7 @@ select:focus {
 
 /* Unified red hover/focus background for destructive actions */
 :is(.button-red, .clear-data-button):is(:hover, :focus) {
-    background-color: #db1b14;
+  background-color: #db1b14;
 }
 
 /* ====================================================================
@@ -153,8 +151,8 @@ select:focus {
 .reports-delete-button:is(:hover, :focus),
 .instance-link:is(:hover, :focus),
 textarea:not([readonly]):is(:hover, :focus) {
-    box-shadow: var(--golden-ring) !important;
-    outline: none;
+  box-shadow: var(--golden-ring) !important;
+  outline: none;
 }
 
 /* ====================================================================
@@ -169,7 +167,7 @@ textarea:not([readonly]):is(:hover, :focus) {
 #cancelButton:is(:hover, :focus),
 #homeButton:is(:hover, :focus),
 #backButton:is(:hover, :focus) {
-    box-shadow: var(--golden-ring) !important;
+  box-shadow: var(--golden-ring) !important;
 }
 
 /* ====================================================================
@@ -178,7 +176,7 @@ textarea:not([readonly]):is(:hover, :focus) {
 
 .checklist-button:is(:hover, :focus),
 .clear-data-button:is(:hover, :focus) {
-    box-shadow: var(--golden-ring) !important;
+  box-shadow: var(--golden-ring) !important;
 }
 
 /* ====================================================================
@@ -186,11 +184,11 @@ textarea:not([readonly]):is(:hover, :focus) {
    ==================================================================== */
 
 .toggle-strip:is(:hover, :focus) {
-    box-shadow: var(--golden-ring) !important;
+  box-shadow: var(--golden-ring) !important;
 }
 
 .side-panel a:focus {
-    outline: none;
+  outline: none;
 }
 
 /* Focused section headings ring wraps the inner .heading-content for stable layout */
@@ -210,7 +208,7 @@ h2:is(:hover, :focus) .heading-content,
 
 /* Unified gray hover/focus background for neutral header buttons */
 :is(#adminButton, #cancelButton):is(:hover, :focus) {
-    background-color: #666666;
+  background-color: #666666;
 }
 
 /* Removed report section-specific overrides in favor of unified Home-style ring */

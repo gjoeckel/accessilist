@@ -89,7 +89,7 @@
 
 ### Story 2.1: View Accessibility Checkpoints
 **As an** Educator
-**I want to** see accessibility checkpoints organized by WCAG principles
+**I want to** see accessibility checkpoints organized by WCAG checkpoints
 **So that** I can systematically review my content
 
 **Acceptance Criteria:**
@@ -609,7 +609,7 @@
 - "Add Row" button at bottom of each checkpoint
 - Clicking adds new editable row
 - New row has: Task textarea, Notes textarea, Status button
-- Manual rows stored in principleRows array
+- Manual rows stored in checkpointRows array
 - Manual rows persist with save/restore
 - Can add multiple manual rows per checkpoint
 - Manual rows included in reports
@@ -706,7 +706,7 @@
   - notes: {textarea-X.X: "content"}
   - statusButtons: {status-X.X: "ready|in-progress|done"}
   - restartButtons: {restart-X.X: true|false}
-  - principleRows: {checkpoint-N: [{task, notes, status, timestamp}]}
+  - checkpointRows: {checkpoint-N: [{task, notes, status, timestamp}]}
 - Updates metadata.lastModified timestamp
 - Atomic write with file locking
 - Returns success/error response

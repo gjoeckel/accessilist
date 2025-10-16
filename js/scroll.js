@@ -75,7 +75,7 @@ function updateBottomBufferNow() {
   main.offsetHeight; // Trigger reflow to ensure DOM is settled
 
   // Calculate visible content height
-  const sections = main.querySelectorAll(".principle-section");
+  const sections = main.querySelectorAll(".checkpoint-section");
   let visibleContentHeight = 0;
 
   sections.forEach((section) => {
@@ -213,7 +213,9 @@ window.testBufferCalculation = async function () {
   // Save current state
   const originalState = {
     activeButton: document.querySelector(".checkpoint-btn.active"),
-    visibleSections: Array.from(document.querySelectorAll(".principle-section"))
+    visibleSections: Array.from(
+      document.querySelectorAll(".checkpoint-section")
+    )
       .filter((s) => s.style.display !== "none")
       .map((s) => s.className),
   };
@@ -241,7 +243,7 @@ window.testBufferCalculation = async function () {
       ).getPropertyValue("--bottom-buffer");
 
       // Measure actual content
-      const sections = document.querySelectorAll(".principle-section");
+      const sections = document.querySelectorAll(".checkpoint-section");
       let totalHeight = 0;
       sections.forEach((s) => {
         if (s.style.display !== "none") {
@@ -362,12 +364,12 @@ window.testBufferCalculation = async function () {
 
     // Add a manual row
     const addRowBtn = document.querySelector(
-      'button[data-principle="checkpoint-1"]'
+      'button[data-checkpoint="checkpoint-1"]'
     );
-    if (addRowBtn && typeof window.handleAddPrincipleRow === "function") {
+    if (addRowBtn && typeof window.handleAddCheckpointRow === "function") {
       const beforeHeight = document.querySelector(".checkpoint-1").offsetHeight;
 
-      window.handleAddPrincipleRow("checkpoint-1");
+      window.handleAddCheckpointRow("checkpoint-1");
 
       // Wait for DOM to settle and buffer to update
       await new Promise((resolve) => setTimeout(resolve, 600));

@@ -56,8 +56,8 @@ renderHTMLHead('Accessibility Checklist', true);
 <main role="main" id="main-content" tabindex="-1" aria-label="Accessibility checklist content">
     <!-- Content will be generated dynamically -->
     <div id="content">
-        <section class="principles-container">
-            <!-- Principles content will be added here -->
+        <section class="checkpoints-container">
+            <!-- Checkpoints content will be added here -->
         </section>
     </div>
 </main>

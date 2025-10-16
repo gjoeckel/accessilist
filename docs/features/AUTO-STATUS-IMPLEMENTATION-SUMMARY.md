@@ -64,7 +64,7 @@ Three flag states control the automatic behavior:
 <button data-status-flag="text-manual" ...>
 
 // Manual rows: JavaScript object
-window.principleTableState[principleId][rowIndex].statusFlag = 'active-auto'
+window.checkpointTableState[checkpointId][rowIndex].statusFlag = 'active-auto'
 ```
 
 ### State Transitions
@@ -114,7 +114,7 @@ window.principleTableState[principleId][rowIndex].statusFlag = 'active-auto'
    - Added manual override detection
    - Already had notes locking logic (no changes needed)
 
-3. **`js/buildPrinciples.js`**
+3. **`js/buildCheckpoints.js`**
    - Added `data-status-flag="text-manual"` to status buttons
    - Ensures all template rows start with default flag
 
@@ -158,10 +158,10 @@ window.principleTableState[principleId][rowIndex].statusFlag = 'active-auto'
 
 ```javascript
 getStatusFlag(taskId) {
-  // First check if task exists in principleTableState (manual rows)
-  if (window.principleTableState) {
-    for (const principleId in window.principleTableState) {
-      const rows = window.principleTableState[principleId];
+  // First check if task exists in checkpointTableState (manual rows)
+  if (window.checkpointTableState) {
+    for (const checkpointId in window.checkpointTableState) {
+      const rows = window.checkpointTableState[checkpointId];
       const taskRow = rows.find((row) => row.id === taskId);
       if (taskRow) {
         return taskRow.statusFlag || "text-manual";
@@ -384,7 +384,7 @@ restoreStatusButtonsState(statusButtonsState) {
 
 ### Why DOM Attributes for Template Rows?
 
-**Problem:** Template rows aren't in `window.principleTableState`
+**Problem:** Template rows aren't in `window.checkpointTableState`
 **Solution:** Use DOM `data-status-flag` attribute
 
 **Benefits:**
@@ -404,7 +404,7 @@ restoreStatusButtonsState(statusButtonsState) {
 **Why not more than three?**
 - Three states cover all possible scenarios
 - More states would add complexity without benefit
-- KISS principle (Keep It Simple, Stupid)
+- KISS checkpoint (Keep It Simple, Stupid)
 
 ### Why Hybrid Storage?
 
@@ -451,7 +451,7 @@ restoreStatusButtonsState(statusButtonsState) {
 ## 🎓 What I Learned
 
 ### The Problem
-The status flag system was already implemented in StateEvents.js and StateManager.js, but it only worked for manual rows because the flag getters/setters only looked in `window.principleTableState`.
+The status flag system was already implemented in StateEvents.js and StateManager.js, but it only worked for manual rows because the flag getters/setters only looked in `window.checkpointTableState`.
 
 ### The Solution
 Extended the flag system to use DOM data attributes as a fallback, making it work for both template rows (from JSON) and manual rows (user-added).
@@ -480,7 +480,7 @@ Don't try to force all data into one storage mechanism. Use the right tool for t
 - [x] Design solution (DOM attribute fallback)
 - [x] Modify getStatusFlag() for DOM fallback
 - [x] Modify setStatusFlag() for DOM fallback
-- [x] Add data-status-flag to buildPrinciples.js
+- [x] Add data-status-flag to buildCheckpoints.js
 - [x] Add data-status-flag to addRow.js
 - [x] Update state collection to save flags
 - [x] Update state restoration to restore flags

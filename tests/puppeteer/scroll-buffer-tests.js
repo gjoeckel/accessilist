@@ -212,7 +212,7 @@ class ScrollBufferTests {
           document.documentElement.style.getPropertyValue("--bottom-buffer");
         const viewport = window.innerHeight;
         const main = document.querySelector("main");
-        const sections = document.querySelectorAll(".principle-section");
+        const sections = document.querySelectorAll(".checkpoint-section");
         const visibleSections = Array.from(sections).filter(
           (s) => s.style.display !== "none"
         );
@@ -368,7 +368,7 @@ class ScrollBufferTests {
       // Get initial state (All should be active)
       const initialState = await this.page.evaluate(() => {
         const allBtn = document.querySelector(".checkpoint-all");
-        const sections = document.querySelectorAll(".principle-section");
+        const sections = document.querySelectorAll(".checkpoint-section");
         const visibleSections = Array.from(sections).filter(
           (s) => s.style.display !== "none"
         ).length;
@@ -389,7 +389,7 @@ class ScrollBufferTests {
         const btn1 = document.querySelector(
           '.checkpoint-btn[data-checkpoint="checkpoint-1"]'
         );
-        const sections = document.querySelectorAll(".principle-section");
+        const sections = document.querySelectorAll(".checkpoint-section");
         const visibleSections = Array.from(sections).filter(
           (s) => s.style.display !== "none"
         ).length;
@@ -408,7 +408,7 @@ class ScrollBufferTests {
       // Check that all checkpoints are visible again
       const finalState = await this.page.evaluate(() => {
         const allBtn = document.querySelector(".checkpoint-all");
-        const sections = document.querySelectorAll(".principle-section");
+        const sections = document.querySelectorAll(".checkpoint-section");
         const visibleSections = Array.from(sections).filter(
           (s) => s.style.display !== "none"
         ).length;

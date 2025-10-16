@@ -1,6 +1,6 @@
 ### AccessiList
 
-An accessibility checklist app built with PHP and vanilla JavaScript (ES modules), using individual CSS files for maintainability. The project emphasizes MCP-first workflows and SRD principles: Simple, Reliable, DRY.
+An accessibility checklist app built with PHP and vanilla JavaScript (ES modules), using individual CSS files for maintainability. The project emphasizes MCP-first workflows and SRD checkpoints: Simple, Reliable, DRY.
 
 ### Requirements
 
@@ -119,7 +119,7 @@ Endpoints use shared helpers in `php/includes/api-utils.php` and typically retur
 ES modules orchestrate UI behavior and checklist logic (imports from `main.js`):
 
 ```11:14:js/main.js
-import { buildContent } from './buildPrinciples.js';
+import { buildContent } from './buildCheckpoints.js';
 import { buildReportsSection } from './buildReport.js';
 import { initializeAddRowButton } from './addRow.js';
 ```
@@ -128,7 +128,7 @@ Path utilities and configuration live in `js/path-utils.js` and `js/simple-path-
 
 ### CSS Architecture
 
-CSS is organized into individual files for maintainability and follows the Single Responsibility Principle:
+CSS is organized into individual files for maintainability and follows the Single Responsibility Checkpoint:
 
 - `css/modal.css` - Modal dialog styles
 - `css/focus.css` - Focus and hover states

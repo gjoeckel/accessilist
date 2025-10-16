@@ -162,12 +162,12 @@ function createDemoFile(config) {
     notes: {},
     statusButtons: {},
     restartButtons: {},
-    principleRows: {},
+    checkpointRows: {},
   };
 
   // Initialize checkpoint arrays
   for (let i = 1; i <= config.checkpoints; i++) {
-    state.principleRows[`checklist-${i}`] = [];
+    state.checkpointRows[`checklist-${i}`] = [];
   }
 
   // Add notes and status for each task
@@ -199,7 +199,7 @@ function createDemoFile(config) {
   // Add manual row to each checkpoint
   for (let i = 1; i <= config.checkpoints; i++) {
     const checkpointKey = `checklist-${i}`;
-    state.principleRows[checkpointKey].push({
+    state.checkpointRows[checkpointKey].push({
       task: "Hey! I added this!",
       notes: "Great job!",
       status: "done",

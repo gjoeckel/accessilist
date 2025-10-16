@@ -113,12 +113,12 @@ Generated: 2025-10-15
 | 140 | `console.log('Checkpoint clicked:', checkpoint)` | debug | **DELETE** - Click event debug |
 | 215 | `console.log('Loading checklist data...')` | debug | **DELETE** - Loading debug |
 | 228 | `console.log('Checklist data loaded:', result)` | debug | **DELETE** - Data dump |
-| 242 | `console.log('Loading principles structure...')` | debug | **DELETE** - Loading debug |
-| 246 | `console.log('Loading principles from file:', jsonFile)` | debug | **DELETE** - File loading debug |
+| 242 | `console.log('Loading checkpoints structure...')` | debug | **DELETE** - Loading debug |
+| 246 | `console.log('Loading checkpoints from file:', jsonFile)` | debug | **DELETE** - File loading debug |
 | 259 | `console.log('Raw checklist data loaded:', rawData)` | debug | **DELETE** - Data dump |
-| 263 | `console.log('Converted principles data:', this.principlesData)` | debug | **DELETE** - Data transformation debug |
+| 263 | `console.log('Converted checkpoints data:', this.checkpointsData)` | debug | **DELETE** - Data transformation debug |
 | 333 | `console.error('Table body not found')` | error | **KEEP** - DOM error |
-| 342 | `console.log('Grouped principles:', grouped.length, grouped)` | debug | **DELETE** - Grouping debug |
+| 342 | `console.log('Grouped checkpoints:', grouped.length, grouped)` | debug | **DELETE** - Grouping debug |
 | 352 | `console.log(\`Adding tasks from: ${section.title}...\`)` | debug | **DELETE** - Render debug |
 | 372 | `console.log('Report rendered successfully')` | debug | **DELETE** - Success debug |
 | 447 | `console.log(\`Checkpoint filter applied...\`)` | debug | **DELETE** - Filter debug |
@@ -135,7 +135,7 @@ Generated: 2025-10-15
 | 78 | `console.warn('Instantiate skipped or failed:', e)` | warning | **KEEP** - Non-fatal warning |
 | 102 | `console.log('Unified State Manager initialized...')` | debug | **DELETE** - Init debug |
 | 134 | `console.warn('ensureInstanceExists error:', err)` | warning | **KEEP** - Non-fatal warning |
-| 159 | `console.log('Initialized principleTableState:', ...)` | debug | **DELETE** - State init debug |
+| 159 | `console.log('Initialized checkpointTableState:', ...)` | debug | **DELETE** - State init debug |
 | 167 | `console.log('ModalActions initialized')` | debug | **DELETE** - Init debug |
 | 169 | `console.warn('ModalActions class not available...')` | warning | **KEEP** - Missing dependency |
 | 218 | `console.error('Failed to get session key from server:', error)` | error | **KEEP** - Critical error |
@@ -154,14 +154,14 @@ Generated: 2025-10-15
 
 ---
 
-### 8. `js/buildPrinciples.js` (14 console statements)
+### 8. `js/buildCheckpoints.js` (14 console statements)
 
 | Line | Statement | Type | Recommendation |
 |------|-----------|------|----------------|
-| 52 | `console.warn(\`Unknown principle ID format: ${principleId}\`)` | warning | **KEEP** - Data format warning |
+| 52 | `console.warn(\`Unknown checkpoint ID format: ${checkpointId}\`)` | warning | **KEEP** - Data format warning |
 | 188 | `console.log('Info modal closed')` | debug | **DELETE** - Modal callback debug |
 | 191 | `console.error('SimpleModal not available')` | error | **KEEP** - Missing dependency |
-| 269 | `console.log(\`Adding new row to ${principleId}\`)` | debug | **DELETE** - Row addition debug |
+| 269 | `console.log(\`Adding new row to ${checkpointId}\`)` | debug | **DELETE** - Row addition debug |
 | 272 | `console.error('StateManager not available...')` | error | **KEEP** - Missing dependency |
 | 317 | `console.log('Starting to build content')` | debug | **DELETE** - Build process debug |
 | 319 | `console.log('Building content with data:', data)` | debug | **DELETE** - Data dump |
@@ -317,7 +317,7 @@ Remove initialization logs, data dumps, and process debugging.
 - `js/systemwide-report.js`
 - `js/list-report.js`
 - `js/StateManager.js`
-- `js/buildPrinciples.js`
+- `js/buildCheckpoints.js`
 - All PHP files (inline scripts)
 
 ### Phase 3: Review Error Handling (Priority: LOW)
@@ -359,7 +359,7 @@ This allows toggling verbose logging without code changes.
 5. ✅ `js/main.js` - Remove 3, keep 3
 6. ✅ `js/list-report.js` - Remove 11, keep 2
 7. ✅ `js/StateManager.js` - Remove 10, keep 8
-8. ✅ `js/buildPrinciples.js` - Remove 10, keep 4
+8. ✅ `js/buildCheckpoints.js` - Remove 10, keep 4
 9. ✅ `js/StatusManager.js` - Keep 1
 10. ✅ `php/list-report.php` - Remove 2, keep 1
 11. ✅ `php/systemwide-report.php` - Remove 2, keep 1

@@ -268,7 +268,7 @@ SAVE_DATA='{
         "notes":{"textarea-1.1":"Test content from production-mirror tests"},
         "statusButtons":{"status-1.1":"in-progress"},
         "restartButtons":{"restart-1.1":false},
-        "principleRows":{"checklist-1":[],"checklist-2":[],"checklist-3":[],"checklist-4":[]}
+        "checkpointRows":{"checklist-1":[],"checklist-2":[],"checklist-3":[],"checklist-4":[]}
     },
     "metadata":{
         "version":"1.0",
@@ -326,7 +326,7 @@ log "=== Test 9: Minimal URLs ==="
 # Test minimal URL with a session that actually exists
 # Create a minimal test session first
 TEST_MIN_KEY="MIN"
-echo "{\"sessionKey\":\"$TEST_MIN_KEY\",\"timestamp\":$(date +%s)000,\"typeSlug\":\"word\",\"state\":{\"sidePanel\":{\"expanded\":true},\"notes\":{},\"statusButtons\":{},\"restartButtons\":{},\"principleRows\":{}},\"metadata\":{\"version\":\"1.0\"}}" > "$PROJECT_DIR/saves/$TEST_MIN_KEY.json"
+echo "{\"sessionKey\":\"$TEST_MIN_KEY\",\"timestamp\":$(date +%s)000,\"typeSlug\":\"word\",\"state\":{\"sidePanel\":{\"expanded\":true},\"notes\":{},\"statusButtons\":{},\"restartButtons\":{},\"checkpointRows\":{}},\"metadata\":{\"version\":\"1.0\"}}" > "$PROJECT_DIR/saves/$TEST_MIN_KEY.json"
 
 # Now test the minimal URL
 test_endpoint "Minimal URL format (/?=MIN)" "$BASE_URL/?=MIN" "200" "Minimal URL parameter routing"
@@ -465,7 +465,7 @@ TEST_REPORT_DATA='{
       "restart-1.2": false,
       "restart-1.3": false
     },
-    "principleRows": {
+    "checkpointRows": {
       "checkpoint-1": [],
       "checkpoint-2": [],
       "checkpoint-3": [],
@@ -536,7 +536,7 @@ fi
 
 # Test list-report.php scroll buffer (120px top, 130px initial scroll)
 # Create test session for list-report
-echo "{\"sessionKey\":\"LST\",\"timestamp\":$(date +%s)000,\"typeSlug\":\"word\",\"state\":{\"sidePanel\":{\"expanded\":true},\"notes\":{},\"statusButtons\":{},\"restartButtons\":{},\"principleRows\":{}},\"metadata\":{\"version\":\"1.0\"}}" > "$PROJECT_DIR/saves/LST.json"
+echo "{\"sessionKey\":\"LST\",\"timestamp\":$(date +%s)000,\"typeSlug\":\"word\",\"state\":{\"sidePanel\":{\"expanded\":true},\"notes\":{},\"statusButtons\":{},\"restartButtons\":{},\"checkpointRows\":{}},\"metadata\":{\"version\":\"1.0\"}}" > "$PROJECT_DIR/saves/LST.json"
 
 increment_test_counter
 echo -n "  Testing list-report scroll buffer..."
@@ -632,7 +632,7 @@ print_section "Test 44-52: Read-Only Scrollable Textareas (List Report)"
 log "=== Test 44-52: Read-Only Scrollable Textareas ==="
 
 # Create test session with notes for textarea testing
-echo "{\"sessionKey\":\"TXT\",\"timestamp\":$(date +%s)000,\"typeSlug\":\"word\",\"state\":{\"sidePanel\":{\"expanded\":true},\"notes\":{\"textarea-1.1\":\"Test note\"},\"statusButtons\":{\"status-1.1\":\"completed\"},\"restartButtons\":{},\"principleRows\":{}},\"metadata\":{\"version\":\"1.0\"}}" > "$PROJECT_DIR/saves/TXT.json"
+echo "{\"sessionKey\":\"TXT\",\"timestamp\":$(date +%s)000,\"typeSlug\":\"word\",\"state\":{\"sidePanel\":{\"expanded\":true},\"notes\":{\"textarea-1.1\":\"Test note\"},\"statusButtons\":{\"status-1.1\":\"completed\"},\"restartButtons\":{},\"checkpointRows\":{}},\"metadata\":{\"version\":\"1.0\"}}" > "$PROJECT_DIR/saves/TXT.json"
 
 # Test textareas use readOnly instead of disabled
 increment_test_counter

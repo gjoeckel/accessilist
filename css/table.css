@@ -14,7 +14,7 @@
    LOADS: After header.css
 
    USED BY:
-   - list.php (principle tables)
+   - list.php (checkpoint tables)
    - list-report.php (single report table)
    - systemwide-report.php (systemwide reports table)
 
@@ -63,7 +63,7 @@ td {
 
 /* ====================================================================
    SHARED CELL CLASSES
-   Used by both principle and report tables
+   Used by both checkpoint and report tables
    ==================================================================== */
 
 .task-cell {

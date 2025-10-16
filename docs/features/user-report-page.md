@@ -10,7 +10,7 @@
 
 ## Feature Overview
 
-A user-specific report page that displays a detailed view of a single checklist instance with all tasks, notes, update timestamps, and status indicators grouped by principle.
+A user-specific report page that displays a detailed view of a single checklist instance with all tasks, notes, update timestamps, and status indicators grouped by checkpoint.
 
 ---
 
@@ -58,8 +58,8 @@ Last updated: "10-08-25 2:45 PM"
 1. **Tasks Column**
    - Lists each default task from JSON
    - Lists each manually added task
-   - Grouped by principle with headers
-   - Maintains principle order (1.1, 1.2, 2.1, etc.)
+   - Grouped by checkpoint with headers
+   - Maintains checkpoint order (1.1, 1.2, 2.1, etc.)
 
 2. **Notes Column**
    - Displays saved notes for each task
@@ -120,19 +120,19 @@ Last updated: "10-08-25 2:45 PM"
 
 ### 7. Task Grouping Logic
 
-**Principle Headers:**
-- Group tasks by principle ID (principle-1, principle-2, etc.)
-- Display principle title as section header
-- Maintain original task order within each principle
-- Include manually added rows in their respective principles
+**Checkpoint Headers:**
+- Group tasks by checkpoint ID (checkpoint-1, checkpoint-2, etc.)
+- Display checkpoint title as section header
+- Maintain original task order within each checkpoint
+- Include manually added rows in their respective checkpoints
 
 **Example Structure:**
 ```
-Principle 1: [Title]
+Checkpoint 1: [Title]
   1.1 Task name          | Notes here  | —           | [icon]
   1.2 Another task       | More notes  | —           | [icon]
 
-Principle 2: [Title]
+Checkpoint 2: [Title]
   2.1 Task name          | Notes here  | —           | [icon]
   2.2 Another task       |             | —           | [icon]
 ```
@@ -158,7 +158,7 @@ Principle 2: [Title]
 
 **Table Styling:**
 - Reuse existing table CSS classes where possible
-- Principle headers: Bold, larger font
+- Checkpoint headers: Bold, larger font
 - Task rows: Standard table row styling
 - Status icons: Same size/alignment as list.php
 
@@ -183,9 +183,9 @@ Principle 2: [Title]
    ↓
 4. report.js fetches checklist data from /php/api/restore.php
    ↓
-5. Fetch checklist type JSON to get principle structure
+5. Fetch checklist type JSON to get checkpoint structure
    ↓
-6. Build table grouped by principles
+6. Build table grouped by checkpoints
    ↓
 7. Populate Tasks, Notes, Updated (—), Status columns
    ↓
@@ -202,7 +202,7 @@ Principle 2: [Title]
 - [ ] Create report.js logic
 - [ ] Add Report button to list.php
 - [ ] Basic table rendering with 4 columns
-- [ ] Principle grouping
+- [ ] Checkpoint grouping
 - [ ] Simple "Last updated" timestamp display
 
 **Phase 2 (Enhancement):**
@@ -262,7 +262,7 @@ async loadChecklistData() {
 const displayName = await window.TypeManager.formatDisplayName(typeSlug);
 // "camtasia" → "Camtasia"
 
-// Get JSON file for principle structure
+// Get JSON file for checkpoint structure
 const jsonFile = await window.TypeManager.getJsonFileName(typeSlug);
 // Returns: "camtasia.json"
 ```
@@ -281,7 +281,7 @@ window.formatDateAdmin(timestamp);
 
 ### 5. Status Icons (existing SVG system)
 
-**Pattern from buildPrinciples.js:**
+**Pattern from buildCheckpoints.js:**
 ```javascript
 const statusImgPath = window.getImagePath('ready.svg');
 const imgHTML = `<img src="${statusImgPath}" alt="">`;
@@ -366,22 +366,22 @@ export class UserReportManager {
     constructor(sessionKey) {
         this.sessionKey = sessionKey;
         this.checklistData = null;
-        this.principlesData = null;
+        this.checkpointsData = null;
         this.typeSlug = null;
     }
 
     async initialize() {
         // 1. Fetch checklist instance data
-        // 2. Get type and fetch principle JSON
+        // 2. Get type and fetch checkpoint JSON
         // 3. Build title
-        // 4. Render table grouped by principles
+        // 4. Render table grouped by checkpoints
     }
 
     async loadChecklistData() {
         // Fetch from /php/api/restore.php
     }
 
-    async loadPrinciplesStructure() {
+    async loadCheckpointsStructure() {
         // Fetch checklist type JSON
     }
 
@@ -391,11 +391,11 @@ export class UserReportManager {
     }
 
     renderTable() {
-        // Group tasks by principle
-        // Render principle headers + task rows
+        // Group tasks by checkpoint
+        // Render checkpoint headers + task rows
     }
 
-    createPrincipleHeader(principle) {
+    createCheckpointHeader(checkpoint) {
         // Row spanning all columns
     }
 
@@ -424,28 +424,28 @@ function getTaskNotes(taskId, savedState) {
     return savedState.notes?.[notesKey] || '';
 }
 
-// Manually added tasks from state.principleRows
-function getManualTasks(principleId, savedState) {
-    const rows = savedState.principleRows?.[principleId] || [];
+// Manually added tasks from state.checkpointRows
+function getManualTasks(checkpointId, savedState) {
+    const rows = savedState.checkpointRows?.[checkpointId] || [];
     return rows;
 }
 ```
 
-### Step 5: Principle Grouping Algorithm
+### Step 5: Checkpoint Grouping Algorithm
 
 ```javascript
-function groupTasksByPrinciple(principlesData, savedState) {
+function groupTasksByCheckpoint(checkpointsData, savedState) {
     const grouped = [];
 
-    principlesData.principles.forEach(principle => {
+    checkpointsData.checkpoints.forEach(checkpoint => {
         const section = {
-            id: principle.id,
-            title: principle.title,
+            id: checkpoint.id,
+            title: checkpoint.title,
             tasks: []
         };
 
         // Add default tasks
-        principle.rows.forEach(row => {
+        checkpoint.rows.forEach(row => {
             section.tasks.push({
                 id: row.id,
                 task: row.task,
@@ -456,7 +456,7 @@ function groupTasksByPrinciple(principlesData, savedState) {
         });
 
         // Add manual tasks
-        const manualTasks = getManualTasks(principle.id, savedState);
+        const manualTasks = getManualTasks(checkpoint.id, savedState);
         manualTasks.forEach(task => {
             section.tasks.push({
                 ...task,
@@ -535,14 +535,14 @@ function displayLastUpdated(timestamp) {
 
 ### Session 2: Data Loading
 6. Implement `loadChecklistData()` in report.js
-7. Implement `loadPrinciplesStructure()` in report.js
+7. Implement `loadCheckpointsStructure()` in report.js
 8. Test: Console log shows fetched data
 9. Implement `buildTitle()` method
 10. Test: Title and subtitle render correctly
 
 ### Session 3: Table Rendering
 11. Implement `renderTable()` method
-12. Implement `createPrincipleHeader()` method
+12. Implement `createCheckpointHeader()` method
 13. Implement `createTaskRow()` method
 14. Implement task-to-state mapping utilities
 15. Test: Table renders with all data
@@ -572,9 +572,9 @@ function displayLastUpdated(timestamp) {
 - [ ] Data fetches successfully from API
 - [ ] Type name displays correctly in h1
 - [ ] Last updated timestamp shows correct format
-- [ ] Tasks grouped by principle correctly
+- [ ] Tasks grouped by checkpoint correctly
 - [ ] Default tasks display in order
-- [ ] Manual tasks display in their principle groups
+- [ ] Manual tasks display in their checkpoint groups
 - [ ] Notes display correctly
 - [ ] Status icons display correctly
 - [ ] Updated column shows "—" placeholder
@@ -596,7 +596,7 @@ function displayLastUpdated(timestamp) {
 ### Styling
 - [ ] Report button matches Home button color
 - [ ] Table responsive on mobile
-- [ ] Principle headers visually distinct
+- [ ] Checkpoint headers visually distinct
 - [ ] Consistent with existing design
 
 ---
@@ -609,7 +609,7 @@ function displayLastUpdated(timestamp) {
 | **URL** | `/reports` | `/report?session=ABC` |
 | **Data Source** | `list-detailed.php` | `restore.php` |
 | **Table Columns** | Type, Created, Key, Status, Progress | Tasks, Notes, Updated, Status |
-| **Grouping** | Filter buttons (status-based) | Principle headers |
+| **Grouping** | Filter buttons (status-based) | Checkpoint headers |
 | **Access** | Admin page link | Report button on list.php |
 | **Target User** | Admin/instructor | End user |
 | **JavaScript** | `reports.js` (`ReportsManager`) | `report.js` (`UserReportManager`) |

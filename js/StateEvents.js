@@ -2,7 +2,7 @@
  * State Events - Centralized event delegation
  *
  * REPLACES:
- * - Event listeners scattered in buildPrinciples.js
+ * - Event listeners scattered in buildCheckpoints.js
  * - Event listeners scattered in main.js
  * - Event listeners scattered in addRow.js
  *
@@ -35,7 +35,7 @@ class StateEvents {
     document.addEventListener("click", (e) => {
       console.log("StateEvents: Click event detected on:", e.target);
 
-      // Status button (Principles table)
+      // Status button (Checkpoints table)
       const statusButton = e.target.closest(".status-button");
       if (statusButton) {
         console.log("StateEvents: Status button click detected");
@@ -92,7 +92,7 @@ class StateEvents {
   }
 
   /**
-   * Handle status button click (Principles table)
+   * Handle status button click (Checkpoints table)
    *
    * MANUAL STATUS CHANGE LOGIC:
    * - When user clicks Ready → Active: Set flag to 'active-manual'
@@ -151,7 +151,7 @@ class StateEvents {
       }
 
       // Create report row when completed - use StateManager
-      // TEMPORARILY COMMENTED OUT - Report functionality is interfering with principle rows
+      // TEMPORARILY COMMENTED OUT - Report functionality is interfering with checkpoint rows
       // if (textarea) {
       //   const notesText = textarea.value;
       //   const taskCell = row.querySelector('.task-cell');
@@ -221,7 +221,7 @@ class StateEvents {
       console.log(`StateEvents: Status button updated to ${newState}`);
     }
 
-    // Update state in window.principleTableState for manual rows
+    // Update state in window.checkpointTableState for manual rows
     this._updateManualRowState(row, { status: newState || currentState });
 
     // Mark dirty for auto-save
@@ -242,15 +242,15 @@ class StateEvents {
     const taskCell = row.querySelector(".task-cell");
     const taskText = taskCell ? taskCell.textContent : "this task";
 
-    // Update state in window.principleTableState for manual rows
-    const principleId = row.closest("section")?.id;
+    // Update state in window.checkpointTableState for manual rows
+    const checkpointId = row.closest("section")?.id;
     if (
       taskId &&
-      principleId &&
-      window.principleTableState &&
-      window.principleTableState[principleId]
+      checkpointId &&
+      window.checkpointTableState &&
+      window.checkpointTableState[checkpointId]
     ) {
-      const rowData = window.principleTableState[principleId].find(
+      const rowData = window.checkpointTableState[checkpointId].find(
         (r) => r.id === taskId
       );
       if (rowData && rowData.isManual) {
@@ -296,19 +296,19 @@ class StateEvents {
   }
 
   /**
-   * Update manual row state in principleTableState
+   * Update manual row state in checkpointTableState
    * @private
    */
   _updateManualRowState(row, updates) {
     const rowId = row.getAttribute("data-id");
-    const principleId = row.closest("section")?.id;
+    const checkpointId = row.closest("section")?.id;
     if (
       rowId &&
-      principleId &&
-      window.principleTableState &&
-      window.principleTableState[principleId]
+      checkpointId &&
+      window.checkpointTableState &&
+      window.checkpointTableState[checkpointId]
     ) {
-      const rowData = window.principleTableState[principleId].find(
+      const rowData = window.checkpointTableState[checkpointId].find(
         (r) => r.id === rowId
       );
       if (rowData && rowData.isManual) {
@@ -330,7 +330,7 @@ class StateEvents {
     const row = textarea.closest("tr");
     if (!row) return;
 
-    // Handle Principles table textarea
+    // Handle Checkpoints table textarea
     if (textarea.classList.contains("notes-textarea")) {
       const statusButton = row.querySelector(".status-button");
       if (statusButton) {
@@ -387,7 +387,7 @@ class StateEvents {
           );
         }
 
-        // Update state in window.principleTableState for manual rows
+        // Update state in window.checkpointTableState for manual rows
         this._updateManualRowState(row, {
           notes: textarea.value,
           status: statusButton.getAttribute("data-state"),
@@ -401,7 +401,7 @@ class StateEvents {
       }
     }
 
-    // Handle Principles table task textarea (manual rows only)
+    // Handle Checkpoints table task textarea (manual rows only)
     if (textarea.classList.contains("task-input")) {
       this._updateManualRowState(row, { task: textarea.value });
     }

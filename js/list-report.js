@@ -3,8 +3,8 @@
  *
  * Manages the user-specific checklist report functionality:
  * - Loading single checklist instance data
- * - Fetching principle structure from type JSON
- * - Rendering tasks grouped by principle
+ * - Fetching checkpoint structure from type JSON
+ * - Rendering tasks grouped by checkpoint
  * - Displaying notes, status, and update timestamps
  */
 
@@ -12,7 +12,7 @@ export class UserReportManager {
   constructor(sessionKey) {
     this.sessionKey = sessionKey;
     this.checklistData = null;
-    this.principlesData = null;
+    this.checkpointsData = null;
     this.typeSlug = null;
     this.tableBody = null;
     this.currentFilter = "all"; // Default filter
@@ -41,8 +41,8 @@ export class UserReportManager {
       // 1. Load checklist data
       await this.loadChecklistData();
 
-      // 2. Load principles structure
-      await this.loadPrinciplesStructure();
+      // 2. Load checkpoints structure
+      await this.loadCheckpointsStructure();
 
       // 3. Generate side panel checkpoint buttons
       this.generateSidePanel();
@@ -70,8 +70,8 @@ export class UserReportManager {
     const navList = document.getElementById("checkpoint-nav");
     if (!navList) return;
 
-    // Count checkpoints from principles data
-    const checkpointCount = this.principlesData?.principles?.length || 0;
+    // Count checkpoints from checkpoints data
+    const checkpointCount = this.checkpointsData?.checkpoints?.length || 0;
 
     // Create "All" button (three lines symbol) - default active
     const allLi = document.createElement("li");
@@ -231,9 +231,9 @@ export class UserReportManager {
   }
 
   /**
-   * Load principles structure from type JSON
+   * Load checkpoints structure from type JSON
    */
-  async loadPrinciplesStructure() {
+  async loadCheckpointsStructure() {
     // Get JSON filename for this type
     const jsonFile = await window.TypeManager.getJsonFileName(this.typeSlug);
 
@@ -249,17 +249,17 @@ export class UserReportManager {
 
     const rawData = await response.json();
 
-    // Convert checklist-N structure to principles array
-    this.principlesData = this.convertToPrinciples(rawData);
+    // Convert checklist-N structure to checkpoints array
+    this.checkpointsData = this.convertToCheckpoints(rawData);
   }
 
   /**
-   * Convert checklist JSON structure to principles array
+   * Convert checklist JSON structure to checkpoints array
    * JSON format: { "checkpoint-1": { caption, table }, "checkpoint-2": {...}, ... }
-   * Output: { principles: [{ id, title, rows }, ...] }
+   * Output: { checkpoints: [{ id, title, rows }, ...] }
    */
-  convertToPrinciples(checklistData) {
-    const principles = [];
+  convertToCheckpoints(checklistData) {
+    const checkpoints = [];
 
     // Find all checkpoint-N keys
     Object.keys(checklistData).forEach((key) => {
@@ -268,16 +268,16 @@ export class UserReportManager {
         const checkpoint = checklistData[key];
 
         if (checkpoint && checkpoint.table) {
-          principles.push({
+          checkpoints.push({
             id: key,
-            title: checkpoint.caption || `Principle ${checkpointNum}`,
+            title: checkpoint.caption || `Checkpoint ${checkpointNum}`,
             rows: checkpoint.table || [],
           });
         }
       }
     });
 
-    return { principles };
+    return { checkpoints };
   }
 
   /**
@@ -329,8 +329,8 @@ export class UserReportManager {
     tbody.innerHTML = "";
     this.allRows = []; // Reset rows array
 
-    // Group tasks by principle
-    const grouped = this.groupTasksByPrinciple();
+    // Group tasks by checkpoint
+    const grouped = this.groupTasksByCheckpoint();
 
     // Check if we have any data
     if (grouped.length === 0) {
@@ -346,7 +346,7 @@ export class UserReportManager {
         const taskRow = this.createTaskRow(task, section.id);
         tbody.appendChild(taskRow);
 
-        // Extract checkpoint number from section ID (not principle - that was the bug!)
+        // Extract checkpoint number from section ID (not checkpoint - that was the bug!)
         const checkpointMatch = section.id.match(
           /(?:checkpoint|checklist)-(\d+)/
         );
@@ -516,27 +516,27 @@ export class UserReportManager {
   }
 
   /**
-   * Group tasks by principle from JSON structure
+   * Group tasks by checkpoint from JSON structure
    */
-  groupTasksByPrinciple() {
+  groupTasksByCheckpoint() {
     const grouped = [];
     const savedState = this.checklistData.state || {};
 
-    // Handle empty or missing principles data
-    if (!this.principlesData || !this.principlesData.principles) {
-      console.warn("No principles data available");
+    // Handle empty or missing checkpoints data
+    if (!this.checkpointsData || !this.checkpointsData.checkpoints) {
+      console.warn("No checkpoints data available");
       return grouped;
     }
 
-    this.principlesData.principles.forEach((principle) => {
+    this.checkpointsData.checkpoints.forEach((checkpoint) => {
       const section = {
-        id: principle.id,
-        title: principle.title,
+        id: checkpoint.id,
+        title: checkpoint.title,
         tasks: [],
       };
 
-      // Add default tasks from principle rows
-      principle.rows.forEach((row) => {
+      // Add default tasks from checkpoint rows
+      checkpoint.rows.forEach((row) => {
         const taskId = row.id; // e.g., "1.1", "1.2"
 
         section.tasks.push({
@@ -548,8 +548,8 @@ export class UserReportManager {
         });
       });
 
-      // Add manual tasks from saved principleRows state
-      const manualRows = savedState.principleRows?.[principle.id] || [];
+      // Add manual tasks from saved checkpointRows state
+      const manualRows = savedState.checkpointRows?.[checkpoint.id] || [];
       manualRows.forEach((manualRow) => {
         section.tasks.push({
           id: manualRow.id,
@@ -589,13 +589,13 @@ export class UserReportManager {
   }
 
   /**
-   * Create principle section (matches list.php structure exactly)
+   * Create checkpoint section (matches list.php structure exactly)
    */
-  createPrincipleSection(section) {
+  createCheckpointSection(section) {
     // Create section element
     const sectionEl = document.createElement("section");
     sectionEl.id = section.id;
-    sectionEl.className = `principle-section ${section.id}`;
+    sectionEl.className = `checkpoint-section ${section.id}`;
 
     // Create h2 caption (without number icon for report view)
     const h2 = document.createElement("h2");
@@ -612,13 +612,13 @@ export class UserReportManager {
 
     // Create table wrapper
     const tableWrapper = document.createElement("div");
-    tableWrapper.className = "principles-table-wrapper";
+    tableWrapper.className = "checkpoints-table-wrapper";
 
     // Create table
     const table = document.createElement("table");
-    table.className = "principles-table";
+    table.className = "checkpoints-table";
     table.setAttribute("role", "table");
-    table.setAttribute("aria-label", "Principles Checklist");
+    table.setAttribute("aria-label", "Checkpoints Checklist");
     table.setAttribute("aria-labelledby", `${section.id}-caption`);
 
     // Create thead
@@ -654,14 +654,14 @@ export class UserReportManager {
   /**
    * Create task row with 5 columns: Checkpoint | Tasks | Notes | Status | Updated
    */
-  createTaskRow(task, principleId) {
+  createTaskRow(task, checkpointId) {
     const row = document.createElement("tr");
     row.setAttribute("role", "row");
     row.setAttribute("data-id", task.id);
-    row.className = "principle-row";
+    row.className = "checkpoint-row";
 
-    // Extract checkpoint number from principle ID (checkpoint-1 → 1 or checklist-1 → 1)
-    const match = principleId.match(/(?:checkpoint|checklist)-(\d+)/);
+    // Extract checkpoint number from checkpoint ID (checkpoint-1 → 1 or checklist-1 → 1)
+    const match = checkpointId.match(/(?:checkpoint|checklist)-(\d+)/);
     const checkpointNum = match ? match[1] : "0";
 
     // 1. Checkpoint cell with CSS-generated number circle (matches side panel style)

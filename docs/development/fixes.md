@@ -69,10 +69,10 @@ Expected Paths:
 ```
 
 #### Root Cause Analysis
-- `js/buildPrinciples.js` hardcoded `/images/...` for add icons, bypassing `getImagePath()`
+- `js/buildCheckpoints.js` hardcoded `/images/...` for add icons, bypassing `getImagePath()`
 
 #### Fix Implemented
-- Updated `js/buildPrinciples.js` to use `window.getImagePath(iconName)` for add-row icons
+- Updated `js/buildCheckpoints.js` to use `window.getImagePath(iconName)` for add-row icons
 - Verified other image references already use `getImagePath()`
 
 ### 🔄 MEDIUM: Restore API Similar Issues

@@ -3,14 +3,14 @@
  *
  * This script is responsible for:
  * 1. Initializing the application
- * 2. Setting up event listeners for principle selection buttons
- * 3. Handling principle switching
+ * 2. Setting up event listeners for checkpoint selection buttons
+ * 3. Handling checkpoint switching
  * 4. Coordinating functionality from other modules
  */
 
-import { buildContent } from "./buildPrinciples.js";
+import { buildContent } from "./buildCheckpoints.js";
 // buildReportsSection import removed - reports now handled on separate page
-import { initializePrincipleAddRowButtons } from "./addRow.js";
+import { initializeCheckpointAddRowButtons } from "./addRow.js";
 
 // Legacy functions completely removed - StateEvents.js handles all interactions
 
@@ -168,7 +168,7 @@ async function initializeApp() {
 
 // Initialize Add Row buttons after content is built
 document.addEventListener("contentBuilt", () => {
-  initializePrincipleAddRowButtons();
+  initializeCheckpointAddRowButtons();
 });
 
 // Export initializeApp for potential use elsewhere (e.g., testing)

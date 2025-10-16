@@ -1,10 +1,10 @@
 /**
- * buildPrinciples.js
+ * buildCheckpoints.js
  *
  * This script is responsible for:
  * 1. Fetching the JSON data
- * 2. Generating principle sections dynamically
- * 3. Building tables for each principle
+ * 2. Generating checkpoint sections dynamically
+ * 3. Building tables for each checkpoint
  */
 
 // buildReportsSection import removed - reports now handled on separate page
@@ -33,23 +33,23 @@ function getState() {
   return state ? JSON.parse(state) : null;
 }
 
-// Function to create a principle section
-function createPrincipleSection(principleId, data) {
+// Function to create a checkpoint section
+function createCheckpointSection(checkpointId, data) {
   const section = document.createElement("section");
-  section.id = principleId;
-  section.className = `principle-section ${principleId}`;
+  section.id = checkpointId;
+  section.className = `checkpoint-section ${checkpointId}`;
 
   // Create simplified heading with number icon
   const heading = document.createElement("h2");
-  heading.id = `${principleId}-caption`;
+  heading.id = `${checkpointId}-caption`;
   heading.className = "checklist-caption";
 
   // Extract checkpoint/checklist number dynamically (supports checkpoint-N or checklist-N)
-  const match = principleId.match(/(?:checkpoint|checklist)-(\d+)/);
+  const match = checkpointId.match(/(?:checkpoint|checklist)-(\d+)/);
   const tableNumber = match ? match[1] : null;
 
   if (!tableNumber) {
-    console.warn(`Unknown principle ID format: ${principleId}`);
+    console.warn(`Unknown checkpoint ID format: ${checkpointId}`);
   }
 
   // Only set aria-label if we have a valid table number
@@ -82,13 +82,13 @@ function createPrincipleSection(principleId, data) {
 }
 
 // Function to build table
-function buildTable(rows, principleId) {
+function buildTable(rows, checkpointId) {
   const table = document.createElement("table");
-  table.className = "principles-table";
+  table.className = "checkpoints-table";
   table.setAttribute("role", "table");
-  table.setAttribute("aria-label", "Principles Checklist");
+  table.setAttribute("aria-label", "Checkpoints Checklist");
   // Associate table with its heading as a pseudo-caption
-  table.setAttribute("aria-labelledby", `${principleId}-caption`);
+  table.setAttribute("aria-labelledby", `${checkpointId}-caption`);
 
   // Create table header
   const thead = document.createElement("thead");
@@ -126,12 +126,12 @@ function buildTable(rows, principleId) {
   const tbody = document.createElement("tbody");
   tbody.setAttribute("role", "rowgroup");
 
-  // Add rows for each principle
+  // Add rows for each checkpoint
   rows.forEach((row) => {
     const tr = document.createElement("tr");
     tr.setAttribute("role", "row");
     tr.setAttribute("data-id", row.id);
-    tr.className = "principle-row";
+    tr.className = "checkpoint-row";
     tbody.appendChild(tr);
 
     // Add cells in correct order
@@ -236,26 +236,26 @@ function buildTable(rows, principleId) {
 
   // Create Add Row button container
   const buttonContainer = document.createElement("div");
-  buttonContainer.className = "principles-buttons";
+  buttonContainer.className = "checkpoints-buttons";
 
   // Create Add Row button
   const addButton = document.createElement("button");
-  addButton.className = "principles-button";
-  addButton.id = `addRow-${principleId}`;
-  addButton.setAttribute("data-principle", principleId);
-  addButton.setAttribute("aria-label", `Add new task to ${principleId}`);
+  addButton.className = "checkpoints-button";
+  addButton.id = `addRow-${checkpointId}`;
+  addButton.setAttribute("data-checkpoint", checkpointId);
+  addButton.setAttribute("aria-label", `Add new task to ${checkpointId}`);
 
   // CSS-generated plus icon (no SVG needed)
 
   // Add button to container
   buttonContainer.appendChild(addButton);
 
-  // Event listener will be attached by initializePrincipleAddRowButtons() in addRow.js
+  // Event listener will be attached by initializeCheckpointAddRowButtons() in addRow.js
   // This ensures proper initialization timing and prevents duplicate event listeners
 
   // Create wrapper div to contain both table and button
   const wrapper = document.createElement("div");
-  wrapper.className = "principles-table-wrapper";
+  wrapper.className = "checkpoints-table-wrapper";
   wrapper.appendChild(table);
   wrapper.appendChild(buttonContainer);
 
@@ -263,18 +263,18 @@ function buildTable(rows, principleId) {
 }
 
 /**
- * Handles adding a new row to a principles table
- * @param {string} principleId - The ID of the principle (e.g., 'checklist-1')
+ * Handles adding a new row to a checkpoints table
+ * @param {string} checkpointId - The ID of the checkpoint (e.g., 'checklist-1')
  */
-function handleAddPrincipleRow(principleId) {
+function handleAddCheckpointRow(checkpointId) {
   if (!window.unifiedStateManager) {
-    console.error("StateManager not available - cannot add principle row");
+    console.error("StateManager not available - cannot add checkpoint row");
     return;
   }
 
   // Use StateManager method for consistent data creation
-  const newRowData = window.unifiedStateManager.createPrincipleRowData({
-    principleId: principleId,
+  const newRowData = window.unifiedStateManager.createCheckpointRowData({
+    checkpointId: checkpointId,
     task: "",
     notes: "",
     status: "ready",
@@ -282,7 +282,7 @@ function handleAddPrincipleRow(principleId) {
   });
 
   // Add using StateManager method
-  window.unifiedStateManager.addPrincipleRow(newRowData, true);
+  window.unifiedStateManager.addCheckpointRow(newRowData, true);
 
   // Schedule buffer update (row changes content height)
   if (typeof window.scheduleBufferUpdate === "function") {
@@ -292,7 +292,7 @@ function handleAddPrincipleRow(principleId) {
   // Set focus on the task textarea for manual rows - reduced timeout to prevent race conditions
   setTimeout(() => {
     const currentTable = document.querySelector(
-      `#${principleId} .principles-table tbody`
+      `#${checkpointId} .checkpoints-table tbody`
     );
     if (currentTable) {
       const newRow = currentTable.querySelector(
@@ -309,7 +309,7 @@ function handleAddPrincipleRow(principleId) {
 }
 
 // Make function globally available
-window.handleAddPrincipleRow = handleAddPrincipleRow;
+window.handleAddCheckpointRow = handleAddCheckpointRow;
 
 // createReportSection function removed - reports now handled on separate page
 
@@ -340,7 +340,7 @@ async function buildContent(data) {
     checkpointKeys.forEach((checkpointKey) => {
       const checkpointData = data[checkpointKey];
 
-      const section = createPrincipleSection(checkpointKey, checkpointData);
+      const section = createCheckpointSection(checkpointKey, checkpointData);
       if (section) {
         const tableWrapper = buildTable(checkpointData.table, checkpointKey);
         section
@@ -351,7 +351,7 @@ async function buildContent(data) {
     });
 
     // Add Report section (consistent across all checklist types)
-    // TEMPORARILY COMMENTED OUT - Report functionality is interfering with principle rows
+    // TEMPORARILY COMMENTED OUT - Report functionality is interfering with checkpoint rows
     // const reportSection = createReportSection();
     // main.appendChild(reportSection);
 

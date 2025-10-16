@@ -65,7 +65,7 @@ The `demo.json` file was using an incorrect data structure that didn't match wha
 
 ## 🧩 Why This Structure?
 
-The application's `buildContent()` function in `js/buildPrinciples.js` expects:
+The application's `buildContent()` function in `js/buildCheckpoints.js` expects:
 
 ```javascript
 // Lines 328-337: Filter checkpoint keys
@@ -104,7 +104,7 @@ All checklist JSON files must follow this structure:
   "version": "0.8",
   "type": "TypeName",
   "checkpoint-1": {
-    "caption": "First principle description",
+    "caption": "First checkpoint description",
     "table": [
       {
         "id": "1.1",
@@ -119,7 +119,7 @@ All checklist JSON files must follow this structure:
     ]
   },
   "checkpoint-2": {
-    "caption": "Second principle description",
+    "caption": "Second checkpoint description",
     "table": [...]
   }
 }
@@ -163,7 +163,7 @@ The fixed `demo.json` now includes:
 
 ### Checkpoints 3-10: Accessibility Best Practices
 - Understanding accessibility concepts
-- Visual design principles
+- Visual design checkpoints
 - Content accessibility
 - Navigation and interaction
 - Forms and input
@@ -252,7 +252,7 @@ To verify a new checklist type works:
 ## 📚 Related Files
 
 **JavaScript:**
-- `js/buildPrinciples.js` - Builds checkpoint sections from JSON
+- `js/buildCheckpoints.js` - Builds checkpoint sections from JSON
 - `js/main.js` - Loads JSON and initializes app
 - `js/side-panel.js` - Side navigation panel
 - `js/type-manager.js` - Type configuration management

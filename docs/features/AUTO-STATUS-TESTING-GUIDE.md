@@ -27,7 +27,7 @@ http://localhost:8000/list?type=demo
 ### Technical Implementation
 - **Hybrid flag storage system:**
   - Template rows (from JSON): Uses DOM `data-status-flag` attribute
-  - Manual rows (user-added): Uses `window.principleTableState` object
+  - Manual rows (user-added): Uses `window.checkpointTableState` object
 - **Backward compatible** with old saved sessions
 - **Works on ALL rows** - both template and manually added
 
