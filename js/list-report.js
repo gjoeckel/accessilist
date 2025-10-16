@@ -571,7 +571,14 @@ export class UserReportManager {
    */
   getTaskStatus(taskId, savedState) {
     const statusKey = `status-${taskId}`;
-    return savedState.statusButtons?.[statusKey] || "ready";
+    const statusData = savedState.statusButtons?.[statusKey];
+
+    // Handle both object format {state: "active"} and string format "active"
+    if (typeof statusData === "object" && statusData !== null) {
+      return statusData.state || "ready";
+    }
+
+    return statusData || "ready";
   }
 
   /**
