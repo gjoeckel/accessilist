@@ -22,6 +22,7 @@
     "local-apache-start": "./scripts/local-apache-start.sh",
     "predeploy": "./scripts/deployment/pre-deploy-check.sh",
     "deploy": "./scripts/deployment/deploy-autonomous.sh",
+    "deploy:migrate-sessions": "./scripts/deployment/migrate-sessions-directory.sh",
     "postdeploy": "./scripts/deployment/post-deploy-verify.sh",
     "deploy:full": "npm run predeploy && npm run deploy && npm run postdeploy",
     "deploy:check": "./scripts/deployment/pre-deploy-check.sh",
