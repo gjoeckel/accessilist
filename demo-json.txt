@@ -1,0 +1,289 @@
+# Demo Checklist Content Planning
+
+## 1. Why AccessiList?
+
+task1.1
+Use AccessiList with a mouse, keyboard, and/or assistive techonolgy.
+
+info1.1
+Built with accessibility best practices from the ground up. All features available to keyboard-only users, and the assistive technologies that use standard keyboard commands.
+
+---
+
+task1.2
+Save your list and return anytime with your 3-digit key. No account needed.
+
+info1.2
+Each list you create has a 3-digit key with numbers and/or letters. Your key is unique and is found at the end of the web address for your list. For example: https://webaim.org/training/online/accessilist/?=AAA.
+
+---
+
+task1.3
+Tasks are organized into 'Checkpoints', which group tasks by common objective, and you can add custom tasks.
+
+info1.3
+Add your own tasks using the add row ([add row default CSS]) button found after the last task row in every checkpoint. Add as many as you need.
+
+---
+
+task1.4
+Track progress with three indicators: Ready ([ready-1.svg]) → Active ([active-1.svg]) → Done ([done-1.svg]).
+
+info1.4
+Click buttons in the Status column to update your progress.to move to the next level. Check your progress at a glance with color-coded, labeled icons.
+
+---
+
+task1.5
+View a report showing all completed tasks across all checkpoints.
+
+info1.5
+Click the Report ([Report default CSS]) button in the header to view your progress summary and completed items.
+
+---
+
+================================================================================
+
+## 2. Tasks
+
+task2.1
+Tasks are designed by accessibility experts and organized into checkpoints by common objective.
+
+info2.1
+Each checklist (Word, PowerPoint, Excel, etc.) contains tasks specific to that tool. Tasks are grouped into checkpoints to help you tackle related items together.
+
+---
+
+task2.2
+Try clicking the Info ([])button for any task in Checkpoint 1 above.
+
+info2.2
+In this tutorial, additional information is provided about each statement or instruction. In the actual checklists, clicking the Info button will provide you with additional resources related to the task.
+
+---
+
+task2.3
+You can add your own tasks to each checkpoint table. Add a custom task to this table by clicking the Add Row ([add row selected CSS]) button below.
+
+info2.3
+Each checkpoint will have an Add Row ([add row selected CSS]) button located right below the table. After adding a row, add your Task, and Notes (optional).
+---
+
+================================================================================
+
+## 3. Notes
+
+task3.1
+Use the Notes column to record details, reminders, and other information for each task.
+
+info3.1
+Notes are for your personal use and are saved with your list. Some ideas for using Notes are: record new things that you learned from working on the task; document collaborators and their assignments; document questions you have about the task to research.
+---
+
+task3.2
+Click in the Note's field and start typing something.
+
+info3.2
+You'll see your text appear as you type. All notes are automatically saved when you leave the field.
+
+---
+
+task3.3
+Did you notice that adding a note automatically changes the Status to "Active ([active-1.svg])"?
+
+info3.3
+AccessiList assumes that if you're taking notes on a task, you're actively working on it. The status automatically updates from Ready to Active when you add notes. See "Status" checkpoint below for more information on tracking your progress.
+
+---
+
+task3.4
+Notes fields expand as you type, and support multiple lines of text.
+
+info3.4
+Press Enter to create a new line in your notes. The field will automatically grow to accommodate longer content. There's no character limit. If the text is beyond the visible area, a scroll bar will appear.
+
+---
+
+task3.5
+Your notes are private and only visible when you return with your unique 3-digit key.
+
+info3.5
+Only someone with your exact 3-digit key can view or edit them. No account needed, no login required.
+
+---
+
+================================================================================
+
+## 4. Status
+
+task4.1
+Track your progress with three status levels: Ready ([ready-1.svg]), Active ([active-1.svg]), and Done ([done-1.svg]).
+
+info4.1
+Each task starts as Ready ([ready-1.svg]). Click the status button to cycle through: Ready ([ready-1.svg]) → Active ([active-1.svg]) → Done ([done-1.svg]) → Ready ([ready-1.svg]). The icons and colors change to show your progress at a glance.
+
+---
+
+task4.2
+Click the Status button for this task to see it change from Ready to Active to Done.
+
+info4.2
+The status is automatically saved each time you click the button to change it.
+
+---
+
+task4.3
+Adding notes to a task automatically updates its status to Active ([active-1.svg]).
+
+info4.3
+If a task is marked Ready ([ready-1.svg]) and you add a note, the status automatically changes to Active ([active-1.svg]). This helps you track which tasks you're currently working on.
+
+---
+
+task4.5
+Use the Done ([done-1.svg]) status to mark tasks as complete, and show the Reset ([reset.svg]) button.
+
+info4.5
+Tasks marked Done ([done-1.svg]) are highlighted in your Report ([Report default CSS]) page. This gives you a quick summary of all completed work across all checkpoints.
+
+---
+
+================================================================================
+
+## 5. Reset
+
+task5.1
+Use the Reset ([reset.svg]) button in the header to clear all status indicators and notes.
+
+info5.1
+The Reset button restores your checklist to its original state. All status buttons return to Ready, all notes are cleared, and any manually added rows are removed.
+
+---
+
+task5.2
+Reset is useful when starting a new document or reusing a checklist template.
+
+info5.2
+If you've completed one document and want to use the same checklist for another, click Reset to start fresh. Your 3-digit key stays the same, but all your data is cleared.
+
+---
+
+task5.3
+Before clicking Reset, make sure you've saved any information you need from the Report page.
+
+info5.3
+Reset permanently clears all your notes and status indicators. If you need to keep a record of completed tasks, visit the Report page first and copy or screenshot your progress.
+
+---
+
+task5.4
+After clicking Reset, you'll see a confirmation dialog to prevent accidental data loss.
+
+info5.4
+AccessiList will ask you to confirm before clearing your data. This safety check helps prevent accidentally losing hours of work with one misclick.
+
+---
+
+task5.5
+Reset does not create a new 3-digit key—it keeps your current session but clears the data.
+
+info5.5
+Your URL and 3-digit key remain the same after a reset. Only the status indicators, notes, and manual rows are cleared. Your session itself persists.
+
+---
+
+================================================================================
+
+## 6. Side Panel
+
+task6.1
+Use the side panel to quickly navigate between checkpoints without scrolling.
+
+info6.1
+The side panel on the left shows all checkpoint numbers (1-7 in this demo). Click any number to instantly jump to that checkpoint. This is especially helpful in longer checklists.
+
+---
+
+task6.2
+Click checkpoint numbers in the side panel to jump to different sections—try it now!
+
+info6.2
+Click on "3" in the side panel to jump to the Notes checkpoint, or "4" to jump to Status. Notice how the page scrolls automatically to show that checkpoint.
+
+---
+
+task6.3
+The side panel is always visible as you scroll, making navigation easy at any point.
+
+info6.3
+As you scroll down the page, the side panel stays in view. This "sticky" positioning means you can jump to any checkpoint without scrolling back to the top.
+
+---
+
+task6.4
+Checkpoint numbers in the side panel are also buttons—they're keyboard accessible.
+
+info6.4
+You can use Tab to navigate to side panel buttons and Enter to activate them. This makes navigation accessible to keyboard-only users and assistive technology.
+
+---
+
+task6.5
+The side panel uses numbered buttons ([number 1 default CSS], [number 2 default CSS], etc.) for quick visual scanning.
+
+info6.5
+Each checkpoint is represented by a large, color-coded number button. The visual design makes it easy to scan and find the checkpoint you need.
+
+---
+
+================================================================================
+
+## 7. Report
+
+task7.1
+Click the Report ([Report default CSS]) button in the header to view a summary of all completed tasks.
+
+info7.1
+The Report page shows all tasks marked as Done across all checkpoints. It's a quick way to see what you've accomplished and what remains.
+
+---
+
+task7.2
+The Report page displays task IDs, task text, and your notes for each completed item.
+
+info7.2
+Each completed task appears in a table showing its checkpoint number, task ID (like 3.2), the full task text, and any notes you added. This gives you a complete record of your work.
+
+---
+
+task7.3
+Use the Report page to review your progress before finalizing your document.
+
+info7.3
+Before declaring a document "accessibility ready," check your Report to ensure all required tasks are marked Done. This serves as your final verification checklist.
+
+---
+
+task7.4
+The Report page updates in real-time as you mark tasks as Done.
+
+info7.4
+Try it: Go back to this checklist, mark a few tasks as Done, then return to the Report. You'll see those tasks immediately appear in your report.
+
+---
+
+task7.5
+You can print or screenshot the Report page to keep a permanent record of your work.
+
+info7.5
+The Report page is designed to be print-friendly. Use your browser's print function (Ctrl+P or Cmd+P) to save a PDF of your completed tasks for documentation or compliance records.
+
+---
+
+================================================================================
+
+## NOTES:
+- Use inline images with: [image-name.svg]
+- Use CSS icons with: [text CSS], [text default CSS], [text selected CSS]
+- Use \n for line breaks in tasks
+- Keep info text concise and helpful

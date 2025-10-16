@@ -37,8 +37,18 @@
     "table": [
       {
         "id": "2.1",
-        "task": "coming soon",
-        "info": "placeholder"
+        "task": "Tasks are designed by accessibility experts and organized into checkpoints by common objective.",
+        "info": "Each checklist (Word, PowerPoint, Excel, etc.) contains tasks specific to that tool. Tasks are grouped into checkpoints to help you tackle related items together."
+      },
+      {
+        "id": "2.2",
+        "task": "Try clicking the Info ([info-.svg]) button for any task in Checkpoint 1 above.",
+        "info": "In this tutorial, additional information is provided about each statement or instruction. In the actual checklists, clicking the Info button will provide you with additional resources related to the task."
+      },
+      {
+        "id": "2.3",
+        "task": "You can add your own tasks to each checkpoint table. Add a custom task to this table by clicking the Add Row ([add row selected CSS]) button below.",
+        "info": "Each checkpoint will have an Add Row ([add row selected CSS]) button located right below the table. After adding a row, add your Task, and Notes (optional)."
       }
     ]
   },
@@ -47,8 +57,28 @@
     "table": [
       {
         "id": "3.1",
-        "task": "coming soon",
-        "info": "placeholder"
+        "task": "Use the Notes column to record details, reminders, and other information for each task.",
+        "info": "Notes are for your personal use and are saved with your list. Some ideas for using Notes are: record new things that you learned from working on the task; document collaborators and their assignments; document questions you have about the task to research."
+      },
+      {
+        "id": "3.2",
+        "task": "Click in the Note's field and start typing something.",
+        "info": "You'll see your text appear as you type. All notes are automatically saved when you leave the field."
+      },
+      {
+        "id": "3.3",
+        "task": "Did you notice that adding a note automatically changes the Status to \"Active ([active-1.svg])\"?",
+        "info": "AccessiList assumes that if you're taking notes on a task, you're actively working on it. The status automatically updates from Ready to Active when you add notes. See \"Status\" checkpoint below for more information on tracking your progress."
+      },
+      {
+        "id": "3.4",
+        "task": "Notes fields expand as you type, and support multiple lines of text.",
+        "info": "Press Enter to create a new line in your notes. The field will automatically grow to accommodate longer content. There's no character limit. If the text is beyond the visible area, a scroll bar will appear."
+      },
+      {
+        "id": "3.5",
+        "task": "Your notes are private and only visible when you return with your unique 3-digit key.",
+        "info": "Only someone with your exact 3-digit key can view or edit them. No account needed, no login required."
       }
     ]
   },
@@ -57,8 +87,23 @@
     "table": [
       {
         "id": "4.1",
-        "task": "coming soon",
-        "info": "placeholder"
+        "task": "Track your progress with three status levels: Ready ([ready-1.svg]), Active ([active-1.svg]), and Done ([done-1.svg]).",
+        "info": "Each task starts as Ready ([ready-1.svg]). Click the status button to cycle through: Ready ([ready-1.svg]) → Active ([active-1.svg]) → Done ([done-1.svg]) → Ready ([ready-1.svg]). The icons and colors change to show your progress at a glance."
+      },
+      {
+        "id": "4.2",
+        "task": "Click the Ready ([ready-1.svg])Status button for this task to see it change to Active ([active-1.svg]).",
+        "info": "The status is automatically saved each time you click the button to change it."
+      },
+      {
+        "id": "4.3",
+        "task": "Adding notes to a task automatically updates its status to Active ([active-1.svg]).",
+        "info": "If a task is marked Ready ([ready-1.svg]) and you add a note, the status automatically changes to Active ([active-1.svg]). This helps you track which tasks you're currently working on."
+      },
+      {
+        "id": "4.5",
+        "task": "Use the Done ([done-1.svg]) status to mark tasks as complete, and show the Reset ([reset.svg]) button.",
+        "info": "Tasks marked Done ([done-1.svg]) are highlighted in your Report ([Report default CSS]) page. This gives you a quick summary of all completed work across all checkpoints."
       }
     ]
   },

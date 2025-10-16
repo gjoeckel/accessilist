@@ -1,0 +1,100 @@
+/* Demo Inline Icons - Matches actual UI button styles */
+
+/* Base inline icon styling */
+.inline-css-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  vertical-align: middle;
+  margin: 0 4px;
+  font-weight: bold;
+  transition: none;
+}
+
+/* Checkpoint number icons (circular) - matches .checkpoint-btn */
+.inline-css-icon.checkpoint-number {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+}
+
+.inline-css-icon.checkpoint-number.default {
+  background-color: transparent;
+  color: #333333;
+  border: 2px solid #333333;
+}
+
+.inline-css-icon.checkpoint-number.selected {
+  background-color: #ac6628;
+  color: white;
+  border: 2px solid #ac6628;
+}
+
+/* Add Row icon (circular plus) - matches .checkpoints-button */
+.inline-css-icon.add-row {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 1rem;
+  line-height: 1;
+}
+
+.inline-css-icon.add-row.default {
+  background-color: transparent;
+  color: #333333;
+  border: 2px solid #333333;
+}
+
+.inline-css-icon.add-row.selected {
+  background-color: #ac6628;
+  color: white;
+  border: 2px solid #ac6628;
+}
+
+/* Generic text icons (pill-shaped) - simple outline style */
+.inline-css-icon.text-label {
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.inline-css-icon.text-label.default {
+  background-color: transparent;
+  color: #333333;
+  border: 2px solid #333333;
+}
+
+.inline-css-icon.text-label.selected {
+  background-color: #ac6628;
+  color: white;
+  border: 2px solid #ac6628;
+}
+
+/* Report button icon - matches header button styling */
+.inline-css-icon.report-button {
+  padding: 0.5rem 1.5rem;
+  border-radius: 4px;
+  font-size: 0.75rem;
+  font-weight: bold;
+}
+
+.inline-css-icon.report-button.default {
+  background-color: #336699;
+  color: white;
+  border: none;
+}
+
+.inline-css-icon.report-button.selected {
+  background-color: #285588;
+  color: white;
+  border: none;
+}
+
+/* Inline demo images (SVG icons) */
+.inline-demo-image {
+  height: 2.5rem;
+  vertical-align: middle;
+  margin: 0 4px;
+}
