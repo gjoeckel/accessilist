@@ -323,14 +323,14 @@ The original analysis has been validated through comprehensive MCP tools review.
 #### **CRITICAL GAP #10: Minimal URL System Type Resolution Complexity**
 - **Location**: `index.php` lines 8-22
 - **Issue**: Complex minimal URL handling system (`?=EDF` format) creates additional type resolution pathway
-- **Evidence**: 
+- **Evidence**:
   ```php
   if (preg_match('/\?=([A-Z0-9]{3})$/', $requestUri, $matches)) {
       $sessionKey = $matches[1];
       $checklistType = getChecklistTypeFromSession($sessionKey, 'camtasia');
       $_GET['session'] = $sessionKey;
       $_GET['type'] = $checklistType;
-      include 'php/mychecklist.php';
+      include 'php/list.php';
   }
   ```
 - **Impact**: Bypasses normal type detection logic, creates hidden type resolution complexity
@@ -395,8 +395,8 @@ The original analysis has been validated through comprehensive MCP tools review.
   ```json
   // File 1MF.json
   {"sessionKey":"1MF","type":"Word","typeSlug":"word",...}
-  
-  // File E9V.json  
+
+  // File E9V.json
   {"sessionKey":"E9V","type":"Word","typeSlug":"camtasia",...}
   ```
 - **Impact**: Same session type ("Word") but different typeSlug values ("word" vs "camtasia")
@@ -412,9 +412,9 @@ The original analysis has been validated through comprehensive MCP tools review.
 - **Risk**: **HIGH** - Display inconsistencies for missing types
 
 #### **CRITICAL GAP #2: Inconsistent Type Detection Logic**
-- **Locations**: 
+- **Locations**:
   - `php/includes/session-utils.php` (PHP logic)
-  - `js/main.js` (JavaScript logic) 
+  - `js/main.js` (JavaScript logic)
   - `js/StateManager.js` (State management logic)
 - **Issue**: Three different fallback chains with different priorities
 - **Impact**: Server and client can have different type values
@@ -461,7 +461,7 @@ The original analysis has been validated through comprehensive MCP tools review.
 - **Risk**: **MEDIUM** - Potential confusion in type handling
 
 #### **CRITICAL GAP #8: Multiple Type Sources Without Single Source of Truth**
-- **Locations**: 
+- **Locations**:
   - `window.checklistTypeFromPHP` (PHP-injected)
   - URL parameters (`?type=`)
   - Body attributes (`data-checklist-type`)
@@ -490,7 +490,7 @@ function formatTypeName($type) {
     if (empty($type)) {
         return 'Unknown';
     }
-    
+
     // Handle special cases for display formatting
     switch ($type) {
         case 'docs':
@@ -526,21 +526,21 @@ function formatTypeName($type) {
       "category": "Microsoft"
     },
     "powerpoint": {
-      "displayName": "PowerPoint", 
+      "displayName": "PowerPoint",
       "jsonFile": "powerpoint.json",
       "buttonId": "powerpoint",
       "category": "Microsoft"
     },
     "excel": {
       "displayName": "Excel",
-      "jsonFile": "excel.json", 
+      "jsonFile": "excel.json",
       "buttonId": "excel",
       "category": "Microsoft"
     },
     "docs": {
       "displayName": "Docs",
       "jsonFile": "docs.json",
-      "buttonId": "docs", 
+      "buttonId": "docs",
       "category": "Google"
     },
     "slides": {
@@ -556,7 +556,7 @@ function formatTypeName($type) {
       "category": "Other"
     },
     "dojo": {
-      "displayName": "Dojo", 
+      "displayName": "Dojo",
       "jsonFile": "dojo.json",
       "buttonId": "dojo",
       "category": "Other"
@@ -565,7 +565,7 @@ function formatTypeName($type) {
   "defaultType": "camtasia",
   "categories": {
     "Microsoft": ["word", "powerpoint", "excel"],
-    "Google": ["docs", "slides"], 
+    "Google": ["docs", "slides"],
     "Other": ["camtasia", "dojo"]
   }
 }
@@ -580,14 +580,14 @@ function formatTypeName($type) {
 <?php
 /**
  * Type Manager - Centralized type handling for AccessiList
- * 
+ *
  * Single responsibility: Manage all type-related operations
  * Used by: All PHP components that need type formatting, validation, or mapping
  */
 
 class TypeManager {
     private static $typeConfig = null;
-    
+
     /**
      * Load type configuration from JSON file
      */
@@ -603,7 +603,7 @@ class TypeManager {
         }
         return self::$typeConfig;
     }
-    
+
     /**
      * Get all available types
      */
@@ -611,7 +611,7 @@ class TypeManager {
         $config = self::loadConfig();
         return array_keys($config['types'] ?? []);
     }
-    
+
     /**
      * Validate if a type is valid
      */
@@ -619,7 +619,7 @@ class TypeManager {
         $validTypes = self::getAvailableTypes();
         return in_array($type, $validTypes) ? $type : 'camtasia';
     }
-    
+
     /**
      * Format type name for display
      */
@@ -627,60 +627,60 @@ class TypeManager {
         if (empty($typeSlug)) {
             return 'Unknown';
         }
-        
+
         $config = self::loadConfig();
         $typeData = $config['types'][$typeSlug] ?? null;
-        
+
         if ($typeData && isset($typeData['displayName'])) {
             return $typeData['displayName'];
         }
-        
+
         // Fallback to ucfirst
         return ucfirst($typeSlug);
     }
-    
+
     /**
      * Get JSON file name for a type
      */
     public static function getJsonFileName($typeSlug) {
         $config = self::loadConfig();
         $typeData = $config['types'][$typeSlug] ?? null;
-        
+
         if ($typeData && isset($typeData['jsonFile'])) {
             return $typeData['jsonFile'];
         }
-        
+
         return $typeSlug . '.json';
     }
-    
+
     /**
      * Get button ID for a type
      */
     public static function getButtonId($typeSlug) {
         $config = self::loadConfig();
         $typeData = $config['types'][$typeSlug] ?? null;
-        
+
         if ($typeData && isset($typeData['buttonId'])) {
             return $typeData['buttonId'];
         }
-        
+
         return $typeSlug;
     }
-    
+
     /**
      * Get category for a type
      */
     public static function getCategory($typeSlug) {
         $config = self::loadConfig();
         $typeData = $config['types'][$typeSlug] ?? null;
-        
+
         if ($typeData && isset($typeData['category'])) {
             return $typeData['category'];
         }
-        
+
         return 'Other';
     }
-    
+
     /**
      * Get types by category
      */
@@ -688,7 +688,7 @@ class TypeManager {
         $config = self::loadConfig();
         return $config['categories'][$category] ?? [];
     }
-    
+
     /**
      * Get default type
      */
@@ -708,14 +708,14 @@ class TypeManager {
 ```javascript
 /**
  * Type Manager - Centralized type handling for AccessiList (JavaScript)
- * 
+ *
  * Single responsibility: Manage all type-related operations in JavaScript
  * Used by: All JS components that need type formatting, validation, or mapping
  */
 
 class TypeManager {
     static typeConfig = null;
-    
+
     /**
      * Load type configuration from JSON file
      */
@@ -737,7 +737,7 @@ class TypeManager {
         }
         return this.typeConfig;
     }
-    
+
     /**
      * Fallback configuration if JSON file is not available
      */
@@ -760,7 +760,7 @@ class TypeManager {
             }
         };
     }
-    
+
     /**
      * Get all available types
      */
@@ -768,7 +768,7 @@ class TypeManager {
         const config = await this.loadConfig();
         return Object.keys(config.types || {});
     }
-    
+
     /**
      * Validate if a type is valid
      */
@@ -776,11 +776,11 @@ class TypeManager {
         if (!type || typeof type !== 'string') {
             return this.getDefaultType();
         }
-        
+
         const validTypes = await this.getAvailableTypes();
         return validTypes.includes(type) ? type : this.getDefaultType();
     }
-    
+
     /**
      * Format type name for display
      */
@@ -788,60 +788,60 @@ class TypeManager {
         if (!typeSlug || typeof typeSlug !== 'string') {
             return 'Unknown';
         }
-        
+
         const config = await this.loadConfig();
         const typeData = config.types[typeSlug];
-        
+
         if (typeData && typeData.displayName) {
             return typeData.displayName;
         }
-        
+
         // Fallback to title case
         return typeSlug.charAt(0).toUpperCase() + typeSlug.slice(1);
     }
-    
+
     /**
      * Get JSON file name for a type
      */
     static async getJsonFileName(typeSlug) {
         const config = await this.loadConfig();
         const typeData = config.types[typeSlug];
-        
+
         if (typeData && typeData.jsonFile) {
             return typeData.jsonFile;
         }
-        
+
         return `${typeSlug}.json`;
     }
-    
+
     /**
      * Get button ID for a type
      */
     static async getButtonId(typeSlug) {
         const config = await this.loadConfig();
         const typeData = config.types[typeSlug];
-        
+
         if (typeData && typeData.buttonId) {
             return typeData.buttonId;
         }
-        
+
         return typeSlug;
     }
-    
+
     /**
      * Get category for a type
      */
     static async getCategory(typeSlug) {
         const config = await this.loadConfig();
         const typeData = config.types[typeSlug];
-        
+
         if (typeData && typeData.category) {
             return typeData.category;
         }
-        
+
         return 'Other';
     }
-    
+
     /**
      * Get types by category
      */
@@ -849,7 +849,7 @@ class TypeManager {
         const config = await this.loadConfig();
         return config.categories[category] || [];
     }
-    
+
     /**
      * Get default type
      */
@@ -857,7 +857,7 @@ class TypeManager {
         const config = await this.loadConfig();
         return config.defaultType || 'camtasia';
     }
-    
+
     /**
      * Get type from multiple sources with consistent fallback
      */
@@ -866,18 +866,18 @@ class TypeManager {
         if (window.checklistTypeFromPHP) {
             return await this.validateType(window.checklistTypeFromPHP);
         }
-        
+
         const urlParams = new URLSearchParams(window.location.search);
         const urlType = urlParams.get('type');
         if (urlType) {
             return await this.validateType(urlType);
         }
-        
+
         const bodyType = document.body.getAttribute('data-checklist-type');
         if (bodyType) {
             return await this.validateType(bodyType);
         }
-        
+
         return await this.getDefaultType();
     }
 }
@@ -895,7 +895,7 @@ window.TypeManager = TypeManager;
 <?php
 /**
  * Type Formatter Utility
- * 
+ *
  * Single responsibility: Format checklist type names for consistent display
  * Used by: instantiate.php, save.php, and other components that need type formatting
  */
@@ -904,7 +904,7 @@ require_once __DIR__ . '/type-manager.php';
 
 /**
  * Format type names for consistent display
- * 
+ *
  * @param string|null $type The raw type name
  * @return string The formatted type name
  */
@@ -1195,7 +1195,7 @@ if (isset($data['typeSlug'])) {
 echo "Starting Phase 1: Critical Fixes"
 # Execute Step 1.1-1.4 code changes above
 
-# Phase 2: Consolidation  
+# Phase 2: Consolidation
 echo "Starting Phase 2: Consolidation"
 # Execute Step 2.1-2.3 code changes above
 

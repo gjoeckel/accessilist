@@ -8,7 +8,7 @@ The dynamic scroll buffer system includes a comprehensive automated test suite t
 
 ### Quick Test (Browser Console)
 
-1. Open `mychecklist.php` in your browser
+1. Open `list.php` in your browser
 2. Open browser DevTools console (F12)
 3. Run the test suite:
 
@@ -218,7 +218,7 @@ Example Playwright test:
 
 ```javascript
 test('buffer calculations are correct', async ({ page }) => {
-  await page.goto('http://localhost/mychecklist.php');
+  await page.goto('http://localhost/list.php');
 
   const results = await page.evaluate(() => {
     return window.testBufferCalculation();
@@ -234,11 +234,11 @@ test('buffer calculations are correct', async ({ page }) => {
 
 ### Overview
 
-The report pages (`list-report.php` and `systemwide-report.php`) use the same pseudo-scroll methodology as `mychecklist.php` with adaptations for their table-based content.
+The report pages (`list-report.php` and `systemwide-report.php`) use the same pseudo-scroll methodology as `list.php` with adaptations for their table-based content.
 
-### Key Differences from mychecklist.php
+### Key Differences from list.php
 
-| Feature | mychecklist.php | Report Pages |
+| Feature | list.php | Report Pages |
 |---------|-----------------|--------------|
 | **Top Buffer** | 90px | 120px |
 | **Purpose** | Header offset | Positions h2 below sticky header/filters |
@@ -328,4 +328,3 @@ Look for these indicators on report pages:
 - [Scroll Buffer Architecture](../architecture/scroll-system.md)
 - [Testing Infrastructure](TESTING-INFRASTRUCTURE.md)
 - [Changelog Entry: Dynamic Buffer System](../../changelog.md)
-

@@ -8,6 +8,131 @@
 
 ## Entries
 
+### 2025-10-16 - Naming Convention Refactor: Status Values + URL Simplification ✅ COMPLETE
+
+**Branch:** naming-convention-updates
+**Files Modified:** 40+ files (excluding archive/)
+
+**Breaking Changes:**
+- ⚠️ **URL Change**: `/mychecklist` → `/list` (clean break, no redirect)
+- ⚠️ **Status Values**: `pending` → `ready`, `in-progress` → `active`, `completed` → `done`
+- ⚠️ Old bookmarks and saved sessions may need updating
+
+**1. Status Value Naming Refactor**
+
+**Changes:**
+- `"pending"` → `"ready"` (matches user-facing "Ready" label)
+- `"in-progress"` → `"active"` (simpler, matches "Active" label)
+- `"completed"` → `"done"` (matches user-facing "Done" label)
+
+**Files Updated:**
+- **JavaScript (9):** StateManager.js, StateEvents.js, addRow.js, buildPrinciples.js, systemwide-report.js, list-report.js, ModalActions.js, simple-modal.js, generate-demo-files.js
+- **PHP (2):** systemwide-report.php, list-report.php
+- **CSS (6):** systemwide-report.css, reports.css, list-report.css, form-elements.css, table.css, list.css
+- **Data (12+):** All JSON checklist files, saved sessions
+
+**Benefits:**
+- ✅ Simpler, single-word status values
+- ✅ Internal names match user-facing labels exactly
+- ✅ More intuitive for developers
+- ✅ Consistent naming throughout codebase
+
+**2. File Rename: mychecklist.php → list.php**
+
+**Changes:**
+- Renamed `php/mychecklist.php` → `php/list.php`
+- Updated all references in active files
+- URL changes: `/mychecklist` → `/list`
+
+**Files Updated:**
+- **PHP (2):** index.php, home.php
+- **Documentation (10+):** URL-ROUTING-MAP.md, README.md, all feature docs
+- **Test Scripts (10+):** All test files updated with new URLs
+- **Deployment (2):** deploy.sh, pre-deploy-check.sh
+
+**Benefits:**
+- ✅ Shorter, clearer URL (`/list` vs `/mychecklist`)
+- ✅ More accurate (it's a list of tasks, not "my" checklist)
+- ✅ Consistent with other page names (list-report, systemwide-report)
+- ✅ Cleaner routing structure
+
+**Migration Notes:**
+- Old URL `/mychecklist?type=word` will **NOT** work (returns 302 redirect to home)
+- New URL `/list?type=word` works perfectly
+- Update any bookmarks or documentation references
+- No backward compatibility redirects (clean break approach)
+
+**Testing:**
+- ✅ New URL tested: `http://localhost:8000/list?type=demo` → HTTP 200
+- ✅ Old URL verified broken: `http://localhost:8000/mychecklist?type=demo` → HTTP 302
+- ✅ Zero linter errors
+- ✅ All test scripts updated
+
+**Combined Impact:**
+- **Files modified:** 76 total
+- **Lines changed:** 2,184+ insertions, 1,764+ deletions
+- **Status values updated:** 246+ instances across codebase
+- **URL references updated:** 40+ active files
+
+---
+
+### 2025-10-16 - Feature: Automatic Notes-Status Management + Demo Checklist Fix ✅ COMPLETE
+
+**Branch:** demo
+**Files Modified:** 6
+- js/StateManager.js - Added statusFlag system, flag management methods, DOM attribute support
+- js/StateEvents.js - Implemented auto-status change logic with flag awareness
+- js/buildPrinciples.js - Initialize data-status-flag attribute for template rows
+- js/addRow.js - Initialize data-status-flag attribute for manual rows
+- json/demo.json - Fixed structure to match expected format
+- docs/features/note-status-logic.md - Complete feature specification
+- docs/features/note-status-logic-IMPLEMENTATION-PLAN.md - Implementation guide
+- docs/features/DEMO-FEATURE.md - Demo checklist structure documentation
+- changelog.md
+
+**Feature: Automatic Status Management**
+- **Auto-change**: Status automatically changes from Ready to Active when notes are added
+- **Auto-revert**: Status reverts from Active to Ready when notes are cleared (if auto-changed)
+- **Manual override**: Clicking status button disables automatic behavior
+- **Flag system**: Three states track status change origin (text-manual, active-auto, active-manual)
+- **Notes locking**: Notes field becomes read-only when status is Done
+- **Reset button**: Only visible when Done, clears notes and resets flags
+- **Persistence**: Flags are saved and restored with session state
+- **Smart behavior**: Respects user intent - manual changes take precedence
+
+**Implementation Details:**
+- New `statusFlag` property added to task state objects
+- Flag management methods: `getStatusFlag()`, `setStatusFlag()`, `resetStatusFlag()`
+- Hybrid flag storage: DOM data attributes for template rows, state objects for manual rows
+- Auto-status logic in textarea input handler with flag awareness
+- Manual status button clicks set `active-manual` flag
+- Cycling through Ready resets flags to `text-manual` (default)
+- Reset button resets both notes and flags
+- Full backward compatibility with existing saved sessions
+- State collection/restoration handles both old (string) and new (object) formats
+
+**Documentation:**
+- Complete specification: docs/features/note-status-logic.md
+- Implementation plan: docs/features/note-status-logic-IMPLEMENTATION-PLAN.md
+- 8 test cases defined for validation
+
+**Benefits:**
+- Reduced cognitive load for users
+- More accurate progress tracking
+- Intuitive and predictable behavior
+- Works seamlessly with both template rows (from JSON) and user-added rows
+- Preserves user intent and manual overrides
+
+**Fix: Demo Checklist Structure**
+- Fixed `json/demo.json` structure from array-based to object-key based format
+- Changed from `"checkpoints": [...]` to `"checkpoint-1": {...}` structure
+- Added `"caption"` and `"table"` properties to match expected format
+- Updated with meaningful tutorial content (10 checkpoints covering accessibility best practices)
+- Created comprehensive documentation: docs/features/DEMO-FEATURE.md
+- Demo checklist now displays correctly in the application
+
+---
+
 ### 2025-10-15 15:52:50 UTC - Local Commit: 11 files on main
 
 **Branch:** main
@@ -127,7 +252,7 @@
 - Established AI-autonomous production mirror testing workflow (zero sudo requirements)
 - Verified perfect production parity with Apache 2.4 + PHP 8.1 + mod_rewrite
 
-**Work Completed:**
+**Work Done:**
 
 1. **Docker Production Mirror Setup (5 files)**
    - Created `docker-compose.yml` with PHP 8.1-apache service on port 8080
@@ -204,7 +329,7 @@
 - Removed outdated/irrelevant documentation and Docker infrastructure
 - Improved project structure and organization
 
-**Work Completed:**
+**Work Done:**
 
 1. **AI Workflow Integration (43 files)**
    - Added AI changelog automation system (session-start, session-end, session-update, session-local scripts)
@@ -224,7 +349,7 @@
 
 3. **Root Directory Reorganization (66 files moved/deleted)**
    - Created organized directory structure:
-     * `archive/historical-reports/` - 17 completed reports
+     * `archive/historical-reports/` - 17 done reports
      * `archive/planning-docs/` - 7 planning/implementation docs
      * `archive/setup-guides/` - 7 setup guides
      * `archive/deployment-legacy/` - 1 legacy deployment doc
@@ -255,7 +380,7 @@
 ./ai-clean
 # Reports:
 # - 23 files to keep (core project files)
-# - 32 files to archive (completed/historical)
+# - 32 files to archive (done/historical)
 # - 29 files to new directories (AI docs, migration docs, workflow scripts)
 # - 5 files to delete (temporary)
 # - 1 file for manual review
@@ -332,7 +457,7 @@ scripts/
    - Added custom scrollbar styling (8px width, visible gray thumb)
    - Removed all hover effects (golden ring, border changes) from readonly textareas
    - Kept textareas out of tab order (`tabindex="-1"`) for table navigation
-   - Enabled `pointer-events: auto` to override textarea-completed blocking
+   - Enabled `pointer-events: auto` to override textarea-done blocking
 
 2. **Dynamic Buffer Calculation:**
    - Updated report buffer target from 500px to 400px from viewport top
@@ -395,7 +520,7 @@ requestAnimationFrame(() => {
   * `textarea:not([readonly]):is(:hover, :focus)` prevents readonly hover states
 
 - `css/table.css`:
-  * Lines 195-201: Excluded readonly textareas from completed hover styles
+  * Lines 195-201: Excluded readonly textareas from done hover styles
   * `textarea:not([readonly]):hover` prevents readonly interactions
 
 - `js/scroll.js`:
@@ -453,7 +578,7 @@ requestAnimationFrame(() => {
 ```
 
 **Files Modified:**
-- `php/mychecklist.php`:
+- `php/list.php`:
   * Line 19: Updated href from `#first-principle` to `#checkpoint-1-caption`
   * Lines 84-86: Updated JavaScript to directly target checkpoint 1 h2 by ID
   * More reliable and semantically correct
@@ -595,7 +720,7 @@ reportButton.addEventListener('click', async function(event) {
 ```
 
 **Files Modified:**
-- `php/mychecklist.php`:
+- `php/list.php`:
   * Lines 136-165: Updated Report button handler
   * Changed to async function
   * Added auto-save check and await
@@ -711,7 +836,7 @@ npm run validate:full
 ### 2025-10-13 17:12:21 UTC - Fix: Remove Duplicate Click Handler Causing Toggle Button Malfunction
 
 **Summary:**
-- Fixed mouse click not working on side panel toggle button for mychecklist.php
+- Fixed mouse click not working on side panel toggle button for list.php
 - Removed duplicate event handler that was causing panel to toggle twice (appearing broken)
 - Keyboard support continues to work correctly
 
@@ -730,7 +855,7 @@ npm run validate:full
   3. Net result: Panel toggled twice, appearing to do nothing
 
 **Solution:**
-- **mychecklist.php** (`js/side-panel.js`):
+- **list.php** (`js/side-panel.js`):
   * Removed duplicate click event listener from `setupToggle()`
   * Kept only keyboard event listener (Enter/Space keys)
   * Mouse clicks now handled exclusively by StateEvents.js
@@ -814,7 +939,7 @@ this.toggleBtn.addEventListener('keydown', ...);        // ✅ Works
 
 - `js/list-report.js`:
   * Lines 114-134: Added keyboard event handling to toggle button setup
-  * Consistent behavior between mychecklist.php and list-report.php
+  * Consistent behavior between list.php and list-report.php
 
 - `css/list.css`:
   * Lines 400-414: Fixed responsive styles (@media max-width: 768px)
@@ -1043,7 +1168,7 @@ When ready to deploy pseudo-scroll implementation to production:
 ### 2025-10-13 16:36:51 UTC - Pseudo-Scroll System Complete: Testing, Validation, and Production Ready
 
 **Summary:**
-- Completed comprehensive testing suite for pseudo-scroll buffer system and All button fix
+- Done comprehensive testing suite for pseudo-scroll buffer system and All button fix
 - Created 8 new Puppeteer tests and 5 new Apache production-mirror tests
 - Achieved 98.5% test pass rate (65/66 tests passing)
 - Generated comprehensive test report documenting all validation results
@@ -1077,7 +1202,7 @@ When ready to deploy pseudo-scroll implementation to production:
 - **New Tests Added**: 10 (5 Apache + 5 Puppeteer-ready)
 
 **Test Coverage Validated:**
-- ✅ Scroll buffer initialization (90px mychecklist, 120px reports)
+- ✅ Scroll buffer initialization (90px list, 120px reports)
 - ✅ Dynamic buffer calculation (viewport - 500px for large content, 0px for small)
 - ✅ All button clickability (30px × 30px, pointer-events configured)
 - ✅ Pointer-events pass-through (container: none, children: auto)
@@ -1190,13 +1315,13 @@ The All button (three lines symbol) on report pages was not clickable:
 2. **Enables Click Pass-Through**: Transparent area no longer blocks interactions
 3. **Preserves All Functionality**: Header, filters, and side panel all remain interactive
 4. **Clean Solution**: No JavaScript workarounds or layout compromises
-5. **Applies Everywhere**: Works for both mychecklist.php and all report pages
+5. **Applies Everywhere**: Works for both list.php and all report pages
 
 **Testing Verified:**
 - ✅ All button (three lines) clickable with hover/focus states
 - ✅ Checkpoint buttons (1, 2, 3, 4) clickable
 - ✅ Header buttons (Back, Home, Refresh) still functional
-- ✅ Filter buttons (All, Pending, In Progress, Completed) still functional
+- ✅ Filter buttons (All, Ready, Active, Done) still functional
 - ✅ Proper z-index hierarchy maintained (side panel appears below header)
 
 ---
@@ -1205,20 +1330,20 @@ The All button (three lines symbol) on report pages was not clickable:
 
 **Summary:**
 - Replaced legacy 5000px top buffer with modern 120px buffer on report pages
-- Unified scroll methodology across all pages (mychecklist.php, list-report.php, systemwide-report.php)
+- Unified scroll methodology across all pages (list.php, list-report.php, systemwide-report.php)
 - Eliminated unnecessary 5000px blank space on page load
 - Updated initial scroll position from 5090px to 130px
 - Synchronized documentation across code, inline comments, and testing guides
 
 **Why This Change:**
-Previously, report pages used a 5000px top buffer while `mychecklist.php` used a 90px buffer. This inconsistency:
+Previously, report pages used a 5000px top buffer while `list.php` used a 90px buffer. This inconsistency:
 1. Created unnecessary complexity with different scroll methodologies
 2. Required large initial scroll values (5090px) that felt arbitrary
-3. Didn't leverage the proven pattern from `mychecklist.php`
+3. Didn't leverage the proven pattern from `list.php`
 
 **The Fix:**
-Report pages now use the same pseudo-scroll approach as `mychecklist.php`, just with a larger buffer:
-- `mychecklist.php`: 90px buffer (header only)
+Report pages now use the same pseudo-scroll approach as `list.php`, just with a larger buffer:
+- `list.php`: 90px buffer (header only)
 - Report pages: 120px buffer (header + filter bar)
 
 **Technical Changes:**
@@ -1500,7 +1625,7 @@ Scroll:  19910px  ✅
 
 **Files Modified:**
 
-**php/mychecklist.php**
+**php/list.php**
 - Removed premature `window.scrollTo(0, 40090)` from inline script
 - Kept `history.scrollRestoration = 'manual'` for proper scroll management
 - Added comprehensive scroll position logging throughout page lifecycle
@@ -1570,7 +1695,7 @@ Scroll:  19910px  ✅
 - Implemented "show all" button with three-line symbol (≡) as default active state
 - Clicking checkpoint number shows only that checkpoint's tasks with brown-filled icons
 - All checkpoint icons in table turn brown when their checkpoint is selected
-- Reuses existing side panel CSS from mychecklist.php for consistency
+- Reuses existing side panel CSS from list.php for consistency
 
 **Side Panel Features:**
 - ✅ **"All" Button (≡)**: Default active state, brown fill with white symbol, shows all checkpoints
@@ -1578,7 +1703,7 @@ Scroll:  19910px  ✅
 - ✅ **Click Behavior**:
   - Number click: Brown fill on side panel button + brown fill on ALL matching checkpoint icons in table + hide other rows
   - All (≡) click: Brown fill on all button + show all rows + reset checkpoint icons to #333 outline
-- ✅ **Toggle Button**: Collapse/expand side panel (same as mychecklist.php)
+- ✅ **Toggle Button**: Collapse/expand side panel (same as list.php)
 
 **Icon Styling:**
 - **Default State**: 30×30px circle, 2px solid #333 outline, transparent background, #333 text
@@ -1616,7 +1741,7 @@ Scroll:  19910px  ✅
 1. Page loads with "All" (≡) button active (brown fill), all tasks visible
 2. Click checkpoint number → Only that checkpoint's tasks show, all its icons turn brown
 3. Click "All" (≡) → All tasks visible again, all icons return to #333 outline
-4. Filters combine: Can select checkpoint 2 + status "Done" to see only completed checkpoint 2 tasks
+4. Filters combine: Can select checkpoint 2 + status "Done" to see only done checkpoint 2 tasks
 5. Empty state messages work with checkpoint filtering
 
 **Testing:**
@@ -1627,7 +1752,7 @@ Scroll:  19910px  ✅
 
 **Impact:**
 - **Better UX**: View one checkpoint at a time without scrolling
-- **Consistency**: Same navigation pattern as mychecklist.php
+- **Consistency**: Same navigation pattern as list.php
 - **Performance**: Reuses existing CSS, minimal new code
 - **Flexibility**: Combines with status filters for powerful viewing options
 
@@ -1925,10 +2050,10 @@ Scroll:  19910px  ✅
 - ✅ **systemwide-reports.css → systemwide-report.css**: Styling consistency
 - ✅ **Updated Routes**: .htaccess and router.php updated for /reports and /list-report
 - ✅ **Navigation Fixed**: All links, buttons, and paths updated throughout codebase
-- ✅ **mychecklist Route**: Added /mychecklist clean URL for Back button navigation
+- ✅ **list Route**: Added /list clean URL for Back button navigation
 
 **Status Terminology Updates:**
-- ✅ **Report Context**: Changed filter labels from "All Ready/In Progress/Completed" to "Not Started/Active/Done"
+- ✅ **Report Context**: Changed filter labels from "All Ready/Active/Done" to "Not Started/Active/Done"
 - ✅ **Active Checklist Context**: Maintains "Ready/Active/Done" terminology (encouraging, action-oriented)
 - ✅ **Documentation Updated**: USER-STORIES.md updated with current terminology across 9 user stories
 - ✅ **Consistent Labeling**: All aria-labels, comments, and user-facing text updated
@@ -1985,13 +2110,13 @@ Scroll:  19910px  ✅
 
 **Bug Fixes:**
 - ✅ **list-report.php Table Population**: Fixed convertToPrinciples() looking for "checklist-" instead of "checkpoint-"
-- ✅ **Status Icon Paths**: Added icon mapping for pending/in-progress/completed → ready/active/done
+- ✅ **Status Icon Paths**: Added icon mapping for ready/active/done → ready/active/done
 - ✅ **Back Button Path**: Fixed to use /?session=${sessionKey} for proper checklist navigation
 - ✅ **CSS Scope**: Changed .principles-table to .reports-table to prevent global interference
 - ✅ **Table Class**: Removed duplicate class="report-table report-table"
 
 **Files Modified (18):**
-- **PHP**: systemwide-report.php, list-report.php, mychecklist.php, home.php
+- **PHP**: systemwide-report.php, list-report.php, list.php, home.php
 - **JavaScript**: reports.js, report.js, StateManager.js, addRow.js
 - **CSS**: reports.css, list-report.css, list.css, table.css, header.css, focus.css, form-elements.css
 - **Config**: router.php, .htaccess
@@ -2080,7 +2205,7 @@ dojo.json         - 4 checkpoints (14 tasks total)
 - Eliminated 133+ redundant `"notes": ""` fields across all templates
 - Removed 7+ obsolete showRobust and report sections
 
-**Next Phase (Pending):**
+**Next Phase (Ready):**
 - Update JavaScript files to read `checkpoint-*` keys dynamically
 - Update CSS classes from `.checklist-*` to `.checkpoint-*`
 - Implement dynamic side panel generation (2-10 buttons)
@@ -2159,11 +2284,11 @@ dojo.json         - 4 checkpoints (14 tasks total)
 ### 2025-10-08 11:02:52 UTC - Reports Page Visual Enhancements + User Report Feature Complete
 
 **Summary:**
-- Completed comprehensive visual enhancements to system-wide Reports page
+- Done comprehensive visual enhancements to system-wide Reports page
 - Implemented new User Report feature for individual checklist reporting
 - Enhanced column widths, progress bar styling, and status icon display
-- Standardized headers across all pages (admin, reports, report, mychecklist)
-- Changed Pending filter button color for better visual consistency
+- Standardized headers across all pages (admin, reports, report, list)
+- Changed Ready filter button color for better visual consistency
 
 **Reports Page Enhancements:**
 - ✅ **Column Header**: Changed "Created" → "Updated" to show last modified timestamp
@@ -2176,7 +2301,7 @@ dojo.json         - 4 checkpoints (14 tasks total)
   - Progress numbers: 0.85rem → 1.1rem (bigger font)
   - Min-width: 50px → 60px
 - ✅ **Status Icons**: Replaced text badges with status icons (75x75) matching report.php
-- ✅ **Filter Button Update**: Pending color changed from #FF9800 (orange) to #666666 (gray)
+- ✅ **Filter Button Update**: Ready color changed from #FF9800 (orange) to #666666 (gray)
 - ✅ **Dynamic Timestamp**: Added "Last reports update: [timestamp]" in <h2>
 - ✅ **Layout Update**: Moved <h2> below filter buttons for better visual hierarchy
 
@@ -2187,18 +2312,18 @@ dojo.json         - 4 checkpoints (14 tasks total)
 - ✅ **Core Features**:
   - Single checklist view with all tasks in one table
   - Checkpoint icons showing principle grouping
-  - Read-only textareas matching mychecklist.php styling
+  - Read-only textareas matching list.php styling
   - Status icons (non-interactive)
   - Filter buttons UI (ready for Phase 2 wiring)
   - Dynamic title: "[Type] Checklist last updated: [timestamp]"
   - Refresh button to reload data
-  - Opens from mychecklist.php Report button in new window
+  - Opens from list.php Report button in new window
 
 **Header Standardization (All Pages):**
-- ✅ **Home Button**: Added to all pages (admin, reports, report, mychecklist)
+- ✅ **Home Button**: Added to all pages (admin, reports, report, list)
 - ✅ **Home Button Spacing**: Left padding increased from 1rem to 2rem
 - ✅ **Button Structure**: Consistent use of `.header-buttons-group` across all pages
-- ✅ **Report Button**: Positioned correctly next to Save button on mychecklist.php
+- ✅ **Report Button**: Positioned correctly next to Save button on list.php
 
 **Technical Implementation:**
 - **CSS Changes**:
@@ -2209,7 +2334,7 @@ dojo.json         - 4 checkpoints (14 tasks total)
   - `php/reports.php`: Updated table headers, added dynamic timestamp, status icons
   - `php/report.php`: Complete new user report implementation
   - `php/admin.php`: Added home button to header
-  - `php/mychecklist.php`: Added home button to header
+  - `php/list.php`: Added home button to header
 - **JavaScript Changes**:
   - `js/reports.js`: Updated to render status icons instead of text badges
   - `js/report.js`: Complete user report rendering logic
@@ -2234,7 +2359,7 @@ dojo.json         - 4 checkpoints (14 tasks total)
 - `php/reports.php`: Updated headers, styling, and dynamic content
 - `php/report.php`: Complete new implementation
 - `php/admin.php`: Added home button
-- `php/mychecklist.php`: Added home button and report button
+- `php/list.php`: Added home button and report button
 - `js/reports.js`: Updated status rendering
 - `js/report.js`: Complete new implementation
 - `router.php`: Added new route
@@ -2251,7 +2376,7 @@ dojo.json         - 4 checkpoints (14 tasks total)
 ### 2025-10-07 18:24:19 UTC - Reports Feature MCP Validation and Test Data Creation
 
 **Summary:**
-- Completed comprehensive MCP validation for Reports Dashboard feature
+- Done comprehensive MCP validation for Reports Dashboard feature
 - Validated all dependencies and confirmed statusButtons implementation
 - Created 5 test save files with proper state.statusButtons structure
 - Updated REPORTS-FEATURE-IMPLEMENTATION-PLAN.md with validation results
@@ -2275,7 +2400,7 @@ dojo.json         - 4 checkpoints (14 tasks total)
 - statusButtons structure already exists in StateManager.js
 - Legacy saves (CAM, BQI, GMP, etc.) use old checklistData format
 - New saves automatically include state.statusButtons
-- Legacy saves will show as "pending" in reports (graceful degradation)
+- Legacy saves will show as "ready" in reports (graceful degradation)
 - No migration needed - users can re-save to update format
 
 **Documentation:**
@@ -2407,7 +2532,7 @@ dojo.json         - 4 checkpoints (14 tasks total)
 - Created `scripts/analyze-root-cleanup.sh` - Scans and categorizes root directory files
 - Created `scripts/execute-root-cleanup.sh` - Intelligent DELETE vs ARCHIVE recommendations
 - Created `docs/historical/` directory structure:
-  - `reports/` - 14 completed implementation reports
+  - `reports/` - 14 done implementation reports
   - `analysis/` - 9 analysis and evaluation documents
   - `deployment/` - 5 deployment and migration records
   - `configuration/` - 21 setup and configuration documents
@@ -2420,7 +2545,7 @@ dojo.json         - 4 checkpoints (14 tasks total)
 
 **Files Archived (49):**
 - Moved historical documentation from root to organized archive
-- Preserved all completed reports, analysis docs, and configuration guides
+- Preserved all done reports, analysis docs, and configuration guides
 - Maintained historical context for future reference
 
 **Root Directory After Cleanup:**
@@ -2535,7 +2660,7 @@ dojo.json         - 4 checkpoints (14 tasks total)
 
 **Testing:**
 - ✅ 10 unique keys generated (no duplicates)
-- ✅ 5 concurrent saves completed without corruption
+- ✅ 5 concurrent saves done without corruption
 - ✅ TypeManager.formatDisplayName() working correctly
 - ✅ All JavaScript loading validated with MCP tools
 
@@ -2813,7 +2938,7 @@ DEBUG_PRODUCTION=false
 - ✅ API extension configurable and working
 - ✅ Backwards compatible fallback tested
 - ✅ Debug mode logging functional
-- ⏳ Production deployment pending
+- ⏳ Production deployment ready
 
 **Impact:**
 - **Code Quality**: Eliminated auto-detection complexity and DRY violations
@@ -2901,7 +3026,7 @@ DEBUG_PRODUCTION=false
 **Key Findings:**
 1. **PHP Header Duplication** (Critical)
    - Base path calculation repeated in 4 files
-   - HTML head structure duplicated across home.php, mychecklist.php, reports.php, admin.php
+   - HTML head structure duplicated across home.php, list.php, reports.php, admin.php
    - CSS links (11 stylesheets) loaded identically in all pages
    - NoScript fallback duplicated 4 times
 
@@ -2915,7 +3040,7 @@ DEBUG_PRODUCTION=false
    - Test setup/teardown code duplicated (acceptable for tests)
 
 **Refactoring Plan Created:**
-- Risk assessment completed for all duplications
+- Risk assessment done for all duplications
 - 5 duplication patterns identified with elimination strategies
 - Expected reduction: ~160 duplicate lines → ~76 lines (52% reduction)
 - Prioritized by risk level (low → medium → high)
@@ -3099,7 +3224,7 @@ DEBUG_PRODUCTION=false
 - **Files Deleted**: Removed `global.css` and `deploy-temp/` directory
 
 **Architecture Confirmed:**
-- ✅ Individual CSS files loaded directly in PHP templates (mychecklist.php, admin.php, home.php)
+- ✅ Individual CSS files loaded directly in PHP templates (list.php, admin.php, home.php)
 - ✅ No build process required for CSS changes
 - ✅ Immediate CSS updates without compilation
 - ✅ Better maintainability with individual file management
@@ -3129,7 +3254,7 @@ DEBUG_PRODUCTION=false
 - Restored status button logic, reset functionality, and side-panel navigation
 - Identified root cause: ModalActions dependency never initialized after save/restore system refactor
 - Implemented comprehensive dependency checking and improved initialization timing
-- Fixed URL hash appending issue in side-panel navigation
+- Fixed URL hash apready issue in side-panel navigation
 
 **Root Cause Analysis:**
 - **October 1st, 2025 (11:38:13 UTC)**: Save/Restore System Refactor created new unified modules but failed to properly initialize ModalActions dependency
@@ -3147,7 +3272,7 @@ DEBUG_PRODUCTION=false
 **Technical Implementation:**
 - **StateManager Enhancement**: Added `initializeModalActions()` method called during initialization
 - **StateEvents Update**: Updated to handle new `data-target` attribute for side-panel navigation
-- **mychecklist.php Fix**: Updated initialization timing and dependency checking with detailed error logging
+- **list.php Fix**: Updated initialization timing and dependency checking with detailed error logging
 - **CSS Updates**: Applied all changes to individual CSS files for immediate effect
 
 **Functionality Restored:**
@@ -3167,14 +3292,14 @@ DEBUG_PRODUCTION=false
 **Files Modified:**
 - `js/StateManager.js`: +10 lines (ModalActions initialization method)
 - `js/StateEvents.js`: +1 line (data-target attribute support)
-- `php/mychecklist.php`: +10 lines (improved initialization timing and error logging)
+- `php/list.php`: +10 lines (improved initialization timing and error logging)
 - Individual CSS files: Updated with all latest changes
 
 **Testing Results:**
 - ✅ **7KH Instance**: `http://localhost:8000/?=7KH` now works correctly
-- ✅ **Status Button Logic**: All status transitions (pending → in-progress → completed) working
+- ✅ **Status Button Logic**: All status transitions (ready → active → done) working
 - ✅ **Reset Functionality**: Task reset with confirmation dialogs working
-- ✅ **Side-Panel Navigation**: Clean URLs maintained, no hash appending
+- ✅ **Side-Panel Navigation**: Clean URLs maintained, no hash apready
 - ✅ **State Persistence**: Save/restore functionality fully operational
 - ✅ **Event Delegation**: All UI interactions properly handled
 
@@ -3439,7 +3564,7 @@ DEBUG_PRODUCTION=false
 ### 2025-10-02 10:27:20 UTC - Type System SRD Refactoring: Core Infrastructure Complete
 
 **Summary:**
-- Completed major phase of type system SRD refactoring with 85% implementation success
+- Done major phase of type system SRD refactoring with 85% implementation success
 - Successfully implemented centralized TypeManager infrastructure for PHP backend
 - Validated all API endpoints working correctly with new type system
 - Identified remaining JavaScript client-side updates needed for full completion
@@ -3516,7 +3641,7 @@ DEBUG_PRODUCTION=false
 ### 2025-10-02 09:15:52 UTC - Type System SRD Analysis and Refactoring Preparation
 
 **Summary:**
-- Completed comprehensive SRD analysis of type system identifying critical violations
+- Done comprehensive SRD analysis of type system identifying critical violations
 - Created detailed documentation of all type usage patterns across 8 major areas
 - Established new branch `drying-types` for systematic type system refactoring
 - Implemented rollback plan and safety measures for refactoring work
@@ -3588,11 +3713,11 @@ DEBUG_PRODUCTION=false
 - Maintains all functionality while preserving clean URL format for sharing
 
 **Key Change:**
-- **Before**: `/?=EDF` → Redirect to `php/mychecklist.php?session=EDF&type=word`
+- **Before**: `/?=EDF` → Redirect to `php/list.php?session=EDF&type=word`
 - **After**: `/?=EDF` → Stay on `/?=EDF` (URL remains visible to users)
 
 **Technical Implementation:**
-- **Method**: Use `include 'php/mychecklist.php'` instead of `header('Location: ...')`
+- **Method**: Use `include 'php/list.php'` instead of `header('Location: ...')`
 - **URL Preservation**: Browser address bar shows the minimal `/?=EDF` format
 - **Functionality**: All session management and checklist features work identically
 - **Parameters**: Session and type parameters passed via `$_GET` array
@@ -3624,7 +3749,7 @@ DEBUG_PRODUCTION=false
 
 **New URL Format:**
 - **Minimal Format**: `https://webaim.org/training/online/accessilist/?=EDF`
-- **Redirects To**: `php/mychecklist.php?session=EDF&type=word`
+- **Redirects To**: `php/list.php?session=EDF&type=word`
 - **Session Key**: 3-character alphanumeric (A-Z, 0-9)
 - **Validation**: Only accepts exactly 3 characters, uppercase letters and numbers
 
@@ -3752,7 +3877,7 @@ DEBUG_PRODUCTION=false
 - `js/path-utils.js`: `getAPIPath()` appends `.php` only for local dev when given extensionless names
 - `js/StateManager.js`: Use `getAPIPath('save')` and `getAPIPath('restore')`
 - `js/buildPrinciples.js`: Use `window.getImagePath(iconName)` for add-row icons (fixes missing icons)
-- `js/admin.js`: Use `getPHPPath('mychecklist.php')` for links and extensionless `getAPIPath('list'|'delete')`
+- `js/admin.js`: Use `getPHPPath('list.php')` for links and extensionless `getAPIPath('list'|'delete')`
 
 **Simulated Production Validation:**
 - Added `tests/router.php` to emulate .htaccess behavior with PHP built-in server
@@ -3796,11 +3921,11 @@ DEBUG_PRODUCTION=false
 **B. Reference Files Moved to Archive (14 files):**
 - `accessilist-template-implementation.md` - Template documentation
 - `best-practices.md` - Development guidelines
-- `css-refactor-plan.md` - Completed refactoring plan
+- `css-refactor-plan.md` - Done refactoring plan
 - `cursor-ide-template-refined.md` - IDE template documentation
 - `focused-startup.md` - Startup process documentation
 - `generate-user-stories.md` - User story generation guide
-- `report-row-dry-analysis.md` - Completed analysis documentation
+- `report-row-dry-analysis.md` - Done analysis documentation
 - `save-restore.md` - Implementation documentation
 - `STATUS_BUTTON_REPORT.md` - Implementation report
 - `user-stories.md` - Generated user stories
@@ -3839,16 +3964,16 @@ DEBUG_PRODUCTION=false
 
 **Summary:**
 - Fixed critical save/restore issues with manually added principle rows
-- Resolved status restoration problems (completed status reverting to in-progress)
+- Resolved status restoration problems (done status reverting to active)
 - Eliminated duplicate row restoration during page reload
 - Removed all legacy text overlay code from JavaScript and CSS
 - Achieved complete separation of Report table functionality to dedicated page
 
 **Manual Row Save/Restore Fixes:**
-- **Status Restoration Issue**: Fixed completed status reverting to "in-progress" on restore
+- **Status Restoration Issue**: Fixed done status reverting to "active" on restore
   - **Root Cause**: `renderSinglePrincipleRow` method only created DOM but didn't apply saved status state
-  - **Solution**: Added `applyCompletedStateToRow` method to properly restore completed status
-  - **Result**: Completed rows now maintain proper status, restart button visibility, and textarea disabled state
+  - **Solution**: Added `applyDoneStateToRow` method to properly restore done status
+  - **Result**: Done rows now maintain proper status, restart button visibility, and textarea disabled state
 - **Duplicate Row Issue**: Fixed rows being restored twice during page reload
   - **Root Cause**: `restorePrincipleRowsState` called multiple times without checking for existing rows
   - **Solution**: Added duplicate detection in both `restorePrincipleRowsState` and `renderSinglePrincipleRow`
@@ -3860,7 +3985,7 @@ DEBUG_PRODUCTION=false
 **Legacy Overlay Code Removal:**
 - **Complete Cleanup**: Removed all text overlay functionality (legacy and unused)
 - **JavaScript Files Cleaned**:
-  - `js/StateManager.js`: Removed overlay creation/removal code in `applyCompletedTextareaState` and `resetTask`
+  - `js/StateManager.js`: Removed overlay creation/removal code in `applyDoneTextareaState` and `resetTask`
   - `js/StateEvents.js`: Removed overlay creation/restoration code in textarea state methods
 - **CSS Files Cleaned**:
   - `css/form-elements.css`: Removed `.notes-text-overlay`, `.report-task-text-overlay`, `.report-notes-text-overlay` styles
@@ -3869,15 +3994,15 @@ DEBUG_PRODUCTION=false
 - **Validation**: Confirmed zero remaining references to overlay classes across entire codebase
 - **Impact**: Cleaner DOM, reduced complexity, eliminated redundant overlay elements
 
-**Report Table Separation (Completed):**
-- **Architecture Change**: Moved Report table from `mychecklist.php` to dedicated `reports.php` page
+**Report Table Separation (Done):**
+- **Architecture Change**: Moved Report table from `list.php` to dedicated `reports.php` page
 - **Navigation Updated**: Report link now points to `reports.php` instead of `#report`
 - **State Management Simplified**: Removed all report row save/restore logic from main checklist
 - **Separation of Concerns**: Checklist handles principles, Reports page handles report generation
 - **Result**: Eliminated save/restore conflicts between report and principle rows
 
 **Technical Improvements:**
-- **New Method**: `applyCompletedTextareaStateForRestore` - applies completed styling without creating overlays
+- **New Method**: `applyDoneTextareaStateForRestore` - applies done styling without creating overlays
 - **Enhanced Validation**: Added duplicate row detection in restore process
 - **Better Error Handling**: Improved logging and error messages for restore operations
 - **Code Quality**: Removed 200+ lines of legacy overlay code across JavaScript and CSS
@@ -3888,14 +4013,14 @@ DEBUG_PRODUCTION=false
 - `js/addRow.js` - Added missing `data-id` attributes, fixed restart button visibility
 - `css/form-elements.css` - Removed all overlay styles
 - `css/table.css` - Removed report overlay styles
-- `php/mychecklist.php` - Updated navigation, removed report container
+- `php/list.php` - Updated navigation, removed report container
 - `php/reports.php` - New dedicated report page (created in previous session)
 
 **Testing Results:**
 - ✅ Manual rows save and restore correctly with proper status
 - ✅ No duplicate rows during restoration
 - ✅ No text overlays created during restore
-- ✅ Completed rows maintain proper UI state (restart button visible, textareas disabled)
+- ✅ Done rows maintain proper UI state (restart button visible, textareas disabled)
 - ✅ Report table separation working correctly
 - ✅ All legacy overlay code completely removed
 
@@ -3908,7 +4033,7 @@ DEBUG_PRODUCTION=false
 ### 2025-10-01 11:59:09 UTC - Report Row DRY Refactoring + Date Utilities + Admin Timestamp Fix
 
 **Summary:**
-- Completed comprehensive DRY refactoring of Report row addition system
+- Done comprehensive DRY refactoring of Report row addition system
 - Eliminated 369 lines of code duplication across JavaScript and CSS
 - Created centralized date formatting utilities
 - Fixed Admin page Updated timestamp logic
@@ -3927,7 +4052,7 @@ DEBUG_PRODUCTION=false
 - **Refactored Files**:
   - `js/addRow.js` (67 → 30 lines, -37 lines): Now delegates to StateManager
   - `js/StateEvents.js` (-22 lines): Removed event-based coupling, direct StateManager calls
-  - `js/buildReport.js` (-20 lines): Removed taskCompleted event listener
+  - `js/buildReport.js` (-20 lines): Removed taskDone event listener
 - **Property Name Standardization**: All code now uses 'task' (singular) consistently
 - **Event Architecture Replaced**: Direct method calls replace loose event coupling
 - **Impact**: -40 lines net, ~120 lines duplication eliminated, clearer data flow
@@ -3939,7 +4064,7 @@ DEBUG_PRODUCTION=false
   - `formatDateLong()` → Full date/time for tooltips
 - **Updated 7 Files** to use unified formatters:
   - `js/addRow.js`, `js/StateEvents.js`, `js/StateManager.js`
-  - `js/admin.js`, `php/admin.php`, `php/mychecklist.php`
+  - `js/admin.js`, `php/admin.php`, `php/list.php`
 - **Eliminated** 5 duplicate date formatting implementations
 - **Impact**: All timestamps now consistently formatted across app
 
@@ -4005,7 +4130,7 @@ DEBUG_PRODUCTION=false
 ### 2025-10-01 11:38:13 UTC - Save/Restore System Refactor Complete + Modal Callback Fix
 
 **Summary:**
-- Completed comprehensive refactoring of save/restore system consolidating 7 legacy modules into 3 unified ES6 modules
+- Done comprehensive refactoring of save/restore system consolidating 7 legacy modules into 3 unified ES6 modules
 - Fixed critical modal manager bug preventing reset and delete operations from executing
 - Reduced code duplication from 84% to minimal levels through centralized state management
 - Implemented unified event delegation system replacing scattered event handlers across multiple files
@@ -4033,7 +4158,7 @@ DEBUG_PRODUCTION=false
 - **`buildPrinciples.js`**: Removed legacy event handlers for status buttons, textarea input, reset buttons (now in StateEvents.js)
 - **`main.js`**: Removed duplicate report table event delegation, status change handlers, delete handlers
 - **`addRow.js`**: Updated to use new unified state manager for save operations
-- **`mychecklist.php`**: Updated script imports to load new ES6 modules, removed references to deprecated files
+- **`list.php`**: Updated script imports to load new ES6 modules, removed references to deprecated files
 
 **Code Quality Improvements:**
 - Eliminated 5+ duplicate save functions across codebase
@@ -4043,7 +4168,7 @@ DEBUG_PRODUCTION=false
 - Reduced technical debt significantly
 
 **Testing and Validation:**
-- ✅ Reset task functionality: Successfully resets completed tasks to pending state
+- ✅ Reset task functionality: Successfully resets done tasks to ready state
 - ✅ Delete report row: Successfully removes manual report rows from DOM and state
 - ✅ Auto-save: Triggers correctly on textarea input after 3-second debounce
 - ✅ Manual save: Save button works correctly
@@ -4061,7 +4186,7 @@ DEBUG_PRODUCTION=false
 - `js/buildPrinciples.js` - Removed legacy event handlers
 - `js/main.js` - Removed duplicate event delegation
 - `js/addRow.js` - Updated to use unified state manager
-- `php/mychecklist.php` - Updated script imports for ES6 modules
+- `php/list.php` - Updated script imports for ES6 modules
 
 **Files Deleted:**
 - `js/session-manager.js`
@@ -4108,16 +4233,16 @@ DEBUG_PRODUCTION=false
 - Stricter optional MCP enforcement for `new`/`full`
 - Cleaner codebase with legacy process removed
 
-### 2025-09-30 17:09:31 UTC - Report Table Completed Status: Full Save/Restore with DRY Styling
+### 2025-09-30 17:09:31 UTC - Report Table Done Status: Full Save/Restore with DRY Styling
 
 **Summary:**
-- Implemented completed status handling for Report table with both Tasks and Notes columns becoming inactive
+- Implemented done status handling for Report table with both Tasks and Notes columns becoming inactive
 - Fixed Report table save/restore functionality with proper state management
 - Applied DRY principles to Report table button styling (matching Checklist and Admin styles)
 - Fixed duplicate row addition bug and added proper event delegation for Report table
 
-**Completed Status UI (A, B, C Requirements):**
-- **A. Border Hidden**: Both Task and Notes textarea borders set to `none` when status = completed
+**Done Status UI (A, B, C Requirements):**
+- **A. Border Hidden**: Both Task and Notes textarea borders set to `none` when status = done
 - **B. Non-Interactive**: Both textareas disabled with `pointer-events: none` and `disabled = true`
 - **C. Top-Aligned**: Text overlays use `display: block` (not `flex` with `align-items: center`)
 
@@ -4126,11 +4251,11 @@ DEBUG_PRODUCTION=false
 - **Status Buttons**: Collects both `.status-button` (Principles) and `.report-status-button` (Report)
 - **Report Rows**: Initialized `window.reportTableState.rows` to track manual Report rows
 - **Restoration**: Added `window.renderReportTable()` to recreate rows from saved state
-- **Completed State**: Automatically applies inactive state to both columns when status = completed
+- **Done State**: Automatically applies inactive state to both columns when status = done
 
 **Event Delegation Enhancements:**
 - **Status Button Clicks**: Added event delegation for `.report-status-button` clicks
-- **Textarea Input**: Auto-updates status from pending → in-progress when Notes textarea gets input
+- **Textarea Input**: Auto-updates status from ready → active when Notes textarea gets input
 - **State Tracking**: Updates `window.reportTableState` when textareas change or status changes
 - **Notes-Only Trigger**: Only Notes textarea triggers status change (Tasks can be added first)
 
@@ -4142,7 +4267,7 @@ DEBUG_PRODUCTION=false
 
 **Bug Fixes:**
 - **Duplicate Rows**: Removed duplicate event listener in `buildReport.js` (was adding 2 rows)
-- **Missing Script**: Added `addRow.js` to `mychecklist.php` script includes
+- **Missing Script**: Added `addRow.js` to `list.php` script includes
 - **Global Functions**: Exposed `createTableRow` and `handleAddRow` as window globals
 - **Report State Init**: Initialized `window.reportTableState` in `main.js`
 
@@ -4152,20 +4277,20 @@ DEBUG_PRODUCTION=false
 - `js/main.js` - Added Report table event delegation, state management, and renderReportTable()
 - `js/addRow.js` - Added row to window.reportTableState, exposed createTableRow globally
 - `js/buildReport.js` - Removed duplicate event listener
-- `php/mychecklist.php` - Added addRow.js script include
+- `php/list.php` - Added addRow.js script include
 - `css/table.css` - Applied DRY styling to Report buttons, removed duplicates
 - `css/form-elements.css` - Fixed overlay top-alignment (display: block)
 
 **User Experience:**
 1. User adds manual Report row with Tasks and Notes text
-2. When Notes text is entered, status auto-updates to In Progress
-3. User clicks status button to mark as Completed
+2. When Notes text is entered, status auto-updates to Active
+3. User clicks status button to mark as Done
 4. BOTH Tasks and Notes columns become inactive (borders hidden, non-interactive, top-aligned)
 5. All state saved correctly with session
-6. On restore, Report row recreated with completed state fully preserved
+6. On restore, Report row recreated with done state fully preserved
 
 **Impact:**
-- Report table now has feature parity with Principles tables for completed status
+- Report table now has feature parity with Principles tables for done status
 - DRY button styling ensures visual consistency across all tables
 - Complete save/restore support for Report table manual rows
 - Improved code maintainability with proper state management
@@ -4191,7 +4316,7 @@ DEBUG_PRODUCTION=false
 - `js/save-restore-orchestrator.js` - Added minimum loading time enforcement and session-based overlay control
 - `js/save-restore-api.js` - Changed restoration to synchronous (no async needed)
 - `js/main.js` - Modified to preserve overlay when session key present
-- `php/mychecklist.php` - Updated overlay opacity to 90%
+- `php/list.php` - Updated overlay opacity to 90%
 
 **Technical Details:**
 - **Instant Jump Method**: Uses `window.scrollTo(0, section.offsetTop)` for immediate positioning
@@ -4224,7 +4349,7 @@ DEBUG_PRODUCTION=false
 
 **Files Modified:**
 - `css/focus.css`, `css/landing.css`, `css/side-panel.css`, `css/table.css`, `css/header.css`
-- `php/mychecklist.php`, `php/home.php`, `php/admin.php`
+- `php/list.php`, `php/home.php`, `php/admin.php`
 - `js/buildPrinciples.js`, `js/buildReport.js`, `js/main.js`
 
 **Impact:**
@@ -4236,7 +4361,7 @@ DEBUG_PRODUCTION=false
 
 **Summary:**
 - Updated `css-refactor-plan.md` to explicitly scope validation to desktop-only (1440×900) for this phase.
-- Added Progress section tracking completed tasks and next steps.
+- Added Progress section tracking done tasks and next steps.
 - Created config files and automation stub to support parity-gated consolidation.
 - Started desktop baseline capture for `php/home.php` (meta, DOM, network, screenshot; CSSOM subset computed).
 
@@ -4308,7 +4433,7 @@ DEBUG_PRODUCTION=false
 - `js/save-restore-orchestrator.js` - System coordination and initialization
 
 **Files Modified:**
-- `php/mychecklist.php` - Updated script loading to use modular system
+- `php/list.php` - Updated script loading to use modular system
 - `js/save-restore.js` - Backed up as `js/save-restore-old.js`
 
 **Impact:**
@@ -4321,7 +4446,7 @@ DEBUG_PRODUCTION=false
 ### 2025-09-29 23:50:00 UTC - MCP-Driven Processes Enhancement Complete
 
 **Summary:**
-- Completed comprehensive E2E review and enhancement of MCP-driven processes
+- Done comprehensive E2E review and enhancement of MCP-driven processes
 - Fixed all script issues and optimized performance by excluding node_modules
 - Enhanced Memory MCP usage with systematic pattern storage and context persistence
 - Implemented comprehensive MCP health monitoring dashboard with real-time alerts
@@ -4430,7 +4555,7 @@ DEBUG_PRODUCTION=false
 ### 2025-01-26 00:00:00 UTC - Phase 1 Save/Restore Refinement Complete + Critical Fixes
 
 **Summary:**
-- Completed Phase 1 of save-restore system refinement focusing on code cleanup and simplification
+- Done Phase 1 of save-restore system refinement focusing on code cleanup and simplification
 - Fixed critical remaining issues identified in code review: missing auto-save delegation and path duplication
 - Eliminated code duplication and unused complexity while maintaining backward compatibility
 
@@ -4444,7 +4569,7 @@ DEBUG_PRODUCTION=false
 
 **Critical Fixes Applied:**
 - **Auto-Save Restoration**: Added proper event delegation for auto-save functionality (textareas, status buttons) **inside** `initializeSaveRestore()` function
-- **Path Duplication Elimination**: Removed embedded `window.pathConfig` from all PHP templates (`mychecklist.php`, `admin.php`, `home.php`)
+- **Path Duplication Elimination**: Removed embedded `window.pathConfig` from all PHP templates (`list.php`, `admin.php`, `home.php`)
 - **Manual Path Fixing Removal**: Eliminated setTimeout-based image path fixing code
 - **Template Path Consistency**: Updated all HTML templates to use PHP-generated paths consistently
 - **Race Condition Resolution**: Eliminated competing path systems between embedded config and `path-utils.js`
@@ -4465,7 +4590,7 @@ DEBUG_PRODUCTION=false
 - Standardized asset path usage in `js/addRow.js` and `js/main.js` to `window.get*Path(...)`.
 - Updated tests to reference `path-utils.js` instead of `path-config.js`.
 - Added width/height attributes for consistent sizing (no layout change):
-  - Side panel icons 36x36 in `php/mychecklist.php`
+  - Side panel icons 36x36 in `php/list.php`
   - Status/delete icons 24x24 in `js/addRow.js`
 
 **Rationale:**
@@ -4477,7 +4602,7 @@ DEBUG_PRODUCTION=false
 **Files Modified:**
 - `js/addRow.js`
 - `js/main.js`
-- `php/mychecklist.php`
+- `php/list.php`
 - `test-asset-paths.js`
 - `test-production-paths.html`
 - `test-path-configuration.html`
@@ -4491,7 +4616,7 @@ DEBUG_PRODUCTION=false
 
 **Summary:**
 - Added `js/path-utils.js` providing global helpers: `getImagePath`, `getJSONPath`, `getPHPPath`, `getAPIPath`.
-- Included `path-utils.js` in `php/home.php`, `php/admin.php`, and `php/mychecklist.php` after embedded path configuration.
+- Included `path-utils.js` in `php/home.php`, `php/admin.php`, and `php/list.php` after embedded path configuration.
 
 **Rationale:**
 - Begin consolidating path fallback logic to reduce duplication without altering layout or CSS.
@@ -4503,7 +4628,7 @@ DEBUG_PRODUCTION=false
 **Files Modified:**
 - `php/home.php`
 - `php/admin.php`
-- `php/mychecklist.php`
+- `php/list.php`
 
 **Validation:**
 - No UI or styling changes.
@@ -4526,7 +4651,7 @@ DEBUG_PRODUCTION=false
 - All resources now load correctly without 404 errors
 
 **Files Modified:**
-- `php/home.php`, `php/mychecklist.php`, `php/index.php`, `php/admin.php`
+- `php/home.php`, `php/list.php`, `php/index.php`, `php/admin.php`
 - `js/admin.js`, `js/save-restore.js`, `js/buildReport.js`, `js/buildPrinciples.js`, `js/addRow.js`
 
 **Validation:**
@@ -4570,7 +4695,7 @@ DEBUG_PRODUCTION=false
 
 **Files Modified:**
 - `js/addRow.js`, `js/admin.js`, `js/buildPrinciples.js`, `js/buildReport.js`, `js/main.js`, `js/save-restore.js`
-- `php/admin.php`, `php/home.php`, `php/index.php`, `php/mychecklist.php`
+- `php/admin.php`, `php/home.php`, `php/index.php`, `php/list.php`
 
 **New Files Added:**
 - `config.json` - Configuration settings

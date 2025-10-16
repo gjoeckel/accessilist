@@ -128,37 +128,37 @@ export class ReportsManager {
    * Calculate checklist status based on statusButtons
    *
    * Logic:
-   * - completed: All tasks are "completed"
-   * - in-progress: At least one task is "completed" or "in_progress", but not all completed
-   * - pending: All tasks are "pending"
+   * - done: All tasks are "done"
+   * - active: At least one task is "done" or "active", but not all done
+   * - ready: All tasks are "ready"
    */
   calculateStatus(statusButtons) {
     if (!statusButtons || typeof statusButtons !== "object") {
-      return "pending";
+      return "ready";
     }
 
     const statuses = Object.values(statusButtons);
 
     if (statuses.length === 0) {
-      return "pending";
+      return "ready";
     }
 
-    const completedCount = statuses.filter((s) => s === "completed").length;
-    const inProgressCount = statuses.filter((s) => s === "in_progress").length;
+    const doneCount = statuses.filter((s) => s === "done").length;
+    const inProgressCount = statuses.filter((s) => s === "active").length;
     const total = statuses.length;
 
-    // All completed
-    if (completedCount === total) {
-      return "completed";
+    // All done
+    if (doneCount === total) {
+      return "done";
     }
 
-    // Some completed or in progress
-    if (completedCount > 0 || inProgressCount > 0) {
-      return "in-progress";
+    // Some done or in progress
+    if (doneCount > 0 || inProgressCount > 0) {
+      return "active";
     }
 
-    // All pending
-    return "pending";
+    // All ready
+    return "ready";
   }
 
   /**
@@ -166,9 +166,9 @@ export class ReportsManager {
    */
   updateFilterCounts() {
     const counts = {
-      completed: 0,
-      pending: 0,
-      "in-progress": 0,
+      done: 0,
+      ready: 0,
+      active: 0,
       all: 0,
       demos: 0,
     };
@@ -214,7 +214,7 @@ export class ReportsManager {
         (checklist) => checklist.typeSlug === "demo"
       );
     } else {
-      // Filter by calculated status (completed, in-progress, pending)
+      // Filter by calculated status (done, active, ready)
       filtered = this.allChecklists.filter(
         (checklist) => checklist.calculatedStatus === this.currentFilter
       );
@@ -231,9 +231,9 @@ export class ReportsManager {
 
       // Custom messages based on filter type
       const messages = {
-        completed: "No tasks done",
-        "in-progress": "No tasks active",
-        pending: "All tasks started",
+        done: "No tasks done",
+        active: "No tasks active",
+        ready: "All tasks started",
         demos: "No demo sessions found",
       };
 
@@ -302,7 +302,7 @@ export class ReportsManager {
               checklist.calculatedStatus
             )}</td>
             <td class="task-cell">${this.createProgressBar(
-              progress.completed,
+              progress.done,
               progress.total,
               checklist.calculatedStatus,
               isSaved
@@ -316,7 +316,7 @@ export class ReportsManager {
   }
 
   /**
-   * Calculate progress (completed tasks / total tasks)
+   * Calculate progress (done tasks / total tasks)
    */
   calculateProgress(statusButtons) {
     if (
@@ -324,14 +324,14 @@ export class ReportsManager {
       typeof statusButtons !== "object" ||
       Object.keys(statusButtons).length === 0
     ) {
-      return { completed: 0, total: 0 };
+      return { done: 0, total: 0 };
     }
 
     const statuses = Object.values(statusButtons);
     const total = statuses.length;
-    const completed = statuses.filter((s) => s === "completed").length;
+    const done = statuses.filter((s) => s === "done").length;
 
-    return { completed, total };
+    return { done, total };
   }
 
   /**
@@ -358,17 +358,17 @@ export class ReportsManager {
   createStatusBadge(status) {
     // Map status values to checkpoint table SVG files
     const statusMap = {
-      completed: "done-1",
-      pending: "ready-1",
-      "in-progress": "active-1",
-      in_progress: "active-1",
+      done: "done-1",
+      ready: "ready-1",
+      active: "active-1",
+      active: "active-1",
     };
 
     const labels = {
-      completed: "Done",
-      pending: "Not Started",
-      "in-progress": "Active",
-      in_progress: "Active",
+      done: "Done",
+      ready: "Not Started",
+      active: "Active",
+      active: "Active",
     };
 
     const svgName = statusMap[status] || status;
@@ -386,20 +386,20 @@ export class ReportsManager {
   /**
    * Create progress bar HTML
    */
-  createProgressBar(completed, total, status, isSaved = true) {
+  createProgressBar(done, total, status, isSaved = true) {
     // Show "not saved" for unsaved checklists or when no tasks
     if (!isSaved || total === 0) {
       return '<span class="progress-text" style="text-align: center; display: block;">not saved</span>';
     }
 
-    const percentage = (completed / total) * 100;
+    const percentage = (done / total) * 100;
 
     return `
             <div class="progress-container">
                 <div class="progress-bar">
                     <div class="progress-fill ${status}" style="width: ${percentage}%"></div>
                 </div>
-                <span class="progress-text">${completed}/${total}</span>
+                <span class="progress-text">${done}/${total}</span>
             </div>
         `;
   }

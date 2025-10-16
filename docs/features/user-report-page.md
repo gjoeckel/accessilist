@@ -23,7 +23,7 @@ A user-specific report page that displays a detailed view of a single checklist 
 - `/js/report.js` - Client-side report logic (distinct from `/js/reports.js`)
 
 **Modified Files:**
-- `/php/mychecklist.php` - Add "Report" button to header
+- `/php/list.php` - Add "Report" button to header
 - `/router.php` - Add `/report` clean URL route
 - `/css/header.css` - Report button styling (may already exist)
 
@@ -47,7 +47,7 @@ Last updated: "10-08-25 2:45 PM"
 
 **Navigation:**
 - Home button (left side of header)
-- Report button opens in new window from mychecklist.php
+- Report button opens in new window from list.php
 - Positioned left of Save button
 - Same CSS styling as Home page button
 
@@ -74,7 +74,7 @@ Last updated: "10-08-25 2:45 PM"
    - Pattern: Similar to Admin page's Updated column (not populated until first save)
 
 4. **Status Column**
-   - Displays status icon (pending/in-progress/completed)
+   - Displays status icon (ready/active/done)
    - From `state.statusButtons` object
    - Uses existing status icon SVGs
 
@@ -91,12 +91,12 @@ Last updated: "10-08-25 2:45 PM"
     "typeSlug": "camtasia",
     "state": {
       "statusButtons": {
-        "status-1.1": "completed",
+        "status-1.1": "done",
         "status-1.2": "in_progress",
-        "status-2.1": "pending"
+        "status-2.1": "ready"
       },
       "notes": {
-        "notes_1.1": "Task completed successfully",
+        "notes_1.1": "Task done successfully",
         "notes_1.2": "Work in progress"
       }
     },
@@ -111,7 +111,7 @@ Last updated: "10-08-25 2:45 PM"
 
 ### 6. Launch Mechanism
 
-**From mychecklist.php:**
+**From list.php:**
 - Add button: `<button id="reportButton" class="report-button">Report</button>`
 - Position: Left of "Save" button in header
 - Styling: Match Home page button color scheme
@@ -160,7 +160,7 @@ Principle 2: [Title]
 - Reuse existing table CSS classes where possible
 - Principle headers: Bold, larger font
 - Task rows: Standard table row styling
-- Status icons: Same size/alignment as mychecklist.php
+- Status icons: Same size/alignment as list.php
 
 ### 10. Accessibility Requirements
 
@@ -175,7 +175,7 @@ Principle 2: [Title]
 ## Data Flow Diagram
 
 ```
-1. User clicks "Report" button on mychecklist.php
+1. User clicks "Report" button on list.php
    ↓
 2. Opens /report?session=ABC in new window
    ↓
@@ -200,7 +200,7 @@ Principle 2: [Title]
 - [x] Add route to router.php
 - [ ] Create report.php template
 - [ ] Create report.js logic
-- [ ] Add Report button to mychecklist.php
+- [ ] Add Report button to list.php
 - [ ] Basic table rendering with 4 columns
 - [ ] Principle grouping
 - [ ] Simple "Last updated" timestamp display
@@ -283,14 +283,14 @@ window.formatDateAdmin(timestamp);
 
 **Pattern from buildPrinciples.js:**
 ```javascript
-const statusImgPath = window.getImagePath('pending.svg');
+const statusImgPath = window.getImagePath('ready.svg');
 const imgHTML = `<img src="${statusImgPath}" alt="">`;
 ```
 
 **Status Values:**
-- `pending` → `images/pending.svg`
-- `in_progress` → `images/in-progress.svg`
-- `completed` → `images/completed.svg`
+- `ready` → `images/ready.svg`
+- `in_progress` → `images/active.svg`
+- `done` → `images/done.svg`
 
 ### 6. CSS Styling (reuse existing classes)
 
@@ -416,7 +416,7 @@ export class UserReportManager {
 
 function getTaskStatus(taskId, savedState) {
     const statusKey = `status-${taskId}`;
-    return savedState.statusButtons?.[statusKey] || 'pending';
+    return savedState.statusButtons?.[statusKey] || 'ready';
 }
 
 function getTaskNotes(taskId, savedState) {
@@ -471,9 +471,9 @@ function groupTasksByPrinciple(principlesData, savedState) {
 }
 ```
 
-### Step 6: Add Report Button to mychecklist.php
+### Step 6: Add Report Button to list.php
 
-**File:** `/php/mychecklist.php`
+**File:** `/php/list.php`
 **Location:** Header buttons section (around line 20-25)
 
 **Update:**
@@ -548,7 +548,7 @@ function displayLastUpdated(timestamp) {
 15. Test: Table renders with all data
 
 ### Session 4: Integration
-16. Add Report button to mychecklist.php header
+16. Add Report button to list.php header
 17. Add button click handler
 18. Test: Button opens report in new window
 19. Add CSS styling for button (if needed)
@@ -567,7 +567,7 @@ function displayLastUpdated(timestamp) {
 
 ### Functional Testing
 - [ ] `/report` route resolves correctly
-- [ ] Report opens in new window from mychecklist.php
+- [ ] Report opens in new window from list.php
 - [ ] Session key passed correctly via URL
 - [ ] Data fetches successfully from API
 - [ ] Type name displays correctly in h1
@@ -610,7 +610,7 @@ function displayLastUpdated(timestamp) {
 | **Data Source** | `list-detailed.php` | `restore.php` |
 | **Table Columns** | Type, Created, Key, Status, Progress | Tasks, Notes, Updated, Status |
 | **Grouping** | Filter buttons (status-based) | Principle headers |
-| **Access** | Admin page link | Report button on mychecklist.php |
+| **Access** | Admin page link | Report button on list.php |
 | **Target User** | Admin/instructor | End user |
 | **JavaScript** | `reports.js` (`ReportsManager`) | `report.js` (`UserReportManager`) |
 
@@ -636,8 +636,8 @@ function displayLastUpdated(timestamp) {
 ## Executive Summary
 
 The Reports feature provides a comprehensive dashboard for viewing all saved checklists with:
-- **Real-time status calculation** (Completed, In Progress, Pending)
-- **Progress tracking** (completed tasks / total tasks)
+- **Real-time status calculation** (Done, Active, Ready)
+- **Progress tracking** (done tasks / total tasks)
 - **Interactive filtering** by status
 - **Sortable table** with clickable links to each checklist
 - **Responsive UI** with accessible markup
@@ -681,19 +681,19 @@ require_once __DIR__ . '/includes/common-scripts.php';
 ### Section C: Filter Buttons (Lines 25-53)
 ```php
 <div class="filter-group" role="group" aria-label="Filter checklists by status">
-    <button id="filter-completed" class="filter-button active"
-            data-filter="completed" aria-pressed="true">
-        <span class="filter-label">Completed</span>
-        <span class="filter-count" id="count-completed">0</span>
+    <button id="filter-done" class="filter-button active"
+            data-filter="done" aria-pressed="true">
+        <span class="filter-label">Done</span>
+        <span class="filter-count" id="count-done">0</span>
     </button>
-    <!-- ... similar for pending and in-progress -->
+    <!-- ... similar for ready and active -->
 </div>
 ```
 **Features:**
 - **ARIA attributes**: `role="group"`, `aria-pressed` for accessibility
 - **Count badges**: Dynamic counters updated by JavaScript
 - **Active state**: One filter active at a time
-- **Default**: "Completed" filter active on page load
+- **Default**: "Done" filter active on page load
 
 ### Section D: Reports Table (Lines 56-70)
 ```php
@@ -714,8 +714,8 @@ require_once __DIR__ . '/includes/common-scripts.php';
 1. **Type**: Checklist type (Word, Excel, Camtasia, etc.)
 2. **Created**: Timestamp when checklist was created
 3. **Key**: 3-character session identifier (clickable link)
-4. **Status**: Badge showing Completed/Pending/In Progress
-5. **Progress**: Visual progress bar (X/Y tasks completed)
+4. **Status**: Badge showing Done/Ready/Active
+5. **Progress**: Visual progress bar (X/Y tasks done)
 
 ### Section E: JavaScript Initialization (Lines 82-140)
 ```javascript
@@ -783,7 +783,7 @@ Embedded styles for Reports-specific components:
 - Flexbox container
 - Visual bar with animated fill
 - Percentage-based width
-- Text showing "X/Y" completed
+- Text showing "X/Y" done
 
 ---
 
@@ -798,7 +798,7 @@ Embedded styles for Reports-specific components:
 export class ReportsManager {
     constructor() {
         this.allChecklists = [];
-        this.currentFilter = 'completed';
+        this.currentFilter = 'done';
         this.filterButtons = null;
         this.tableBody = null;
     }
@@ -806,7 +806,7 @@ export class ReportsManager {
 ```
 **Properties:**
 - **`allChecklists`**: Array of all loaded checklist data
-- **`currentFilter`**: Currently active filter ('completed', 'pending', 'in-progress')
+- **`currentFilter`**: Currently active filter ('done', 'ready', 'active')
 - **`filterButtons`**: Cached DOM references
 - **`tableBody`**: Cached table body element
 
@@ -892,45 +892,45 @@ async loadChecklists() {
 ```javascript
 calculateStatus(statusButtons) {
     if (!statusButtons || typeof statusButtons !== 'object') {
-        return 'pending';
+        return 'ready';
     }
 
     const statuses = Object.values(statusButtons);
 
     if (statuses.length === 0) {
-        return 'pending';
+        return 'ready';
     }
 
-    const completedCount = statuses.filter(s => s === 'completed').length;
+    const doneCount = statuses.filter(s => s === 'done').length;
     const inProgressCount = statuses.filter(s => s === 'in_progress').length;
     const total = statuses.length;
 
-    // All completed
-    if (completedCount === total) {
-        return 'completed';
+    // All done
+    if (doneCount === total) {
+        return 'done';
     }
 
-    // Some completed or in progress
-    if (completedCount > 0 || inProgressCount > 0) {
-        return 'in-progress';
+    // Some done or in progress
+    if (doneCount > 0 || inProgressCount > 0) {
+        return 'active';
     }
 
-    // All pending
-    return 'pending';
+    // All ready
+    return 'ready';
 }
 ```
 **Status Logic:**
-- **Completed**: ALL tasks are "completed"
-- **In Progress**: At least ONE task is "completed" or "in_progress"
-- **Pending**: ALL tasks are "pending" (or no tasks exist)
+- **Done**: ALL tasks are "done"
+- **Active**: At least ONE task is "done" or "in_progress"
+- **Ready**: ALL tasks are "ready" (or no tasks exist)
 
 ### Section F: Filter Count Update (Lines 132-150)
 ```javascript
 updateFilterCounts() {
     const counts = {
-        'completed': 0,
-        'pending': 0,
-        'in-progress': 0
+        'done': 0,
+        'ready': 0,
+        'active': 0
     };
 
     this.allChecklists.forEach(checklist => {
@@ -1014,7 +1014,7 @@ async createChecklistRow(checklist) {
         <td>${this.escapeHtml(formattedDate)}</td>
         <td>${this.createInstanceLink(checklist.sessionKey, typeSlug)}</td>
         <td>${this.createStatusBadge(checklist.calculatedStatus)}</td>
-        <td>${this.createProgressBar(progress.completed, progress.total,
+        <td>${this.createProgressBar(progress.done, progress.total,
                                      checklist.calculatedStatus)}</td>
     `;
 
@@ -1024,24 +1024,24 @@ async createChecklistRow(checklist) {
 **Row Construction:**
 1. **Type formatting**: Uses `TypeManager` to get display name
 2. **Date formatting**: Uses centralized date utilities
-3. **Progress calculation**: Counts completed vs total tasks
+3. **Progress calculation**: Counts done vs total tasks
 4. **XSS protection**: All output is escaped
 
 ### Section I: Progress Calculation (Lines 228-239)
 ```javascript
 calculateProgress(statusButtons) {
     if (!statusButtons || typeof statusButtons !== 'object') {
-        return { completed: 0, total: 0 };
+        return { done: 0, total: 0 };
     }
 
     const statuses = Object.values(statusButtons);
     const total = statuses.length;
-    const completed = statuses.filter(s => s === 'completed').length;
+    const done = statuses.filter(s => s === 'done').length;
 
-    return { completed, total };
+    return { done, total };
 }
 ```
-**Returns object** with completed count and total count
+**Returns object** with done count and total count
 
 ### Section J: HTML Component Creators (Lines 241-296)
 
@@ -1068,9 +1068,9 @@ createInstanceLink(sessionKey, typeSlug) {
 ```javascript
 createStatusBadge(status) {
     const labels = {
-        'completed': 'Completed',
-        'pending': 'Pending',
-        'in-progress': 'In Progress'
+        'done': 'Done',
+        'ready': 'Ready',
+        'active': 'Active'
     };
 
     const label = labels[status] || status;
@@ -1082,19 +1082,19 @@ createStatusBadge(status) {
 
 **Progress Bar:**
 ```javascript
-createProgressBar(completed, total, status) {
+createProgressBar(done, total, status) {
     if (total === 0) {
         return '<span class="progress-text">—</span>';
     }
 
-    const percentage = (completed / total) * 100;
+    const percentage = (done / total) * 100;
 
     return `
         <div class="progress-container">
             <div class="progress-bar">
                 <div class="progress-fill ${status}" style="width: ${percentage}%"></div>
             </div>
-            <span class="progress-text">${completed}/${total}</span>
+            <span class="progress-text">${done}/${total}</span>
         </div>
     `;
 }
@@ -1212,9 +1212,9 @@ send_success($instances);
       "typeSlug": "camtasia",
       "state": {
         "statusButtons": {
-          "status-1.1": "completed",
+          "status-1.1": "done",
           "status-1.2": "in_progress",
-          "status-2.1": "pending"
+          "status-2.1": "ready"
         },
         "notes": {...},
         "sidePanel": {...}
@@ -1425,7 +1425,7 @@ public static function convertDisplayNameToSlug($displayName) {
    ↓
 7. ReportsManager calculates status for each checklist
    ↓
-8. Updates filter counts (completed: X, pending: Y, in-progress: Z)
+8. Updates filter counts (done: X, ready: Y, active: Z)
    ↓
 9. Renders table with filtered results
    ↓
@@ -1438,24 +1438,24 @@ public static function convertDisplayNameToSlug($displayName) {
 
 ```
 Given statusButtons: {
-  "status-1.1": "completed",
+  "status-1.1": "done",
   "status-1.2": "in_progress",
-  "status-2.1": "pending",
-  "status-2.2": "completed"
+  "status-2.1": "ready",
+  "status-2.2": "done"
 }
 
 Count:
-- completed: 2
+- done: 2
 - in_progress: 1
-- pending: 1
+- ready: 1
 - total: 4
 
 Logic:
-IF completed === total THEN "completed"
-ELSE IF (completed > 0 OR in_progress > 0) THEN "in-progress"
-ELSE "pending"
+IF done === total THEN "done"
+ELSE IF (done > 0 OR in_progress > 0) THEN "active"
+ELSE "ready"
 
-Result: "in-progress" (because 2 > 0)
+Result: "active" (because 2 > 0)
 ```
 
 ---

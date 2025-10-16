@@ -96,7 +96,7 @@ check_required_files() {
         "index.php"
         "php/home.php"
         "php/admin.php"
-        "php/mychecklist.php"
+        "php/list.php"
         "js/path-utils.js"
         "php/includes/api-utils.php"
         "tests/run_comprehensive_tests.php"

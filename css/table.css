@@ -14,7 +14,7 @@
    LOADS: After header.css
 
    USED BY:
-   - mychecklist.php (principle tables)
+   - list.php (principle tables)
    - list-report.php (single report table)
    - systemwide-report.php (systemwide reports table)
 
@@ -31,34 +31,34 @@
    ==================================================================== */
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-bottom: var(--spacing-md);
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: var(--spacing-md);
 }
 
 caption {
-    text-align: left;
-    font-size: 1.2rem;
-    margin: 0.25rem 2rem 1.5rem 6rem;
+  text-align: left;
+  font-size: 1.2rem;
+  margin: 0.25rem 2rem 1.5rem 6rem;
 }
 
 th {
-    border: 1px solid #ccc;
-    padding: 1rem;
-    vertical-align: middle;
-    text-align: center;
-    color: var(--th-color, #222);
-    background-color: #f2f2f2;
-    font-size: 1.25rem;
+  border: 1px solid #ccc;
+  padding: 1rem;
+  vertical-align: middle;
+  text-align: center;
+  color: var(--th-color, #222);
+  background-color: #f2f2f2;
+  font-size: 1.25rem;
 }
 
 td {
-    border: 1px solid #ccc;
-    padding: 8px; /* Reserved whitespace - allows golden ring + gap from cell border */
-    color: #222;
-    text-align: center;
-    vertical-align: middle;
-    font-size: 1rem;
+  border: 1px solid #ccc;
+  padding: 8px; /* Reserved whitespace - allows golden ring + gap from cell border */
+  color: #222;
+  text-align: center;
+  vertical-align: middle;
+  font-size: 1rem;
 }
 
 /* ====================================================================
@@ -67,17 +67,17 @@ td {
    ==================================================================== */
 
 .task-cell {
-    width: auto; /* Fills remaining space after fixed-width cells (4×75px) and notes (30%) */
-    min-height: 75px; /* Match row height with interactive cells */
-    vertical-align: middle;
+  width: auto; /* Fills remaining space after fixed-width cells (4×75px) and notes (30%) */
+  min-height: 75px; /* Match row height with interactive cells */
+  vertical-align: middle;
 }
 
 td.task-cell {
-    text-align: left; /* Data cells left-aligned, headers inherit center from base th */
-    padding-left: 24px; /* 3x normal 8px padding = 24px total left indent */
-    font-size: 0.85rem;
-    line-height: 1.5;
-    color: #333;
+  text-align: left; /* Data cells left-aligned, headers inherit center from base th */
+  padding-left: 24px; /* 3x normal 8px padding = 24px total left indent */
+  font-size: 0.85rem;
+  line-height: 1.5;
+  color: #333;
 }
 
 /* Interactive cells - uniform square dimensions for consistent golden ring spacing */
@@ -85,13 +85,13 @@ td.task-cell {
 .status-cell,
 .restart-cell,
 .delete-cell {
-    width: 75px; /* Fixed width = height for perfect squares */
-    min-width: 75px;
-    max-width: 75px;
-    min-height: 75px;
-    text-align: center;
-    vertical-align: middle;
-    position: relative;
+  width: 75px; /* Fixed width = height for perfect squares */
+  min-width: 75px;
+  max-width: 75px;
+  min-height: 75px;
+  text-align: center;
+  vertical-align: middle;
+  position: relative;
 }
 
 /* Interactive cell headers need less padding due to narrow width */
@@ -99,20 +99,20 @@ th.info-cell,
 th.status-cell,
 th.restart-cell,
 th.delete-cell {
-    padding: 8px; /* Reduced from 1rem to fit text in 75px width */
+  padding: 8px; /* Reduced from 1rem to fit text in 75px width */
 }
 
 /* Notes cell - text content */
 .notes-cell {
-    width: 30%;
-    min-height: 75px; /* Match row height with interactive cells */
-    vertical-align: middle;
-    white-space: normal;
-    word-wrap: break-word;
+  width: 30%;
+  min-height: 75px; /* Match row height with interactive cells */
+  vertical-align: middle;
+  white-space: normal;
+  word-wrap: break-word;
 }
 
 td.notes-cell {
-    text-align: left; /* Data cells left-aligned, headers inherit center from base th */
+  text-align: left; /* Data cells left-aligned, headers inherit center from base th */
 }
 
 /* ====================================================================
@@ -126,17 +126,17 @@ td.notes-cell {
 .restart-button,
 .report-delete-button,
 .reports-delete-button {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background: transparent;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: box-shadow 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  border-radius: 4px;
+  transition: box-shadow 0.2s ease;
 }
 
 /* Unified SVG sizing - SVGs scale naturally to fill available space */
@@ -146,16 +146,16 @@ td.notes-cell {
 .restart-button img,
 .report-delete-button img,
 .reports-delete-button img {
-    max-width: 100%;
-    max-height: 100%;
-    width: auto;
-    height: auto;
-    object-fit: contain;
+  max-width: 100%;
+  max-height: 100%;
+  width: auto;
+  height: auto;
+  object-fit: contain;
 }
 
 /* Disabled state */
 .report-status-button:disabled {
-    cursor: default;
+  cursor: default;
 }
 
 /* ====================================================================
@@ -163,41 +163,41 @@ td.notes-cell {
    ==================================================================== */
 
 /* Completed status icon sizing */
-.completed-status {
-    width: 75px !important;
-    min-width: 75px !important;
-    max-width: 75px !important;
-    box-sizing: border-box;
-    object-fit: contain;
-    padding: 0 !important;
-    display: block;
-    margin: 0 auto;
+.done-status {
+  width: 75px !important;
+  min-width: 75px !important;
+  max-width: 75px !important;
+  box-sizing: border-box;
+  object-fit: contain;
+  padding: 0 !important;
+  display: block;
+  margin: 0 auto;
 }
 
-.has-completed-status .report-status-button {
-    display: none;
+.has-done-status .report-status-button {
+  display: none;
 }
 
-.has-completed-status .completed-status {
-    display: block;
+.has-done-status .done-status {
+  display: block;
 }
 
 /* Completed textarea styling - unified for both Notes and Task textareas */
-.completed textarea,
-.report-task-cell.completed textarea,
-.report-notes-cell.completed textarea {
-    border: 1px solid white !important;
-    pointer-events: none;
-    background: #fff;
-    transition: none !important; /* Remove animation */
+.done textarea,
+.report-task-cell.done textarea,
+.report-notes-cell.done textarea {
+  border: 1px solid white !important;
+  pointer-events: none;
+  background: #fff;
+  transition: none !important; /* Remove animation */
 }
 
-.completed textarea:not([readonly]):hover,
-.report-task-cell.completed textarea:not([readonly]):hover,
-.report-notes-cell.completed textarea:not([readonly]):hover {
-    border: 1px solid white !important;
-    background: #fff !important;
-    cursor: default;
+.done textarea:not([readonly]):hover,
+.report-task-cell.done textarea:not([readonly]):hover,
+.report-notes-cell.done textarea:not([readonly]):hover {
+  border: 1px solid white !important;
+  background: #fff !important;
+  cursor: default;
 }
 
 /* ====================================================================
@@ -205,13 +205,13 @@ td.notes-cell {
    ==================================================================== */
 
 .table-no-data-message {
-    text-align: center;
-    padding: 2rem;
-    color: #666;
+  text-align: center;
+  padding: 2rem;
+  color: #666;
 }
 
 .table-error-message {
-    text-align: center;
-    padding: 2rem;
-    color: #d32f2f;
+  text-align: center;
+  padding: 2rem;
+  color: #d32f2f;
 }

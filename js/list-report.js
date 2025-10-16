@@ -373,9 +373,9 @@ export class UserReportManager {
    */
   updateFilterCounts() {
     const counts = {
-      completed: 0,
-      pending: 0,
-      "in-progress": 0,
+      done: 0,
+      ready: 0,
+      active: 0,
       all: 0,
     };
 
@@ -383,8 +383,8 @@ export class UserReportManager {
       const status = item.status;
       if (counts.hasOwnProperty(status)) {
         counts[status]++;
-      } else if (status === "in_progress") {
-        counts["in-progress"]++;
+      } else if (status === "active") {
+        counts["active"]++;
       }
       counts["all"]++; // Count all tasks
     });
@@ -408,8 +408,7 @@ export class UserReportManager {
 
     this.allRows.forEach((item) => {
       const itemCheckpoint = item.checkpointNum; // Checkpoint number from row data
-      const status =
-        item.status === "in_progress" ? "in-progress" : item.status;
+      const status = item.status === "active" ? "active" : item.status;
 
       // Check if row matches both checkpoint AND status filters
       const matchesCheckpoint =
@@ -478,20 +477,20 @@ export class UserReportManager {
 
       // Custom messages based on filter type
       const statusMessages = {
-        completed: "tasks done",
-        "in-progress": "tasks active",
-        pending: "tasks started",
+        done: "tasks done",
+        active: "tasks active",
+        ready: "tasks started",
       };
       const statusText = statusMessages[this.currentFilter] || "tasks found";
 
       // Check if checkpoint-specific or "All"
       if (this.currentCheckpoint === "all") {
         // Simple message for "All" checkpoint
-        const prefix = this.currentFilter === "pending" ? "All" : "No";
+        const prefix = this.currentFilter === "ready" ? "All" : "No";
         cell.textContent = `${prefix} ${statusText}`;
       } else {
         // Checkpoint-specific message with CSS icon
-        const prefix = this.currentFilter === "pending" ? "All" : "No";
+        const prefix = this.currentFilter === "ready" ? "All" : "No";
 
         // Create icon span with data-number attribute for CSS styling
         const iconSpan = document.createElement("span");
@@ -556,7 +555,7 @@ export class UserReportManager {
           id: manualRow.id,
           task: manualRow.task || "",
           notes: manualRow.notes || "",
-          status: manualRow.status || "pending",
+          status: manualRow.status || "ready",
           isManual: true,
         });
       });
@@ -572,7 +571,7 @@ export class UserReportManager {
    */
   getTaskStatus(taskId, savedState) {
     const statusKey = `status-${taskId}`;
-    return savedState.statusButtons?.[statusKey] || "pending";
+    return savedState.statusButtons?.[statusKey] || "ready";
   }
 
   /**
@@ -590,7 +589,7 @@ export class UserReportManager {
   }
 
   /**
-   * Create principle section (matches mychecklist.php structure exactly)
+   * Create principle section (matches list.php structure exactly)
    */
   createPrincipleSection(section) {
     // Create section element
@@ -683,7 +682,7 @@ export class UserReportManager {
     taskCell.setAttribute("role", "cell");
 
     const taskTextarea = document.createElement("textarea");
-    taskTextarea.className = "notes-textarea textarea-completed";
+    taskTextarea.className = "notes-textarea textarea-done";
     taskTextarea.value = task.task;
     taskTextarea.readOnly = true;
     taskTextarea.setAttribute("aria-readonly", "true");
@@ -697,7 +696,7 @@ export class UserReportManager {
     notesCell.setAttribute("role", "cell");
 
     const notesTextarea = document.createElement("textarea");
-    notesTextarea.className = "notes-textarea textarea-completed";
+    notesTextarea.className = "notes-textarea textarea-done";
     notesTextarea.value = task.notes || "";
     notesTextarea.readOnly = true;
     notesTextarea.setAttribute("aria-readonly", "true");
@@ -705,7 +704,7 @@ export class UserReportManager {
     notesCell.appendChild(notesTextarea);
     row.appendChild(notesCell);
 
-    // 4. Status cell with button (matches mychecklist.php exactly)
+    // 4. Status cell with button (matches list.php exactly)
     const statusCell = document.createElement("td");
     statusCell.className = "status-cell";
     statusCell.setAttribute("role", "cell");
@@ -722,10 +721,10 @@ export class UserReportManager {
   createStatusButton(status, taskId) {
     // Map status values to icon filenames
     const iconMap = {
-      pending: "ready-1",
-      "in-progress": "active-1",
-      in_progress: "active-1",
-      completed: "done-1",
+      ready: "ready-1",
+      active: "active-1",
+      active: "active-1",
+      done: "done-1",
     };
 
     const iconName = iconMap[status] || status;
@@ -748,10 +747,10 @@ export class UserReportManager {
    */
   formatStatusLabel(status) {
     const labels = {
-      pending: "Pending",
-      "in-progress": "In Progress",
-      in_progress: "In Progress",
-      completed: "Completed",
+      ready: "Ready",
+      active: "Active",
+      active: "Active",
+      done: "Done",
     };
     return labels[status] || status;
   }

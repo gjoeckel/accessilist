@@ -1,8 +1,8 @@
 # 🔍 AccessiList Legacy Analysis & Rebuild Plan
 
-**Date:** 2024-10-03  
-**Status:** ✅ **ANALYSIS COMPLETE**  
-**Source:** `/Users/a00288946/Desktop/accessilist-legacy`  
+**Date:** 2024-10-03
+**Status:** ✅ **ANALYSIS COMPLETE**
+**Source:** `/Users/a00288946/Desktop/accessilist-legacy`
 **Target:** Rebuild and deploy current version
 
 ---
@@ -24,7 +24,7 @@ accessilist-legacy/
 │   ├── api/               # REST endpoints
 │   ├── includes/          # Shared utilities
 │   ├── home.php           # Main landing page
-│   ├── mychecklist.php    # Checklist interface
+│   ├── list.php    # Checklist interface
 │   ├── admin.php          # Admin panel
 │   └── reports.php        # Reporting system
 ├── js/                     # ES6 modules

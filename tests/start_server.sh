@@ -38,7 +38,7 @@ PHP_VERSION=$(php -r "echo PHP_VERSION;")
 echo "🐘 PHP Version: ${PHP_VERSION}"
 
 # Verify required files exist
-REQUIRED_FILES=("index.php" "php/home.php" "php/mychecklist.php" "js/path-utils.js")
+REQUIRED_FILES=("index.php" "php/home.php" "php/list.php" "js/path-utils.js")
 for file in "${REQUIRED_FILES[@]}"; do
     if [ ! -f "$file" ]; then
         echo "❌ Error: Required file missing: $file"

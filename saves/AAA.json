@@ -14,10 +14,10 @@
     },
     "notes": {},
     "statusButtons": {
-      "c1": "completed",
+      "c1": "done",
       "c2": "in-progress",
-      "c3": "pending",
-      "c4": "pending"
+      "c3": "ready",
+      "c4": "ready"
     },
     "restartButtons": {},
     "principleRows": {}

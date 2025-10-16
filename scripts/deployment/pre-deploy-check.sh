@@ -64,7 +64,7 @@ REQUIRED_FILES=(
     "php/home.php"
     "php/systemwide-report.php"
     "php/list-report.php"
-    "php/mychecklist.php"
+    "php/list.php"
     "php/api/save.php"
     "php/api/restore.php"
 )
@@ -114,7 +114,7 @@ echo ""
 
 # Check PHP syntax for critical files
 PHP_ERROR=false
-for php_file in php/home.php php/systemwide-report.php php/list-report.php php/mychecklist.php; do
+for php_file in php/home.php php/systemwide-report.php php/list-report.php php/list.php; do
     if [ -f "$php_file" ]; then
         if ! php -l "$php_file" > /dev/null 2>&1; then
             echo -e "${RED}❌ Syntax error in $php_file${NC}"

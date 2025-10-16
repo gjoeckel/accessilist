@@ -101,7 +101,7 @@
 - ✅ Fixed non-critical failures (adjusted error code expectations)
 - ✅ Simplified regex patterns for content matching
 - ✅ Added URL format validation (ensures extensionless URLs)
-- ✅ **Fixed Back button to use root path (`/?session=` instead of `/mychecklist?session=`)** 🔧
+- ✅ **Fixed Back button to use root path (`/?session=` instead of `/list?session=`)** 🔧
 - ✅ Added test to verify Back button uses correct URL pattern
 - ✅ **Simplified routing - removed custom aliases** 📝
 - ✅ Updated `/reports` → `/systemwide-report` (matches filename)

@@ -18,7 +18,7 @@ All PHP files in the `/php/` directory can be accessed without the `.php` extens
 | User-Friendly URL | Actual File | Purpose |
 |-------------------|-------------|---------|
 | `/` or `/home` | `/php/home.php` | Home page - checklist type selection |
-| `/mychecklist` | `/php/mychecklist.php` | Individual checklist page (requires `?type=` parameter) |
+| `/list` | `/php/list.php` | Individual checklist page (requires `?type=` parameter) |
 | `/list-report` | `/php/list-report.php` | Detailed list report (requires `?session=` parameter) |
 | `/systemwide-report` | `/php/systemwide-report.php` | Systemwide aggregate report |
 
@@ -28,9 +28,9 @@ All PHP files in the `/php/` directory can be accessed without the `.php` extens
 |----------------------|-------------|
 | `https://webaim.org/training/online/accessilist/` | Home page |
 | `https://webaim.org/training/online/accessilist/home` | Home page (explicit) |
-| `https://webaim.org/training/online/accessilist/mychecklist?type=word` | Word checklist |
-| `https://webaim.org/training/online/accessilist/mychecklist?type=excel` | Excel checklist |
-| `https://webaim.org/training/online/accessilist/mychecklist?type=powerpoint` | PowerPoint checklist |
+| `https://webaim.org/training/online/accessilist/list?type=word` | Word checklist |
+| `https://webaim.org/training/online/accessilist/list?type=excel` | Excel checklist |
+| `https://webaim.org/training/online/accessilist/list?type=powerpoint` | PowerPoint checklist |
 | `https://webaim.org/training/online/accessilist/?session=ABC123` | Resume saved session |
 | `https://webaim.org/training/online/accessilist/list-report?session=ABC123` | List report for session |
 | `https://webaim.org/training/online/accessilist/systemwide-report` | Systemwide report |
@@ -70,7 +70,7 @@ These pages can be accessed directly via the `/php/` prefix:
 |-----|------|---------|
 | `/php/index` | `/php/index.php` | Alternative index |
 | `/php/home` | `/php/home.php` | Same as `/home` |
-| `/php/mychecklist` | `/php/mychecklist.php` | Same as `/mychecklist` |
+| `/php/list` | `/php/list.php` | Same as `/list` |
 | `/php/list-report` | `/php/list-report.php` | Same as `/list-report` |
 | `/php/systemwide-report` | `/php/systemwide-report.php` | Same as `/systemwide-report` |
 
@@ -164,7 +164,7 @@ php -S localhost:8000 router.php
 
 # Test main pages
 curl -I http://localhost:8000/home
-curl -I http://localhost:8000/mychecklist?type=word
+curl -I http://localhost:8000/list?type=word
 curl -I http://localhost:8000/list-report
 curl -I http://localhost:8000/systemwide-report
 
@@ -205,7 +205,7 @@ Static assets (CSS, JS, JSON, images) are accessed directly without routing:
 ### User-Facing Pages (4)
 
 1. **Home** - `/home` → Select checklist type
-2. **My Checklist** - `/mychecklist?type=X` → Work on checklist
+2. **My Checklist** - `/list?type=X` → Work on checklist
 3. **List Report** - `/list-report?session=X` → View detailed report
 4. **Systemwide Report** - `/systemwide-report` → View aggregate data
 

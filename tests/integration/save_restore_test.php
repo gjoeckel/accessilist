@@ -219,7 +219,7 @@ class SaveRestoreTest extends TestBase {
             }
 
             // Test session persistence in URL
-            $checklistFile = 'php/mychecklist.php';
+            $checklistFile = 'php/list.php';
             if (file_exists($checklistFile)) {
                 $content = file_get_contents($checklistFile);
                 if (strpos($content, '$_GET[\'session\']') !== false || strpos($content, '$_GET["session"]') !== false) {

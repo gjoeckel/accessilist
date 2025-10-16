@@ -5,7 +5,7 @@
  *
  * Scroll Position Calculations:
  *
- * mychecklist.php (Dynamic Buffer System):
+ * list.php (Dynamic Buffer System):
  *   - Top buffer: 90px (main::before - prevents scrolling above content)
  *   - Bottom buffer: Dynamic (main::after - calculated based on content/viewport)
  *
@@ -117,7 +117,7 @@ function updateBottomBufferNow() {
 
 /**
  * Update report page buffer
- * Simpler than mychecklist - only needs to handle table content
+ * Simpler than list - only needs to handle table content
  * Target: Last row at 500px from viewport top
  */
 window.updateReportBuffer = function () {
@@ -183,7 +183,7 @@ window.addEventListener("resize", () => {
   // Debounce resize events (already has 500ms from scheduleBufferUpdate)
   clearTimeout(resizeTimeout);
   resizeTimeout = setTimeout(() => {
-    // Update mychecklist buffer
+    // Update list buffer
     if (typeof window.scheduleBufferUpdate === "function") {
       window.scheduleBufferUpdate();
     }

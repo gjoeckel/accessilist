@@ -1,327 +1,305 @@
 {
-  "type": "demo",
-  "name": "AccessiList Tutorial",
-  "description": "Interactive tutorial for learning how to use accessibility checklists",
-  "checkpoints": [
-    {
-      "id": "c1",
-      "heading": "Checkpoint 1",
-      "principle": "Getting Started",
-      "tasks": [
-        {
-          "id": "t1",
-          "text": "Task 1",
-          "notes": ""
-        },
-        {
-          "id": "t2",
-          "text": "Task 2",
-          "notes": ""
-        },
-        {
-          "id": "t3",
-          "text": "Task 3",
-          "notes": ""
-        },
-        {
-          "id": "t4",
-          "text": "Task 4",
-          "notes": ""
-        },
-        {
-          "id": "t5",
-          "text": "Task 5",
-          "notes": ""
-        }
-      ]
-    },
-    {
-      "id": "c2",
-      "heading": "Checkpoint 2",
-      "principle": "Getting Started",
-      "tasks": [
-        {
-          "id": "t1",
-          "text": "Task 1",
-          "notes": ""
-        },
-        {
-          "id": "t2",
-          "text": "Task 2",
-          "notes": ""
-        },
-        {
-          "id": "t3",
-          "text": "Task 3",
-          "notes": ""
-        },
-        {
-          "id": "t4",
-          "text": "Task 4",
-          "notes": ""
-        },
-        {
-          "id": "t5",
-          "text": "Task 5",
-          "notes": ""
-        }
-      ]
-    },
-    {
-      "id": "c3",
-      "heading": "Checkpoint 3",
-      "principle": "Getting Started",
-      "tasks": [
-        {
-          "id": "t1",
-          "text": "Task 1",
-          "notes": ""
-        },
-        {
-          "id": "t2",
-          "text": "Task 2",
-          "notes": ""
-        },
-        {
-          "id": "t3",
-          "text": "Task 3",
-          "notes": ""
-        },
-        {
-          "id": "t4",
-          "text": "Task 4",
-          "notes": ""
-        },
-        {
-          "id": "t5",
-          "text": "Task 5",
-          "notes": ""
-        }
-      ]
-    },
-    {
-      "id": "c4",
-      "heading": "Checkpoint 4",
-      "principle": "Getting Started",
-      "tasks": [
-        {
-          "id": "t1",
-          "text": "Task 1",
-          "notes": ""
-        },
-        {
-          "id": "t2",
-          "text": "Task 2",
-          "notes": ""
-        },
-        {
-          "id": "t3",
-          "text": "Task 3",
-          "notes": ""
-        },
-        {
-          "id": "t4",
-          "text": "Task 4",
-          "notes": ""
-        },
-        {
-          "id": "t5",
-          "text": "Task 5",
-          "notes": ""
-        }
-      ]
-    },
-    {
-      "id": "c5",
-      "heading": "Checkpoint 5",
-      "principle": "Getting Started",
-      "tasks": [
-        {
-          "id": "t1",
-          "text": "Task 1",
-          "notes": ""
-        },
-        {
-          "id": "t2",
-          "text": "Task 2",
-          "notes": ""
-        },
-        {
-          "id": "t3",
-          "text": "Task 3",
-          "notes": ""
-        },
-        {
-          "id": "t4",
-          "text": "Task 4",
-          "notes": ""
-        },
-        {
-          "id": "t5",
-          "text": "Task 5",
-          "notes": ""
-        }
-      ]
-    },
-    {
-      "id": "c6",
-      "heading": "Checkpoint 6",
-      "principle": "Getting Started",
-      "tasks": [
-        {
-          "id": "t1",
-          "text": "Task 1",
-          "notes": ""
-        },
-        {
-          "id": "t2",
-          "text": "Task 2",
-          "notes": ""
-        },
-        {
-          "id": "t3",
-          "text": "Task 3",
-          "notes": ""
-        },
-        {
-          "id": "t4",
-          "text": "Task 4",
-          "notes": ""
-        },
-        {
-          "id": "t5",
-          "text": "Task 5",
-          "notes": ""
-        }
-      ]
-    },
-    {
-      "id": "c7",
-      "heading": "Checkpoint 7",
-      "principle": "Getting Started",
-      "tasks": [
-        {
-          "id": "t1",
-          "text": "Task 1",
-          "notes": ""
-        },
-        {
-          "id": "t2",
-          "text": "Task 2",
-          "notes": ""
-        },
-        {
-          "id": "t3",
-          "text": "Task 3",
-          "notes": ""
-        },
-        {
-          "id": "t4",
-          "text": "Task 4",
-          "notes": ""
-        },
-        {
-          "id": "t5",
-          "text": "Task 5",
-          "notes": ""
-        }
-      ]
-    },
-    {
-      "id": "c8",
-      "heading": "Checkpoint 8",
-      "principle": "Getting Started",
-      "tasks": [
-        {
-          "id": "t1",
-          "text": "Task 1",
-          "notes": ""
-        },
-        {
-          "id": "t2",
-          "text": "Task 2",
-          "notes": ""
-        },
-        {
-          "id": "t3",
-          "text": "Task 3",
-          "notes": ""
-        },
-        {
-          "id": "t4",
-          "text": "Task 4",
-          "notes": ""
-        },
-        {
-          "id": "t5",
-          "text": "Task 5",
-          "notes": ""
-        }
-      ]
-    },
-    {
-      "id": "c9",
-      "heading": "Checkpoint 9",
-      "principle": "Getting Started",
-      "tasks": [
-        {
-          "id": "t1",
-          "text": "Task 1",
-          "notes": ""
-        },
-        {
-          "id": "t2",
-          "text": "Task 2",
-          "notes": ""
-        },
-        {
-          "id": "t3",
-          "text": "Task 3",
-          "notes": ""
-        },
-        {
-          "id": "t4",
-          "text": "Task 4",
-          "notes": ""
-        },
-        {
-          "id": "t5",
-          "text": "Task 5",
-          "notes": ""
-        }
-      ]
-    },
-    {
-      "id": "c10",
-      "heading": "Checkpoint 10",
-      "principle": "Getting Started",
-      "tasks": [
-        {
-          "id": "t1",
-          "text": "Task 1",
-          "notes": ""
-        },
-        {
-          "id": "t2",
-          "text": "Task 2",
-          "notes": ""
-        },
-        {
-          "id": "t3",
-          "text": "Task 3",
-          "notes": ""
-        },
-        {
-          "id": "t4",
-          "text": "Task 4",
-          "notes": ""
-        },
-        {
-          "id": "t5",
-          "text": "Task 5",
-          "notes": ""
-        }
-      ]
-    }
-  ]
+  "version": "0.8",
+  "title": "How to Use AccessiList",
+  "type": "Demo",
+  "checkpoint-1": {
+    "caption": "Getting Started - Introduction to Accessibility",
+    "table": [
+      {
+        "id": "1.1",
+        "task": "Learn how to navigate the checklist interface",
+        "info": "Use the side panel to jump between checkpoints and track your progress"
+      },
+      {
+        "id": "1.2",
+        "task": "Practice changing task status from Ready to Active to Done",
+        "info": "Click the status button to cycle through states"
+      },
+      {
+        "id": "1.3",
+        "task": "Add notes to a task using the notes field",
+        "info": "Use notes to document your approach or findings"
+      },
+      {
+        "id": "1.4",
+        "task": "Try clicking the Info button to see helpful examples",
+        "info": "Info buttons provide context and examples for each task"
+      },
+      {
+        "id": "1.5",
+        "task": "Reset a task using the Reset button",
+        "info": "The reset button appears when a task is Active or Done"
+      }
+    ]
+  },
+  "checkpoint-2": {
+    "caption": "Working with Tasks - Managing Your Checklist",
+    "table": [
+      {
+        "id": "2.1",
+        "task": "Add a custom task using the Add Row button",
+        "info": "Each checkpoint allows you to add your own custom tasks"
+      },
+      {
+        "id": "2.2",
+        "task": "Save your progress using the Save button",
+        "info": "Generate a unique session key to save and restore your work"
+      },
+      {
+        "id": "2.3",
+        "task": "View reports to see your overall progress",
+        "info": "Reports show completed tasks and provide an export option"
+      },
+      {
+        "id": "2.4",
+        "task": "Delete a custom task you added",
+        "info": "Custom tasks can be removed using the delete button"
+      },
+      {
+        "id": "2.5",
+        "task": "Print or export your checklist",
+        "info": "Use the browser print function to create a PDF"
+      }
+    ]
+  },
+  "checkpoint-3": {
+    "caption": "Understanding Accessibility - Core Concepts",
+    "table": [
+      {
+        "id": "3.1",
+        "task": "Add alternative text to images with content or function",
+        "info": "Screen readers rely on alt text to describe images to users"
+      },
+      {
+        "id": "3.2",
+        "task": "Use sufficient color contrast for text and backgrounds",
+        "info": "Minimum contrast ratio of 4.5:1 for normal text, 3:1 for large text"
+      },
+      {
+        "id": "3.3",
+        "task": "Ensure all interactive elements are keyboard accessible",
+        "info": "Users should be able to navigate without a mouse"
+      },
+      {
+        "id": "3.4",
+        "task": "Provide clear, descriptive labels for form inputs",
+        "info": "Labels help users understand what information is required"
+      },
+      {
+        "id": "3.5",
+        "task": "Structure content with proper heading hierarchy",
+        "info": "Use H1, H2, H3 in logical order without skipping levels"
+      }
+    ]
+  },
+  "checkpoint-4": {
+    "caption": "Visual Accessibility - Design and Layout",
+    "table": [
+      {
+        "id": "4.1",
+        "task": "Never rely on color alone to convey information",
+        "info": "Use text labels, patterns, or icons in addition to color"
+      },
+      {
+        "id": "4.2",
+        "task": "Use readable fonts and adequate font sizes",
+        "info": "Minimum 16px for body text, simple sans-serif fonts work best"
+      },
+      {
+        "id": "4.3",
+        "task": "Ensure sufficient spacing between interactive elements",
+        "info": "Target size should be at least 44x44 pixels"
+      },
+      {
+        "id": "4.4",
+        "task": "Avoid content that flashes more than 3 times per second",
+        "info": "Flashing content can trigger seizures in some users"
+      },
+      {
+        "id": "4.5",
+        "task": "Provide visible focus indicators for all interactive elements",
+        "info": "Users need to see where keyboard focus is located"
+      }
+    ]
+  },
+  "checkpoint-5": {
+    "caption": "Content Accessibility - Text and Media",
+    "table": [
+      {
+        "id": "5.1",
+        "task": "Provide captions for video content",
+        "info": "Captions benefit deaf users and those in sound-sensitive environments"
+      },
+      {
+        "id": "5.2",
+        "task": "Include transcripts for audio content",
+        "info": "Transcripts provide an alternative to audio-only content"
+      },
+      {
+        "id": "5.3",
+        "task": "Use plain language and simple sentence structure",
+        "info": "Clear language benefits all users, especially those with cognitive disabilities"
+      },
+      {
+        "id": "5.4",
+        "task": "Define acronyms and abbreviations on first use",
+        "info": "Don't assume users know specialized terminology"
+      },
+      {
+        "id": "5.5",
+        "task": "Ensure text can be resized up to 200% without loss of functionality",
+        "info": "Users with low vision may need larger text"
+      }
+    ]
+  },
+  "checkpoint-6": {
+    "caption": "Navigation and Interaction - User Experience",
+    "table": [
+      {
+        "id": "6.1",
+        "task": "Provide multiple ways to navigate content",
+        "info": "Search, table of contents, and site map are helpful navigation aids"
+      },
+      {
+        "id": "6.2",
+        "task": "Include skip links to bypass repetitive content",
+        "info": "Allow keyboard users to jump to main content quickly"
+      },
+      {
+        "id": "6.3",
+        "task": "Use descriptive link text instead of 'click here'",
+        "info": "Link text should make sense out of context"
+      },
+      {
+        "id": "6.4",
+        "task": "Ensure consistent navigation across pages",
+        "info": "Predictable navigation helps users learn and remember site structure"
+      },
+      {
+        "id": "6.5",
+        "task": "Provide clear error messages and suggestions",
+        "info": "Help users understand and fix errors in form submissions"
+      }
+    ]
+  },
+  "checkpoint-7": {
+    "caption": "Forms and Input - Data Entry",
+    "table": [
+      {
+        "id": "7.1",
+        "task": "Associate labels with form inputs using proper markup",
+        "info": "Use label elements with for attributes or aria-label"
+      },
+      {
+        "id": "7.2",
+        "task": "Group related form elements using fieldsets",
+        "info": "Fieldsets help users understand relationships between inputs"
+      },
+      {
+        "id": "7.3",
+        "task": "Identify required fields clearly",
+        "info": "Use both visual indicators and aria-required attribute"
+      },
+      {
+        "id": "7.4",
+        "task": "Provide input format instructions before the field",
+        "info": "Tell users what format is expected before they enter data"
+      },
+      {
+        "id": "7.5",
+        "task": "Allow users to review and correct information before submission",
+        "info": "Provide confirmation pages for critical actions"
+      }
+    ]
+  },
+  "checkpoint-8": {
+    "caption": "Tables and Data - Structured Information",
+    "table": [
+      {
+        "id": "8.1",
+        "task": "Use table headers to identify columns and rows",
+        "info": "Screen readers use th elements to provide context for table cells"
+      },
+      {
+        "id": "8.2",
+        "task": "Provide a caption or summary for complex tables",
+        "info": "Help users understand the purpose and structure of the table"
+      },
+      {
+        "id": "8.3",
+        "task": "Avoid using tables for layout purposes",
+        "info": "Tables should only be used for tabular data"
+      },
+      {
+        "id": "8.4",
+        "task": "Ensure tables are responsive and usable on mobile devices",
+        "info": "Consider alternative presentations for small screens"
+      },
+      {
+        "id": "8.5",
+        "task": "Use scope attributes for complex table relationships",
+        "info": "Scope helps screen readers understand header relationships"
+      }
+    ]
+  },
+  "checkpoint-9": {
+    "caption": "ARIA and Semantics - Advanced Accessibility",
+    "table": [
+      {
+        "id": "9.1",
+        "task": "Use semantic HTML elements instead of generic divs and spans",
+        "info": "Elements like nav, main, article provide meaning to assistive technologies"
+      },
+      {
+        "id": "9.2",
+        "task": "Add ARIA landmarks to define page regions",
+        "info": "Landmarks like role='navigation' help users navigate efficiently"
+      },
+      {
+        "id": "9.3",
+        "task": "Use ARIA live regions for dynamic content updates",
+        "info": "Screen readers can announce changes without page refresh"
+      },
+      {
+        "id": "9.4",
+        "task": "Implement proper ARIA states and properties",
+        "info": "Use aria-expanded, aria-selected, aria-disabled as appropriate"
+      },
+      {
+        "id": "9.5",
+        "task": "Test with actual assistive technologies",
+        "info": "Automated tools can't catch everything - manual testing is essential"
+      }
+    ]
+  },
+  "checkpoint-10": {
+    "caption": "Testing and Compliance - Quality Assurance",
+    "table": [
+      {
+        "id": "10.1",
+        "task": "Run automated accessibility testing tools",
+        "info": "Tools like WAVE, axe, or Lighthouse catch common issues"
+      },
+      {
+        "id": "10.2",
+        "task": "Test with keyboard navigation only",
+        "info": "Unplug your mouse and try to complete all tasks"
+      },
+      {
+        "id": "10.3",
+        "task": "Test with screen readers like NVDA or JAWS",
+        "info": "Experience your content as blind users would"
+      },
+      {
+        "id": "10.4",
+        "task": "Review content with users who have disabilities",
+        "info": "Real user feedback is invaluable for accessibility"
+      },
+      {
+        "id": "10.5",
+        "task": "Document accessibility conformance level and known issues",
+        "info": "Be transparent about your accessibility efforts and limitations"
+      }
+    ]
+  }
 }

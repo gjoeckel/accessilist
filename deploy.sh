@@ -77,12 +77,12 @@ echo "echo '{}' > ${DEPLOY_PATH}/php/saves/_write_test.json && rm ${DEPLOY_PATH}
 echo -e "${BLUE}🏥 Health Check URLs${NC}"
 echo "Test these URLs after deployment:"
 echo "- App home: ${BASE_URL}/php/home.php"
-echo "- Checklist: ${BASE_URL}/php/mychecklist.php?session=TEST&type=camtasia"
+echo "- Checklist: ${BASE_URL}/php/list.php?session=TEST&type=camtasia"
 echo "- Admin: ${BASE_URL}/php/admin.php"
 echo ""
 echo "Quick health check commands:"
 echo "curl -I ${BASE_URL}/php/home.php"
-echo "curl -I '${BASE_URL}/php/mychecklist.php?session=TEST&type=camtasia'"
+echo "curl -I '${BASE_URL}/php/list.php?session=TEST&type=camtasia'"
 
 # 6. Cleanup
 echo -e "${BLUE}🧹 Cleanup${NC}"

@@ -128,9 +128,9 @@ echo ""
 
 # Test 2: Clean URL Routes
 echo -e "${BLUE}━━━ Test 2: Clean URL Routes ━━━${NC}"
-test_endpoint "Checklist page (Word)" "mychecklist?type=word" "200"
-test_endpoint "Checklist page (Excel)" "mychecklist?type=excel" "200"
-test_endpoint "Checklist page (PowerPoint)" "mychecklist?type=powerpoint" "200"
+test_endpoint "Checklist page (Word)" "list?type=word" "200"
+test_endpoint "Checklist page (Excel)" "list?type=excel" "200"
+test_endpoint "Checklist page (PowerPoint)" "list?type=powerpoint" "200"
 test_endpoint "Invalid session error (list-report)" "list-report?session=ABC" "400" "404"  # Accept either error code
 echo ""
 
@@ -160,10 +160,10 @@ echo ""
 
 # Test 6: JavaScript Module Loading
 echo -e "${BLUE}━━━ Test 6: JavaScript Module Loading ━━━${NC}"
-test_content "Path utilities loaded" "mychecklist?type=word" "path-utils.js"
-test_content "Side panel loaded" "mychecklist?type=word" "side-panel.js"
-test_content "State manager loaded" "mychecklist?type=word" "StateManager.js"
-test_content "Scroll utilities loaded" "mychecklist?type=word" "scroll.js"
+test_content "Path utilities loaded" "list?type=word" "path-utils.js"
+test_content "Side panel loaded" "list?type=word" "side-panel.js"
+test_content "State manager loaded" "list?type=word" "StateManager.js"
+test_content "Scroll utilities loaded" "list?type=word" "scroll.js"
 echo ""
 
 # Test 7: Configuration Verification
@@ -175,10 +175,10 @@ echo ""
 
 # Test 8: Key Features
 echo -e "${BLUE}━━━ Test 8: Key Features Present ━━━${NC}"
-test_content "Side panel navigation" "mychecklist?type=word" 'class="side-panel"'
-test_content "Sticky header" "mychecklist?type=word" 'class="sticky-header"'
+test_content "Side panel navigation" "list?type=word" 'class="side-panel"'
+test_content "Sticky header" "list?type=word" 'class="sticky-header"'
 test_content "Filter buttons" "systemwide-report" 'class="filter-button"'
-test_content "Status footer" "mychecklist?type=word" 'class="status-footer"'
+test_content "Status footer" "list?type=word" 'class="status-footer"'
 echo ""
 
 # Test 9: Recent Deployments Verification
@@ -217,17 +217,17 @@ echo ""
 echo -e "${BLUE}━━━ Test 11: URL Format Validation ━━━${NC}"
 
 # Check that application uses short-form URLs (no .php extensions)
-echo -n "  Checking mychecklist page uses short-form URLs..."
+echo -n "  Checking list page uses short-form URLs..."
 increment_test_counter
-content=$(curl -s -L "$PROD_URL/mychecklist?type=word" 2>&1)
+content=$(curl -s -L "$PROD_URL/list?type=word" 2>&1)
 
 # Check for .php extensions in links (should NOT be present)
 if echo "$content" | grep -q 'href="[^"]*\.php'; then
-    record_fail "Short-form URLs in mychecklist" "(Found .php extensions in links)"
+    record_fail "Short-form URLs in list" "(Found .php extensions in links)"
 elif echo "$content" | grep -q 'action="[^"]*\.php'; then
-    record_fail "Short-form URLs in mychecklist" "(Found .php extensions in forms)"
+    record_fail "Short-form URLs in list" "(Found .php extensions in forms)"
 else
-    record_pass "Short-form URLs in mychecklist" "(No .php extensions found)"
+    record_pass "Short-form URLs in list" "(No .php extensions found)"
 fi
 
 # Check that list-report links use short form

@@ -1,5 +1,6 @@
 {
   "version": "0.8",
+  "title": "Dojo A11y Checklist",
   "type": "Dojo",
   "checkpoint-1": {
     "caption": "Perceivable Questions",

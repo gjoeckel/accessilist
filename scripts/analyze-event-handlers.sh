@@ -210,7 +210,7 @@ cat >> "$OUTPUT_FILE" << 'EOF'
 ## Recommendations
 
 ### 1. Event Delegation Strategy
-- ✅ **StateEvents.js** handles global delegation for mychecklist.php
+- ✅ **StateEvents.js** handles global delegation for list.php
 - ✅ Use global delegation for common elements (status buttons, toggle buttons, etc.)
 - ⚠️ Avoid adding direct listeners to elements already handled by global delegation
 
@@ -299,4 +299,3 @@ if command -v open &> /dev/null; then
         open "$OUTPUT_FILE"
     fi
 fi
-

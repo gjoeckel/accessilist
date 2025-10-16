@@ -29,7 +29,13 @@ function sha1(content) {
 }
 
 function listFiles(root) {
-  const ignoreDirs = new Set([".git", "node_modules", "tests/screenshots", "saves", "php/saves"]);
+  const ignoreDirs = new Set([
+    ".git",
+    "node_modules",
+    "tests/screenshots",
+    "saves",
+    "php/saves",
+  ]);
   const files = [];
   (function walk(dir) {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -37,7 +43,8 @@ function listFiles(root) {
       const full = path.join(dir, entry.name);
       const rel = path.relative(root, full).replace(/\\/g, "/");
       if (entry.isDirectory()) {
-        if ([...ignoreDirs].some((p) => rel === p || rel.startsWith(p + "/"))) continue;
+        if ([...ignoreDirs].some((p) => rel === p || rel.startsWith(p + "/")))
+          continue;
         walk(full);
       } else {
         if (!rel.match(/\.(php|js|css|html)$/i)) continue;
@@ -97,7 +104,12 @@ function grepMatches(content, regex, category, file) {
   for (let i = 0; i < lines.length; i++) {
     const line = lines[i];
     if (regex.test(line)) {
-      res.push({ file, line: i + 1, category, snippet: line.trim().slice(0, 300) });
+      res.push({
+        file,
+        line: i + 1,
+        category,
+        snippet: line.trim().slice(0, 300),
+      });
     }
   }
   return res;
@@ -109,21 +121,69 @@ function scanStatic(root, changedSet) {
   for (const f of files) {
     if (changedSet && !changedSet.has(f.rel)) continue;
     const content = fs.readFileSync(f.full, "utf8");
-    results.push(...grepMatches(content, /addEventListener\s*\(/, "event-binding", f.rel));
-    results.push(...grepMatches(content, /\bon(click|input|change|submit|keydown|keyup)\b/, "inline-event", f.rel));
+    results.push(
+      ...grepMatches(content, /addEventListener\s*\(/, "event-binding", f.rel)
+    );
+    results.push(
+      ...grepMatches(
+        content,
+        /\bon(click|input|change|submit|keydown|keyup)\b/,
+        "inline-event",
+        f.rel
+      )
+    );
     results.push(...grepMatches(content, /fetch\s*\(/, "network-fetch", f.rel));
-    results.push(...grepMatches(content, /XMLHttpRequest|\$.ajax\s*\(/, "network-xhr", f.rel));
-    results.push(...grepMatches(content, /localStorage|sessionStorage/, "storage", f.rel));
-    results.push(...grepMatches(content, /window\.location|location\.href/, "navigation", f.rel));
-    results.push(...grepMatches(content, /aria-[a-z-]+\s*=|role=|tabindex=|focus\(|blur\(/, "a11y", f.rel));
-    results.push(...grepMatches(content, /index\.php|home\.php|mychecklist\.php|admin\.php/, "entrypoints", f.rel));
-    results.push(...grepMatches(content, /php\/api\/(save|restore|list|delete)\.php/, "api-endpoints", f.rel));
+    results.push(
+      ...grepMatches(
+        content,
+        /XMLHttpRequest|\$.ajax\s*\(/,
+        "network-xhr",
+        f.rel
+      )
+    );
+    results.push(
+      ...grepMatches(content, /localStorage|sessionStorage/, "storage", f.rel)
+    );
+    results.push(
+      ...grepMatches(
+        content,
+        /window\.location|location\.href/,
+        "navigation",
+        f.rel
+      )
+    );
+    results.push(
+      ...grepMatches(
+        content,
+        /aria-[a-z-]+\s*=|role=|tabindex=|focus\(|blur\(/,
+        "a11y",
+        f.rel
+      )
+    );
+    results.push(
+      ...grepMatches(
+        content,
+        /index\.php|home\.php|list\.php|admin\.php/,
+        "entrypoints",
+        f.rel
+      )
+    );
+    results.push(
+      ...grepMatches(
+        content,
+        /php\/api\/(save|restore|list|delete)\.php/,
+        "api-endpoints",
+        f.rel
+      )
+    );
   }
   return results;
 }
 
 function synthesizeStories(staticFeatures, dynamicFeatures, commitHash) {
-  const has = (cat) => staticFeatures.some((f) => f.category === cat) || dynamicFeatures.some((f) => f.category === cat);
+  const has = (cat) =>
+    staticFeatures.some((f) => f.category === cat) ||
+    dynamicFeatures.some((f) => f.category === cat);
   const stories = [];
 
   stories.push({
@@ -266,7 +326,10 @@ function rewriteUserStories(existingMd, generated) {
 function getCommitHash() {
   try {
     const { execSync } = require("child_process");
-    return execSync("git rev-parse --short HEAD", { cwd: REPO_ROOT, stdio: ["ignore", "pipe", "ignore"] })
+    return execSync("git rev-parse --short HEAD", {
+      cwd: REPO_ROOT,
+      stdio: ["ignore", "pipe", "ignore"],
+    })
       .toString()
       .trim();
   } catch {
@@ -292,7 +355,11 @@ function main() {
   const dynamicFeatures = readJsonSafe(FEATURES_DYNAMIC_JSON) || [];
 
   const commitHash = getCommitHash();
-  const generated = synthesizeStories(staticFeatures, dynamicFeatures, commitHash);
+  const generated = synthesizeStories(
+    staticFeatures,
+    dynamicFeatures,
+    commitHash
+  );
   writeJson(STORIES_GENERATED_JSON, generated);
 
   const existingMd = fs.readFileSync(USER_STORIES_MD, "utf8");
@@ -316,5 +383,3 @@ if (require.main === module) {
     process.exit(1);
   }
 }
-
-

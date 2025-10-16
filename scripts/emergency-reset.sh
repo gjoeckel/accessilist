@@ -29,13 +29,13 @@ confirm_emergency_reset() {
     echo ""
     echo "⚠️  THIS ACTION CANNOT BE UNDONE!"
     echo ""
-    
+
     read -p "Type 'EMERGENCY' to confirm: " confirmation
     if [ "$confirmation" != "EMERGENCY" ]; then
         echo "❌ Emergency reset cancelled"
         exit 0
     fi
-    
+
     echo ""
     echo "🔴 EMERGENCY RESET CONFIRMED - PROCEEDING..."
     echo ""
@@ -44,19 +44,19 @@ confirm_emergency_reset() {
 # Function to create emergency backup
 create_emergency_backup() {
     echo "💾 Creating Emergency Backup..."
-    
+
     # Create backup directory
     mkdir -p "$BACKUP_DIR"
-    
+
     # Create timestamp for backup
     local timestamp=$(date +"%Y%m%d_%H%M%S")
     local backup_path="$BACKUP_DIR/emergency_backup_$timestamp"
-    
+
     echo "  📁 Backup path: $backup_path"
-    
+
     # Create backup of current state
     mkdir -p "$backup_path"
-    
+
     # Backup critical files
     local critical_files=(
         "index.php"
@@ -70,14 +70,14 @@ create_emergency_backup() {
         "package.json"
         "config.json"
     )
-    
+
     for item in "${critical_files[@]}"; do
         if [ -e "$item" ]; then
             echo "  📋 Backing up $item..."
             cp -r "$item" "$backup_path/" 2>/dev/null || true
         fi
     done
-    
+
     # Create backup manifest
     cat > "$backup_path/BACKUP_MANIFEST.txt" << EOF
 Emergency Backup Created: $(date)
@@ -86,7 +86,7 @@ Git Status: $(git status --porcelain 2>/dev/null || echo "Not a git repository")
 Git Branch: $(git branch --show-current 2>/dev/null || echo "Not a git repository")
 Git Commit: $(git rev-parse HEAD 2>/dev/null || echo "Not a git repository")
 EOF
-    
+
     echo "  ✅ Emergency backup created: $backup_path"
     echo "$backup_path"
 }
@@ -94,20 +94,20 @@ EOF
 # Function to reset to last known good state
 reset_to_last_good_state() {
     echo "🔄 Resetting to Last Known Good State..."
-    
+
     # Check if we're in a git repository
     if git rev-parse --git-dir >/dev/null 2>&1; then
         echo "  🔍 Git repository detected"
-        
+
         # List available tags
         echo "  📋 Available rollback points:"
         git tag -l | grep -E "(pre-|rollback-|backup-)" | tail -5 | while read -r tag; do
             echo "    - $tag"
         done
-        
+
         # Try to reset to last known good state
         local last_good_tag=$(git tag -l | grep -E "(pre-|rollback-|backup-)" | tail -1)
-        
+
         if [ -n "$last_good_tag" ]; then
             echo "  🔄 Resetting to: $last_good_tag"
             git reset --hard "$last_good_tag" || {
@@ -132,36 +132,36 @@ reset_to_last_good_state() {
 # Function to clean up corrupted files
 cleanup_corrupted_files() {
     echo "🧹 Cleaning Up Corrupted Files..."
-    
+
     # Remove temporary files (exclude node_modules)
     find . -name "*.tmp" -not -path "./node_modules/*" -delete 2>/dev/null || true
     find . -name "*.temp" -not -path "./node_modules/*" -delete 2>/dev/null || true
     find . -name "*.lock" -not -path "./node_modules/*" -delete 2>/dev/null || true
-    
+
     # Remove corrupted test files
     find tests/screenshots -name "*.png" -size 0 -delete 2>/dev/null || true
-    
+
     # Clean up PHP session files (exclude node_modules)
     find . -name "sess_*" -not -path "./node_modules/*" -delete 2>/dev/null || true
-    
+
     # Clean up log files (exclude node_modules)
     find . -name "*.log" -size 0 -not -path "./node_modules/*" -delete 2>/dev/null || true
-    
+
     echo "  ✅ Corrupted files cleaned up"
 }
 
 # Function to restore from backup
 restore_from_backup() {
     local backup_path="$1"
-    
+
     echo "📦 Restoring from Emergency Backup..."
     echo "  📁 Backup path: $backup_path"
-    
+
     if [ ! -d "$backup_path" ]; then
         echo "  ❌ Backup directory not found: $backup_path"
         return 1
     fi
-    
+
     # Restore critical files
     local critical_files=(
         "index.php"
@@ -175,7 +175,7 @@ restore_from_backup() {
         "package.json"
         "config.json"
     )
-    
+
     for item in "${critical_files[@]}"; do
         if [ -e "$backup_path/$item" ]; then
             echo "  📋 Restoring $item..."
@@ -183,26 +183,26 @@ restore_from_backup() {
             cp -r "$backup_path/$item" "./" 2>/dev/null || true
         fi
     done
-    
+
     echo "  ✅ Restore from backup completed"
 }
 
 # Function to validate system integrity
 validate_system_integrity() {
     echo "🔍 Validating System Integrity..."
-    
+
     local total_issues=0
-    
+
     # Check critical files
     local critical_files=(
         "index.php"
         "php/home.php"
         "php/admin.php"
-        "php/mychecklist.php"
+        "php/list.php"
         "js/path-utils.js"
         "php/includes/api-utils.php"
     )
-    
+
     for file in "${critical_files[@]}"; do
         if [ -f "$file" ]; then
             echo "  ✅ $file exists"
@@ -211,7 +211,7 @@ validate_system_integrity() {
             total_issues=$((total_issues + 1))
         fi
     done
-    
+
     # Check directory structure
     local critical_dirs=(
         "php/"
@@ -221,7 +221,7 @@ validate_system_integrity() {
         "json/"
         "tests/"
     )
-    
+
     for dir in "${critical_dirs[@]}"; do
         if [ -d "$dir" ]; then
             echo "  ✅ $dir/ directory exists"
@@ -230,7 +230,7 @@ validate_system_integrity() {
             total_issues=$((total_issues + 1))
         fi
     done
-    
+
     # Check file permissions
     if [ -w "." ]; then
         echo "  ✅ Write permissions OK"
@@ -238,27 +238,27 @@ validate_system_integrity() {
         echo "  ❌ Write permissions issue"
         total_issues=$((total_issues + 1))
     fi
-    
+
     return $total_issues
 }
 
 # Function to run basic tests
 run_basic_tests() {
     echo "🧪 Running Basic Tests..."
-    
+
     # Test PHP syntax
     if command -v php &> /dev/null; then
         echo "  🔍 Testing PHP syntax..."
         local php_files=$(find php/ -name "*.php" 2>/dev/null || true)
         local syntax_errors=0
-        
+
         for file in $php_files; do
             if ! php -l "$file" >/dev/null 2>&1; then
                 echo "    ❌ Syntax error in $file"
                 syntax_errors=$((syntax_errors + 1))
             fi
         done
-        
+
         if [ $syntax_errors -eq 0 ]; then
             echo "  ✅ PHP syntax OK"
         else
@@ -267,20 +267,20 @@ run_basic_tests() {
     else
         echo "  ⚠️  PHP not available for syntax testing"
     fi
-    
+
     # Test JavaScript syntax (basic check)
     if command -v node &> /dev/null; then
         echo "  🔍 Testing JavaScript syntax..."
         local js_files=$(find js/ -name "*.js" 2>/dev/null || true)
         local js_errors=0
-        
+
         for file in $js_files; do
             if ! node -c "$file" >/dev/null 2>&1; then
                 echo "    ❌ Syntax error in $file"
                 js_errors=$((js_errors + 1))
             fi
         done
-        
+
         if [ $js_errors -eq 0 ]; then
             echo "  ✅ JavaScript syntax OK"
         else
@@ -295,7 +295,7 @@ run_basic_tests() {
 generate_emergency_report() {
     local backup_path="$1"
     local total_issues="$2"
-    
+
     echo ""
     echo "📊 Emergency Reset Report"
     echo "========================"
@@ -303,7 +303,7 @@ generate_emergency_report() {
     echo "Backup Path: $backup_path"
     echo "Total Issues Found: $total_issues"
     echo ""
-    
+
     if [ "$total_issues" -eq 0 ]; then
         echo "✅ Status: EMERGENCY RESET SUCCESSFUL"
         echo "🎯 System integrity restored"
@@ -313,7 +313,7 @@ generate_emergency_report() {
         echo "🔧 $total_issues issues remain"
         echo "💡 Manual intervention may be required"
     fi
-    
+
     echo ""
     echo "📋 Next Steps:"
     echo "  1. Test basic functionality"
@@ -347,7 +347,7 @@ main() {
     local force_reset=false
     local backup_only=false
     local restore_path=""
-    
+
     # Parse command line arguments
     while [[ $# -gt 0 ]]; do
         case $1 in
@@ -374,7 +374,7 @@ main() {
                 ;;
         esac
     done
-    
+
     # Handle restore operation
     if [ -n "$restore_path" ]; then
         echo "📦 Restoring from backup: $restore_path"
@@ -384,7 +384,7 @@ main() {
         generate_emergency_report "$restore_path" $total_issues
         exit $total_issues
     fi
-    
+
     # Handle backup-only operation
     if [ "$backup_only" = true ]; then
         echo "💾 Creating emergency backup only..."
@@ -392,39 +392,39 @@ main() {
         echo "✅ Emergency backup created: $backup_path"
         exit 0
     fi
-    
+
     # Confirm emergency reset unless forced
     if [ "$force_reset" = false ]; then
         confirm_emergency_reset
     fi
-    
+
     # Create emergency backup
     local backup_path=$(create_emergency_backup)
-    
+
     # Create rollback tag
     if git rev-parse --git-dir >/dev/null 2>&1; then
         git tag -a "$ROLLBACK_TAG" -m "Emergency reset point - $(date)"
     fi
-    
+
     # Perform emergency reset
     if ! reset_to_last_good_state; then
         echo "⚠️  Git reset failed, attempting file restoration..."
         restore_from_backup "$backup_path"
     fi
-    
+
     # Clean up corrupted files
     cleanup_corrupted_files
-    
+
     # Validate system integrity
     validate_system_integrity
     local total_issues=$?
-    
+
     # Run basic tests
     run_basic_tests
-    
+
     # Generate emergency report
     generate_emergency_report "$backup_path" $total_issues
-    
+
     exit $total_issues
 }
 

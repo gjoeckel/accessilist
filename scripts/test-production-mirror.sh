@@ -201,7 +201,7 @@ test_endpoint "Direct /php/home.php" "$BASE_URL/php/home.php" "200" "Direct PHP 
 # COMMENTED: admin.php deprecated/unused - keeping for potential future refactoring
 # test_endpoint "Direct /php/admin.php" "$BASE_URL/php/admin.php" "200" "Direct PHP access"
 test_endpoint "Direct /php/systemwide-report.php" "$BASE_URL/php/systemwide-report.php" "200" "Direct PHP access"
-test_endpoint "Direct /php/mychecklist.php" "$BASE_URL/php/mychecklist.php?session=TEST&type=word" "200" "Checklist page access"
+test_endpoint "Direct /php/list.php" "$BASE_URL/php/list.php?session=TEST&type=word" "200" "Checklist page access"
 
 # Test 4: API Endpoints (Extensionless)
 print_section "Test 4: API Endpoints (Production-style extensionless)"
@@ -518,10 +518,10 @@ echo "  Cleaned up test session: $TEST_REPORT_KEY.json"
 print_section "Test 42: Scroll Buffer Configuration"
 log "=== Test 42: Scroll Buffer Configuration ==="
 
-# Test mychecklist.php scroll buffer
+# Test list.php scroll buffer
 increment_test_counter
-echo -n "  Testing mychecklist scroll buffer..."
-CHECKLIST_HTML=$(curl -s "$BASE_URL/php/mychecklist.php?type=word&session=TEST1" 2>&1)
+echo -n "  Testing list scroll buffer..."
+CHECKLIST_HTML=$(curl -s "$BASE_URL/php/list.php?type=word&session=TEST1" 2>&1)
 
 if echo "$CHECKLIST_HTML" | grep -q "history.scrollRestoration = 'manual'" && \
    echo "$CHECKLIST_HTML" | grep -q "scroll.js"; then

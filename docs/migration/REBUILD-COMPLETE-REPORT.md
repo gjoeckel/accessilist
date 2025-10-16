@@ -1,8 +1,8 @@
 # 🎉 AccessiList Rebuild Complete Report
 
-**Date:** 2024-10-03  
-**Status:** ✅ **REBUILD COMPLETE**  
-**Source:** Legacy analysis from `/Users/a00288946/Desktop/accessilist-legacy`  
+**Date:** 2024-10-03
+**Status:** ✅ **REBUILD COMPLETE**
+**Source:** Legacy analysis from `/Users/a00288946/Desktop/accessilist-legacy`
 **Result:** Production-ready deployment package
 
 ---
@@ -52,7 +52,7 @@
 
 ### **✅ Deployment Script Created**
 - **File**: `deploy.sh` (executable)
-- **Features**: 
+- **Features**:
   - CSS build verification
   - Deployment package creation
   - Server setup commands
@@ -97,7 +97,7 @@ deploy-temp/
 
 ### **Phase 3: Verification** 🔄
 - **App Home**: `https://webaim.org/training/online/accessilist/php/home.php`
-- **Checklist**: `https://webaim.org/training/online/accessilist/php/mychecklist.php?session=TEST&type=camtasia`
+- **Checklist**: `https://webaim.org/training/online/accessilist/php/list.php?session=TEST&type=camtasia`
 - **Admin**: `https://webaim.org/training/online/accessilist/php/admin.php`
 
 ---
@@ -132,7 +132,7 @@ npm run minify:css         # Minify global.css only
 ### **Health Check Commands**
 ```bash
 curl -I https://webaim.org/training/online/accessilist/php/home.php
-curl -I 'https://webaim.org/training/online/accessilist/php/mychecklist.php?session=TEST&type=camtasia'
+curl -I 'https://webaim.org/training/online/accessilist/php/list.php?session=TEST&type=camtasia'
 ```
 
 ---

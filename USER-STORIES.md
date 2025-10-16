@@ -78,7 +78,7 @@
 **Acceptance Criteria:**
 - Home button visible in header on all pages
 - Clicking navigates to home page
-- Available on: mychecklist, admin, reports, report pages
+- Available on: list, admin, reports, report pages
 
 **Priority**: MEDIUM
 **Complexity**: Low
@@ -162,7 +162,7 @@
 
 ### Story 2.5: Reset Done Task
 **As an** Educator
-**I want to** restart a completed task back to pending
+**I want to** restart a done task back to ready
 **So that** I can re-review items that need updates
 
 **Acceptance Criteria:**
@@ -240,7 +240,7 @@
 - Save button visible in header
 - Clicking triggers immediate save
 - Footer shows confirmation message
-- Works even if auto-save is pending
+- Works even if auto-save is ready
 - Keyboard accessible
 
 **Priority**: HIGH
@@ -418,7 +418,7 @@
 - Report shows checklist type in title
 - All checkpoints grouped and displayed
 - Table columns: Checkpoint icon, Tasks, Notes, Status
-- Status shown as icons (completed/in-progress/pending)
+- Status shown as icons (done/in-progress/ready)
 - Tasks and notes in read-only textareas
 - Last updated timestamp displayed
 
@@ -430,7 +430,7 @@
 ### Story 5.2: Filter Report by Status
 **As a** Reviewer
 **I want to** filter report tasks by completion status
-**So that** I can focus on incomplete items or review completed work
+**So that** I can focus on incomplete items or review done work
 
 **Acceptance Criteria:**
 - Filter buttons: Done, Active, Not Started, All
@@ -704,7 +704,7 @@
 - Saves all state data:
   - sidePanel: {expanded, activeSection}
   - notes: {textarea-X.X: "content"}
-  - statusButtons: {status-X.X: "pending|in-progress|completed"}
+  - statusButtons: {status-X.X: "ready|in-progress|done"}
   - restartButtons: {restart-X.X: true|false}
   - principleRows: {checkpoint-N: [{task, notes, status, timestamp}]}
 - Updates metadata.lastModified timestamp
@@ -759,9 +759,9 @@
 
 **Acceptance Criteria:**
 - Status logic:
-  - **Done**: All tasks marked "completed"
-  - **Active**: At least one task completed or in-progress, but not all completed
-  - **Not Started**: All tasks marked "pending" or no tasks started
+  - **Done**: All tasks marked "done"
+  - **Active**: At least one task done or in-progress, but not all done
+  - **Not Started**: All tasks marked "ready" or no tasks started
 - Status icon displayed (green check, yellow warning, blue ready icon)
 - Status recalculated on every dashboard load
 - Based on state.statusButtons data
@@ -848,7 +848,7 @@
 ### Story 10.3: View Completion Status
 **As a** Reviewer
 **I want to** see visual status for each task
-**So that** I can quickly identify completed vs pending work
+**So that** I can quickly identify done vs ready work
 
 **Acceptance Criteria:**
 - Status column shows status icon (non-interactive)
@@ -982,7 +982,7 @@
 
 **Acceptance Criteria:**
 - Skip link appears on Tab focus
-- "Skip to checklist" on mychecklist page
+- "Skip to checklist" on list page
 - "Skip to checklist selection" on home page
 - "Skip to checklists table" on admin page
 - Clicking moves focus to target
@@ -1079,7 +1079,7 @@
 - Pattern: /?=[A-Z0-9]{3}
 - Regex validation in index.php
 - Extracts session key from URL
-- Loads mychecklist.php with session parameter
+- Loads list.php with session parameter
 - URL stays visible in browser (no redirect)
 - Handles invalid keys gracefully (404 error page)
 
@@ -1169,7 +1169,7 @@
 **Acceptance Criteria:**
 - Script: scripts/generate-demo-files.js
 - Creates 7 demo files (one per type)
-- Status distribution: ~5% completed, ~70% in-progress, ~25% pending
+- Status distribution: ~5% done, ~70% in-progress, ~25% ready
 - Each checkpoint has 1 manual row: "Hey! I added this!" / "Great job!"
 - Realistic notes for different statuses
 - Files saved in saves/ directory
@@ -1341,7 +1341,7 @@
 
 ### Pages Documented:
 1. ✅ Home page (checklist selection)
-2. ✅ Checklist page (mychecklist.php)
+2. ✅ Checklist page (list.php)
 3. ✅ Reports dashboard (reports.php)
 4. ✅ User report page (report.php)
 5. ✅ Admin page (admin.php)
@@ -1359,7 +1359,7 @@
 ### Core Features Documented:
 1. ✅ Session management
 2. ✅ Save/restore system
-3. ✅ Status tracking (pending/in-progress/completed)
+3. ✅ Status tracking (ready/in-progress/done)
 4. ✅ Manual row addition
 5. ✅ Side panel navigation
 6. ✅ Reports and filtering
@@ -1394,4 +1394,3 @@ All user stories represent **IMPLEMENTED** features currently in the application
 ---
 
 *Generated autonomously on October 8, 2025*
-

@@ -8,8 +8,8 @@ The AccessiList application has been successfully deployed to production at `htt
 
 ### 🚨 CRITICAL: Save Functionality Completely Broken
 
-**Status**: ✅ Resolved (local); pending prod validation  
-**Impact**: Users cannot save checklist progress  
+**Status**: ✅ Resolved (local); pending prod validation
+**Impact**: Users cannot save checklist progress
 **Priority**: P0 (Critical)
 
 #### Symptoms
@@ -47,8 +47,8 @@ curl -I 'http://localhost:8000/php/api/restore?sessionKey=ABC' # 404/200 dependi
 
 ### 🖼️ HIGH: Add Row Button Images Missing
 
-**Status**: ✅ Resolved  
-**Impact**: Poor user experience, missing visual cues  
+**Status**: ✅ Resolved
+**Impact**: Poor user experience, missing visual cues
 **Priority**: P1 (High)
 
 #### Symptoms
@@ -60,7 +60,7 @@ curl -I 'http://localhost:8000/php/api/restore?sessionKey=ABC' # 404/200 dependi
 ```
 Failed Image Requests:
 - /images/add-1.svg → 404 Not Found
-- /images/add-2.svg → 404 Not Found  
+- /images/add-2.svg → 404 Not Found
 - /images/add-3.svg → 404 Not Found
 - /images/add-4.svg → 404 Not Found
 
@@ -77,8 +77,8 @@ Expected Paths:
 
 ### 🔄 MEDIUM: Restore API Similar Issues
 
-**Status**: ✅ Resolved (local); pending prod validation  
-**Impact**: Session restoration may not work  
+**Status**: ✅ Resolved (local); pending prod validation
+**Impact**: Session restoration may not work
 **Priority**: P2 (Medium)
 
 #### Symptoms
@@ -266,7 +266,7 @@ grep -r "\$basePath" /path/to/deployment/php/
 │   │   ├── list.php
 │   │   └── health.php
 │   ├── home.php
-│   └── mychecklist.php
+│   └── list.php
 ├── js/
 │   ├── addRow.js
 │   ├── StateManager.js
@@ -283,10 +283,10 @@ grep -r "\$basePath" /path/to/deployment/php/
 - `/php/api/save.php` - Save functionality endpoint
 - `/js/addRow.js` - Add row button image paths
 - `/.htaccess` - Apache URL rewriting configuration
-- `/php/mychecklist.php` - Main application entry point
+- `/php/list.php` - Main application entry point
 
 ---
 
-**Last Updated**: 2025-10-01 23:10 UTC  
-**Status**: Fixes implemented locally; pending production validation  
+**Last Updated**: 2025-10-01 23:10 UTC
+**Status**: Fixes implemented locally; pending production validation
 **Next Review**: After deploying `.htaccess` and retesting on production

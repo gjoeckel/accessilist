@@ -140,7 +140,7 @@ child.addEventListener('click', (e) => {
 
 ### Global Event Delegation (StateEvents.js)
 
-**Handles these elements on mychecklist.php:**
+**Handles these elements on list.php:**
 - `.status-button` - Status buttons (click)
 - `.restart-button` - Reset buttons (click)
 - `.toggle-strip` - Side panel toggle (click)
@@ -384,5 +384,3 @@ grep -rn "addEventListener('click'" js/
 - Documented current architecture
 - Added conflict detection checklist
 - Included troubleshooting guide
-
-

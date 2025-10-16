@@ -212,7 +212,7 @@ Generated: 2025-10-15
 
 ---
 
-### 12. `php/mychecklist.php` (10 console statements)
+### 12. `php/list.php` (10 console statements)
 
 | Line | Statement | Type | Recommendation |
 |------|-----------|------|----------------|
@@ -308,7 +308,7 @@ All console statements with 🎯 emoji prefix are temporary scroll debugging and
 - `js/main.js`
 - `php/list-report.php`
 - `php/systemwide-report.php`
-- `php/mychecklist.php`
+- `php/list.php`
 
 ### Phase 2: Remove General Debugging (Priority: MEDIUM)
 Remove initialization logs, data dumps, and process debugging.
@@ -363,7 +363,7 @@ This allows toggling verbose logging without code changes.
 9. ✅ `js/StatusManager.js` - Keep 1
 10. ✅ `php/list-report.php` - Remove 2, keep 1
 11. ✅ `php/systemwide-report.php` - Remove 2, keep 1
-12. ✅ `php/mychecklist.php` - Remove 6, keep 4
+12. ✅ `php/list.php` - Remove 6, keep 4
 13. ✅ `php/home.php` - Keep 1
 
 ---

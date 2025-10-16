@@ -339,7 +339,7 @@ Production Server:
 [... 38 more tests ...]
 
 ━━━ Test 11: URL Format Validation ━━━
-  Checking mychecklist page uses short-form URLs... ✅ PASS
+  Checking list page uses short-form URLs... ✅ PASS
   Checking list-report links use short-form... ✅ PASS
   Checking reports page uses short-form URLs... ✅ PASS
   Checking home page navigation uses short-form... ✅ PASS

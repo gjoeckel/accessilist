@@ -99,7 +99,7 @@
 
 **WCAG Criterion**: 4.1.3 (Level AA)
 **Severity**: High
-**Files Affected**: `mychecklist.php` (line 11), `checklist-report.php` (line 11)
+**Files Affected**: `list.php` (line 11), `checklist-report.php` (line 11)
 
 **Problem**: Loading overlays use `role="alert"` (for urgent messages) instead of `role="status"` (for state changes)
 
@@ -133,7 +133,7 @@
 
 **WCAG Criterion**: 1.3.1 (Level A)
 **Severity**: Medium
-**Files Affected**: `mychecklist.php` (lines 34-65)
+**Files Affected**: `list.php` (lines 34-65)
 
 **Problem**: List item has conflicting roles - `<li>` element has `role="region"` which overrides native list item semantics
 
@@ -148,7 +148,7 @@
 
 **WCAG Criterion**: 4.1.2 (Level A)
 **Severity**: Medium
-**Files Affected**: `mychecklist.php` (lines 38-59)
+**Files Affected**: `list.php` (lines 38-59)
 
 **Problem**: Links have both `aria-label` and `title` with identical content - redundant and can cause confusion for screen readers
 
@@ -169,7 +169,7 @@
 **Files Affected**: Multiple pages
 
 **Problem**: Inconsistent use of `type="button"` attribute
-- `mychecklist.php` (lines 25, 28): Has `type="button"` ✅
+- `list.php` (lines 25, 28): Has `type="button"` ✅
 - `home.php`, `admin.php`, `reports.php`: Missing `type="button"`
 
 **Action**: Add `type="button"` to all non-submit buttons for consistency
@@ -246,7 +246,7 @@
 
 **WCAG Criterion**: 2.4.3 (Level A)
 **Severity**: Low
-**Files Affected**: `mychecklist.php`, `checklist-report.php`
+**Files Affected**: `list.php`, `checklist-report.php`
 
 **Problem**: Loading overlay doesn't trap focus - keyboard users can tab to elements behind the overlay
 

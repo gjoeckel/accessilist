@@ -90,7 +90,7 @@ renderHTMLHead('Accessibility Checklists');
   document.addEventListener('DOMContentLoaded', function() {
 
 
-    // Connect buttons to redirect to php/mychecklist.php
+    // Connect buttons to redirect to php/list.php
     const buttons = document.querySelectorAll('.checklist-button');
     buttons.forEach(button => {
       button.addEventListener('click', async function() {

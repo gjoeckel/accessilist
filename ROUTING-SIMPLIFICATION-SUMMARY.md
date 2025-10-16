@@ -19,7 +19,7 @@ The routing system has been simplified to follow a consistent, predictable patte
 **Custom aliases required manual configuration**:
 - `/reports` → `/php/systemwide-report.php` (special mapping)
 - `/home` → `/php/home.php`
-- `/mychecklist` → `/php/mychecklist.php`
+- `/list` → `/php/list.php`
 - `/list-report` → `/php/list-report.php`
 
 **Problems**:
@@ -33,7 +33,7 @@ The routing system has been simplified to follow a consistent, predictable patte
 **Consistent pattern - filename without `.php`**:
 - `/systemwide-report` → `/php/systemwide-report.php` ✨ (matches filename)
 - `/home` → `/php/home.php`
-- `/mychecklist` → `/php/mychecklist.php`
+- `/list` → `/php/list.php`
 - `/list-report` → `/php/list-report.php`
 
 **Benefits**:
@@ -127,7 +127,7 @@ window.location.href = '<?php echo $basePath; ?>/systemwide-report';
 |---------|---------|--------|
 | `/reports` | `/systemwide-report` | ⚠️ **Breaking Change** |
 | `/home` | `/home` | ✅ No change |
-| `/mychecklist` | `/mychecklist` | ✅ No change |
+| `/list` | `/list` | ✅ No change |
 | `/list-report` | `/list-report` | ✅ No change |
 | All API endpoints | (no change) | ✅ No change |
 
@@ -140,7 +140,7 @@ window.location.href = '<?php echo $basePath; ?>/systemwide-report';
 | Page | URL | File | Parameters |
 |------|-----|------|------------|
 | **Home** | `/home` | `php/home.php` | None |
-| **My Checklist** | `/mychecklist` | `php/mychecklist.php` | `?type=word\|excel\|powerpoint` |
+| **My Checklist** | `/list` | `php/list.php` | `?type=word\|excel\|powerpoint` |
 | **List Report** | `/list-report` | `php/list-report.php` | `?session={KEY}` |
 | **Systemwide Report** | `/systemwide-report` | `php/systemwide-report.php` | None |
 
@@ -168,7 +168,7 @@ window.location.href = '<?php echo $basePath; ?>/systemwide-report';
 ```
 https://webaim.org/training/online/accessilist/
 https://webaim.org/training/online/accessilist/home
-https://webaim.org/training/online/accessilist/mychecklist?type=word
+https://webaim.org/training/online/accessilist/list?type=word
 https://webaim.org/training/online/accessilist/systemwide-report
 https://webaim.org/training/online/accessilist/list-report?session=ABC123
 https://webaim.org/training/online/accessilist/php/api/health
@@ -179,7 +179,7 @@ https://webaim.org/training/online/accessilist/php/api/health
 ```
 http://localhost:8000/
 http://localhost:8000/home
-http://localhost:8000/mychecklist?type=excel
+http://localhost:8000/list?type=excel
 http://localhost:8000/systemwide-report
 http://localhost:8000/php/api/health
 ```
@@ -197,7 +197,7 @@ php -S localhost:8000 router.php
 # Test main pages
 curl -I http://localhost:8000/home                          # ✅ 200
 curl -I http://localhost:8000/systemwide-report             # ✅ 200
-curl -I http://localhost:8000/mychecklist?type=word         # ✅ 200
+curl -I http://localhost:8000/list?type=word         # ✅ 200
 curl -I http://localhost:8000/list-report                   # ✅ 400 (requires session)
 
 # Test API endpoints

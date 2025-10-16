@@ -1,354 +1,289 @@
-# Demo Feature Implementation
+# Demo Checklist - Structure Fix
 
-**Date**: October 15, 2025
-**Purpose**: Interactive tutorial system for AccessiList
-**Status**: ✅ Implemented - Ready for instruction content
-
----
-
-## 🎯 Overview
-
-The demo feature provides an interactive tutorial system where users can learn how to use AccessiList through hands-on practice with a dedicated demo checklist.
+**Date:** October 16, 2025
+**Issue:** Demo checklist not displaying
+**Status:** ✅ Fixed
 
 ---
 
-## 🚀 Features Implemented
+## 🔍 Problem Identified
 
-### 1. "Start Here" Section on Home Page
+The `demo.json` file was using an incorrect data structure that didn't match what the application expects.
 
-**Location**: Top of home page, before Microsoft section
-
-```html
-<div class="checklist-group">
-  <h2>Start Here</h2>
-  <div class="checklist-buttons-row">
-    <button id="demo" class="header-button">Demo</button>
-  </div>
-</div>
-```
-
-**Styling**: Green button (matches Save/Refresh buttons)
-
----
-
-### 2. Demo Template
-
-**File**: `json/demo.json`
-
-**Structure**:
-- 10 checkpoints
-- 5 tasks per checkpoint
-- All h2 headings: "Checkpoint X"
-- All tasks: "Task 1", "Task 2", etc.
-- Ready for instruction content (dogfooding approach)
+### ❌ Incorrect Structure (Before Fix)
 
 ```json
 {
   "type": "demo",
-  "name": "AccessiList Tutorial",
   "checkpoints": [
     {
       "id": "c1",
       "heading": "Checkpoint 1",
-      "tasks": [
-        {"id": "t1", "text": "Task 1", "notes": ""},
-        {"id": "t2", "text": "Task 2", "notes": ""},
-        ...
-      ]
-    },
-    ... (10 total checkpoints)
-  ]
-}
-```
-
----
-
-### 3. "Demos" Filter in Systemwide Report
-
-**Location**: After "All" button in systemwide-report.php
-
-**Features**:
-- ✅ Same styling as other filter buttons
-- ✅ Shows count of demo sessions
-- ✅ Filters to show only demo sessions
-- ✅ Integrated with existing filter logic
-
-```html
-<button
-    id="filter-demos"
-    class="filter-button"
-    data-filter="demos"
-    aria-pressed="false"
-    aria-label="Show demo sessions only">
-    <span class="filter-label">Demos</span>
-    <span class="filter-count" id="count-demos">0</span>
-</button>
-```
-
----
-
-### 4. Demo Session Handling
-
-**Behavior**:
-- ✅ User clicks "Demo" button
-- ✅ Generates unique 3-character session ID
-- ✅ Creates demo instance via API
-- ✅ Redirects to `/?={sessionID}`
-- ✅ Demo sessions saved like regular sessions
-- ✅ Can be retrieved with session key
-- ✅ Appear in systemwide report
-- ✅ Filterable with "Demos" button
-- ✅ No expiration
-- ✅ Unlimited instances allowed
-
----
-
-## 📁 Files Modified
-
-| File | Changes | Purpose |
-|------|---------|---------|
-| `json/demo.json` | NEW (340 lines) | Demo template with 10 checkpoints |
-| `config/checklist-types.json` | +2 lines | Added demo type configuration |
-| `php/home.php` | +34 lines | Added Start Here section + Demo button |
-| `php/systemwide-report.php` | +9 lines | Added Demos filter button |
-| `js/systemwide-report.js` | +21 lines | Added demos filtering logic |
-
-**Total**: 1 new file, 4 files modified, 66 lines added
-
----
-
-## 🎨 User Interface
-
-### Home Page
-
-```
-┌─────────────────────────────┐
-│   Accessibility Checklists   │
-├─────────────────────────────┤
-│                             │
-│  Start Here                 │
-│  ┌──────┐                   │
-│  │ Demo │ (green button)    │
-│  └──────┘                   │
-│                             │
-│  Microsoft                  │
-│  ┌──────┬───────────┬──────┐│
-│  │ Word │PowerPoint │Excel ││
-│  └──────┴───────────┴──────┘│
-│                             │
-│  ... (other sections)       │
-└─────────────────────────────┘
-```
-
-### Systemwide Report
-
-```
-Filter buttons:
-┌──────┬────────┬────────────┬─────┬───────┐
-│ Done │ Active │ Not Started│ All │ Demos │
-└──────┴────────┴────────────┴─────┴───────┘
-        Count: 0    Count: 0   Count: 0  Count: 0
-```
-
----
-
-## 🔄 User Flow
-
-### Creating a Demo Session
-
-1. User visits home page
-2. Sees "Start Here" section at top
-3. Clicks green "Demo" button
-4. System generates unique session ID (e.g., `A1B`)
-5. Creates demo instance from template
-6. Redirects to `/?=A1B`
-7. User works through demo checklist
-8. All actions save automatically
-9. Session appears in systemwide report
-
-### Viewing Demo Sessions
-
-1. User visits `/systemwide-report`
-2. Clicks "Demos" filter button
-3. Table shows only demo sessions
-4. Can view, restore, or delete demos
-5. Can create multiple demo instances
-
----
-
-## 📊 Demo Session Properties
-
-| Property | Value | Notes |
-|----------|-------|-------|
-| **Type** | `demo` | Identifies as demo session |
-| **Template** | `json/demo.json` | Source template |
-| **Session Keys** | `A1B`, `C2D`, etc. | Unique 3-char IDs |
-| **Saved In** | `saves/{KEY}.json` | Same as other sessions |
-| **Retrievable** | ✅ Yes | Via `/?={KEY}` |
-| **In Reports** | ✅ Yes | Visible when "Demos" filter clicked |
-| **Expiration** | None | Persists indefinitely |
-| **Instance Limit** | None | Create as many as needed |
-
----
-
-## 🎓 Dogfooding Approach
-
-**Instructions will be placed in existing form elements**:
-
-### Where Instructions Go
-
-1. **Task Text** - Main instruction content
-2. **Notes Field** - Detailed explanations, tips
-3. **Checkpoint Headings** - Section titles
-
-### Example
-
-```json
-{
-  "id": "c1",
-  "heading": "Checkpoint 1: Introduction",
-  "tasks": [
-    {
-      "id": "t1",
-      "text": "Click this checkbox to mark the task complete",
-      "notes": "Notice how the status changes from Ready → Active → Done"
-    },
-    {
-      "id": "t2",
-      "text": "Try typing in this notes field",
-      "notes": "Instructions can guide users through features using the actual interface"
+      "tasks": [...]
     }
   ]
 }
+```
+
+**Issues:**
+1. ❌ Uses `"checkpoints"` as an array
+2. ❌ Each checkpoint has `"id"`, `"heading"`, `"tasks"` properties
+3. ❌ Application couldn't find checkpoint keys (it looks for `"checkpoint-1"`, not an array)
+
+---
+
+## ✅ Correct Structure (After Fix)
+
+```json
+{
+  "version": "0.8",
+  "type": "Demo",
+  "checkpoint-1": {
+    "caption": "Getting Started - Introduction to Accessibility",
+    "table": [
+      {
+        "id": "1.1",
+        "task": "Learn how to navigate the checklist interface",
+        "info": "Use the side panel to jump between checkpoints"
+      }
+    ]
+  },
+  "checkpoint-2": {
+    "caption": "Working with Tasks - Managing Your Checklist",
+    "table": [...]
+  }
+}
+```
+
+**Key Requirements:**
+1. ✅ Uses `"checkpoint-X"` as **object keys** (not an array)
+2. ✅ Each checkpoint has `"caption"` property (the heading text)
+3. ✅ Each checkpoint has `"table"` property (array of tasks)
+4. ✅ Each task has `"id"`, `"task"`, and `"info"` properties
+
+---
+
+## 🧩 Why This Structure?
+
+The application's `buildContent()` function in `js/buildPrinciples.js` expects:
+
+```javascript
+// Lines 328-337: Filter checkpoint keys
+const checkpointKeys = Object.keys(data)
+  .filter(
+    (key) => key.startsWith("checkpoint-") || key.startsWith("checklist-")
+  )
+  .sort((a, b) => {
+    const numA = parseInt(a.split("-")[1]);
+    const numB = parseInt(b.split("-")[1]);
+    return numA - numB;
+  });
+
+// Line 344: Access the table property
+const tableWrapper = buildTable(checkpointData.table, checkpointKey);
+```
+
+**What the code does:**
+1. Gets all object keys from the JSON data
+2. Filters for keys starting with `"checkpoint-"` or `"checklist-"`
+3. Sorts them numerically by the number after the dash
+4. For each checkpoint, accesses the `.table` property to build the UI
+
+**What went wrong:**
+- With an array structure, there were **no keys** named `"checkpoint-1"`, `"checkpoint-2"`, etc.
+- The filter found nothing, so no checkpoints were displayed
+
+---
+
+## 📝 JSON Template Structure Reference
+
+All checklist JSON files must follow this structure:
+
+```json
+{
+  "version": "0.8",
+  "type": "TypeName",
+  "checkpoint-1": {
+    "caption": "First principle description",
+    "table": [
+      {
+        "id": "1.1",
+        "task": "Task description",
+        "info": "Help text or example"
+      },
+      {
+        "id": "1.2",
+        "task": "Another task",
+        "info": "More help text"
+      }
+    ]
+  },
+  "checkpoint-2": {
+    "caption": "Second principle description",
+    "table": [...]
+  }
+}
+```
+
+### Required Properties
+
+**Top Level:**
+- `version` (string): Version number (currently "0.8")
+- `type` (string): Display name for the checklist type
+- `checkpoint-N` (object): One or more checkpoint objects (N = 1, 2, 3, ...)
+
+**Each Checkpoint:**
+- `caption` (string): The heading text for this checkpoint
+- `table` (array): Array of task objects
+
+**Each Task:**
+- `id` (string): Unique ID like "1.1", "2.3", etc.
+- `task` (string): The task description text
+- `info` (string): Help text shown in the info modal
+
+---
+
+## 🎯 Demo Checklist Features
+
+The fixed `demo.json` now includes:
+
+### Checkpoint 1: Getting Started
+- Learn interface navigation
+- Practice status changes (Ready → Active → Done)
+- Add notes to tasks
+- View info examples
+- Reset tasks
+
+### Checkpoint 2: Working with Tasks
+- Add custom tasks
+- Save/restore progress
+- View reports
+- Delete custom tasks
+- Print/export
+
+### Checkpoints 3-10: Accessibility Best Practices
+- Understanding accessibility concepts
+- Visual design principles
+- Content accessibility
+- Navigation and interaction
+- Forms and input
+- Tables and data
+- ARIA and semantics
+- Testing and compliance
+
+---
+
+## 🔧 How to Create New Checklist Types
+
+1. **Copy an existing working JSON file** (e.g., `word.json` or `camtasia.json`)
+
+2. **Update the metadata:**
+   ```json
+   {
+     "version": "0.8",
+     "type": "YourTypeName"
+   }
+   ```
+
+3. **Add/modify checkpoints:**
+   ```json
+   "checkpoint-1": {
+     "caption": "Your checkpoint description",
+     "table": [...]
+   }
+   ```
+
+4. **Add tasks to each checkpoint:**
+   ```json
+   {
+     "id": "1.1",
+     "task": "What the user needs to do",
+     "info": "Help text explaining how or why"
+   }
+   ```
+
+5. **Register in `config/checklist-types.json`:**
+   ```json
+   "your-type": {
+     "displayName": "Your Type Name",
+     "jsonFile": "your-type.json",
+     "buttonId": "your-type",
+     "category": "CategoryName"
+   }
+   ```
+
+6. **Add to category list:**
+   ```json
+   "categories": {
+     "CategoryName": ["your-type", "other-types"]
+   }
 ```
 
 ---
 
 ## 🧪 Testing
 
-### Local Testing
+To verify a new checklist type works:
 
-```bash
-# Start PHP server
-php -S localhost:8000 router.php
+1. **Start the dev server:**
+   ```bash
+   php -S localhost:8000 router.php
+   ```
 
-# Test home page has Demo button
-curl http://localhost:8000/home | grep "Start Here"
-curl http://localhost:8000/home | grep 'id="demo"'
+2. **Visit the home page:**
+   ```
+   http://localhost:8000/home
+   ```
 
-# Test systemwide report has Demos filter
-curl http://localhost:8000/systemwide-report | grep "filter-demos"
+3. **Click your checklist type button**
 
-# Test demo type is recognized
-curl http://localhost:8000/json/demo.json  # Should return 200
-```
-
-### Manual Testing
-
-1. Visit `http://localhost:8000/home`
-2. Verify "Start Here" section appears first
-3. Click "Demo" button
-4. Should create demo instance and redirect to `/?={KEY}`
-5. Visit `/systemwide-report`
-6. Click "Demos" filter
-7. Should show demo sessions only
-
----
-
-## 🔧 Next Steps: Adding Instructions
-
-### Process
-
-1. **Identify feature to teach** (e.g., "How to mark tasks complete")
-2. **Choose checkpoint** (c1, c2, etc.)
-3. **Write instruction in task text**
-4. **Add details in notes field**
-5. **Test the instruction**
-6. **Repeat for next feature**
-
-### Example Workflow
-
-```bash
-# You say: "Update c1-t1 to teach checkbox clicking"
-# I update json/demo.json:
-{
-  "id": "t1",
-  "text": "Click the checkbox next to this task to mark it complete",
-  "notes": "Watch the status change from Ready to Done"
-}
-
-# Commit and test
-```
-
----
-
-## 📋 Suggested Instruction Topics
-
-### Checkpoint 1: Basics
-- Task 1: How to mark tasks complete
-- Task 2: How to use notes field
-- Task 3: How to navigate checkpoints
-- Task 4: How to use side panel
-- Task 5: Understanding status indicators
-
-### Checkpoint 2: Side Panel
-- Task 1: Clicking checkpoint links
-- Task 2: Collapsing/expanding panel
-- Task 3: Visual indicators for completion
-
-### Checkpoint 3: Status Management
-- Task 1: Ready → Active → Done workflow
-- Task 2: Status buttons explained
-- Task 3: Progress tracking
-
-### Checkpoint 4: Saving & Reports
-- Task 1: How saving works
-- Task 2: Accessing list reports
-- Task 3: Viewing systemwide reports
-
-... (Continue for remaining checkpoints)
-
----
-
-## 🎯 Benefits
-
-1. **Interactive Learning** - Hands-on experience
-2. **Dogfooding** - Uses actual interface for instructions
-3. **Repeatable** - Users can create multiple demo instances
-4. **Trackable** - Demos appear in reports
-5. **Filterable** - Easy to find demo sessions
-6. **No Complexity** - Uses existing functionality
-
----
-
-## ✅ Implementation Status
-
-```
-✅ Demo template created (10 checkpoints, 5 tasks each)
-✅ "Start Here" section added to home page
-✅ Green "Demo" button added (matches Save/Refresh styling)
-✅ Demo button wired to instantiate API
-✅ "Demos" filter added to systemwide report
-✅ Filtering logic updated to support demos
-✅ Type configuration updated
-✅ All components tested locally
-✅ Ready for instruction content
-
-Next: Add instructional content to demo.json
-```
+4. **Verify:**
+   - ✅ Page loads without errors
+   - ✅ All checkpoints appear in order
+   - ✅ Side panel shows all checkpoints
+   - ✅ Tasks are displayed correctly
+   - ✅ Info buttons work and show help text
+   - ✅ Status buttons work (Ready → Active → Done)
+   - ✅ Add Row button works
+   - ✅ Save/Restore functionality works
 
 ---
 
 ## 📚 Related Files
 
-- `json/demo.json` - Demo template (ready for instructions)
-- `config/checklist-types.json` - Type configuration
-- `php/home.php` - Demo button implementation
-- `php/systemwide-report.php` - Demos filter
-- `js/systemwide-report.js` - Filtering logic
+**JavaScript:**
+- `js/buildPrinciples.js` - Builds checkpoint sections from JSON
+- `js/main.js` - Loads JSON and initializes app
+- `js/side-panel.js` - Side navigation panel
+- `js/type-manager.js` - Type configuration management
+
+**Configuration:**
+- `config/checklist-types.json` - Registry of all checklist types
+- `json/*.json` - Individual checklist templates
+
+**Documentation:**
+- `docs/development/DRYing-types.md` - Type management system
+- `README.md` - Project overview and setup
 
 ---
 
-**Demo feature fully implemented and ready for instructional content!** ✨
+## 🎉 Result
 
-You can now start adding instructions, and I'll update `demo.json` as you provide the content. Just tell me which checkpoint/task to update and what instruction to add!
+The demo checklist now:
+- ✅ Displays all 10 checkpoints correctly
+- ✅ Shows meaningful tutorial content
+- ✅ Provides interactive learning experience
+- ✅ Includes helpful info text for each task
+- ✅ Follows the same structure as all other checklists
+- ✅ Works with save/restore functionality
+- ✅ Compatible with reports and progress tracking
+
+---
+
+## 💡 Key Takeaway
+
+**Always use object keys for checkpoints, never arrays:**
+- ✅ `"checkpoint-1": { "caption": "...", "table": [...] }`
+- ❌ `"checkpoints": [{ "id": "c1", "tasks": [...] }]`
+
+The application expects a flat object structure with predictable key names that can be filtered and sorted.

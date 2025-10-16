@@ -58,7 +58,7 @@ if (preg_match('/\/?\?=([A-Z0-9]{3})$/', $routePath, $matches)) {
     $_GET['type'] = $checklistType;
 
     // Include the checklist page without changing the URL
-    include 'php/mychecklist.php';
+    include 'php/list.php';
     exit;
 }
 

@@ -1,5 +1,6 @@
 {
   "version": "0.8",
+  "title": "Test-5-Checkpoints",
   "type": "Test-5-Checkpoints",
   "checkpoint-1": {
     "caption": "First checkpoint for testing 5-checkpoint layout",
@@ -52,4 +53,3 @@
     ]
   }
 }
-

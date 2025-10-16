@@ -33,16 +33,16 @@
 
 #reports-caption,
 #report-caption {
-    scroll-margin-top: 180px;
-    padding: 4px; /* Reserve space for golden ring to prevent layout shift */
-    width: 100%; /* Ensure both h2 elements have consistent width */
+  scroll-margin-top: 180px;
+  padding: 4px; /* Reserve space for golden ring to prevent layout shift */
+  width: 100%; /* Ensure both h2 elements have consistent width */
 }
 
 #reports-caption:focus,
 #report-caption:focus {
-    outline: none;
-    box-shadow: var(--golden-ring);
-    border-radius: 6px;
+  outline: none;
+  box-shadow: var(--golden-ring);
+  border-radius: 6px;
 }
 
 /* ====================================================================
@@ -50,29 +50,29 @@
    ==================================================================== */
 
 .report-section {
-    --theme-color: #666666;
-    --header-fill-color: #F7E7D9;
-    padding-top: 90px; /* Space for h2 positioning */
-    padding-bottom: 30px;
-    color: var(--theme-color);
-    position: relative;
-    z-index: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    padding-left: 0;
-    padding-right: 0;
+  --theme-color: #666666;
+  --header-fill-color: #f7e7d9;
+  padding-top: 90px; /* Space for h2 positioning */
+  padding-bottom: 30px;
+  color: var(--theme-color);
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-left: 0;
+  padding-right: 0;
 }
 
 .report-section h2 {
-    color: var(--theme-color);
-    font-size: 1.3rem;
-    text-align: center;
-    margin-top: 0; /* Starts right at bottom edge of filter-group */
-    margin-bottom: 20px; /* 20px gap to table */
-    padding-top: 0; /* No padding - flush with filter-group bottom */
-    z-index: 1;
-    background-color: transparent;
+  color: var(--theme-color);
+  font-size: 1.3rem;
+  text-align: center;
+  margin-top: 0; /* Starts right at bottom edge of filter-group */
+  margin-bottom: 20px; /* 20px gap to table */
+  padding-top: 0; /* No padding - flush with filter-group bottom */
+  z-index: 1;
+  background-color: transparent;
 }
 
 /* ====================================================================
@@ -80,45 +80,45 @@
    ==================================================================== */
 
 .report-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-    max-width: 100%;
-    table-layout: fixed;
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  max-width: 100%;
+  table-layout: fixed;
 }
 
 .reports-table {
-    margin-top: 20px; /* Match .report-table spacing */
+  margin-top: 20px; /* Match .report-table spacing */
 }
 
 .report-table caption {
-    text-align: center;
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-    width: 100%;
+  text-align: center;
+  font-size: 1.2rem;
+  margin-bottom: 1.5rem;
+  width: 100%;
 }
 
 .report-table th {
-    text-align: center !important;
-    border-bottom: 1px solid #ddd;
-    vertical-align: middle;
-    background-color: #f5f5f5;
-    font-weight: bold;
-    display: table-cell;
+  text-align: center !important;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle;
+  background-color: #f5f5f5;
+  font-weight: bold;
+  display: table-cell;
 }
 
 .report-table td {
-    text-align: center;
-    border-bottom: 1px solid #ddd;
-    vertical-align: middle;
-    display: table-cell;
+  text-align: center;
+  border-bottom: 1px solid #ddd;
+  vertical-align: middle;
+  display: table-cell;
 }
 
 .report-container {
-    width: 100%;
-    max-width: 100%;
-    margin: 0 auto;
-    min-width: auto;
+  width: 100%;
+  max-width: 100%;
+  margin: 0 auto;
+  min-width: auto;
 }
 
 /* ====================================================================
@@ -132,78 +132,81 @@
 .reports-status-cell,
 .reports-progress-cell,
 .reports-delete-cell {
-    vertical-align: middle;
+  vertical-align: middle;
 }
 
 /* Fixed-width square cells for consistency */
 .report-instance-cell,
 .reports-status-cell,
 .reports-delete-cell {
-    max-height: 75px; /* Limit row height to exactly 75px */
-    text-align: center;
+  max-height: 75px; /* Limit row height to exactly 75px */
+  text-align: center;
 }
 
 /* Key column header needs reduced padding due to narrow width */
 th.report-instance-cell,
 th.reports-status-cell,
 th.reports-delete-cell {
-    padding: 8px; /* Reduced from 1rem to fit text in narrow width */
+  padding: 8px; /* Reduced from 1rem to fit text in narrow width */
 }
 
 /* Systemwide reports status buttons - use checkpoint table pattern but non-interactive */
 .reports-status-button {
-    cursor: default; /* Non-interactive */
+  cursor: default; /* Non-interactive */
 }
 
 /* Column widths and text alignment */
 .report-type-cell,
-.reports-table .task-cell:nth-child(1) { /* First task-cell in systemwide reports table only */
-    width: 150px;
-    text-align: center !important;
+.reports-table .task-cell:nth-child(1) {
+  /* First task-cell in systemwide reports table only */
+  width: 150px;
+  text-align: center !important;
 }
 
 .report-date-cell,
-.reports-table .task-cell:nth-child(2) { /* Second task-cell in systemwide reports table only */
-    width: 225px;
-    text-align: center !important;
+.reports-table .task-cell:nth-child(2) {
+  /* Second task-cell in systemwide reports table only */
+  width: 225px;
+  text-align: center !important;
 }
 
 .report-instance-cell {
-    width: 75px;
-    text-align: center !important;
+  width: 75px;
+  text-align: center !important;
 }
 
 .reports-status-cell {
-    width: 75px;
-    text-align: center !important;
+  width: 75px;
+  text-align: center !important;
 }
 
 .reports-progress-cell,
-.reports-table .task-cell:nth-child(5) { /* Fifth task-cell in systemwide reports table only */
-    width: auto; /* Takes remaining space */
+.reports-table .task-cell:nth-child(5) {
+  /* Fifth task-cell in systemwide reports table only */
+  width: auto; /* Takes remaining space */
 }
 
 /* Progress header should be centered, but data cells left-aligned for progress bar */
 th.reports-progress-cell,
 .reports-table th.task-cell:nth-child(5) {
-    text-align: center !important;
+  text-align: center !important;
 }
 
 td.reports-progress-cell,
 .reports-table td.task-cell:nth-child(5) {
-    text-align: left;
+  text-align: left;
 }
 
 .reports-delete-cell {
-    width: 75px;
-    text-align: center !important;
+  width: 75px;
+  text-align: center !important;
 }
 
 .report-table th.report-type-cell {
-    background-color: #f5f5f5;
-    font-weight: bold;
-    text-align: center !important;
-    vertical-align: middle;
+  background-color: #f5f5f5;
+  font-weight: bold;
+  text-align: center !important;
+  vertical-align: middle;
 }
 
 /* ====================================================================
@@ -218,17 +221,17 @@ td.reports-progress-cell,
    ==================================================================== */
 
 .instance-link {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 58px;
-    height: 58px;
-    margin: auto;
-    color: var(--color-link);
-    text-decoration: none;
-    border-radius: 4px;
-    transition: none;
-    font-weight: 600;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 58px;
+  height: 58px;
+  margin: auto;
+  color: var(--color-link);
+  text-decoration: none;
+  border-radius: 4px;
+  transition: none;
+  font-weight: 600;
 }
 
 /* ====================================================================
@@ -236,115 +239,115 @@ td.reports-progress-cell,
    ==================================================================== */
 
 /* Filter button colors on hover/focus only (not active) */
-.filter-button[data-filter="pending"]:is(:hover, :focus) {
-    background-color: #1A76BB !important;
-    color: white !important;
+.filter-button[data-filter="ready"]:is(:hover, :focus) {
+  background-color: #1a76bb !important;
+  color: white !important;
 }
 
-.filter-button[data-filter="in-progress"]:is(:hover, :focus) {
-    background-color: #FEC111 !important;
-    color: #333333 !important;
+.filter-button[data-filter="active"]:is(:hover, :focus) {
+  background-color: #fec111 !important;
+  color: #333333 !important;
 }
 
-.filter-button[data-filter="completed"]:is(:hover, :focus) {
-    background-color: #00834B !important;
-    color: white !important;
+.filter-button[data-filter="done"]:is(:hover, :focus) {
+  background-color: #00834b !important;
+  color: white !important;
 }
 
 .filter-button[data-filter="all"]:is(:hover, :focus) {
-    background-color: #333333 !important;
-    color: white !important;
+  background-color: #333333 !important;
+  color: white !important;
 }
 
 /* Filter button golden ring on hover/focus only (not on active state) */
 .filter-button:not(.active):is(:hover, :focus) {
-    box-shadow: var(--golden-ring) !important;
-    outline: none;
-    transition: none !important; /* Remove all animations */
+  box-shadow: var(--golden-ring) !important;
+  outline: none;
+  transition: none !important; /* Remove all animations */
 }
 
 /* Filter button counter styling on hover/active */
 .filter-button:is(:hover, .active) .filter-count {
-    background-color: #333333 !important;
-    color: #FFFFFF !important;
+  background-color: #333333 !important;
+  color: #ffffff !important;
 }
 
 /* Special styling for "All" filter button counter */
 .filter-button[data-filter="all"]:is(:hover, .active) .filter-count {
-    background-color: #FFFFFF !important;
-    color: #333333 !important;
+  background-color: #ffffff !important;
+  color: #333333 !important;
 }
 
 /* Fixed container for header + filters - REPORT PAGES ONLY */
 .sticky-header-container {
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 2000; /* Above everything */
-    background-color: transparent;
-    pointer-events: none; /* Allow clicks to pass through to side panel below */
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000; /* Above everything */
+  background-color: transparent;
+  pointer-events: none; /* Allow clicks to pass through to side panel below */
 }
 
 /* Header maintains its styling (from header.css) */
 
 .filter-group {
-    display: flex;
-    gap: 0.75rem;
-    margin-bottom: 0; /* No margin - h2 starts right at bottom edge */
-    margin-left: 100px; /* Start where side panel + toggle button ends (60px + 21px + margin) */
-    flex-wrap: wrap;
-    pointer-events: auto; /* Re-enable clicks for filter buttons */
-    justify-content: center; /* Center the filter buttons */
-    padding-top: 110px; /* 70px header height + 40px spacing = 110px total */
-    padding-bottom: 30px; /* 30px spacing below buttons before h2 */
-    position: relative;
+  display: flex;
+  gap: 0.75rem;
+  margin-bottom: 0; /* No margin - h2 starts right at bottom edge */
+  margin-left: 100px; /* Start where side panel + toggle button ends (60px + 21px + margin) */
+  flex-wrap: wrap;
+  pointer-events: auto; /* Re-enable clicks for filter buttons */
+  justify-content: center; /* Center the filter buttons */
+  padding-top: 110px; /* 70px header height + 40px spacing = 110px total */
+  padding-bottom: 30px; /* 30px spacing below buttons before h2 */
+  position: relative;
 }
 
 /* White background for filter area - starts at 100px to avoid covering side panel + toggle button */
 .filter-group::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100px; /* Extend back to container edge */
-    right: 0;
-    bottom: 0; /* Extend to bottom of filter-group (includes 30px padding-bottom) */
-    background-color: white;
-    z-index: -1; /* Behind the filter buttons */
-    margin-left: 100px; /* Push background to start after side panel + toggle (60px + 21px + margin) */
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -100px; /* Extend back to container edge */
+  right: 0;
+  bottom: 0; /* Extend to bottom of filter-group (includes 30px padding-bottom) */
+  background-color: white;
+  z-index: -1; /* Behind the filter buttons */
+  margin-left: 100px; /* Push background to start after side panel + toggle (60px + 21px + margin) */
 }
 
 .filter-button {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    padding: 0.75rem 1.25rem;
-    border: 2px solid #ddd;
-    background-color: white;
-    color: #333;
-    border-radius: 6px;
-    cursor: pointer;
-    font-size: 0.95rem;
-    font-weight: 600;
-    transition: all 0.2s ease;
-    pointer-events: auto; /* Ensure clicks work (parent has pointer-events: none) */
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.25rem;
+  border: 2px solid #ddd;
+  background-color: white;
+  color: #333;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 0.95rem;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  pointer-events: auto; /* Ensure clicks work (parent has pointer-events: none) */
 }
 
 /* Active filter button state */
 .filter-button.active {
-    background-color: #333333;
-    border-color: #333333;
-    color: white;
+  background-color: #333333;
+  border-color: #333333;
+  color: white;
 }
 
 .filter-count {
-    background-color: rgba(0, 0, 0, 0.1);
-    padding: 0.15rem 0.5rem;
-    border-radius: 12px;
-    font-size: 0.85rem;
-    font-weight: 700;
-    min-width: 1.5rem;
-    text-align: center;
+  background-color: rgba(0, 0, 0, 0.1);
+  padding: 0.15rem 0.5rem;
+  border-radius: 12px;
+  font-size: 0.85rem;
+  font-weight: 700;
+  min-width: 1.5rem;
+  text-align: center;
 }
 
 /* ====================================================================
@@ -352,43 +355,43 @@ td.reports-progress-cell,
    ==================================================================== */
 
 .empty-state {
-    text-align: center;
-    padding: 2rem;
-    color: #6c757d;
-    font-style: italic;
+  text-align: center;
+  padding: 2rem;
+  color: #6c757d;
+  font-style: italic;
 }
 
 /* Empty state message in table (merged row) */
 .table-empty-message {
-    text-align: center;
-    padding: 2rem;
-    color: #666666;
-    font-size: 1rem;
-    font-style: normal;
-    vertical-align: middle;
+  text-align: center;
+  padding: 2rem;
+  color: #666666;
+  font-size: 1rem;
+  font-style: normal;
+  vertical-align: middle;
 }
 
 /* Inline checkpoint icon for empty state messages */
 .checkpoint-icon-inline[data-number]::before {
-    content: attr(data-number);
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    width: 30px;
-    height: 30px;
-    border-radius: 50%;
-    border: 2px solid var(--selected-color);
-    background-color: var(--selected-color);
-    color: white;
-    font-size: 1.1rem;
-    font-weight: bold;
-    vertical-align: middle;
-    margin: 0 0.25rem;
+  content: attr(data-number);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  border: 2px solid var(--selected-color);
+  background-color: var(--selected-color);
+  color: white;
+  font-size: 1.1rem;
+  font-weight: bold;
+  vertical-align: middle;
+  margin: 0 0.25rem;
 }
 
 /* Empty state row styling */
 .empty-state-row {
-    height: 75px; /* Match standard row height */
+  height: 75px; /* Match standard row height */
 }
 
 /* ====================================================================
@@ -396,24 +399,23 @@ td.reports-progress-cell,
    ==================================================================== */
 
 @media (max-width: 1024px) {
-    .report-container {
-        width: 100%;
-        max-width: 100%;
-        min-width: auto;
-        margin: 0 auto;
-        padding: 0 30px;
-        box-sizing: border-box;
-    }
+  .report-container {
+    width: 100%;
+    max-width: 100%;
+    min-width: auto;
+    margin: 0 auto;
+    padding: 0 30px;
+    box-sizing: border-box;
+  }
 
-    .report-table {
-        font-size: 0.9rem;
-        width: 100%;
-        margin: 0 auto;
-    }
+  .report-table {
+    font-size: 0.9rem;
+    width: 100%;
+    margin: 0 auto;
+  }
 
-    .report-section {
-        padding-left: 0;
-        padding-right: 0;
-    }
-
+  .report-section {
+    padding-left: 0;
+    padding-right: 0;
+  }
 }

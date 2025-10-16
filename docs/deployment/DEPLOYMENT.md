@@ -89,7 +89,7 @@ This application uses individual CSS files for maintainability. No build process
 ## 7) Health checks
 
 - App home: `https://webaim.org/training/online/accessilist/php/home.php`
-- Checklist instance (example): `https://webaim.org/training/online/accessilist/php/mychecklist.php?session=ABC&type=camtasia`
+- Checklist instance (example): `https://webaim.org/training/online/accessilist/php/list.php?session=ABC&type=camtasia`
 - Admin: `https://webaim.org/training/online/accessilist/php/admin.php`
 
 Expect 200/302 responses like otter.
@@ -98,7 +98,7 @@ Example quick checks from a terminal:
 
 ```bash
 curl -I https://webaim.org/training/online/accessilist/php/home.php
-curl -I 'https://webaim.org/training/online/accessilist/php/mychecklist.php?session=ABC&type=camtasia'
+curl -I 'https://webaim.org/training/online/accessilist/php/list.php?session=ABC&type=camtasia'
 ```
 
 ## 8) Backups and rollback

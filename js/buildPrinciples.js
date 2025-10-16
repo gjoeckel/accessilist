@@ -206,12 +206,13 @@ function buildTable(rows, principleId) {
     const statusCell = tr.querySelector(".status-cell");
     const statusButton = document.createElement("button");
     statusButton.className = "status-button";
-    statusButton.setAttribute("data-state", "pending");
+    statusButton.setAttribute("data-state", "ready");
     statusButton.setAttribute("aria-label", "Task status: Ready");
     statusButton.setAttribute("data-id", row.id);
+    statusButton.setAttribute("data-status-flag", "text-manual"); // Initialize flag for auto-status feature
     statusButton.id = `status-${row.id}`;
-    const pendingImgPath = window.getImagePath("ready-1.svg");
-    statusButton.innerHTML = `<img src="${pendingImgPath}" alt="">`;
+    const readyImgPath = window.getImagePath("ready-1.svg");
+    statusButton.innerHTML = `<img src="${readyImgPath}" alt="">`;
     statusCell.appendChild(statusButton);
 
     // Add restart button
@@ -276,7 +277,7 @@ function handleAddPrincipleRow(principleId) {
     principleId: principleId,
     task: "",
     notes: "",
-    status: "pending",
+    status: "ready",
     isManual: true,
   });
 

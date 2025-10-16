@@ -117,7 +117,7 @@ th.checkpoint-cell {
 }
 
 /* ===== SVG MASK "ALL" BUTTON DESIGN ===== */
-/* Default state - show-one-1.svg (single square) */
+/* Default state - show-one-2.svg (single square) */
 .checkpoint-all::before {
   content: "";
   position: absolute;
@@ -126,7 +126,7 @@ th.checkpoint-cell {
   transform: translate(-50%, -50%);
   width: 30px;
   height: 30px;
-  mask-image: url("../images/show-one-1.svg");
+  mask-image: url("../images/show-one-2.svg");
   mask-size: 30px 30px;
   mask-repeat: no-repeat;
   mask-position: center;
@@ -134,9 +134,9 @@ th.checkpoint-cell {
   pointer-events: none;
 }
 
-/* Active state - show-all-1.svg (three squares) */
+/* Active state - show-all-2.svg (three squares) */
 .checkpoint-all.active::before {
-  mask-image: url("../images/show-all-1.svg");
+  mask-image: url("../images/show-all-2.svg");
   background-color: white;
 }
 
@@ -192,7 +192,7 @@ td.report-notes-cell {
   overflow-y: auto; /* Enable vertical scrollbar when needed */
   cursor: default; /* Show default cursor, not text cursor */
   resize: none; /* Prevent resizing */
-  pointer-events: auto !important; /* Override textarea-completed's pointer-events: none to allow scrolling */
+  pointer-events: auto !important; /* Override textarea-done's pointer-events: none to allow scrolling */
 }
 
 /* Remove hover effects from readonly textareas */
@@ -204,8 +204,8 @@ td.report-notes-cell {
 }
 
 /* Maintain disabled visual style for readonly textareas */
-.task-cell textarea[readonly].textarea-completed,
-.notes-cell textarea[readonly].textarea-completed {
+.task-cell textarea[readonly].textarea-done,
+.notes-cell textarea[readonly].textarea-done {
   background-color: #f5f5f5; /* Light gray background like disabled */
   color: #666; /* Dimmed text color */
   border: 1px solid #ddd; /* Subtle border */

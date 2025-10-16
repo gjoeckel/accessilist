@@ -143,31 +143,31 @@ renderHTMLHead('List Report');
     <!-- Filter Buttons -->
     <div class="filter-group" role="group" aria-label="Filter tasks by status">
         <button
-            id="filter-completed"
+            id="filter-done"
             class="filter-button"
-            data-filter="completed"
+            data-filter="done"
             aria-pressed="false"
-            aria-label="Show completed tasks">
+            aria-label="Show done tasks">
             <span class="filter-label">Done</span>
-            <span class="filter-count" id="count-completed">0</span>
+            <span class="filter-count" id="count-done">0</span>
         </button>
         <button
-            id="filter-in-progress"
+            id="filter-active"
             class="filter-button"
-            data-filter="in-progress"
+            data-filter="active"
             aria-pressed="false"
             aria-label="Show in progress tasks">
             <span class="filter-label">Active</span>
-            <span class="filter-count" id="count-in-progress">0</span>
+            <span class="filter-count" id="count-active">0</span>
         </button>
         <button
-            id="filter-pending"
+            id="filter-ready"
             class="filter-button"
-            data-filter="pending"
+            data-filter="ready"
             aria-pressed="false"
             aria-label="Show ready tasks">
             <span class="filter-label">Ready</span>
-            <span class="filter-count" id="count-pending">0</span>
+            <span class="filter-count" id="count-ready">0</span>
         </button>
         <button
             id="filter-all"

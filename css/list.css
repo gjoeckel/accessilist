@@ -15,7 +15,7 @@
    LOADS: After table.css
 
    USED BY:
-   - mychecklist.php (all checklist types)
+   - list.php (all checklist types)
 
    CONSOLIDATED FROM:
    - side-panel.css (deleted)
@@ -102,7 +102,7 @@ section {
   padding: 4px;
 }
 
-/* Checklist page (mychecklist.php) - smaller h2 text and reduced spacing */
+/* Checklist page (list.php) - smaller h2 text and reduced spacing */
 body.checklist-page .principle-section h2 {
   font-size: 1rem;
   margin-bottom: 15px;
@@ -123,7 +123,7 @@ body.checklist-page .principle-section h2 {
   margin: 0 auto;
 }
 
-/* Checklist page (mychecklist.php) - center h2 above table */
+/* Checklist page (list.php) - center h2 above table */
 body.checklist-page .checklist-caption {
   justify-content: center;
   margin: 0 auto;
@@ -283,7 +283,7 @@ body.checklist-page .checklist-caption {
 }
 
 /* ===== SVG MASK "ALL" BUTTON DESIGN ===== */
-/* Default state - show-one-1.svg (single square) */
+/* Default state - show-one-2.svg (single square) */
 .checkpoint-all::before {
   content: "";
   position: absolute;
@@ -292,7 +292,7 @@ body.checklist-page .checklist-caption {
   transform: translate(-50%, -50%);
   width: 30px;
   height: 30px;
-  mask-image: url("../images/show-one-1.svg");
+  mask-image: url("../images/show-one-2.svg");
   mask-size: 30px 30px;
   mask-repeat: no-repeat;
   mask-position: center;
@@ -300,9 +300,9 @@ body.checklist-page .checklist-caption {
   pointer-events: none;
 }
 
-/* Active state - show-all-1.svg (three squares) */
+/* Active state - show-all-2.svg (three squares) */
 .checkpoint-all.active::before {
-  mask-image: url("../images/show-all-1.svg");
+  mask-image: url("../images/show-all-2.svg");
   background-color: white;
 }
 

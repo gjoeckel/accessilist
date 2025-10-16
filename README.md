@@ -103,7 +103,7 @@ header('Location: php/home.php');
 exit;
 ```
 
-- Primary pages: `php/home.php`, `php/mychecklist.php`, `php/admin.php`
+- Primary pages: `php/home.php`, `php/list.php`, `php/admin.php`
 
 ### API Endpoints (PHP)
 
