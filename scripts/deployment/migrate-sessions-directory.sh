@@ -16,9 +16,9 @@ echo -e "${BLUE}║  Sessions Directory Migration - Production Server     ║${N
 echo -e "${BLUE}╚════════════════════════════════════════════════════════╝${NC}"
 echo ""
 
-# Configuration - UPDATE THESE
-SERVER_USER="${SSH_USER:-YOUR_USERNAME}"  # Set SSH_USER env var or update here
-SERVER_HOST="${SSH_HOST:-webaim.org}"     # Set SSH_HOST env var or update here
+# Configuration
+SERVER_USER="${SSH_USER:-george}"         # Set SSH_USER env var or defaults to george
+SERVER_HOST="${SSH_HOST:-webaim.org}"     # Set SSH_HOST env var or defaults to webaim.org
 DEPLOY_PATH="/var/websites/webaim/htdocs/training/online/accessilist"
 SSH_KEY="$HOME/.ssh/accessilist_deploy"
 
