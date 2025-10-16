@@ -41,7 +41,7 @@ function generateRandomKey() {
  * No fallbacks - returns error if exhausted
  */
 function generateUniqueKey() {
-    $savesDir = __DIR__ . '/../../saves';
+    $savesDir = __DIR__ . '/../../sessions';
 
     if (!file_exists($savesDir)) {
         send_error('Saves directory not found', 500);
@@ -73,4 +73,3 @@ function generateUniqueKey() {
 // Generate and return unique key
 $uniqueKey = generateUniqueKey();
 send_success(['sessionKey' => $uniqueKey]);
-

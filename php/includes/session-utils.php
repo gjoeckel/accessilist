@@ -16,7 +16,7 @@
 require_once __DIR__ . '/type-manager.php';
 
 function getChecklistTypeFromSession($sessionKey, $defaultType = 'camtasia') {
-    $sessionFile = "saves/{$sessionKey}.json";
+    $sessionFile = "sessions/{$sessionKey}.json";
 
     if (!file_exists($sessionFile)) {
         return $defaultType;

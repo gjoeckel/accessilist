@@ -3,8 +3,8 @@ require_once __DIR__ . '/../includes/api-utils.php';
 require_once __DIR__ . '/../includes/type-formatter.php';
 require_once __DIR__ . '/../includes/type-manager.php';
 
-// Verify saves directory exists
-$savesDir = __DIR__ . '/../../saves';
+// Verify sessions directory exists
+$savesDir = __DIR__ . '/../../sessions';
 if (!file_exists($savesDir)) {
     send_error('Saves directory not found', 500);
 }

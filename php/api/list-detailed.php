@@ -1,7 +1,7 @@
 <?php
 /**
  * List API - Detailed Version
- * 
+ *
  * Returns all saved sessions with full state data for reports
  * Similar to list.php but includes state.statusButtons for status calculation
  */
@@ -9,12 +9,12 @@
 require_once __DIR__ . '/../includes/api-utils.php';
 require_once __DIR__ . '/../includes/type-manager.php';
 
-// Get all JSON files from the saves directory
+// Get all JSON files from the sessions directory
 $savesDir = dirname(saves_path_for('dummy')) . '/';
 $files = glob($savesDir . '*.json');
 
 if ($files === false) {
-    send_error('Failed to access saves directory', 500);
+    send_error('Failed to access sessions directory', 500);
 }
 
 $instances = [];

@@ -37,7 +37,5 @@ function validate_session_key($sessionKey) {
 }
 
 function saves_path_for($sessionKey) {
-  return __DIR__ . '/../../saves/' . $sessionKey . '.json';
+  return __DIR__ . '/../../sessions/' . $sessionKey . '.json';
 }
-
-

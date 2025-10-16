@@ -2,12 +2,12 @@
 require_once __DIR__ . '/../includes/api-utils.php';
 require_once __DIR__ . '/../includes/type-manager.php';
 
-// Get all JSON files from the saves directory using the same path as other APIs
+// Get all JSON files from the sessions directory using the same path as other APIs
 $savesDir = dirname(saves_path_for('dummy')) . '/';
 $files = glob($savesDir . '*.json');
 
 if ($files === false) {
-    send_error('Failed to access saves directory', 500);
+    send_error('Failed to access sessions directory', 500);
 }
 
 $instances = [];

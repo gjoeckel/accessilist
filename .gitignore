@@ -1,7 +1,6 @@
 # User data and test files
-saves/*.json
-!saves/AAA.json
-php/saves/*.json
+tests/AAA.json
+php/sessions/*.json
 
 # System files
 .DS_Store

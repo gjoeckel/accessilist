@@ -17,7 +17,7 @@ if (empty($sessionKey) || !preg_match('/^[A-Z0-9\-]{3,20}$/', $sessionKey)) {
 }
 
 // Check if session file exists
-$sessionFile = __DIR__ . '/../saves/' . $sessionKey . '.json';
+$sessionFile = __DIR__ . '/../sessions/' . $sessionKey . '.json';
 if (!file_exists($sessionFile)) {
     http_response_code(404);
     echo '<!DOCTYPE html><html><head><title>Session Not Found</title></head><body>';

@@ -293,7 +293,7 @@ else
 fi
 
 # Verify file was created
-if [ -f "$PROJECT_DIR/saves/$TEST_KEY.json" ]; then
+if [ -f "$PROJECT_DIR/sessions/$TEST_KEY.json" ]; then
     echo "  ✓ Session file created successfully"
 else
     echo "  ✗ Session file not created"
@@ -314,8 +314,8 @@ else
 fi
 
 # Cleanup test session
-if [ -f "$PROJECT_DIR/saves/$TEST_KEY.json" ]; then
-    rm "$PROJECT_DIR/saves/$TEST_KEY.json"
+if [ -f "$PROJECT_DIR/sessions/$TEST_KEY.json" ]; then
+    rm "$PROJECT_DIR/sessions/$TEST_KEY.json"
     echo "  Cleaned up test session file"
 fi
 
@@ -326,13 +326,13 @@ log "=== Test 9: Minimal URLs ==="
 # Test minimal URL with a session that actually exists
 # Create a minimal test session first
 TEST_MIN_KEY="MIN"
-echo "{\"sessionKey\":\"$TEST_MIN_KEY\",\"timestamp\":$(date +%s)000,\"typeSlug\":\"word\",\"state\":{\"sidePanel\":{\"expanded\":true},\"notes\":{},\"statusButtons\":{},\"restartButtons\":{},\"checkpointRows\":{}},\"metadata\":{\"version\":\"1.0\"}}" > "$PROJECT_DIR/saves/$TEST_MIN_KEY.json"
+echo "{\"sessionKey\":\"$TEST_MIN_KEY\",\"timestamp\":$(date +%s)000,\"typeSlug\":\"word\",\"state\":{\"sidePanel\":{\"expanded\":true},\"notes\":{},\"statusButtons\":{},\"restartButtons\":{},\"checkpointRows\":{}},\"metadata\":{\"version\":\"1.0\"}}" > "$PROJECT_DIR/sessions/$TEST_MIN_KEY.json"
 
 # Now test the minimal URL
 test_endpoint "Minimal URL format (/?=MIN)" "$BASE_URL/?=MIN" "200" "Minimal URL parameter routing"
 
 # Cleanup
-rm -f "$PROJECT_DIR/saves/$TEST_MIN_KEY.json"
+rm -f "$PROJECT_DIR/sessions/$TEST_MIN_KEY.json"
 
 # Test 10: Error Handling
 print_section "Test 10: Error Handling"
@@ -479,7 +479,7 @@ TEST_REPORT_DATA='{
   }
 }'
 
-echo "$TEST_REPORT_DATA" > "$PROJECT_DIR/saves/$TEST_REPORT_KEY.json"
+echo "$TEST_REPORT_DATA" > "$PROJECT_DIR/sessions/$TEST_REPORT_KEY.json"
 echo "  Created test session: $TEST_REPORT_KEY.json"
 
 # Test valid session
@@ -511,7 +511,7 @@ test_endpoint_content "List report filter: Done" "$BASE_URL/list-report?session=
 test_endpoint_content "List report filter: Active" "$BASE_URL/list-report?session=$TEST_REPORT_KEY" ">Active<" "Updated terminology"
 
 # Cleanup test session
-rm -f "$PROJECT_DIR/saves/$TEST_REPORT_KEY.json"
+rm -f "$PROJECT_DIR/sessions/$TEST_REPORT_KEY.json"
 echo "  Cleaned up test session: $TEST_REPORT_KEY.json"
 
 # Test 42: Scroll Buffer Configuration
@@ -536,7 +536,7 @@ fi
 
 # Test list-report.php scroll buffer (120px top, 130px initial scroll)
 # Create test session for list-report
-echo "{\"sessionKey\":\"LST\",\"timestamp\":$(date +%s)000,\"typeSlug\":\"word\",\"state\":{\"sidePanel\":{\"expanded\":true},\"notes\":{},\"statusButtons\":{},\"restartButtons\":{},\"checkpointRows\":{}},\"metadata\":{\"version\":\"1.0\"}}" > "$PROJECT_DIR/saves/LST.json"
+echo "{\"sessionKey\":\"LST\",\"timestamp\":$(date +%s)000,\"typeSlug\":\"word\",\"state\":{\"sidePanel\":{\"expanded\":true},\"notes\":{},\"statusButtons\":{},\"restartButtons\":{},\"checkpointRows\":{}},\"metadata\":{\"version\":\"1.0\"}}" > "$PROJECT_DIR/sessions/LST.json"
 
 increment_test_counter
 echo -n "  Testing list-report scroll buffer..."
@@ -554,7 +554,7 @@ else
 fi
 
 # Cleanup
-rm -f "$PROJECT_DIR/saves/LST.json"
+rm -f "$PROJECT_DIR/sessions/LST.json"
 
 # Test systemwide-report.php scroll buffer
 increment_test_counter
@@ -632,7 +632,7 @@ print_section "Test 44-52: Read-Only Scrollable Textareas (List Report)"
 log "=== Test 44-52: Read-Only Scrollable Textareas ==="
 
 # Create test session with notes for textarea testing
-echo "{\"sessionKey\":\"TXT\",\"timestamp\":$(date +%s)000,\"typeSlug\":\"word\",\"state\":{\"sidePanel\":{\"expanded\":true},\"notes\":{\"textarea-1.1\":\"Test note\"},\"statusButtons\":{\"status-1.1\":\"completed\"},\"restartButtons\":{},\"checkpointRows\":{}},\"metadata\":{\"version\":\"1.0\"}}" > "$PROJECT_DIR/saves/TXT.json"
+echo "{\"sessionKey\":\"TXT\",\"timestamp\":$(date +%s)000,\"typeSlug\":\"word\",\"state\":{\"sidePanel\":{\"expanded\":true},\"notes\":{\"textarea-1.1\":\"Test note\"},\"statusButtons\":{\"status-1.1\":\"completed\"},\"restartButtons\":{},\"checkpointRows\":{}},\"metadata\":{\"version\":\"1.0\"}}" > "$PROJECT_DIR/sessions/TXT.json"
 
 # Test textareas use readOnly instead of disabled
 increment_test_counter
@@ -770,7 +770,7 @@ else
 fi
 
 # Cleanup
-rm -f "$PROJECT_DIR/saves/TXT.json"
+rm -f "$PROJECT_DIR/sessions/TXT.json"
 echo "  Cleaned up test session: TXT.json"
 
 # Test 53-57: Dynamic Checkpoint System

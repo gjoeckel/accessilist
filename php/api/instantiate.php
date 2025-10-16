@@ -3,10 +3,10 @@ require_once __DIR__ . '/../includes/api-utils.php';
 require_once __DIR__ . '/../includes/type-formatter.php';
 require_once __DIR__ . '/../includes/type-manager.php';
 
-// Ensure saves directory exists
-$savesDir = __DIR__ . '/../../saves';
+// Ensure sessions directory exists
+$savesDir = __DIR__ . '/../../sessions';
 if (!file_exists($savesDir) && !mkdir($savesDir, 0755, true)) {
-    send_error('Failed to create saves directory', 500);
+    send_error('Failed to create sessions directory', 500);
 }
 
 // Only accept POST

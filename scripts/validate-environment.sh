@@ -63,19 +63,19 @@ check_php_environment() {
 check_file_permissions() {
     echo "📁 Checking File Permissions..."
 
-    # Check if saves directory is writable
-    if [ -d "saves" ] && [ -w "saves" ]; then
-        echo "  ✅ saves/ directory is writable"
+    # Check if sessions directory is writable
+    if [ -d "sessions" ] && [ -w "sessions" ]; then
+        echo "  ✅ sessions/ directory is writable"
     else
-        echo "  ❌ saves/ directory is not writable"
+        echo "  ❌ sessions/ directory is not writable"
         TOTAL_ISSUES=$((TOTAL_ISSUES + 1))
     fi
 
-    # Check if saves directory (at root) is writable
-    if [ -d "saves" ] && [ -w "saves" ]; then
-        echo "  ✅ saves/ directory is writable"
+    # Check if sessions directory (at root) is writable
+    if [ -d "sessions" ] && [ -w "sessions" ]; then
+        echo "  ✅ sessions/ directory is writable"
     else
-        echo "  ❌ saves/ directory is not writable or missing"
+        echo "  ❌ sessions/ directory is not writable or missing"
         TOTAL_ISSUES=$((TOTAL_ISSUES + 1))
     fi
 
