@@ -156,11 +156,6 @@ class SidePanel {
     // Show all checkpoint sections and apply selected styling
     this.showAllCheckpoints();
 
-    // Schedule buffer update (DOM will settle in 500ms)
-    if (typeof window.scheduleBufferUpdate === "function") {
-      window.scheduleBufferUpdate();
-    }
-
     // Scroll to top of page
     window.scrollTo({
       top: 0,
@@ -222,11 +217,6 @@ class SidePanel {
     });
     section.classList.add("active"); // Apply selected styling
     section.style.display = "block"; // Show only selected
-
-    // Schedule buffer update (DOM will settle in 500ms)
-    if (typeof window.scheduleBufferUpdate === "function") {
-      window.scheduleBufferUpdate();
-    }
 
     // Scroll to position section 90px from top of viewport
     // Buffer is always 90px, so offsetTop is relative to that

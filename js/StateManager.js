@@ -1387,11 +1387,6 @@ class UnifiedStateManager {
         if (success) {
           this.announceSaveAction("Checklist saved successfully");
 
-          // Update buffer after save (content may have changed)
-          if (typeof window.scheduleBufferUpdate === "function") {
-            window.scheduleBufferUpdate();
-          }
-
           // Keep focus for 3 seconds while success message shows
           setTimeout(() => {
             if (this.saveButton) {

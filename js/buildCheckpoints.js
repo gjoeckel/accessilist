@@ -284,11 +284,6 @@ function handleAddCheckpointRow(checkpointId) {
   // Add using StateManager method
   window.unifiedStateManager.addCheckpointRow(newRowData, true);
 
-  // Schedule buffer update (row changes content height)
-  if (typeof window.scheduleBufferUpdate === "function") {
-    window.scheduleBufferUpdate();
-  }
-
   // Set focus on the task textarea for manual rows - reduced timeout to prevent race conditions
   setTimeout(() => {
     const currentTable = document.querySelector(

@@ -79,11 +79,6 @@ async function initializeApp() {
       await buildCheckpointsContent(data);
     }
 
-    // Schedule bottom buffer calculation (500ms delay for DOM to settle)
-    if (typeof window.scheduleBufferUpdate === "function") {
-      window.scheduleBufferUpdate();
-    }
-
     // Apply selected styling to all checkpoints AFTER content is built
     if (sidePanel) {
       sidePanel.applyAllCheckpointsActive();

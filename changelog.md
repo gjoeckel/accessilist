@@ -8,6 +8,67 @@
 
 ## Entries
 
+### 2025-10-17 - Scroll System Regression Fix: Restore Pure CSS Solution ✅ COMPLETE
+
+**Issue Identified:**
+- Scroll system regressed from pure CSS (Oct 10) to JavaScript-driven (Oct 13+)
+- Users experiencing "bounce back" effect when scrolling
+- JavaScript updating CSS variables during scroll, fighting browser physics
+
+**Root Cause:**
+- Commit e6fe3d8 (Oct 13) introduced dynamic buffer calculations via JavaScript
+- `updateBottomBufferNow()` function updates `--bottom-buffer` CSS variable during user interaction
+- CSS transition (0.3s ease) animates buffer changes = visual bounce
+- Window resize listener triggers buffer updates that can fire during scroll
+
+**Original Working System (Oct 10, Commit a8de24e):**
+- Pure CSS with fixed 20000px pseudo-element buffers
+- No JavaScript involvement in scroll physics
+- Smooth, natural scroll stops
+- Commit message: "No JS fighting with user scroll"
+
+**Fix Applied:**
+- ✅ Restored fixed 20000px bottom buffer in css/scroll.css
+- ✅ Removed CSS transition property (no more animations)
+- ✅ Removed 400+ lines of dynamic buffer JavaScript from js/scroll.js
+- ✅ Removed scheduleBufferUpdate() calls from 6 JavaScript files
+- ✅ Kept report page dynamic buffers (update on filter changes only, not scroll)
+
+**Files Modified:**
+- `css/scroll.css` - Changed var(--bottom-buffer) to fixed 20000px, removed transition
+- `js/scroll.js` - Removed dynamic buffer calculation system (~400 lines)
+- `js/buildCheckpoints.js` - Removed scheduleBufferUpdate() call
+- `js/buildDemo.js` - Removed scheduleBufferUpdate() call
+- `js/main.js` - Removed scheduleBufferUpdate() call
+- `js/StateManager.js` - Removed scheduleBufferUpdate() call
+- `js/side-panel.js` - Removed 2 scheduleBufferUpdate() calls
+
+**Technical Details:**
+- Top buffer: 90px (unchanged - header offset)
+- Bottom buffer: 20000px (restored from dynamic calculation)
+- Report pages: Keep dynamic buffers (different use case - filter changes)
+- Window resize listener: Removed for checklist pages, kept for report pages only
+
+**Result:**
+- ✅ No more "bounce back" effect
+- ✅ Smooth, natural scroll physics
+- ✅ Browser handles all scroll constraints
+- ✅ Reduced code complexity by ~400 lines
+
+**Impact:**
+- **User Experience**: Smooth scrolling without JavaScript interference
+- **Code Quality**: Simpler, more maintainable pure CSS solution
+- **Performance**: No resize listeners, no debounced calculations
+- **Reliability**: Browser-native scroll physics, no race conditions
+
+**Documentation:**
+- Created SCROLL-SYSTEM-REGRESSION-REPORT.md - Detailed analysis of regression
+- Created SCROLL-SYSTEM-FIX-GUIDE.md - Step-by-step implementation guide
+
+**Status:** ✅ **COMPLETE** - Pure CSS scroll system restored
+
+---
+
 ### 2025-10-16 17:52:09 UTC - Local Commit: 54 files on main
 
 **Branch:** main

@@ -343,9 +343,6 @@ function handleAddCheckpointRow(checkpointId) {
   window.unifiedStateManager.addCheckpointRow(newRowData, true);
 
   // Schedule buffer update
-  if (typeof window.scheduleBufferUpdate === "function") {
-    window.scheduleBufferUpdate();
-  }
 
   // Set focus on the task textarea for manual rows
   setTimeout(() => {
