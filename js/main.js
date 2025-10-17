@@ -84,6 +84,11 @@ async function initializeApp() {
       sidePanel.applyAllCheckpointsActive();
     }
 
+    // Calculate bottom buffer with generous delay for reliability
+    if (typeof window.safeUpdateChecklistBuffer === "function") {
+      window.safeUpdateChecklistBuffer();
+    }
+
     // Initialize other functionality
     if (typeof initializeChecklist === "function") initializeChecklist();
     if (typeof initializeReport === "function") initializeReport();

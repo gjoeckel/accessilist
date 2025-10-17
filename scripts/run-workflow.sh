@@ -2,40 +2,64 @@
 
 # Workflow Executor
 # Ensures workflows from .cursor/workflows.json are executed correctly
+# Supports both global (~/.cursor/workflows.json) and project-specific (.cursor/workflows.json)
 # Usage: ./scripts/run-workflow.sh <workflow-name>
 
 set -e
 
 WORKFLOW_NAME="$1"
-WORKFLOWS_FILE=".cursor/workflows.json"
+PROJECT_WORKFLOWS_FILE=".cursor/workflows.json"
+GLOBAL_WORKFLOWS_FILE="$HOME/.cursor/workflows.json"
 
 # Colors
 GREEN='\033[0;32m'
 BLUE='\033[0;34m'
 YELLOW='\033[1;33m'
 RED='\033[0;31m'
+CYAN='\033[0;36m'
 NC='\033[0m'
+
+# Function to list all available workflows
+list_workflows() {
+    echo "Available workflows:"
+    echo ""
+
+    # List global workflows if file exists
+    if [ -f "$GLOBAL_WORKFLOWS_FILE" ]; then
+        echo -e "${CYAN}Global workflows (all projects):${NC}"
+        jq -r 'keys[]' "$GLOBAL_WORKFLOWS_FILE" 2>/dev/null | sed 's/^/  - /' | sort
+        echo ""
+    fi
+
+    # List project workflows if file exists
+    if [ -f "$PROJECT_WORKFLOWS_FILE" ]; then
+        echo -e "${CYAN}Project-specific workflows (this project):${NC}"
+        jq -r 'keys[]' "$PROJECT_WORKFLOWS_FILE" 2>/dev/null | sed 's/^/  - /' | sort
+    fi
+}
 
 if [ -z "$WORKFLOW_NAME" ]; then
     echo -e "${RED}❌ Error: Workflow name required${NC}"
     echo "Usage: $0 <workflow-name>"
     echo ""
-    echo "Available workflows:"
-    jq -r 'keys[]' "$WORKFLOWS_FILE" 2>/dev/null | sed 's/^/  - /'
+    list_workflows
     exit 1
 fi
 
-if [ ! -f "$WORKFLOWS_FILE" ]; then
-    echo -e "${RED}❌ Error: Workflow file not found: $WORKFLOWS_FILE${NC}"
-    exit 1
-fi
+# Determine which file contains the workflow (project takes precedence over global)
+WORKFLOWS_FILE=""
+WORKFLOW_SOURCE=""
 
-# Check if workflow exists
-if ! jq -e ".[\"$WORKFLOW_NAME\"]" "$WORKFLOWS_FILE" >/dev/null 2>&1; then
+if [ -f "$PROJECT_WORKFLOWS_FILE" ] && jq -e ".[\"$WORKFLOW_NAME\"]" "$PROJECT_WORKFLOWS_FILE" >/dev/null 2>&1; then
+    WORKFLOWS_FILE="$PROJECT_WORKFLOWS_FILE"
+    WORKFLOW_SOURCE="project-specific"
+elif [ -f "$GLOBAL_WORKFLOWS_FILE" ] && jq -e ".[\"$WORKFLOW_NAME\"]" "$GLOBAL_WORKFLOWS_FILE" >/dev/null 2>&1; then
+    WORKFLOWS_FILE="$GLOBAL_WORKFLOWS_FILE"
+    WORKFLOW_SOURCE="global"
+else
     echo -e "${RED}❌ Error: Workflow '$WORKFLOW_NAME' not found${NC}"
     echo ""
-    echo "Available workflows:"
-    jq -r 'keys[]' "$WORKFLOWS_FILE" | sed 's/^/  - /'
+    list_workflows
     exit 1
 fi
 
@@ -47,7 +71,7 @@ echo -e "${BLUE}╔════════════════════�
 echo -e "${BLUE}║  Workflow Executor                                     ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════════════════════╝${NC}"
 echo ""
-echo -e "${YELLOW}Workflow:${NC} $WORKFLOW_NAME"
+echo -e "${YELLOW}Workflow:${NC} $WORKFLOW_NAME ${CYAN}($WORKFLOW_SOURCE)${NC}"
 echo -e "${YELLOW}Description:${NC} $DESCRIPTION"
 echo ""
 

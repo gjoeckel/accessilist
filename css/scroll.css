@@ -16,11 +16,17 @@ body.checklist-page main::before {
   height: 90px; /* Header offset - content starts at 90px from viewport top */
 }
 
-/* Fixed buffer below content - browser handles all scroll physics */
+/* Dynamic buffer below content - calculated to stop at add row button */
 body.checklist-page main::after {
   content: "";
   display: block;
-  height: 20000px; /* Fixed value - enough space for all checkpoints */
+  height: var(--bottom-buffer, 20000px); /* Dynamic with safe fallback */
+  /* NO transition property - instant updates before scroll */
+}
+
+/* Hide scrollbar when content fits */
+body.checklist-page.no-scroll {
+  overflow: hidden;
 }
 
 /* ====================================================================

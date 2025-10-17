@@ -156,10 +156,22 @@ class SidePanel {
     // Show all checkpoint sections and apply selected styling
     this.showAllCheckpoints();
 
-    // Scroll to top of page
-    window.scrollTo({
-      top: 0,
-      behavior: "auto", // Instant scroll - no animation
+    // Calculate buffer BEFORE scrolling (with generous delay for reliability)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          // Calculate new buffer for all checkpoints visible
+          if (typeof window.updateChecklistBottomBuffer === "function") {
+            window.updateChecklistBottomBuffer();
+          }
+
+          // THEN scroll to top after buffer is set
+          window.scrollTo({
+            top: 0,
+            behavior: "auto", // Instant scroll - no animation
+          });
+        }, 150);
+      });
     });
   }
 
@@ -218,14 +230,26 @@ class SidePanel {
     section.classList.add("active"); // Apply selected styling
     section.style.display = "block"; // Show only selected
 
-    // Scroll to position section 90px from top of viewport
-    // Buffer is always 90px, so offsetTop is relative to that
-    // Subtract 90 to account for header
-    const targetScroll = section.offsetTop - 90;
+    // Calculate buffer BEFORE scrolling (with generous delay for reliability)
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          // Calculate new buffer for single visible checkpoint
+          if (typeof window.updateChecklistBottomBuffer === "function") {
+            window.updateChecklistBottomBuffer();
+          }
 
-    window.scrollTo({
-      top: targetScroll,
-      behavior: "auto", // Instant scroll - no animation
+          // THEN scroll to checkpoint after buffer is set
+          // Buffer is always 90px, so offsetTop is relative to that
+          // Subtract 90 to account for header
+          const targetScroll = section.offsetTop - 90;
+
+          window.scrollTo({
+            top: targetScroll,
+            behavior: "auto", // Instant scroll - no animation
+          });
+        }, 150);
+      });
     });
 
     // Focus on checkpoint h2

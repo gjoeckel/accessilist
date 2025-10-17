@@ -302,7 +302,7 @@ function buildTable(rows, checkpointId) {
 
   // Create Add Row button
   const addButton = document.createElement("button");
-  addButton.className = "checkpoints-button";
+  addButton.className = "checkpoints-button add-row-button";
   addButton.id = `addRow-${checkpointId}`;
   addButton.setAttribute("data-checkpoint", checkpointId);
   addButton.setAttribute("aria-label", `Add new task to ${checkpointId}`);

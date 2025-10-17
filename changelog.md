@@ -8,6 +8,41 @@
 
 ## Entries
 
+### 2025-10-17 - Dynamic Scroll Buffer System: Path A/B Logic Implementation ✅ COMPLETE
+
+**Achievement:**
+- Implemented perfect two-path scroll system with dynamic viewport responsiveness
+- Path A: Content fits (diff >= 150px) → Hide scrollbar, lock scrolling
+- Path B: Content doesn't fit (diff < 150px) → Show scrollbar, allow scrolling
+- Real-time responsiveness to viewport changes and side panel interactions
+
+**Technical Implementation:**
+- **Simple Logic**: `viewport - content = difference` determines path
+- **Path A**: Buffer = 0px, CSS class `no-scroll` with `overflow: hidden`
+- **Path B**: Buffer = 150px, normal scrolling with proper bottom stop
+- **Inverse Relationship**: Fits YES = Scroll NO (and vice versa)
+- **Dynamic Calculation**: Recalculates on page load, side panel clicks, viewport changes
+
+**Files Modified:**
+- `js/scroll.js` - Implemented Path A/B logic with 0px buffer for fitting content
+- `css/scroll.css` - Added `.no-scroll` class with `overflow: hidden`
+- Debug overlay shows real-time calculations and path decisions
+
+**Key Features:**
+- ✅ **No JavaScript fighting user scroll** - Pure CSS scroll physics
+- ✅ **Dynamic viewport responsiveness** - Handles window resizing perfectly
+- ✅ **Side panel integration** - Works with show all vs single checkpoint
+- ✅ **Debug-friendly** - Visual overlay shows all calculations
+- ✅ **Production-ready** - Handles all edge cases and user interactions
+
+**Result:**
+- **Perfect scroll behavior** for both fitting and non-fitting content
+- **Smooth transitions** between Path A and Path B
+- **No layout shifts** or bounce effects
+- **Responsive to all viewport changes**
+
+**Status:** ✅ **COMPLETE** - Dynamic scroll buffer system working perfectly
+
 ### 2025-10-17 - Scroll System Regression Fix: Restore Pure CSS Solution ✅ COMPLETE
 
 **Issue Identified:**
