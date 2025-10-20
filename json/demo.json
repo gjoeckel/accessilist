@@ -101,7 +101,7 @@
         "info": "If a task is marked Ready ([ready-1.svg]) and you add a note, the status automatically changes to Active ([active-1.svg]). This helps you track which tasks you're currently working on."
       },
       {
-        "id": "4.5",
+        "id": "4.4",
         "task": "Use the Done ([done-1.svg]) status to mark tasks as complete, and show the Reset ([reset.svg]) button.",
         "info": "Tasks marked Done ([done-1.svg]) are highlighted in your Report ([Report default CSS]) page. This gives you a quick summary of all completed work across all checkpoints."
       }

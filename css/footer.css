@@ -29,43 +29,43 @@
    ==================================================================== */
 
 #statusMessageContainer {
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    padding: 10px 20px;
-    background-color: #f8f9fa;
-    border: 1px solid #dee2e6;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    z-index: 2001; /* Match footer z-index - above header and side panel */
-    min-width: 200px;
-    text-align: center;
-    transition: opacity 0.3s ease;
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  padding: 10px 20px;
+  background-color: #f8f9fa;
+  border: 1px solid #dee2e6;
+  border-radius: 4px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  z-index: 2001; /* Match footer z-index - above header and side panel */
+  min-width: 200px;
+  text-align: center;
+  transition: opacity 0.3s ease;
 }
 
 #statusMessageContainer:empty {
-    opacity: 0;
-    pointer-events: none;
+  opacity: 0;
+  pointer-events: none;
 }
 
 #statusMessageContainer[role="alert"] {
-    background-color: #f8d7da;
-    border-color: #f5c6cb;
-    color: #721c24;
+  background-color: #f8d7da;
+  border-color: #f5c6cb;
+  color: #721c24;
 }
 
 #statusMessageContainer[role="status"] {
-    background-color: #d4edda;
-    border-color: #c3e6cb;
-    color: #155724;
+  background-color: #d4edda;
+  border-color: #c3e6cb;
+  color: #155724;
 }
 
 @media (forced-colors: active) {
-    #statusMessageContainer {
-        border: 2px solid ButtonText;
-        background-color: ButtonFace;
-        color: ButtonText;
-    }
+  #statusMessageContainer {
+    border: 2px solid ButtonText;
+    background-color: ButtonFace;
+    color: ButtonText;
+  }
 }
 
 /* ====================================================================
@@ -74,29 +74,29 @@
 
 .status-footer,
 footer[role="contentinfo"] {
-    position: fixed;
-    bottom: 0;
-    left: 0;
-    width: 100%;
-    height: 50px;
-    background: #f0f0f0;
-    border-top: 1px solid #dee2e6;
-    z-index: 2001; /* Above header (2000) and side panel (1999) */
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding-left: 30px;
-    padding-right: 30px;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50px;
+  background: #f0f0f0;
+  border-top: 1px solid #dee2e6;
+  z-index: 2001; /* Above header (2000) and side panel (1999) */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-left: 30px;
+  padding-right: 30px;
 }
 
 .footer-left {
-    display: flex;
-    align-items: center;
-    gap: 12px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
 
 .copyright-text {
-    font-size: 1rem;
+  font-size: 1rem;
 }
 
 /* ====================================================================
@@ -104,29 +104,29 @@ footer[role="contentinfo"] {
    ==================================================================== */
 
 .status-content {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-size: 0.875rem;
-    margin-left: auto;
-    padding: 6px 10px;
-    background: #fff;
-    border: 1px solid #ccc;
-    border-radius: 8px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.875rem;
+  margin-left: auto;
+  padding: 6px 10px;
+  background: #fff;
+  border: 1px solid #ccc;
+  border-radius: 8px;
 }
 
 .status-content:empty {
-    display: none;
+  display: none;
 }
 
 .status-content.status-success {
-    color: #478F00;
-    border-color: #478F00;
+  color: #478f00;
+  border-color: #478f00;
 }
 
 .status-content.status-error {
-    color: #BF1712;
-    border-color: #BF1712;
+  color: #bf1712;
+  border-color: #bf1712;
 }
 
 /* ====================================================================
@@ -135,59 +135,80 @@ footer[role="contentinfo"] {
 
 /* Creative Commons License */
 .cc-license {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    text-decoration: none;
-    color: inherit;
-    border-radius: 4px;
-    padding: 4px 8px;
-    transition: box-shadow 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  text-decoration: none;
+  color: inherit;
+  border-radius: 4px;
+  padding: 4px 8px;
+  transition: box-shadow 0.2s ease;
 }
 
 .cc-license:visited {
-    color: inherit;
+  color: inherit;
 }
 
 .cc-license:focus,
 .cc-license:hover {
-    box-shadow: var(--golden-ring) !important;
-    outline: none;
+  box-shadow: var(--golden-ring) !important;
+  outline: none;
 }
 
 .cc-icon {
-    display: inline-flex;
-    align-items: center;
+  display: inline-flex;
+  align-items: center;
 }
 
 .cc-icon svg {
-    width: 24px;
-    height: 24px;
-    fill: currentColor;
+  width: 24px;
+  height: 24px;
+  fill: currentColor;
 }
 
 .cc-text {
-    font-size: 0.875rem;
-    margin-left: 4px;
+  font-size: 0.875rem;
+  margin-left: 4px;
+}
+
+/* AEIT Footer Link */
+.aeit-footer-link {
+  text-decoration: none;
+  color: #0066cc;
+  border-radius: 4px;
+  padding: 4px 8px;
+  transition: box-shadow 0.2s ease;
+  font-size: 1rem;
+  display: none; /* Hidden by default - controlled by JavaScript */
+}
+
+.aeit-footer-link:visited {
+  color: #0066cc;
+}
+
+.aeit-footer-link:focus,
+.aeit-footer-link:hover {
+  box-shadow: var(--golden-ring) !important;
+  outline: none;
 }
 
 /* NCADEMI Link */
 .ncademi-link {
-    text-decoration: none;
-    color: #025191;
-    border-radius: 4px;
-    padding: 4px 8px;
-    transition: box-shadow 0.2s ease;
+  text-decoration: none;
+  color: #025191;
+  border-radius: 4px;
+  padding: 4px 8px;
+  transition: box-shadow 0.2s ease;
 }
 
 .ncademi-link:visited {
-    color: #025191;
+  color: #025191;
 }
 
 .ncademi-link:focus,
 .ncademi-link:hover {
-    box-shadow: var(--golden-ring) !important;
-    outline: none;
+  box-shadow: var(--golden-ring) !important;
+  outline: none;
 }
 
 /* ====================================================================
@@ -195,8 +216,8 @@ footer[role="contentinfo"] {
    ==================================================================== */
 
 @media (forced-colors: active) {
-    .status-footer {
-        border-top: 2px solid ButtonText;
-        background: ButtonFace;
-    }
+  .status-footer {
+    border-top: 2px solid ButtonText;
+    background: ButtonFace;
+  }
 }

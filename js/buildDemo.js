@@ -342,8 +342,6 @@ function handleAddCheckpointRow(checkpointId) {
   // Add using StateManager method
   window.unifiedStateManager.addCheckpointRow(newRowData, true);
 
-  // Schedule buffer update
-
   // Set focus on the task textarea for manual rows
   setTimeout(() => {
     const currentTable = document.querySelector(
@@ -359,6 +357,11 @@ function handleAddCheckpointRow(checkpointId) {
           taskTextarea.focus();
         }
       }
+    }
+
+    // Recalculate buffer after row is added
+    if (typeof window.ScrollManager?.updateChecklistBuffer === "function") {
+      window.ScrollManager.updateChecklistBuffer();
     }
   }, 50);
 }

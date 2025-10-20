@@ -64,6 +64,3 @@ class TypeManager {
         return self::validateType($candidate);
     }
 }
-?>
-
-

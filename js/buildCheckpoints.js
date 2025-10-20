@@ -300,6 +300,11 @@ function handleAddCheckpointRow(checkpointId) {
         }
       }
     }
+
+    // Recalculate buffer after row is added
+    if (typeof window.ScrollManager?.updateChecklistBuffer === "function") {
+      window.ScrollManager.updateChecklistBuffer();
+    }
   }, 50); // Reduced from 100ms to 50ms
 }
 

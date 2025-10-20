@@ -10,43 +10,50 @@
       "displayName": "Word",
       "jsonFile": "word.json",
       "buttonId": "word",
-      "category": "Microsoft"
+      "category": "Microsoft",
+      "aeitLink": true
     },
     "powerpoint": {
       "displayName": "PowerPoint",
       "jsonFile": "powerpoint.json",
       "buttonId": "powerpoint",
-      "category": "Microsoft"
+      "category": "Microsoft",
+      "aeitLink": true
     },
     "excel": {
       "displayName": "Excel",
       "jsonFile": "excel.json",
       "buttonId": "excel",
-      "category": "Microsoft"
+      "category": "Microsoft",
+      "aeitLink": true
     },
     "docs": {
       "displayName": "Docs",
       "jsonFile": "docs.json",
       "buttonId": "docs",
-      "category": "Google"
+      "category": "Google",
+      "aeitLink": true
     },
     "slides": {
       "displayName": "Slides",
       "jsonFile": "slides.json",
       "buttonId": "slides",
-      "category": "Google"
+      "category": "Google",
+      "aeitLink": true
     },
     "camtasia": {
       "displayName": "Camtasia",
       "jsonFile": "camtasia.json",
       "buttonId": "camtasia",
-      "category": "Other"
+      "category": "Other",
+      "aeitLink": true
     },
     "dojo": {
       "displayName": "Dojo",
       "jsonFile": "dojo.json",
       "buttonId": "dojo",
-      "category": "Other"
+      "category": "Other",
+      "aeitLink": false
     },
     "test-5": {
       "displayName": "Test-5-Checkpoints",

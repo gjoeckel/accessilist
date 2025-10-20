@@ -1,0 +1,49 @@
+/* ====================================================================
+   AEIT PAGE STYLESHEET
+
+   SCOPE: Styles specific to the AEIT attribution page
+   ==================================================================== */
+
+/* Main content area - reduced top margin */
+body main#main-content {
+  padding-top: 30px;
+}
+
+/* Override landing-content flex display */
+body main .landing-content {
+  display: block !important;
+}
+
+/* Position h1 with pixel values instead of percentage */
+.sticky-header h1 {
+  position: absolute;
+  left: 50%;
+  top: 25px;
+  transform: translateX(-50%);
+  margin: 0;
+  font-size: 1.5rem;
+}
+
+/* Position Back button with pixel values */
+#backButton {
+  position: absolute;
+  left: 2rem;
+  top: 35px;
+  transform: translateY(-50%);
+}
+
+/* Paragraph styling */
+body main p {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  text-align: left;
+}
+
+/* List styling */
+body main ul {
+  font-size: 1.25rem;
+  line-height: 1.5;
+  text-align: left;
+  margin: 30px 0 0 60px;
+  list-style-position: outside;
+}

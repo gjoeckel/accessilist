@@ -6,7 +6,7 @@
  */
 
 /* ====================================================================
-   MYCHECKLIST PAGE - Fixed top buffer for header offset
+   MYCHECKLIST PAGE - Fixed top buffer and Path B bottom buffer
    ==================================================================== */
 
 /* Fixed buffer for header offset - content starts 90px from viewport top */
@@ -16,7 +16,14 @@ body.checklist-page main::before {
   height: 90px; /* Header offset - scroll-up stop */
 }
 
-/* Hide scrollbar when content fits (optional - can be controlled by JS) */
+/* Path B: Bottom buffer when content doesn't fit */
+body.checklist-page main::after {
+  content: "";
+  display: block;
+  height: 100px; /* Gap above footer */
+}
+
+/* Path A: Hide scrollbar when content fits */
 body.checklist-page.no-scroll {
   overflow: hidden;
 }

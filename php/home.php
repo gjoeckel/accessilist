@@ -14,7 +14,7 @@ renderHTMLHead('Accessibility Checklists');
 <!-- Sticky Header -->
 <header class="sticky-header">
     <div class="header-content">
-        <h1>Accessibility Checklists</h1>
+        <h1>AccessiList</h1>
         <div class="header-buttons-group">
             <button id="reportsButton" class="header-button reports-button">Reports</button>
         </div>

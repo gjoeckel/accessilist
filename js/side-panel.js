@@ -156,16 +156,18 @@ class SidePanel {
     // Show all checkpoint sections and apply selected styling
     this.showAllCheckpoints();
 
-    // Calculate buffer BEFORE scrolling (with generous delay for reliability)
+    // Update buffer and scroll
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         setTimeout(() => {
-          // Calculate new buffer for all checkpoints visible
-          if (typeof window.updateChecklistBottomBuffer === "function") {
-            window.updateChecklistBottomBuffer();
+          // Update checklist buffer (Path A/B logic)
+          if (
+            typeof window.ScrollManager?.updateChecklistBuffer === "function"
+          ) {
+            window.ScrollManager.updateChecklistBuffer();
           }
 
-          // THEN scroll to top after buffer is set
+          // THEN scroll to top
           window.scrollTo({
             top: 0,
             behavior: "auto", // Instant scroll - no animation
@@ -230,16 +232,18 @@ class SidePanel {
     section.classList.add("active"); // Apply selected styling
     section.style.display = "block"; // Show only selected
 
-    // Calculate buffer BEFORE scrolling (with generous delay for reliability)
+    // Update buffer and scroll
     requestAnimationFrame(() => {
       requestAnimationFrame(() => {
         setTimeout(() => {
-          // Calculate new buffer for single visible checkpoint
-          if (typeof window.updateChecklistBottomBuffer === "function") {
-            window.updateChecklistBottomBuffer();
+          // Update checklist buffer (Path A/B logic)
+          if (
+            typeof window.ScrollManager?.updateChecklistBuffer === "function"
+          ) {
+            window.ScrollManager.updateChecklistBuffer();
           }
 
-          // THEN scroll to checkpoint after buffer is set
+          // THEN scroll to checkpoint
           // Buffer is always 90px, so offsetTop is relative to that
           // Subtract 90 to account for header
           const targetScroll = section.offsetTop - 90;

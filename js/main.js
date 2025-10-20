@@ -128,7 +128,93 @@ async function initializeApp() {
 // Initialize Add Row buttons after content is built
 document.addEventListener("contentBuilt", () => {
   initializeCheckpointAddRowButtons();
+
+  // Update checklist buffer (Path A/B logic)
+  if (typeof window.ScrollManager?.updateChecklistBuffer === "function") {
+    window.ScrollManager.updateChecklistBuffer();
+  }
+
+  // Set AEIT link href if it's visible
+  setAEITLinkHref();
 });
+
+// Function to set AEIT link href and visibility
+async function setAEITLinkHref() {
+  const aeitLink = document.getElementById("aeitFooterLink");
+
+  if (!aeitLink) return;
+
+  // Find the separator - it's before the parent span that wraps the AEIT link
+  const aeitWrapper = aeitLink.parentElement;
+  const aeitSeparator = aeitWrapper?.previousElementSibling;
+
+  try {
+    // Get current checklist type using TypeManager
+    const currentType = await TypeManager.getTypeFromSources();
+    if (!currentType) {
+      console.error("Could not determine checklist type for AEIT link");
+      return;
+    }
+
+    // Load type config using TypeManager
+    const typeConfig = await TypeManager.loadConfig();
+    if (!typeConfig || !typeConfig.types) {
+      console.error("Could not load checklist types config");
+      return;
+    }
+
+    // Check if this checklist type should show AEIT link
+    const checklistConfig = typeConfig.types[currentType];
+    const shouldShow = checklistConfig && checklistConfig.aeitLink === true;
+
+    console.log(
+      `[AEIT Link] Type: ${currentType}, Config:`,
+      checklistConfig,
+      `Show: ${shouldShow}`
+    );
+
+    if (shouldShow) {
+      // Show link, wrapper, and separator
+      if (aeitWrapper) {
+        aeitWrapper.style.display = "inline";
+      }
+      if (
+        aeitSeparator &&
+        aeitSeparator.classList.contains("footer-separator")
+      ) {
+        aeitSeparator.style.display = "inline";
+      }
+      aeitLink.style.display = "inline";
+      // Set href - use same session logic as Report button
+      const sessionKey =
+        window.sessionKeyFromPHP || window.unifiedStateManager?.sessionKey;
+      if (sessionKey) {
+        aeitLink.href = window.basePath
+          ? `${window.basePath}/aeit?session=${sessionKey}`
+          : `/aeit?session=${sessionKey}`;
+      } else {
+        console.error("[AEIT Link] Session key not available");
+        aeitLink.href = window.basePath ? `${window.basePath}/aeit` : "/aeit";
+      }
+      console.log(`[AEIT Link] Shown with href: ${aeitLink.href}`);
+    } else {
+      // Hide link, wrapper, and separator
+      if (aeitWrapper) {
+        aeitWrapper.style.display = "none";
+      }
+      if (
+        aeitSeparator &&
+        aeitSeparator.classList.contains("footer-separator")
+      ) {
+        aeitSeparator.style.display = "none";
+      }
+      aeitLink.style.display = "none";
+      console.log("[AEIT Link] Hidden");
+    }
+  } catch (error) {
+    console.error("Error setting AEIT link:", error);
+  }
+}
 
 // Export initializeApp for potential use elsewhere (e.g., testing)
 window.initializeApp = initializeApp;

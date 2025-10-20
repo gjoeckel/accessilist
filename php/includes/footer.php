@@ -5,7 +5,7 @@
  * Renders footer markup with status support for dynamic updates.
  * The status-content div has aria-live for accessibility announcements.
  */
-function renderFooter() {
+function renderFooter($type = 'standard') {
     global $basePath;
     ?>
 <!-- Footer with Status Support -->
@@ -29,11 +29,17 @@ function renderFooter() {
             </span>
             <span class="cc-text">CC BY-SA 4.0</span>
         </a>
-        <span class="copyright-text"><a href="https://ncademi.org/" class="ncademi-link" target="_blank" rel="noopener noreferrer">NCADEMI</a></span>
+               <span class="footer-separator">|</span>
+               <span class="copyright-text"><a href="https://ncademi.org/" class="ncademi-link" target="_blank" rel="noopener noreferrer">NCADEMI</a></span>
+               <span class="footer-separator" style="display: none;">|</span>
+               <span style="display: none;">
+                   <a href="#" class="aeit-footer-link" id="aeitFooterLink">AEIT</a>
+               </span>
     </div>
+    <?php if ($type === 'status'): ?>
     <div class="status-content" aria-live="polite"></div>
+    <?php endif; ?>
 </footer>
     <?php
 }
 ?>
-

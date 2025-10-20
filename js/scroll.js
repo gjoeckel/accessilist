@@ -1,13 +1,13 @@
 /**
  * scroll.js
  *
- * Simple scroll buffer system for checklist pages
+ * Simple Path A/B scroll system for checklist pages
  *
  * CHECKLIST PAGES (list.php):
  * ---------------------------
  * - Top buffer: 90px fixed (header offset via CSS pseudo-element)
- * - Content always starts 90px from viewport top
- * - No dynamic calculations needed
+ * - Path A: Content fits → hide scrollbar, no bottom buffer
+ * - Path B: Content doesn't fit → show scrollbar, 100px bottom buffer
  *
  * REPORT PAGES (list-report.php, systemwide-report.php):
  * ------------------------------------------------------
@@ -15,6 +15,49 @@
  * - Bottom buffer: Calculated on filter change
  * - Updates ONLY when filters change (not during scroll)
  */
+
+/**
+ * Update checklist buffer based on Path A/B logic
+ * Calculates whether content fits and shows/hides scrollbar accordingly
+ */
+window.updateChecklistBuffer = function () {
+  // Find all VISIBLE checkpoint sections
+  const visibleSections = Array.from(
+    document.querySelectorAll(".checkpoint-section")
+  ).filter((section) => section.style.display !== "none");
+
+  if (visibleSections.length === 0) {
+    return;
+  }
+
+  // Calculate total height of all visible content
+  let totalContentHeight = 0;
+  visibleSections.forEach((section) => {
+    totalContentHeight += section.offsetHeight;
+  });
+
+  // Get viewport height from DOM
+  const viewportHeight = window.innerHeight;
+
+  // Constants
+  const footerHeight = 50;
+  const desiredGap = 100;
+
+  // Calculate if content fits
+  // viewport - (content + footer + gap)
+  const result =
+    viewportHeight - (totalContentHeight + footerHeight + desiredGap);
+
+  const body = document.body;
+
+  if (result >= 0) {
+    // PATH A: Content FITS - hide scrollbar
+    body.classList.add("no-scroll");
+  } else {
+    // PATH B: Content DOESN'T FIT - show scrollbar
+    body.classList.remove("no-scroll");
+  }
+};
 
 /**
  * Update report page buffer
@@ -64,8 +107,12 @@ window.scheduleReportBufferUpdate = function () {
   }, 100);
 };
 
-// Export API for report pages
+// Export API
 window.ScrollManager = {
+  // Checklist page function
+  updateChecklistBuffer: window.updateChecklistBuffer,
+
+  // Report page functions
   updateReportBuffer: window.updateReportBuffer,
   scheduleReportBufferUpdate: window.scheduleReportBufferUpdate,
 };
