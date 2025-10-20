@@ -85,7 +85,7 @@ test_production_content() {
 echo -e "${BLUE}━━━ Critical Production Tests ━━━${NC}"
 
 test_production_endpoint "Home page" "$PRODUCTION_URL/home" "200"
-test_production_endpoint "Reports dashboard" "$PRODUCTION_URL/reports" "200"
+test_production_endpoint "Reports dashboard" "$PRODUCTION_URL/systemwide-report" "200"
 test_production_endpoint "API Health" "$PRODUCTION_URL/php/api/health" "200"
 test_production_endpoint "API List" "$PRODUCTION_URL/php/api/list" "200"
 test_production_content "Base path in HTML" "$PRODUCTION_URL/home" "/training/online/accessilist"
