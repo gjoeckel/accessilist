@@ -96,8 +96,8 @@ function createHomeButton() {
     text: "Home",
     onClick: function () {
       var target =
-        window.getPHPPath && typeof window.getPHPPath === "function"
-          ? window.getPHPPath("home")
+        window.getCleanPath && typeof window.getCleanPath === "function"
+          ? window.getCleanPath("home")
           : "/home";
       window.location.href = target;
     },

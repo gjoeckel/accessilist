@@ -245,8 +245,8 @@ document.addEventListener('DOMContentLoaded', function() {
     const homeButton = document.getElementById('homeButton');
     if (homeButton) {
         homeButton.addEventListener('click', function() {
-            const target = window.getPHPPath
-                ? window.getPHPPath('home')
+            const target = window.getCleanPath
+                ? window.getCleanPath('home')
                 : '/home';
             window.location.href = target;
         });
