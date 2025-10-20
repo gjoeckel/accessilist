@@ -78,77 +78,55 @@ window.updateChecklistBottomBuffer = function () {
   console.log("🎯 [Buffer Calc] Top buffer:", topBuffer + "px");
   console.log("🎯 [Buffer Calc] Target margin:", targetMargin + "px");
 
-  // PATH A/B Logic: Simple viewport vs content comparison
-  const viewportContentDiff = viewportHeight - totalContentHeight;
+  // PATH A/B Logic: Calculate current visible space
+  const uiVerticalConstant = 140; // 90px top margin + 50px footer
+  const currentVisible =
+    viewportHeight - (totalContentHeight + uiVerticalConstant);
+  console.log("🎯 [Buffer Calc] Viewport:", viewportHeight + "px");
+  console.log("🎯 [Buffer Calc] Content:", totalContentHeight + "px");
   console.log(
-    "🎯 [Buffer Calc] Viewport - Content difference:",
-    viewportContentDiff + "px"
+    "🎯 [Buffer Calc] UI Vertical Constant:",
+    uiVerticalConstant + "px"
   );
+  console.log("🎯 [Buffer Calc] Current visible:", currentVisible + "px");
 
-  let buffer;
-  let fits;
-
-  if (viewportContentDiff >= 150) {
-    // PATH A: Content FITS - hide scrollbar, lock scrolling
-    console.log("🎯 [Buffer Calc] >>> PATH A: Content FITS (diff >= 150px)");
-    fits = true;
-    // PATH A: Content fits - set buffer to 0px to prevent any scroll
-    // No extra space = no scroll possible
-    buffer = 0;
-    console.log(
-      "🎯 [Buffer Calc] Buffer calculated to prevent scroll:",
-      buffer + "px"
-    );
-  } else {
-    // PATH B: Content DOESN'T FIT - allow scroll (will implement later)
-    console.log(
-      "🎯 [Buffer Calc] >>> PATH B: Content DOES NOT FIT (diff < 150px)"
-    );
-    fits = false;
-    buffer = 150; // Temporary - will fix in Path B implementation
-    console.log("🎯 [Buffer Calc] Buffer set to 150px (temporary)");
-  }
-
-  // Set CSS variable (instant, no transition)
-  console.log(
-    "🎯 [Buffer Calc] Setting CSS variable --bottom-buffer to:",
-    buffer + "px"
-  );
-  document.documentElement.style.setProperty("--bottom-buffer", `${buffer}px`);
-
-  // Toggle no-scroll class based on fits
+  // PATH A/B Logic with 90px threshold
+  const totalVisibleSpace = 90; // Required visible space for PATH A
   const body = document.body;
-  if (fits) {
+
+  if (currentVisible >= totalVisibleSpace) {
+    // PATH A: Content FITS - hide scrollbar, no bottom-buffer needed
+    console.log(
+      "🎯 [Buffer Calc] >>> PATH A: Content FITS (current visible >= 90px)"
+    );
     body.classList.add("no-scroll");
+    document.documentElement.style.setProperty("--bottom-buffer", "0px");
     console.log("🎯 [Buffer Calc] Added 'no-scroll' class - hiding scrollbar");
+    console.log(
+      "🎯 [Buffer Calc] Set bottom-buffer to 0px (not needed when scrollbar is hidden)"
+    );
   } else {
+    // PATH B: Content DOESN'T FIT - show scrollbar, apply scroll-down stop
+    console.log(
+      "🎯 [Buffer Calc] >>> PATH B: Content DOES NOT FIT (current visible < 90px)"
+    );
     body.classList.remove("no-scroll");
+    document.documentElement.style.setProperty(
+      "--bottom-buffer",
+      currentVisible + "px"
+    );
     console.log(
       "🎯 [Buffer Calc] Removed 'no-scroll' class - showing scrollbar"
     );
+    console.log(
+      "🎯 [Buffer Calc] Scroll-down stop: Content top cannot go above",
+      currentVisible + "px from viewport top"
+    );
+    console.log(
+      "🎯 [Buffer Calc] Set --bottom-buffer CSS variable to:",
+      currentVisible + "px"
+    );
   }
-
-  // Verify it was set
-  const actualValue = getComputedStyle(
-    document.documentElement
-  ).getPropertyValue("--bottom-buffer");
-  console.log("🎯 [Buffer Calc] CSS variable actual value:", actualValue);
-
-  // Check resulting document height
-  setTimeout(() => {
-    const docHeight = document.documentElement.scrollHeight;
-    console.log("🎯 [Buffer Calc] ─────────────────────");
-    console.log("🎯 [Buffer Calc] Final document height:", docHeight + "px");
-    console.log(
-      "🎯 [Buffer Calc] Expected:",
-      topBuffer + totalContentHeight + buffer + "px"
-    );
-    console.log(
-      "🎯 [Buffer Calc] Can scroll?",
-      docHeight > viewportHeight ? "YES ⚠️" : "NO ✅"
-    );
-    console.log("🎯 ========================================");
-  }, 50);
 
   // Visual debug overlay
   let debugDiv = document.getElementById("buffer-debug");
@@ -166,21 +144,32 @@ window.updateChecklistBottomBuffer = function () {
       font-family: monospace;
       font-size: 11px;
       line-height: 1.4;
-      max-width: 280px;
+      max-width: 320px;
     `;
     document.body.appendChild(debugDiv);
   }
 
   debugDiv.innerHTML = `
-    <strong style="color: red;">BUFFER DEBUG</strong><br>
+    <strong style="color: red;">SCROLL DEBUG</strong><br>
+    <br>
     Viewport: ${viewportHeight}px<br>
     Content: ${totalContentHeight}px<br>
-    <strong>Diff: ${viewportContentDiff}px</strong><br>
+    UI-vertical-constant: ${uiVerticalConstant}px<br>
+    <strong>Current-visible: ${
+      currentVisible >= 0 ? "+" : ""
+    }${currentVisible}px</strong><br>
     <br>
-    <strong>Fits? ${fits ? "YES ✅" : "NO ❌"}</strong><br>
-    <strong style="color: blue;">Buffer: ${buffer}px</strong><br>
+    <strong>Total-visible-space: ${totalVisibleSpace}px</strong><br>
+    <strong>Path: ${
+      currentVisible >= totalVisibleSpace ? "A (FITS)" : "B (SCROLL)"
+    }</strong><br>
     <br>
-    <strong>Scroll? ${fits ? "NO ✅" : "YES ⚠️"}</strong>
+    <strong style="color: green;">Scroll-up stop: 90px</strong><br>
+    <strong style="color: orange;">Scroll-down stop: ${
+      currentVisible >= totalVisibleSpace
+        ? "N/A (locked)"
+        : currentVisible + "px"
+    }</strong>
   `;
 };
 

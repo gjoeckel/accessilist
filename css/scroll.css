@@ -20,7 +20,10 @@ body.checklist-page main::before {
 body.checklist-page main::after {
   content: "";
   display: block;
-  height: var(--bottom-buffer, 20000px); /* Dynamic with safe fallback */
+  height: var(
+    --bottom-buffer,
+    0px
+  ); /* Dynamic - 0px when scrollbar hidden (PATH A) */
   /* NO transition property - instant updates before scroll */
 }
 
