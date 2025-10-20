@@ -174,13 +174,9 @@ print_section "Test 1: Basic Connectivity"
 log "=== Test 1: Basic Connectivity ==="
 
 # Docker serves index.php directly (200), Apache redirects (302)
-if [[ "$BASE_URL" =~ ":8080" ]]; then
-    test_endpoint "Root access" "$BASE_URL/" "200" "Docker root serves index.php"
-    test_endpoint "Index.php" "$BASE_URL/index.php" "200" "Docker direct access"
-else
-    test_endpoint "Root redirect" "$BASE_URL/" "302" "Should redirect to /home"
-    test_endpoint "Index.php" "$BASE_URL/index.php" "302" "Should redirect"
-fi
+# Both Docker and production environments redirect root to /home (by design in index.php)
+test_endpoint "Root redirect" "$BASE_URL/" "302" "Should redirect to /home"
+test_endpoint "Index.php redirect" "$BASE_URL/index.php" "302" "Should redirect to /home"
 
 # Test 2: Clean URL Routes
 print_section "Test 2: Clean URL Routes (Production-style)"
@@ -806,6 +802,350 @@ test_json_checkpoints "Word checkpoint count" "word.json" 4
 test_json_checkpoints "PowerPoint checkpoint count" "powerpoint.json" 4
 test_json_checkpoints "Excel checkpoint count" "excel.json" 4
 test_json_checkpoints "Slides checkpoint count" "slides.json" 4
+
+# Test 58-64: AEIT Link Visibility
+print_section "Test 58-64: AEIT Link Visibility"
+log "=== Test 58-64: AEIT Link Visibility ==="
+
+# Test 58: AEIT link element in footer template
+increment_test_counter
+echo -n "  Testing: AEIT link element in footer template..."
+log "TEST: Footer template contains AEIT link element"
+
+# Check footer.php template for AEIT link structure
+if grep -q 'id="aeitFooterLink"' "$PROJECT_DIR/php/includes/footer.php" && \
+   grep -q 'aeit-footer-link' "$PROJECT_DIR/php/includes/footer.php"; then
+    record_pass "AEIT link in footer template" "(Link element defined)"
+else
+    record_fail "AEIT link in footer template" "(Link element not found)"
+fi
+
+# Test 59: PowerPoint checklist config has aeitLink
+increment_test_counter
+echo -n "  Testing: PowerPoint config has aeitLink true..."
+log "TEST: PowerPoint aeitLink configuration"
+
+if grep -A 5 '"powerpoint"' "$PROJECT_DIR/config/checklist-types.json" | grep -q '"aeitLink": true'; then
+    record_pass "PowerPoint aeitLink config" "(aeitLink: true)"
+else
+    record_fail "PowerPoint aeitLink config" "(aeitLink not true)"
+fi
+
+# Test 60: Dojo checklist config has aeitLink false
+increment_test_counter
+echo -n "  Testing: Dojo config has aeitLink false..."
+log "TEST: Dojo aeitLink configuration"
+
+if grep -A 5 '"dojo"' "$PROJECT_DIR/config/checklist-types.json" | grep -q '"aeitLink": false'; then
+    record_pass "Dojo aeitLink config" "(aeitLink: false)"
+else
+    record_fail "Dojo aeitLink config" "(aeitLink not false)"
+fi
+
+# Test 61: AEIT link in footer template
+increment_test_counter
+echo -n "  Testing: AEIT link in footer template..."
+log "TEST: Footer template contains AEIT link"
+
+if grep -q 'id="aeitFooterLink"' "$PROJECT_DIR/php/includes/footer.php" && \
+   grep -q 'class="aeit-footer-link"' "$PROJECT_DIR/php/includes/footer.php"; then
+    record_pass "Footer AEIT link template" "(Template includes link)"
+else
+    record_fail "Footer AEIT link template" "(Template missing link)"
+fi
+
+# Test 62: AEIT link JavaScript function exists
+increment_test_counter
+echo -n "  Testing: setAEITLinkHref function exists..."
+log "TEST: setAEITLinkHref JavaScript function"
+
+if grep -q 'function setAEITLinkHref' "$PROJECT_DIR/js/main.js" || \
+   grep -q 'async function setAEITLinkHref' "$PROJECT_DIR/js/main.js"; then
+    record_pass "setAEITLinkHref function" "(Function defined in main.js)"
+else
+    record_fail "setAEITLinkHref function" "(Function not found)"
+fi
+
+# Test 63: AEIT link uses TypeManager
+increment_test_counter
+echo -n "  Testing: AEIT link uses TypeManager..."
+log "TEST: AEIT link TypeManager integration"
+
+if grep -A 20 'setAEITLinkHref' "$PROJECT_DIR/js/main.js" | grep -q 'TypeManager'; then
+    record_pass "AEIT TypeManager integration" "(TypeManager used)"
+else
+    record_fail "AEIT TypeManager integration" "(TypeManager not used)"
+fi
+
+# Test 64: Footer separator in template structure
+increment_test_counter
+echo -n "  Testing: Footer separator in template..."
+log "TEST: Footer separator structure"
+
+# Check that footer template contains separator near AEIT link
+if grep -B 2 'aeitFooterLink' "$PROJECT_DIR/php/includes/footer.php" | grep -q 'footer-separator'; then
+    record_pass "AEIT footer separator" "(Separator in template)"
+else
+    record_fail "AEIT footer separator" "(Separator not found)"
+fi
+
+# Test 65-71: AEIT Page Functionality
+print_section "Test 65-71: AEIT Page Functionality"
+log "=== Test 65-71: AEIT Page Functionality ==="
+
+# Create test session for AEIT page
+cat > "$PROJECT_DIR/sessions/AET.json" << 'EOF'
+{
+  "type": "word",
+  "checkpoints": {
+    "checkpoint-1": {"rows": [{"id": "row-1", "task": "Test", "status": "notStarted"}]},
+    "checkpoint-2": {"rows": []},
+    "checkpoint-3": {"rows": []},
+    "checkpoint-4": {"rows": []}
+  }
+}
+EOF
+
+# Test 65: AEIT page loads with session
+test_endpoint "AEIT page with session" "$BASE_URL/aeit?session=AET" "200"
+
+# Test 66: AEIT page loads without session
+test_endpoint "AEIT page without session" "$BASE_URL/aeit" "200"
+
+# Test 67: AEIT page content - Eric J Moore
+increment_test_counter
+echo -n "  Testing: AEIT page content (Eric J Moore)..."
+log "TEST: AEIT page attribution content"
+
+AEIT_CONTENT=$(curl -s "$BASE_URL/aeit?session=AET")
+if echo "$AEIT_CONTENT" | grep -q "Eric J Moore, PhD"; then
+    record_pass "AEIT page attribution" "(Eric J Moore, PhD found)"
+else
+    record_fail "AEIT page attribution" "(Author not found)"
+fi
+
+# Test 68: AEIT page shows Back button with session
+increment_test_counter
+echo -n "  Testing: AEIT Back button with session..."
+log "TEST: AEIT Back button visibility (with session)"
+
+if echo "$AEIT_CONTENT" | grep -q 'id="backButton"' && \
+   echo "$AEIT_CONTENT" | grep -q 'Back to checklist'; then
+    record_pass "AEIT Back button (with session)" "(Button present)"
+else
+    record_fail "AEIT Back button (with session)" "(Button not found)"
+fi
+
+# Test 69: AEIT page hides Back button without session
+increment_test_counter
+echo -n "  Testing: AEIT Back button without session..."
+log "TEST: AEIT Back button visibility (without session)"
+
+AEIT_NO_SESSION=$(curl -s "$BASE_URL/aeit")
+# Back button should not be in DOM when no session (PHP conditional)
+if echo "$AEIT_NO_SESSION" | grep -q 'id="backButton"'; then
+    record_fail "AEIT Back button (no session)" "(Button unexpectedly present)"
+else
+    record_pass "AEIT Back button (no session)" "(Button not rendered)"
+fi
+
+# Test 70: AEIT CSS loaded
+increment_test_counter
+echo -n "  Testing: AEIT CSS loaded..."
+log "TEST: AEIT CSS file reference"
+
+if echo "$AEIT_CONTENT" | grep -q 'css/aeit.css'; then
+    record_pass "AEIT CSS file" "(aeit.css referenced)"
+else
+    record_fail "AEIT CSS file" "(aeit.css not found)"
+fi
+
+# Test 71: AEIT skip link present
+increment_test_counter
+echo -n "  Testing: AEIT skip link..."
+log "TEST: AEIT skip link accessibility"
+
+if echo "$AEIT_CONTENT" | grep -q 'class="skip-link"' && \
+   echo "$AEIT_CONTENT" | grep -q 'href="#main-content"'; then
+    record_pass "AEIT skip link" "(Skip link present)"
+else
+    record_fail "AEIT skip link" "(Skip link not found)"
+fi
+
+rm -f "$PROJECT_DIR/sessions/AET.json"
+echo "  Cleaned up test session: AET.json"
+
+# Test 72-76: Scroll Buffer Behavior
+print_section "Test 72-76: Scroll Buffer Behavior (Path A/B)"
+log "=== Test 72-76: Scroll Buffer Behavior ==="
+
+# Test 72: scroll.js file exists
+increment_test_counter
+echo -n "  Testing: scroll.js file exists..."
+log "TEST: scroll.js file presence"
+
+if [ -f "$PROJECT_DIR/js/scroll.js" ]; then
+    record_pass "scroll.js file" "(File exists)"
+else
+    record_fail "scroll.js file" "(File not found)"
+fi
+
+# Test 73: updateChecklistBuffer function exists
+increment_test_counter
+echo -n "  Testing: updateChecklistBuffer function..."
+log "TEST: updateChecklistBuffer function definition"
+
+if grep -q 'window.updateChecklistBuffer' "$PROJECT_DIR/js/scroll.js" || \
+   grep -q 'function updateChecklistBuffer' "$PROJECT_DIR/js/scroll.js"; then
+    record_pass "updateChecklistBuffer function" "(Function defined)"
+else
+    record_fail "updateChecklistBuffer function" "(Function not found)"
+fi
+
+# Test 74: Path A/B logic in scroll.js
+increment_test_counter
+echo -n "  Testing: Path A/B logic (no-scroll class)..."
+log "TEST: Path A/B scroll system logic"
+
+if grep -q 'no-scroll' "$PROJECT_DIR/js/scroll.js" && \
+   grep -q 'classList.add.*no-scroll' "$PROJECT_DIR/js/scroll.js"; then
+    record_pass "Path A/B logic" "(no-scroll class toggle present)"
+else
+    record_fail "Path A/B logic" "(no-scroll logic not found)"
+fi
+
+# Test 75: CSS no-scroll class defined
+increment_test_counter
+echo -n "  Testing: CSS no-scroll class..."
+log "TEST: no-scroll CSS class definition"
+
+if grep -q '\.no-scroll' "$PROJECT_DIR/css/scroll.css" && \
+   grep -A 2 '\.no-scroll' "$PROJECT_DIR/css/scroll.css" | grep -q 'overflow: hidden'; then
+    record_pass "CSS no-scroll class" "(Class defined with overflow:hidden)"
+else
+    record_fail "CSS no-scroll class" "(Class not properly defined)"
+fi
+
+# Test 76: Path B bottom buffer (100px for footer gap)
+increment_test_counter
+echo -n "  Testing: Path B bottom buffer (100px)..."
+log "TEST: Path B bottom buffer value"
+
+# Path A/B system uses 100px buffer for footer gap (not the old 20000px)
+if grep -A 3 'body.checklist-page main::after' "$PROJECT_DIR/css/scroll.css" | grep -q 'height: 100px'; then
+    record_pass "Path B bottom buffer" "(100px buffer present)"
+else
+    record_fail "Path B bottom buffer" "(100px buffer not found)"
+fi
+
+# Test 77-79: ScrollManager API
+print_section "Test 77-79: ScrollManager Global API"
+log "=== Test 77-79: ScrollManager API ==="
+
+# Test 77: ScrollManager export exists
+increment_test_counter
+echo -n "  Testing: ScrollManager export..."
+log "TEST: ScrollManager global API export"
+
+if grep -q 'window.ScrollManager' "$PROJECT_DIR/js/scroll.js" && \
+   grep -A 5 'window.ScrollManager' "$PROJECT_DIR/js/scroll.js" | grep -q 'updateChecklistBuffer'; then
+    record_pass "ScrollManager export" "(API exported to window)"
+else
+    record_fail "ScrollManager export" "(API not found)"
+fi
+
+# Test 78: updateReportBuffer function exists
+increment_test_counter
+echo -n "  Testing: updateReportBuffer function..."
+log "TEST: updateReportBuffer function definition"
+
+if grep -q 'window.updateReportBuffer' "$PROJECT_DIR/js/scroll.js" || \
+   grep -q 'function updateReportBuffer' "$PROJECT_DIR/js/scroll.js"; then
+    record_pass "updateReportBuffer function" "(Function defined)"
+else
+    record_fail "updateReportBuffer function" "(Function not found)"
+fi
+
+# Test 79: scheduleReportBufferUpdate function exists
+increment_test_counter
+echo -n "  Testing: scheduleReportBufferUpdate function..."
+log "TEST: scheduleReportBufferUpdate function definition"
+
+if grep -q 'scheduleReportBufferUpdate' "$PROJECT_DIR/js/scroll.js"; then
+    record_pass "scheduleReportBufferUpdate function" "(Function defined)"
+else
+    record_fail "scheduleReportBufferUpdate function" "(Function not found)"
+fi
+
+# Test 80-81: Clean URL Routing
+print_section "Test 80-81: Additional Clean URL Routes"
+log "=== Test 80-81: Clean URL Routing ==="
+
+# Test 80: AEIT clean URL
+test_endpoint "AEIT clean URL" "$BASE_URL/aeit" "200"
+
+# Test 81: List clean URL with parameters
+increment_test_counter
+echo -n "  Testing: List clean URL with parameters..."
+log "TEST: List page clean URL routing"
+
+# Create a test session for list page
+cat > "$PROJECT_DIR/sessions/LST.json" << 'EOF'
+{
+  "type": "word",
+  "checkpoints": {
+    "checkpoint-1": {"rows": [{"id": "row-1", "task": "Test", "status": "notStarted"}]},
+    "checkpoint-2": {"rows": []},
+    "checkpoint-3": {"rows": []},
+    "checkpoint-4": {"rows": []}
+  }
+}
+EOF
+
+LIST_URL="$BASE_URL/list?session=LST&type=word"
+http_code=$(curl -s -o /dev/null -w "%{http_code}" "$LIST_URL")
+
+if [ "$http_code" = "200" ]; then
+    record_pass "List clean URL" "(HTTP 200)"
+else
+    record_fail "List clean URL" "(Expected: 200, Got: $http_code)"
+fi
+
+rm -f "$PROJECT_DIR/sessions/LST.json"
+echo "  Cleaned up test session: LST.json"
+
+# Test 82-83: Footer Variations
+print_section "Test 82-83: Footer Rendering Variations"
+log "=== Test 82-83: Footer Variations ==="
+
+# Test 82: Status footer called from list.php
+increment_test_counter
+echo -n "  Testing: list.php uses status footer..."
+log "TEST: list.php calls renderFooter with status type"
+
+# Check that list.php calls renderFooter('status')
+if grep -q "renderFooter('status')" "$PROJECT_DIR/php/list.php"; then
+    record_pass "Status footer (checklist)" "(list.php uses status footer)"
+else
+    record_fail "Status footer (checklist)" "(Status footer not configured)"
+fi
+
+# Test 83: Standard footer on AEIT page
+increment_test_counter
+echo -n "  Testing: Standard footer on AEIT page..."
+log "TEST: Standard footer (no status div)"
+
+AEIT_FOOTER=$(curl -s "$BASE_URL/aeit")
+if echo "$AEIT_FOOTER" | grep -q 'class="status-footer"'; then
+    # Footer class present - now check if status-content div is absent
+    if ! echo "$AEIT_FOOTER" | grep -q 'class="status-content"'; then
+        record_pass "Standard footer (AEIT)" "(Footer without status div)"
+    else
+        record_fail "Standard footer (AEIT)" "(Status div should not be present)"
+    fi
+else
+    record_fail "Standard footer (AEIT)" "(Footer not found)"
+fi
 
 # Final Summary
 echo ""
