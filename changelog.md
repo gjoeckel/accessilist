@@ -8,6 +8,16 @@
 
 ## Entries
 
+### 2025-10-20 15:35:17 UTC - Merged cleanup-and-scope-server-files to main
+
+**Action:** Local branch merge
+**Source Branch:** cleanup-and-scope-server-files
+**Target Branch:** main
+**Status:** [pending]
+
+---
+
+
 ### 2025-10-20 15:34:25 UTC - Local Commit: 12 files on cleanup-and-scope-server-files
 
 **Branch:** cleanup-and-scope-server-files
@@ -22,7 +32,7 @@
 - DEVELOPER/CORE2.md
 - IMPLEMENTATION-DEPLOYMENT-EXCLUSIONS.md
 - scripts/deployment/README-DEPLOYMENT-METHODS.md\n- ... and 2 more files
-**Commit:** [pending]
+**Commit:** e25384b
 
 ---
 
