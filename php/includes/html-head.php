@@ -18,6 +18,10 @@ function renderHTMLHead($pageTitle = 'Accessibility Checklists', $includeLoading
 <!-- Added viewport meta for responsiveness -->
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php echo htmlspecialchars($pageTitle, ENT_QUOTES, 'UTF-8'); ?></title>
+<!-- CSRF Token for AJAX requests -->
+<?php if (isset($GLOBALS['csrfToken'])): ?>
+<meta name="csrf-token" content="<?php echo htmlspecialchars($GLOBALS['csrfToken'], ENT_QUOTES, 'UTF-8'); ?>">
+<?php endif; ?>
 
 <!-- Environment Configuration (Injected from PHP .env) -->
 <script>
@@ -27,6 +31,9 @@ window.basePath = window.ENV.basePath;
 
 <!-- Debug utility - must load before other scripts to make debug.log() available -->
 <script src="<?php echo $basePath; ?>/js/debug-utils.js?v=<?php echo time(); ?>"></script>
+
+<!-- CSRF utilities - must load before API calls -->
+<script src="<?php echo $basePath; ?>/js/csrf-utils.js?v=<?php echo time(); ?>"></script>
 
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/simple-modal.css<?php echo $includeLoadingStyles ? '' : '?v=' . time(); ?>">
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/focus.css?v=<?php echo time(); ?>">

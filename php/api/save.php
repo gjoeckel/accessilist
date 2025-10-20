@@ -2,6 +2,16 @@
 require_once __DIR__ . '/../includes/api-utils.php';
 require_once __DIR__ . '/../includes/type-formatter.php';
 require_once __DIR__ . '/../includes/type-manager.php';
+require_once __DIR__ . '/../includes/csrf.php';
+require_once __DIR__ . '/../includes/rate-limiter.php';
+
+// Rate limiting: 100 saves per hour per IP
+enforce_rate_limit($_SERVER['REMOTE_ADDR'] . '_save', 100, 3600);
+
+// CSRF protection for POST requests
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    validate_csrf_from_header();
+}
 
 // Verify sessions directory exists
 $savesDir = __DIR__ . '/../../sessions';

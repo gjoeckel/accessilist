@@ -124,7 +124,7 @@ class UnifiedStateManager {
         // Provide only slug; server derives display consistently
         typeSlug: typeSlug,
       };
-      const response = await fetch(apiPath, {
+      const response = await fetchWithCsrf(apiPath, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -752,7 +752,7 @@ class UnifiedStateManager {
       }
 
       const apiPath = window.getAPIPath("save");
-      const response = await fetch(apiPath, {
+      const response = await fetchWithCsrf(apiPath, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(saveData),

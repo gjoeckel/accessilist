@@ -2,6 +2,14 @@
 require_once __DIR__ . '/includes/config.php';
 require_once __DIR__ . '/includes/html-head.php';
 require_once __DIR__ . '/includes/footer.php';
+require_once __DIR__ . '/includes/security-headers.php';
+require_once __DIR__ . '/includes/csrf.php';
+
+// Set security headers
+set_security_headers();
+
+// Generate CSRF token and make it globally available
+$GLOBALS['csrfToken'] = generate_csrf_token();
 
 renderHTMLHead('Accessibility Checklists');
 ?>

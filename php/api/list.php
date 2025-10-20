@@ -1,6 +1,10 @@
 <?php
 require_once __DIR__ . '/../includes/api-utils.php';
 require_once __DIR__ . '/../includes/type-manager.php';
+require_once __DIR__ . '/../includes/rate-limiter.php';
+
+// Rate limiting: 100 list requests per hour per IP
+enforce_rate_limit($_SERVER['REMOTE_ADDR'] . '_list', 100, 3600);
 
 // Get all JSON files from the sessions directory using the same path as other APIs
 $savesDir = dirname(saves_path_for('dummy')) . '/';

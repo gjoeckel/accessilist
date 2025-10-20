@@ -2,16 +2,24 @@
 require_once __DIR__ . '/../includes/api-utils.php';
 require_once __DIR__ . '/../includes/type-formatter.php';
 require_once __DIR__ . '/../includes/type-manager.php';
+require_once __DIR__ . '/../includes/csrf.php';
+require_once __DIR__ . '/../includes/rate-limiter.php';
+
+// Only accept POST
+if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+    send_error('Method not allowed', 405);
+}
+
+// Rate limiting: 20 instantiations per hour per IP
+enforce_rate_limit($_SERVER['REMOTE_ADDR'] . '_instantiate', 20, 3600);
+
+// CSRF protection
+validate_csrf_from_header();
 
 // Ensure sessions directory exists
 $savesDir = __DIR__ . '/../../sessions';
 if (!file_exists($savesDir) && !mkdir($savesDir, 0755, true)) {
     send_error('Failed to create sessions directory', 500);
-}
-
-// Only accept POST
-if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
-    send_error('Method not allowed', 405);
 }
 
 $rawData = file_get_contents('php://input');
