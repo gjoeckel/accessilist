@@ -246,8 +246,8 @@ document.addEventListener('DOMContentLoaded', function() {
     if (homeButton) {
         homeButton.addEventListener('click', function() {
             const target = window.getPHPPath
-                ? window.getPHPPath('home.php')
-                : '/php/home.php';
+                ? window.getPHPPath('home')
+                : '/home';
             window.location.href = target;
         });
     }
