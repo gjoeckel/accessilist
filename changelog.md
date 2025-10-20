@@ -8,6 +8,85 @@
 
 ## Entries
 
+
+### 2025-10-20 15:35:17 UTC - Merged cleanup-and-scope-server-files to main
+
+**Action:** Local branch merge
+**Source Branch:** cleanup-and-scope-server-files
+**Target Branch:** main
+**Status:** [pending]
+
+---
+
+
+### 2025-10-20 15:34:25 UTC - Local Commit: 12 files on cleanup-and-scope-server-files
+
+**Branch:** cleanup-and-scope-server-files
+**Files Modified:** 12
+- .cursor/mcp-status.json
+- .cursor/workflows.json
+- DEVELOPER/CORE.md
+- changelog.md
+- .deployignore
+- AccessiList-Production.duck
+- CYBERDUCK-SETUP.md
+- DEVELOPER/CORE2.md
+- IMPLEMENTATION-DEPLOYMENT-EXCLUSIONS.md
+- scripts/deployment/README-DEPLOYMENT-METHODS.md\n- ... and 2 more files
+**Commit:** e25384b
+
+---
+
+
+### 2025-10-20 15:04:42 UTC - Local Commit: 9 files on cleanup-and-scope-server-files
+
+**Branch:** cleanup-and-scope-server-files
+**Files Modified:** 9
+- .cursor/mcp-status.json
+- DEVELOPER/COMPLETION-REPORT.md
+- DEVELOPER/VALIDATION-FINDINGS.md
+- DEVELOPER/developer-assets-organization.md
+- changelog.md
+- DEVELOPER/CORE.md
+- DEVELOPER/originals/COMPLETION-REPORT.md
+- DEVELOPER/originals/VALIDATION-FINDINGS.md
+- DEVELOPER/originals/developer-assets-organization.md
+**Commit:** 5bf7cb3
+
+---
+
+
+### 2025-10-20 14:42:44 UTC - Local Commit: 2 files on cleanup-and-scope-server-files
+
+**Branch:** cleanup-and-scope-server-files
+**Files Modified:** 2
+- changelog.md
+- DEVELOPER/
+**Commit:** cec25dd
+
+---
+
+
+### 2025-10-20 13:14:05 UTC - Local Commit: 16 files on cleanup-and-scope-server-files
+
+**Branch:** cleanup-and-scope-server-files
+**Files Modified:** 16
+- .cursor/mcp-status.json
+- cleanup-analysis-manual.md
+- docs/historical/README.md
+- CODE-REVIEW-SCROLL-AEIT.md
+- DIAGNOSTIC-METHODS.md
+- BUFFER-CALCULATION-SIMPLIFIED.md
+- BUFFER-FIX-CONTENT-FITS.md
+- DYNAMIC-BUFFER-IMPLEMENTATION-COMPLETE.md
+- DYNAMIC-BUFFER-IMPLEMENTATION-PLAN.md
+- SCROLL-BUFFER-RESEARCH-FINDINGS.md\n- ... and 6 more files
+**Commit:** f47d0f8
+
+---
+
+
+
 ### 2025-10-20 11:33:43 UTC - Local Commit: 9 files on main
 
 **Branch:** main
