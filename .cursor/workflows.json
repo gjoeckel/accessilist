@@ -57,13 +57,19 @@
     "on_error": "continue"
   },
   "ai-push-deploy-github": {
-    "description": "Push to GitHub and deploy to production (full deployment)",
+    "description": "Push to GitHub and deploy to production (full deployment with file exclusions)",
     "commands": [
+      "echo '🔍 Running pre-deployment checks...'",
       "./scripts/deployment/pre-deploy-check.sh",
+      "echo '📦 Verifying production file manifest...'",
+      "[ -f .deployignore ] && echo '✅ .deployignore found (Method 1)' || echo '⚠️  .deployignore missing'",
+      "[ -f scripts/deployment/upload-production-files.sh ] && echo '✅ upload-production-files.sh found (Method 2)' || echo '⚠️  upload-production-files.sh missing'",
+      "echo '🚀 Uploading 89 production files...'",
+      "./scripts/deployment/upload-production-files.sh",
+      "echo '📤 Pushing to GitHub repository...'",
       "./scripts/github-push-gate.sh secure-push 'push to github'",
-      "echo '✅ Pushed to GitHub - GitHub Actions will deploy automatically'",
-      "echo '⏳ Waiting for GitHub Actions deployment...'",
-      "sleep 30",
+      "echo '✅ Deployment complete!'",
+      "echo '🧪 Running post-deployment verification...'",
       "./scripts/deployment/post-deploy-verify.sh"
     ],
     "auto_approve": true,
@@ -148,5 +154,35 @@
     "auto_approve": true,
     "timeout": 60000,
     "on_error": "continue"
+  },
+  "proj-push-deploy-github": {
+    "description": "Deploy to production using explicit file list (89 files only)",
+    "commands": [
+      "echo '🔍 Verifying deployment manifest...'",
+      "[ -f .deployignore ] && echo '✅ Method 1: .deployignore (exclusion list)' || echo '❌ Missing .deployignore'",
+      "[ -f scripts/deployment/upload-production-files.sh ] && echo '✅ Method 2: upload-production-files.sh (explicit list)' || echo '❌ Missing upload script'",
+      "echo ''",
+      "echo '📦 Production files to upload: 89'",
+      "echo '   - Root: 2 files'",
+      "echo '   - Config: 1 file'",
+      "echo '   - PHP: 18 files'",
+      "echo '   - JavaScript: 19 files'",
+      "echo '   - CSS: 16 files'",
+      "echo '   - Images: 15 files'",
+      "echo '   - JSON: 11 files'",
+      "echo '   - Sessions: 2 items'",
+      "echo ''",
+      "echo '🚀 Starting production deployment...'",
+      "./scripts/deployment/upload-production-files.sh",
+      "echo ''",
+      "echo '📤 Pushing to GitHub...'",
+      "./scripts/github-push-gate.sh secure-push 'push to github'",
+      "echo ''",
+      "echo '✅ Deployment complete! Testing production...'",
+      "./scripts/deployment/post-deploy-verify.sh"
+    ],
+    "auto_approve": false,
+    "timeout": 300000,
+    "on_error": "stop"
   }
 }

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Protocol</key>
+    <string>sftp</string>
+    <key>Nickname</key>
+    <string>AccessiList Production Server</string>
+    <key>Hostname</key>
+    <string>ec2-3-20-59-76.us-east-2.compute.amazonaws.com</string>
+    <key>Port</key>
+    <string>22</string>
+    <key>Username</key>
+    <string>george</string>
+    <key>Path</key>
+    <string>/var/websites/webaim/htdocs/training/online/accessilist</string>
+    <key>Private Key</key>
+    <string>~/.ssh/GeorgeWebAIMServerKey.pem</string>
+    <key>Transfer Connection</key>
+    <string>browser</string>
+    <key>Connect Mode</key>
+    <string>passive</string>
+</dict>
+</plist>
