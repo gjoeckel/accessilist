@@ -6,34 +6,23 @@
  */
 
 /* ====================================================================
-   MYCHECKLIST PAGE - Minimal buffer prevents scrolling above content
+   MYCHECKLIST PAGE - Fixed top buffer for header offset
    ==================================================================== */
 
-/* Minimal buffer for header offset - same for all modes */
+/* Fixed buffer for header offset - content starts 90px from viewport top */
 body.checklist-page main::before {
   content: "";
   display: block;
-  height: 90px; /* Header offset - content starts at 90px from viewport top */
+  height: 90px; /* Header offset - scroll-up stop */
 }
 
-/* Dynamic buffer below content - calculated to stop at add row button */
-body.checklist-page main::after {
-  content: "";
-  display: block;
-  height: var(
-    --bottom-buffer,
-    0px
-  ); /* Dynamic - 0px when scrollbar hidden (PATH A) */
-  /* NO transition property - instant updates before scroll */
-}
-
-/* Hide scrollbar when content fits */
+/* Hide scrollbar when content fits (optional - can be controlled by JS) */
 body.checklist-page.no-scroll {
   overflow: hidden;
 }
 
 /* ====================================================================
-   REPORT PAGES - Smaller buffer for scrollbar visibility
+   REPORT PAGES - Dynamic buffer for filter changes only
    ==================================================================== */
 
 /* List Report - buffer for scrollbar consistency when filtering */
