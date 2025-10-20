@@ -177,16 +177,16 @@ function initializeCheckpointAddRowButtons() {
   const checkpointButtons = document.querySelectorAll(
     'button.checkpoints-button[data-checkpoint^="checklist-"], button.checkpoints-button[data-checkpoint^="checkpoint-"]'
   );
-  console.log(`Found ${checkpointButtons.length} checkpoint add row buttons`);
+  debug.log(`Found ${checkpointButtons.length} checkpoint add row buttons`);
 
   checkpointButtons.forEach((button) => {
     const checkpointId = button.getAttribute("data-checkpoint");
-    console.log(`Initializing button for ${checkpointId}`);
+    debug.log(`Initializing button for ${checkpointId}`);
 
     // Add event listener for the Add Row button
     button.addEventListener("click", (event) => {
       event.preventDefault();
-      console.log(`Add button clicked for ${checkpointId}`);
+      debug.log(`Add button clicked for ${checkpointId}`);
       if (typeof window.handleAddCheckpointRow === "function") {
         window.handleAddCheckpointRow(checkpointId);
       } else {
@@ -194,10 +194,10 @@ function initializeCheckpointAddRowButtons() {
       }
     });
 
-    console.log(`Event listener attached to button for ${checkpointId}`);
+    debug.log(`Event listener attached to button for ${checkpointId}`);
   });
 
-  console.log("All checkpoint add row buttons initialized");
+  debug.log("All checkpoint add row buttons initialized");
 }
 
 // Initialization logic:

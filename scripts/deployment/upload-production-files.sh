@@ -138,7 +138,7 @@ php/includes/type-manager.php
 php/includes/type-formatter.php
 
 # ----------------------------------------------------------------------------
-# JAVASCRIPT MODULES (19 files)
+# JAVASCRIPT MODULES (20 files)
 # ----------------------------------------------------------------------------
 js/main.js
 js/StateManager.js
@@ -158,6 +158,7 @@ js/date-utils.js
 js/list-report.js
 js/systemwide-report.js
 js/ui-components.js
+js/debug-utils.js
 js/postcss.config.js
 
 # ----------------------------------------------------------------------------

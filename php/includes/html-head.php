@@ -25,6 +25,9 @@ window.ENV = <?php echo json_encode($envConfig); ?>;
 window.basePath = window.ENV.basePath;
 </script>
 
+<!-- Debug utility - must load before other scripts to make debug.log() available -->
+<script src="<?php echo $basePath; ?>/js/debug-utils.js?v=<?php echo time(); ?>"></script>
+
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/simple-modal.css<?php echo $includeLoadingStyles ? '' : '?v=' . time(); ?>">
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/focus.css?v=<?php echo time(); ?>">
 <link rel="stylesheet" href="<?php echo $basePath; ?>/css/landing.css<?php echo $includeLoadingStyles ? '' : '?v=' . time(); ?>">

@@ -184,5 +184,39 @@
     "auto_approve": false,
     "timeout": 300000,
     "on_error": "stop"
+  },
+  "proj-deploy-accessilist2": {
+    "description": "Deploy to TEST directory (accessilist2) for validation",
+    "commands": [
+      "echo '🧪 ========================================'",
+      "echo '🧪 DEPLOYING TO TEST DIRECTORY'",
+      "echo '🧪 Target: accessilist2/'",
+      "echo '🧪 ========================================'",
+      "echo ''",
+      "echo '🔍 Verifying deployment files...'",
+      "./scripts/deployment/verify-deployment-manifest.sh",
+      "echo ''",
+      "echo '⚠️  WARNING: Deploying to TEST directory, not live!'",
+      "echo '   Path: /var/websites/webaim/htdocs/training/online/accessilist2/'",
+      "echo '   URL: https://webaim.org/training/online/accessilist2/home'",
+      "echo ''",
+      "echo '📦 Uploading 89 production files to accessilist2...'",
+      "./scripts/deployment/upload-to-test-directory.sh",
+      "echo ''",
+      "echo '✅ Test deployment complete!'",
+      "echo ''",
+      "echo '📋 Next Steps:'",
+      "echo '   1. Create test .env: /var/websites/webaim/htdocs/training/online/etc/.env.accessilist2'",
+      "echo '   2. Set BASE_PATH_PRODUCTION=/training/online/accessilist2'",
+      "echo '   3. Update config.php to check for .env.accessilist2'",
+      "echo '   4. Test: https://webaim.org/training/online/accessilist2/home'",
+      "echo ''",
+      "echo '📖 Full instructions: DEPLOY-TO-ACCESSILIST2.md'",
+      "echo ''",
+      "echo '🚀 After testing, deploy to live: proj-push-deploy-github'"
+    ],
+    "auto_approve": false,
+    "timeout": 300000,
+    "on_error": "stop"
   }
 }

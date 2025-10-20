@@ -167,7 +167,7 @@ async function setAEITLinkHref() {
     const checklistConfig = typeConfig.types[currentType];
     const shouldShow = checklistConfig && checklistConfig.aeitLink === true;
 
-    console.log(
+    debug.log(
       `[AEIT Link] Type: ${currentType}, Config:`,
       checklistConfig,
       `Show: ${shouldShow}`
@@ -196,7 +196,7 @@ async function setAEITLinkHref() {
         console.error("[AEIT Link] Session key not available");
         aeitLink.href = window.basePath ? `${window.basePath}/aeit` : "/aeit";
       }
-      console.log(`[AEIT Link] Shown with href: ${aeitLink.href}`);
+      debug.log(`[AEIT Link] Shown with href: ${aeitLink.href}`);
     } else {
       // Hide link, wrapper, and separator
       if (aeitWrapper) {
@@ -209,7 +209,7 @@ async function setAEITLinkHref() {
         aeitSeparator.style.display = "none";
       }
       aeitLink.style.display = "none";
-      console.log("[AEIT Link] Hidden");
+      debug.log("[AEIT Link] Hidden");
     }
   } catch (error) {
     console.error("Error setting AEIT link:", error);

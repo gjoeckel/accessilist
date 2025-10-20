@@ -27,18 +27,18 @@ class StateEvents {
    */
   setupGlobalEvents() {
     if (this.listenersSetup) {
-      console.log("Event listeners already setup");
+      debug.log("Event listeners already setup");
       return;
     }
 
     // Single event delegation for ALL click interactions
     document.addEventListener("click", (e) => {
-      console.log("StateEvents: Click event detected on:", e.target);
+      debug.log("StateEvents: Click event detected on:", e.target);
 
       // Status button (Checkpoints table)
       const statusButton = e.target.closest(".status-button");
       if (statusButton) {
-        console.log("StateEvents: Status button click detected");
+        debug.log("StateEvents: Status button click detected");
         this.handleStatusChange(statusButton);
         return;
       }
@@ -48,7 +48,7 @@ class StateEvents {
       // Reset button
       const resetButton = e.target.closest(".restart-button");
       if (resetButton) {
-        console.log("StateEvents: Reset button click detected");
+        debug.log("StateEvents: Reset button click detected");
         this.handleReset(resetButton);
         return;
       }
@@ -58,7 +58,7 @@ class StateEvents {
       // Side panel toggle
       const toggleStrip = e.target.closest(".toggle-strip");
       if (toggleStrip) {
-        console.log("StateEvents: Side panel toggle click detected");
+        debug.log("StateEvents: Side panel toggle click detected");
         this.handleSidePanelToggle(e);
         return;
       }
@@ -66,7 +66,7 @@ class StateEvents {
       // Checklist caption click - focus the heading
       const checklistCaption = e.target.closest(".checklist-caption");
       if (checklistCaption) {
-        console.log("StateEvents: Checklist caption click detected");
+        debug.log("StateEvents: Checklist caption click detected");
         this.handleChecklistCaptionClick(checklistCaption, e);
         return;
       }
@@ -76,7 +76,7 @@ class StateEvents {
     document.addEventListener("input", (e) => {
       const textarea = e.target.closest("textarea");
       if (textarea) {
-        console.log(
+        debug.log(
           "StateEvents: Textarea input detected:",
           textarea.className,
           "value length:",
@@ -88,7 +88,7 @@ class StateEvents {
     });
 
     this.listenersSetup = true;
-    console.log("StateEvents: Global event listeners setup complete");
+    debug.log("StateEvents: Global event listeners setup complete");
   }
 
   /**
@@ -100,7 +100,7 @@ class StateEvents {
    * - This prevents auto-status behavior after manual intervention
    */
   handleStatusChange(statusButton) {
-    console.log("StateEvents: Status button clicked");
+    debug.log("StateEvents: Status button clicked");
     const row = statusButton.closest("tr");
     if (!row) {
       console.warn("StateEvents: No row found for status button");
@@ -115,7 +115,7 @@ class StateEvents {
     // Get current flag
     const currentFlag = this.stateManager.getStatusFlag(taskId);
 
-    console.log(
+    debug.log(
       `StateEvents: Current state: ${currentState}, task ID: ${taskId}, flag: ${currentFlag}`
     );
 
@@ -126,19 +126,19 @@ class StateEvents {
       newState = "active";
       newIcon = window.getImagePath("active-1.svg");
       newLabel = "Task status: Active";
-      console.log("StateEvents: Transitioning from ready to active");
+      debug.log("StateEvents: Transitioning from ready to active");
 
       // FLAG LOGIC: Manual change from Ready → Active
       // Only set active-manual if not already auto-changed
       if (currentFlag !== "active-auto") {
         this.stateManager.setStatusFlag(taskId, "active-manual");
-        console.log(`[Manual-Status] ${taskId}: Flag set to active-manual`);
+        debug.log(`[Manual-Status] ${taskId}: Flag set to active-manual`);
       }
     } else if (currentState === "active") {
       newState = "done";
       newIcon = window.getImagePath("done-1.svg");
       newLabel = "Task status: Done";
-      console.log("StateEvents: Transitioning from active to done");
+      debug.log("StateEvents: Transitioning from active to done");
 
       // FLAG LOGIC: Flag persists when going to Done (no change)
 
@@ -147,7 +147,7 @@ class StateEvents {
         restartButton.classList.remove("restart-hidden");
         restartButton.classList.add("restart-visible");
         restartButton.disabled = false;
-        console.log("StateEvents: Restart button shown and enabled");
+        debug.log("StateEvents: Restart button shown and enabled");
       }
 
       // Create report row when completed - use StateManager
@@ -174,51 +174,51 @@ class StateEvents {
       // Apply completed textarea state
       if (textarea) {
         this.applyCompletedTextareaState(textarea, row);
-        console.log("StateEvents: Applied completed state to notes textarea");
+        debug.log("StateEvents: Applied completed state to notes textarea");
       }
 
       // Also apply completed state to Task textarea for manual rows
       const taskTextarea = row.querySelector(".task-input");
       if (taskTextarea) {
         this.applyCompletedTextareaState(taskTextarea, row);
-        console.log("StateEvents: Applied completed state to task textarea");
+        debug.log("StateEvents: Applied completed state to task textarea");
       }
     } else if (currentState === "done") {
       // Cycle back to ready
       newState = "ready";
       newIcon = window.getImagePath("ready-1.svg");
       newLabel = "Task status: Ready";
-      console.log("StateEvents: Transitioning from done to ready");
+      debug.log("StateEvents: Transitioning from done to ready");
 
       // FLAG LOGIC: Reset flag when cycling Done → Ready
       this.stateManager.resetStatusFlag(taskId);
-      console.log(`[Status-Reset] ${taskId}: Flag reset to text-manual`);
+      debug.log(`[Status-Reset] ${taskId}: Flag reset to text-manual`);
 
       // Hide restart button
       if (restartButton) {
         restartButton.classList.remove("restart-visible");
         restartButton.classList.add("restart-hidden");
-        console.log("StateEvents: Restart button hidden");
+        debug.log("StateEvents: Restart button hidden");
       }
 
       // Restore textarea to editable state
       if (textarea) {
         this.restoreTextareaState(textarea, row);
-        console.log("StateEvents: Restored notes textarea to editable state");
+        debug.log("StateEvents: Restored notes textarea to editable state");
       }
 
       // Also restore Task textarea for manual rows
       const taskTextarea = row.querySelector(".task-input");
       if (taskTextarea) {
         this.restoreTextareaState(taskTextarea, row);
-        console.log("StateEvents: Restored task textarea to editable state");
+        debug.log("StateEvents: Restored task textarea to editable state");
       }
     }
 
     // Update status button
     if (newState) {
       this._updateStatusButton(statusButton, newState, newLabel, newIcon);
-      console.log(`StateEvents: Status button updated to ${newState}`);
+      debug.log(`StateEvents: Status button updated to ${newState}`);
     }
 
     // Update state in window.checkpointTableState for manual rows
@@ -226,7 +226,7 @@ class StateEvents {
 
     // Mark dirty for auto-save
     this.stateManager.markDirty();
-    console.log("StateEvents: Marked state as dirty for auto-save");
+    debug.log("StateEvents: Marked state as dirty for auto-save");
   }
 
   // handleReportStatusChange method removed - reports now on separate page
@@ -255,7 +255,7 @@ class StateEvents {
       );
       if (rowData && rowData.isManual) {
         rowData.status = "ready";
-        console.log(`StateEvents: Reset manual row ${taskId} status to ready`);
+        debug.log(`StateEvents: Reset manual row ${taskId} status to ready`);
       }
     }
 
@@ -271,7 +271,7 @@ class StateEvents {
   handleDelete(deleteButton) {
     // Report row deletion removed - reports now on separate page (list-report.php)
     // This method stub kept for backward compatibility but does nothing
-    console.log(
+    debug.log(
       "StateEvents: handleDelete called but report functionality removed"
     );
   }
@@ -307,7 +307,7 @@ class StateEvents {
       );
       if (rowData && rowData.isManual) {
         Object.assign(rowData, updates);
-        console.log(`StateEvents: Updated manual row ${rowId} state:`, rowData);
+        debug.log(`StateEvents: Updated manual row ${rowId} state:`, rowData);
       }
     }
   }
@@ -336,7 +336,7 @@ class StateEvents {
         // Get current flag state
         const currentFlag = this.stateManager.getStatusFlag(taskId);
 
-        console.log(
+        debug.log(
           `StateEvents: Textarea change - state: ${currentState}, hasText: ${hasText}, flag: ${currentFlag}`
         );
 
@@ -353,7 +353,7 @@ class StateEvents {
             window.getImagePath("active-1.svg")
           );
           this.stateManager.setStatusFlag(taskId, "active-auto");
-          console.log(
+          debug.log(
             `[Auto-Status] ${taskId}: Ready → Active (notes added, flag set to active-auto)`
           );
         }
@@ -370,13 +370,13 @@ class StateEvents {
             window.getImagePath("ready-1.svg")
           );
           this.stateManager.resetStatusFlag(taskId);
-          console.log(
+          debug.log(
             `[Auto-Status] ${taskId}: Active → Ready (notes cleared, flag reset to text-manual)`
           );
         }
         // MANUAL FLAG: No auto-behavior when flag is active-manual
         else if (currentFlag === "active-manual") {
-          console.log(
+          debug.log(
             `[Auto-Status] ${taskId}: No auto-change (flag is active-manual)`
           );
         }
@@ -418,28 +418,28 @@ class StateEvents {
     const targetSection = document.getElementById(targetId);
 
     // === DEBUG LOGGING ===
-    console.log("=== SIDE PANEL NAVIGATION DEBUG ===");
-    console.log("Target ID:", targetId);
-    console.log("Section exists:", !!targetSection);
+    debug.log("=== SIDE PANEL NAVIGATION DEBUG ===");
+    debug.log("Target ID:", targetId);
+    debug.log("Section exists:", !!targetSection);
     if (targetSection) {
-      console.log(
+      debug.log(
         "Section display:",
         window.getComputedStyle(targetSection).display
       );
-      console.log(
+      debug.log(
         "Section visibility:",
         window.getComputedStyle(targetSection).visibility
       );
-      console.log("Section offsetTop:", targetSection.offsetTop);
-      console.log("Section offsetParent:", targetSection.offsetParent);
-      console.log(
+      debug.log("Section offsetTop:", targetSection.offsetTop);
+      debug.log("Section offsetParent:", targetSection.offsetParent);
+      debug.log(
         "Section getBoundingClientRect:",
         targetSection.getBoundingClientRect()
       );
     }
-    console.log("Current scrollY:", window.scrollY);
-    console.log("Window height:", window.innerHeight);
-    console.log("=================================");
+    debug.log("Current scrollY:", window.scrollY);
+    debug.log("Window height:", window.innerHeight);
+    debug.log("=================================");
 
     if (!targetSection) {
       console.warn(`StateEvents: Target section ${targetId} not found`);
@@ -479,7 +479,7 @@ class StateEvents {
         }
         // Focus the heading
         heading.focus();
-        console.log(`StateEvents: Focused heading for ${targetId}`);
+        debug.log(`StateEvents: Focused heading for ${targetId}`);
       } else {
         console.warn(
           `StateEvents: No checklist-caption heading found for ${targetId}`
@@ -516,7 +516,7 @@ class StateEvents {
 
     // Focus the caption element
     caption.focus({ preventScroll: true });
-    console.log(`StateEvents: Focused checklist caption via mouse click`);
+    debug.log(`StateEvents: Focused checklist caption via mouse click`);
 
     // Mark dirty for auto-save
     this.stateManager.markDirty();
@@ -566,7 +566,7 @@ if (document.readyState === "loading") {
         window.unifiedStateManager,
         window.modalActions
       );
-      console.log("State Events initialized - ready to setup listeners");
+      debug.log("State Events initialized - ready to setup listeners");
     }
   });
 } else {
@@ -575,7 +575,7 @@ if (document.readyState === "loading") {
       window.unifiedStateManager,
       window.modalActions
     );
-    console.log("State Events initialized - ready to setup listeners");
+    debug.log("State Events initialized - ready to setup listeners");
   }
 }
 

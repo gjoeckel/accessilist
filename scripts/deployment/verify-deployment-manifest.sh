@@ -85,7 +85,7 @@ declare -a PRODUCTION_FILES=(
     "php/includes/type-manager.php"
     "php/includes/type-formatter.php"
 
-    # JavaScript (19 files)
+    # JavaScript (20 files)
     "js/main.js"
     "js/StateManager.js"
     "js/StateEvents.js"
@@ -104,6 +104,7 @@ declare -a PRODUCTION_FILES=(
     "js/list-report.js"
     "js/systemwide-report.js"
     "js/ui-components.js"
+    "js/debug-utils.js"
     "js/postcss.config.js"
 
     # CSS (16 files)
@@ -178,7 +179,7 @@ echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━�
 echo -e "${BLUE}📊 Verification Results${NC}"
 echo -e "${BLUE}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
 echo ""
-echo -e "   Files Found:   ${GREEN}$FOUND_COUNT${NC} / 88"
+echo -e "   Files Found:   ${GREEN}$FOUND_COUNT${NC} / 89"
 echo -e "   Files Missing: $([ $MISSING_COUNT -eq 0 ] && echo -e ${GREEN} || echo -e ${RED})$MISSING_COUNT${NC}"
 echo ""
 
@@ -193,13 +194,13 @@ fi
 
 TOTAL_FOUND=$((FOUND_COUNT + SESSIONS_EXISTS))
 echo ""
-echo -e "   ${BLUE}Total Production Items:${NC} ${GREEN}$TOTAL_FOUND${NC} / 89 (88 files + 1 directory)"
+echo -e "   ${BLUE}Total Production Items:${NC} ${GREEN}$TOTAL_FOUND${NC} / 90 (89 files + 1 directory)"
 
 echo ""
 
-# Total production items: 88 files + 1 directory (sessions/)
-EXPECTED_FILE_COUNT=88
-TOTAL_ITEMS=89  # includes sessions/ directory
+# Total production items: 89 files + 1 directory (sessions/)
+EXPECTED_FILE_COUNT=89
+TOTAL_ITEMS=90  # includes sessions/ directory
 
 if [ $MISSING_COUNT -eq 0 ] && [ $FOUND_COUNT -eq $EXPECTED_FILE_COUNT ] && [ $SESSIONS_EXISTS -eq 1 ]; then
     echo -e "${GREEN}╔════════════════════════════════════════════════════════╗${NC}"

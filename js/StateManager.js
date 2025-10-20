@@ -54,7 +54,7 @@ class UnifiedStateManager {
   async initialize() {
     if (this.initialized) return;
 
-    console.log("Initializing Unified State Manager");
+    debug.log("Initializing Unified State Manager");
 
     // Get session ID from URL or server
     this.sessionKey = await this.getSessionId();
@@ -95,14 +95,14 @@ class UnifiedStateManager {
         setTimeout(() => this.performInitialSave(), 100);
       } else {
         // Session key exists - restoration will handle the initial save if needed
-        console.log(
+        debug.log(
           "Skipping initial save - restoration will handle state initialization"
         );
       }
     });
 
     this.initialized = true;
-    console.log(
+    debug.log(
       "Unified State Manager initialized with session:",
       this.sessionKey
     );
@@ -163,7 +163,7 @@ class UnifiedStateManager {
       window.checkpointTableState =
         Object.keys(checkpointRows).length > 0 ? checkpointRows : {};
 
-      console.log(
+      debug.log(
         "Initialized checkpointTableState:",
         window.checkpointTableState
       );
@@ -174,7 +174,7 @@ class UnifiedStateManager {
     // Initialize ModalActions for StateEvents dependency
     if (!window.modalActions && window.ModalActions) {
       window.modalActions = new window.ModalActions(this);
-      console.log("ModalActions initialized");
+      debug.log("ModalActions initialized");
     } else if (!window.ModalActions) {
       console.warn(
         "ModalActions class not available - StateEvents may not initialize"
@@ -353,12 +353,12 @@ class UnifiedStateManager {
     const sessionKey = this.sessionKey;
 
     if (!sessionKey) {
-      console.log("No session key found, skipping restoration");
+      debug.log("No session key found, skipping restoration");
       this.hideLoading();
       return;
     }
 
-    console.log("Session key found, setting up restoration for:", sessionKey);
+    debug.log("Session key found, setting up restoration for:", sessionKey);
 
     // Ensure loading overlay is visible during restoration
     this.showLoading();
@@ -385,7 +385,7 @@ class UnifiedStateManager {
       const response = await fetch(`${apiPath}?sessionKey=${this.sessionKey}`);
 
       if (response.status === 404) {
-        console.log(
+        debug.log(
           "No saved data found for this session. Performing initial save."
         );
         // No existing data found, perform initial save to establish baseline
@@ -455,7 +455,7 @@ class UnifiedStateManager {
   }
 
   applyState(state) {
-    console.log("Applying state:", state);
+    debug.log("Applying state:", state);
     if (!state) return;
 
     // FIRST: Immediately jump to the saved section
@@ -474,7 +474,7 @@ class UnifiedStateManager {
     // FINALLY: Set side panel state
     this.restoreSidePanelUIState(state.sidePanel);
 
-    console.log("State restoration completed");
+    debug.log("State restoration completed");
   }
 
   /**
@@ -491,11 +491,8 @@ class UnifiedStateManager {
     const behavior = options.smooth ? "smooth" : "auto";
     const clampedPosition = Math.max(0, scrollToPosition);
 
-    console.log(
-      `StateManager: Scrolling section to position:`,
-      clampedPosition
-    );
-    console.log(
+    debug.log(`StateManager: Scrolling section to position:`, clampedPosition);
+    debug.log(
       "Section offsetTop:",
       section.offsetTop,
       "SECTION_TOP_POSITION:",
@@ -699,7 +696,7 @@ class UnifiedStateManager {
             if (!existingRow) {
               this.renderSingleCheckpointRow(rowData);
             } else {
-              console.log(
+              debug.log(
                 `Row ${rowData.id} already exists, skipping restoration`
               );
             }
@@ -831,7 +828,7 @@ class UnifiedStateManager {
   // ============================================================
 
   resetTask(taskId, taskRow) {
-    console.log("Resetting task:", taskId);
+    debug.log("Resetting task:", taskId);
 
     const statusButton = taskRow.querySelector(".status-button");
     const notesCell = taskRow.querySelector(".notes-cell");
@@ -879,7 +876,7 @@ class UnifiedStateManager {
 
     // Reset status flag to default
     this.resetStatusFlag(taskId);
-    console.log(`[Reset] ${taskId}: Flag reset to text-manual`);
+    debug.log(`[Reset] ${taskId}: Flag reset to text-manual`);
 
     // Hide restart button
     if (restartButton) {
@@ -890,7 +887,7 @@ class UnifiedStateManager {
     // Save state immediately
     this.saveState("reset")
       .then(() => {
-        console.log("State saved immediately after reset operation");
+        debug.log("State saved immediately after reset operation");
       })
       .catch((error) => {
         console.error("Failed to save state after reset:", error);
@@ -946,7 +943,7 @@ class UnifiedStateManager {
         const taskRow = rows.find((row) => row.id === taskId);
         if (taskRow) {
           taskRow.statusFlag = flag;
-          console.log(`[StatusFlag] ${taskId}: Set to ${flag} (in state)`);
+          debug.log(`[StatusFlag] ${taskId}: Set to ${flag} (in state)`);
           return;
         }
       }
@@ -956,7 +953,7 @@ class UnifiedStateManager {
     const statusButton = document.getElementById(`status-${taskId}`);
     if (statusButton) {
       statusButton.setAttribute("data-status-flag", flag);
-      console.log(`[StatusFlag] ${taskId}: Set to ${flag} (in DOM)`);
+      debug.log(`[StatusFlag] ${taskId}: Set to ${flag} (in DOM)`);
       return;
     }
 
@@ -1070,7 +1067,7 @@ class UnifiedStateManager {
   }
 
   addCheckpointRow(rowData, saveImmediately = true) {
-    console.log("StateManager: Adding checkpoint row:", rowData);
+    debug.log("StateManager: Adding checkpoint row:", rowData);
 
     // Validate required global dependencies
     if (!window.checkpointTableState) {
@@ -1088,7 +1085,7 @@ class UnifiedStateManager {
       window.checkpointTableState[rowData.checkpointId] = [];
     }
     window.checkpointTableState[rowData.checkpointId].push(rowData);
-    console.log(
+    debug.log(
       "StateManager: Added to checkpointTableState, total rows:",
       window.checkpointTableState[rowData.checkpointId].length
     );
@@ -1103,7 +1100,7 @@ class UnifiedStateManager {
       });
     }
 
-    console.log("StateManager: Checkpoint row added successfully");
+    debug.log("StateManager: Checkpoint row added successfully");
   }
 
   renderSingleCheckpointRow(rowData) {
@@ -1120,7 +1117,7 @@ class UnifiedStateManager {
     // Double-check if row already exists to prevent duplicates
     const existingRow = document.querySelector(`tr[data-id="${rowData.id}"]`);
     if (existingRow) {
-      console.log(`Row ${rowData.id} already exists in DOM, skipping render`);
+      debug.log(`Row ${rowData.id} already exists in DOM, skipping render`);
       return;
     }
 
@@ -1133,7 +1130,7 @@ class UnifiedStateManager {
         this.applyCompletedStateToRow(newRowElement);
       }
 
-      console.log(
+      debug.log(
         `Checkpoint row rendered: ${rowData.id} with status: ${rowData.status}`
       );
     } else {
@@ -1172,7 +1169,7 @@ class UnifiedStateManager {
     // Apply completed state to textareas WITHOUT creating overlays (restore scenario)
     this.applyCompletedTextareaStateForRestore(rowElement);
 
-    console.log(
+    debug.log(
       `Applied completed state to row: ${rowElement.getAttribute("data-id")}`
     );
   }
@@ -1268,7 +1265,7 @@ class UnifiedStateManager {
   markManualSaveVerified() {
     this.manualSaveVerified = true;
     this.autoSaveEnabled = true;
-    console.log("Manual save verified - auto-save enabled");
+    debug.log("Manual save verified - auto-save enabled");
 
     // Setup auto-save listeners after first manual save
     this.setupAutoSaveListeners();
@@ -1276,7 +1273,7 @@ class UnifiedStateManager {
 
   enableAutoSave() {
     this.autoSaveEnabled = true;
-    console.log("Auto-save enabled");
+    debug.log("Auto-save enabled");
 
     // Setup auto-save listeners immediately
     this.setupAutoSaveListeners();
@@ -1284,10 +1281,10 @@ class UnifiedStateManager {
 
   async performInitialSave() {
     try {
-      console.log("Performing initial save...");
+      debug.log("Performing initial save...");
       const success = await this.saveState("auto");
       if (success) {
-        console.log("Initial save completed successfully");
+        debug.log("Initial save completed successfully");
         this.markManualSaveVerified(); // Enable full auto-save functionality
       }
     } catch (error) {
@@ -1340,7 +1337,7 @@ class UnifiedStateManager {
       }
     });
 
-    console.log("Auto-save listeners setup complete");
+    debug.log("Auto-save listeners setup complete");
   }
 
   setupUnsavedChangesProtection() {
@@ -1364,7 +1361,7 @@ class UnifiedStateManager {
     if (saveButton && !this.saveButton) {
       this.saveButton = saveButton;
       this.setupSaveButtonEventListeners();
-      console.log("Save button initialized");
+      debug.log("Save button initialized");
     } else if (!saveButton) {
       console.error("Save button not found in HTML");
     }
@@ -1434,17 +1431,17 @@ class UnifiedStateManager {
   showLoading() {
     const loadingOverlay = document.getElementById("loadingOverlay");
     if (loadingOverlay) {
-      console.log("Showing loading overlay");
+      debug.log("Showing loading overlay");
       loadingOverlay.style.display = "flex";
     } else {
-      console.log("Loading overlay element not found!");
+      debug.log("Loading overlay element not found!");
     }
   }
 
   hideLoading() {
     const loadingOverlay = document.getElementById("loadingOverlay");
     if (loadingOverlay) {
-      console.log("Hiding loading overlay");
+      debug.log("Hiding loading overlay");
       loadingOverlay.style.display = "none";
     }
   }
@@ -1460,7 +1457,7 @@ class UnifiedStateManager {
     ) {
       window.statusManager.showMessage(message, type);
     } else {
-      console.log(`[${type.toUpperCase()}] ${message}`);
+      debug.log(`[${type.toUpperCase()}] ${message}`);
     }
   }
 }

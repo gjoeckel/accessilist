@@ -44,7 +44,7 @@ class ModalActions {
           const statusButton = row.querySelector(".status-button");
           if (statusButton) {
             statusButton.focus();
-            console.log(
+            debug.log(
               "ModalActions: Focused on Status Ready button after reset"
             );
           }
@@ -55,7 +55,7 @@ class ModalActions {
         setTimeout(() => {
           if (triggeringButton) {
             triggeringButton.focus();
-            console.log(
+            debug.log(
               "ModalActions: Restored focus to triggering button after cancel"
             );
           }

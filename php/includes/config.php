@@ -47,16 +47,26 @@ function loadEnv($filePath) {
 }
 
 // Load .env file (REQUIRED) - priority order:
-// 1. Global cursor-global config (machine-specific, survives across projects)
-// 2. Production external config (AWS server only)
-// 3. Project local config (legacy fallback)
+// 1. Test directory config (accessilist2 only - for production testing)
+// 2. Global cursor-global config (machine-specific, survives across projects)
+// 3. Production external config (AWS server only)
+// 4. Project local config (legacy fallback)
 $globalEnvPath = '/Users/a00288946/cursor-global/config/.env';
 $externalEnvPath = '/var/websites/webaim/htdocs/training/online/etc/.env';
 $projectEnvPath = __DIR__ . '/../../.env';
 $envLoaded = false;
 
-// Try global config first (preferred for local development)
-if (file_exists($globalEnvPath)) {
+// PRIORITY 1: Check for test directory (accessilist2)
+$currentPath = __DIR__;
+if (strpos($currentPath, 'accessilist2') !== false) {
+    $testEnvPath = '/var/websites/webaim/htdocs/training/online/etc/.env.accessilist2';
+    if (file_exists($testEnvPath)) {
+        $envLoaded = loadEnv($testEnvPath);
+    }
+}
+
+// PRIORITY 2: Try global config first (preferred for local development)
+if (!$envLoaded && file_exists($globalEnvPath)) {
     $envLoaded = loadEnv($globalEnvPath);
 }
 
