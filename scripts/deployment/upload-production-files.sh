@@ -287,9 +287,11 @@ fi
 # ============================================================================
 log_info "Running post-deployment tasks..."
 
-# Ensure sessions directory exists and is writable
-ssh -i "$SSH_KEY" "${DEPLOY_TARGET}" "cd ${DEPLOY_PATH} && mkdir -p sessions && chmod 755 sessions"
-log_success "Sessions directory verified"
+# Ensure sessions directory exists and is writable by Apache
+# Use 775: Owner + Group can write, Others read-only (secure)
+# Apache runs as www-data (group member) so group write access is sufficient
+ssh -i "$SSH_KEY" "${DEPLOY_TARGET}" "cd ${DEPLOY_PATH} && mkdir -p sessions && chmod 775 sessions"
+log_success "Sessions directory verified (permissions: 775 - secure group write access)"
 
 # ============================================================================
 # DEPLOYMENT SUMMARY
