@@ -121,7 +121,7 @@ if ($environment === 'production') {
     // Production: Secure session cookies
     session_set_cookie_params([
         'lifetime' => 0, // Until browser closes
-        'path' => $basePath . '/', // Match the application base path
+        'path' => '/', // Use root path - simpler and more compatible
         'domain' => '',
         'secure' => true, // HTTPS only
         'httponly' => true, // Not accessible via JavaScript
