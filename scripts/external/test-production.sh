@@ -453,7 +453,8 @@ TEST_SESSION_KEY="TST$(date +%s | tail -c 4)"  # e.g., TST1234
 
 # Get CSRF token from home page
 home_page=$(curl -s -c /tmp/test-cookies-$$.txt "$PROD_URL/home" 2>&1)
-csrf_token=$(echo "$home_page" | grep -oP 'name="csrf-token" content="\K[^"]+' || echo "")
+# macOS-compatible extraction (sed instead of grep -oP)
+csrf_token=$(echo "$home_page" | sed -n 's/.*name="csrf-token" content="\([^"]*\)".*/\1/p' | head -1)
 
 if [ -z "$csrf_token" ]; then
     record_fail "Session creation (get CSRF)" "(No token found)"
@@ -466,9 +467,9 @@ else
         -H "Content-Type: application/json" \
         -H "X-CSRF-Token: $csrf_token" \
         -d "{\"sessionKey\":\"$TEST_SESSION_KEY\",\"typeSlug\":\"word\"}" 2>&1)
-    
+
     create_http_code=$(echo "$create_response" | tail -n1)
-    
+
     if [ "$create_http_code" = "200" ]; then
         record_pass "Session creation via API" "(Created $TEST_SESSION_KEY)"
     else
@@ -504,7 +505,7 @@ if [ -n "$TEST_SESSION_KEY" ]; then
     else
         record_fail "Minimal URL works" "(HTTP $http_code)"
     fi
-    
+
     # Cleanup: Delete test session and cookies
     rm -f /tmp/test-cookies-$$.txt
 else
@@ -670,7 +671,7 @@ echo ""
 echo -e "${CYAN}Total Tests:${NC}    $TOTAL_TESTS"
 echo -e "${GREEN}Passed:${NC}         $PASSED_TESTS"
 echo -e "${RED}Failed:${NC}         $FAILED_TESTS"
-echo -e "${CYAN}Success Rate:${NC}   $(awk "BEGIN {printf \"%.1f%%\", ($PASSED_TESTS/$TOTAL_TESTS)*100}")"
+echo -e "${CYAN}Success Rate:${NC}   $(echo "scale=1; ($PASSED_TESTS * 100) / $TOTAL_TESTS" | bc)%"
 echo ""
 
 if [ $FAILED_TESTS -eq 0 ]; then
@@ -686,4 +687,3 @@ else
     echo -e "${CYAN}Log file:${NC} $LOG_FILE"
     exit 1
 fi
-
