@@ -325,10 +325,11 @@ export class ReportsManager {
     // Get statusButtons for filter-dependent progress calculation
     const statusButtons = checklist.state?.statusButtons || {};
 
-    // Status column: Show "-" for not saved sessions, otherwise show status badge
-    const statusDisplay = isSaved
-      ? this.createStatusBadge(checklist.calculatedStatus)
-      : '<span class="status-placeholder">-</span>';
+    // Status column: Show "-" for All and Demos filters, show icon for status-based filters
+    const statusDisplay =
+      this.currentFilter === "all" || this.currentFilter === "demos"
+        ? '<span class="status-placeholder" style="text-align: center; display: block;">-</span>'
+        : this.createStatusBadge(checklist.calculatedStatus);
 
     // Build row HTML
     row.innerHTML = `
