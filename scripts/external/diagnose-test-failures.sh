@@ -45,6 +45,15 @@ ENVIRONMENT=${2:-"unknown"}
 LAST_FAILURE_TEST=${3:-""}
 LAST_FAILURE_DETAILS=${4:-""}
 
+# Derive URL from environment for browser testing
+if [ "$ENVIRONMENT" = "live" ]; then
+    URL="https://webaim.org/training/online/accessilist"
+elif [ "$ENVIRONMENT" = "staging" ]; then
+    URL="https://webaim.org/training/online/accessilist2"
+else
+    URL=""
+fi
+
 # Banner
 echo ""
 echo -e "${RED}╔════════════════════════════════════════════════════════╗${NC}"
@@ -182,22 +191,80 @@ echo "  5. Browser console (if UI test failed):"
 echo "     → Open browser dev tools and check for JS errors"
 echo ""
 
+# CRITICAL: BROWSER VALIDATION
+echo -e "${RED}╔════════════════════════════════════════════════════════╗${NC}"
+echo -e "${RED}║  ⚠️  VALIDATE WITH BROWSER TESTING FIRST!             ║${NC}"
+echo -e "${RED}╚════════════════════════════════════════════════════════╝${NC}"
+echo ""
+echo -e "${YELLOW}📌 IMPORTANT PRINCIPLE:${NC}"
+echo "  Programmatic tests can have FALSE POSITIVES!"
+echo "  Browser tests show ACTUAL USER EXPERIENCE!"
+echo ""
+echo -e "${CYAN}Before investigating programmatic test failures:${NC}"
+echo ""
+echo -e "${GREEN}1. RUN BROWSER E2E TEST FIRST:${NC}"
+if [ -n "$URL" ]; then
+    echo "   ./scripts/external/phase-3-browser-ui.sh \"$URL\" chromium"
+    echo ""
+    echo -e "   ${CYAN}Run it now? [y/N]:${NC}"
+    read -t 10 -n 1 RUN_BROWSER 2>/dev/null || RUN_BROWSER="n"
+    echo ""
+    if [ "$RUN_BROWSER" = "y" ] || [ "$RUN_BROWSER" = "Y" ]; then
+        echo ""
+        SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+        if "$SCRIPT_DIR/phase-3-browser-ui.sh" "$URL" chromium; then
+            echo ""
+            echo -e "${GREEN}✅ BROWSER TEST PASSED!${NC}"
+            echo -e "${YELLOW}This means:${NC}"
+            echo "  → Users CAN use the application"
+            echo "  → The programmatic test has FALSE POSITIVES"
+            echo "  → Fix the TEST script, not the application"
+            echo ""
+            exit 0
+        else
+            echo ""
+            echo -e "${RED}❌ BROWSER TEST ALSO FAILED!${NC}"
+            echo -e "${YELLOW}This means:${NC}"
+            echo "  → Application IS broken for users"
+            echo "  → Continue with diagnostics below..."
+            echo ""
+        fi
+    fi
+else
+    echo "   ./scripts/external/phase-3-browser-ui.sh <URL> chromium"
+    echo ""
+fi
+echo -e "   ${YELLOW}OR use Playwright MCP in Cursor:${NC}"
+echo "   Ask AI: \"Test https://webaim.org/training/online/accessilist2 with Playwright\""
+echo ""
+echo -e "${GREEN}2. IF BROWSER TEST PASSES:${NC}"
+echo "   → Programmatic test is WRONG (false positive)"
+echo "   → Fix the TEST, not the application"
+echo "   → Users are NOT affected"
+echo ""
+echo -e "${RED}3. IF BROWSER TEST FAILS:${NC}"
+echo "   → Application is ACTUALLY broken"
+echo "   → Users ARE affected"
+echo "   → THEN investigate and fix using diagnostics below"
+echo ""
+echo -e "${CYAN}━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━${NC}"
+echo ""
+
 # NEXT STEPS
-echo -e "${BLUE}🔧 RECOMMENDED NEXT STEPS:${NC}"
+echo -e "${BLUE}🔧 IF BROWSER TEST ALSO FAILS (Real Issue):${NC}"
 echo ""
 echo "  1. Review diagnostic output above"
 echo "  2. Gather additional information if needed"
 echo "  3. Choose most likely fix from alternatives"
 echo "  4. Test fix on staging (accessilist2) first"
-echo "  5. Re-run test script to verify fix works"
+echo "  5. Re-run BROWSER test to verify fix works"
 echo ""
 
 echo -e "${YELLOW}⏸️  WAITING FOR YOUR DECISION...${NC}"
 echo ""
 echo "What would you like to do next?"
-echo "  → Investigate a specific issue from the list above"
-echo "  → Apply one of the suggested fixes"
-echo "  → Request more detailed analysis of a specific failure"
-echo "  → Continue despite failures (if failures are acceptable)"
+echo "  → Run browser E2E test to validate (RECOMMENDED FIRST STEP)"
+echo "  → Investigate programmatic test issue (if browser also fails)"
+echo "  → Fix the test itself (if browser passes but programmatic fails)"
 echo "  → Review the full log file for more context"
 echo ""

@@ -5,11 +5,13 @@ require_once __DIR__ . '/includes/footer.php';
 require_once __DIR__ . '/includes/security-headers.php';
 require_once __DIR__ . '/includes/csrf.php';
 
-// Set security headers
-set_security_headers();
-
-// Generate CSRF token and make it globally available
+// CRITICAL: Start session BEFORE sending any headers
+// Session needs to set cookies, which are HTTP headers
+// Once set_security_headers() runs, it's too late to set cookies
 $GLOBALS['csrfToken'] = generate_csrf_token();
+
+// Set security headers AFTER session started
+set_security_headers();
 
 renderHTMLHead('Accessibility Checklists');
 ?>
@@ -96,6 +98,10 @@ renderHTMLHead('Accessibility Checklists');
 <script src="<?php echo $basePath; ?>/js/type-manager.js?v=<?php echo time(); ?>"></script>
 <script>
   document.addEventListener('DOMContentLoaded', function() {
+    // CSRF diagnostics disabled - we use origin-based validation now (no cookies needed)
+    // if (window.debug && typeof window.debug.logCsrfDiagnostics === 'function') {
+    //   window.debug.logCsrfDiagnostics();
+    // }
 
 
     // Connect buttons to redirect to php/list.php

@@ -151,6 +151,137 @@ class DebugLogger {
       "Verbose logging deactivated"
     );
   }
+
+  /**
+   * CSRF DIAGNOSTIC LOGGING - ALWAYS ON
+   * Logs session/cookie/CSRF state for debugging 403 errors
+   */
+  logCsrfDiagnostics() {
+    console.group(
+      "%c🔍 CSRF DIAGNOSTICS",
+      "background: #FF9800; color: white; padding: 4px 8px; font-weight: bold;"
+    );
+
+    // 1. Check CSRF token in meta tag
+    const csrfToken = document
+      .querySelector('meta[name="csrf-token"]')
+      ?.getAttribute("content");
+    console.log(
+      "1️⃣ CSRF Token (meta tag):",
+      csrfToken ? `✅ Present (${csrfToken.length} chars)` : "❌ MISSING"
+    );
+    if (csrfToken) {
+      console.log("   Token:", csrfToken);
+    }
+
+    // 2. Check all cookies
+    const cookies = document.cookie
+      .split(";")
+      .map((c) => c.trim())
+      .filter((c) => c.length > 0);
+    console.log("2️⃣ Cookies:", cookies.length > 0 ? cookies : "❌ NO COOKIES");
+    if (cookies.length > 0) {
+      cookies.forEach((cookie) => {
+        const [name, value] = cookie.split("=");
+        if (name && value) {
+          if (name.includes("PHPSESSID") || name.includes("sess")) {
+            console.log(`   🔑 ${name} = ${value.substring(0, 10)}...`);
+          } else {
+            console.log(`   ${name} = ${value.substring(0, 20)}...`);
+          }
+        }
+      });
+    } else {
+      console.log("ℹ️  No cookies (expected - using origin-based security)");
+      console.log(
+        "   Application uses Origin header validation instead of cookies"
+      );
+      console.log(
+        "   This is more privacy-friendly and works with cookie blockers"
+      );
+    }
+
+    // 3. Check session storage
+    console.log(
+      "3️⃣ Session Storage:",
+      sessionStorage.length > 0 ? `${sessionStorage.length} items` : "Empty"
+    );
+
+    // 4. Check if fetchWithCsrf is available
+    console.log(
+      "4️⃣ fetchWithCsrf():",
+      typeof window.fetchWithCsrf === "function"
+        ? "✅ Available"
+        : "❌ NOT LOADED"
+    );
+
+    // 5. Check ENV config
+    console.log("5️⃣ ENV Config:", window.ENV ? window.ENV : "❌ NOT LOADED");
+
+    console.groupEnd();
+  }
+
+  /**
+   * Log API request details before sending
+   * Call this before fetch() to track what's being sent
+   */
+  logApiRequest(url, options) {
+    console.group(
+      `%c🌐 API REQUEST: ${url}`,
+      "background: #2196F3; color: white; padding: 4px 8px;"
+    );
+    console.log("URL:", url);
+    console.log("Method:", options.method || "GET");
+    console.log("Headers:", options.headers || "None");
+    console.log("Body:", options.body || "None");
+    console.log("Credentials:", options.credentials || "Default");
+
+    // Check if CSRF token is included
+    if (options.headers && options.headers["X-CSRF-Token"]) {
+      console.log(
+        "✅ CSRF Token:",
+        options.headers["X-CSRF-Token"].substring(0, 16) + "..."
+      );
+    } else if (
+      options.method === "POST" ||
+      options.method === "PUT" ||
+      options.method === "DELETE"
+    ) {
+      console.warn(
+        "⚠️ WARNING: No CSRF token in " + options.method + " request!"
+      );
+    }
+
+    console.groupEnd();
+  }
+
+  /**
+   * Log API response details
+   */
+  logApiResponse(url, response) {
+    const statusColor = response.ok ? "#4CAF50" : "#F44336";
+    console.group(
+      `%c📥 API RESPONSE: ${url}`,
+      `background: ${statusColor}; color: white; padding: 4px 8px;`
+    );
+    console.log("Status:", response.status, response.statusText);
+    console.log("OK:", response.ok);
+    console.log("Headers:", [...response.headers.entries()]);
+
+    if (!response.ok) {
+      console.error("❌ Request failed! Status:", response.status);
+      if (response.status === 403) {
+        console.error("🚫 403 FORBIDDEN - Likely CSRF token issue!");
+        console.error("Check:");
+        console.error("  1. Is CSRF token in meta tag?");
+        console.error("  2. Is session cookie being sent?");
+        console.error("  3. Are cookies enabled?");
+        console.error("  4. Is cookie path correct?");
+      }
+    }
+
+    console.groupEnd();
+  }
 }
 
 // Create and export global debug instance

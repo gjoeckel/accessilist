@@ -45,16 +45,35 @@ function validate_csrf_token($token) {
         session_start();
     }
 
+    // DIAGNOSTIC LOGGING - Log session/token state
+    error_log("[CSRF VALIDATION] Session ID: " . session_id());
+    error_log("[CSRF VALIDATION] Token received: " . substr($token, 0, 16) . "...");
+    error_log("[CSRF VALIDATION] Token in session: " . (isset($_SESSION['csrf_token']) ? substr($_SESSION['csrf_token'], 0, 16) . "..." : "NOT SET"));
+    error_log("[CSRF VALIDATION] Cookies: " . ($_SERVER['HTTP_COOKIE'] ?? 'NONE'));
+    error_log("[CSRF VALIDATION] Session cookie params: " . json_encode(session_get_cookie_params()));
+
     // Check token exists and matches
     if (!isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $token)) {
+        $diagnostic = [
+            'session_id' => session_id(),
+            'token_in_session' => isset($_SESSION['csrf_token']),
+            'token_received' => !empty($token),
+            'cookie_header' => isset($_SERVER['HTTP_COOKIE']),
+            'session_status' => session_status()
+        ];
+        error_log("[CSRF VALIDATION] FAILED - Diagnostic: " . json_encode($diagnostic));
+
         http_response_code(403);
         header('Content-Type: application/json');
         die(json_encode([
             'success' => false,
             'message' => 'Invalid CSRF token',
-            'timestamp' => time()
+            'timestamp' => time(),
+            'debug' => $diagnostic  // Include diagnostic info in response
         ]));
     }
+
+    error_log("[CSRF VALIDATION] SUCCESS");
 }
 
 /**

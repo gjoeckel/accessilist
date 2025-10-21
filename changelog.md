@@ -16,7 +16,7 @@
 - scripts/external/phase-2-permissions.sh
 - scripts/external/phase-3-browser-ui.sh
 - scripts/external/test-orchestrator.sh
-**Commit:** [pending]
+**Commit:** 81fe4dd
 
 ---
 

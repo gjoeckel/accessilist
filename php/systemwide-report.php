@@ -175,20 +175,20 @@ renderHTMLHead('Systemwide Report');
                         <td class="task-cell">Sample type</td>
                         <td class="task-cell">2024-01-15</td>
                         <td class="info-cell">
-                            <button class="info-link" aria-label="Show example">
-                                <img src="/images/info-.svg" alt="">
-                            </button>
+                        <button class="info-link" aria-label="Show example">
+                            <img src="<?php echo $basePath; ?>/images/info-.svg" alt="">
+                        </button>
                         </td>
                         <td class="status-cell">
-                            <button class="status-button" aria-label="Task status: Active">
-                                <img src="/images/active-1.svg" alt="">
-                            </button>
+                        <button class="status-button" aria-label="Task status: Active">
+                            <img src="<?php echo $basePath; ?>/images/active-1.svg" alt="">
+                        </button>
                         </td>
                         <td class="task-cell">5/10 tasks</td>
                         <td class="restart-cell">
-                            <button class="restart-button restart-hidden" aria-label="Reset task">
-                                <img src="/images/reset.svg" alt="">
-                            </button>
+                        <button class="restart-button restart-hidden" aria-label="Reset task">
+                            <img src="<?php echo $basePath; ?>/images/reset.svg" alt="">
+                        </button>
                         </td>
                     </tr>
                 </tbody>

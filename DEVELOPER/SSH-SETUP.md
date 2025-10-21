@@ -2,7 +2,7 @@
 
 ## SSH Key Generated
 
-✅ **Key created**: `~/.ssh/accessilist_deploy` (ED25519)
+✅ **Key in use**: `~/.ssh/GeorgeWebAIMServerKey.pem` (RSA/ED25519)
 
 ### Public Key
 
@@ -40,7 +40,7 @@ exit
 
 ```bash
 # Test connection (should NOT ask for password)
-ssh -i ~/.ssh/accessilist_deploy YOUR_USERNAME@webaim.org
+ssh -i ~/.ssh/GeorgeWebAIMServerKey.pem YOUR_USERNAME@webaim.org
 
 # If it works, you'll be logged in without entering a password
 # Type 'exit' to logout
@@ -54,7 +54,7 @@ Add this to `~/.ssh/config` for easier connections:
 Host webaim-deploy
   HostName webaim.org
   User YOUR_USERNAME
-  IdentityFile ~/.ssh/accessilist_deploy
+  IdentityFile ~/.ssh/GeorgeWebAIMServerKey.pem
   IdentitiesOnly yes
 ```
 
@@ -115,8 +115,8 @@ If connection is refused:
 
 If local key not found:
 ```bash
-ls -la ~/.ssh/accessilist_deploy*
-# Should show both private and public key files
+ls -la ~/.ssh/GeorgeWebAIMServerKey.pem*
+# Should show the key file
 ```
 
 ## Next Steps

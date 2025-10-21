@@ -6,11 +6,12 @@ require_once __DIR__ . '/includes/common-scripts.php';
 require_once __DIR__ . '/includes/security-headers.php';
 require_once __DIR__ . '/includes/csrf.php';
 
-// Set security headers
-set_security_headers();
-
-// Generate CSRF token and make it globally available
+// CRITICAL: Start session BEFORE sending any headers
+// Session needs to set cookies, which are HTTP headers
 $GLOBALS['csrfToken'] = generate_csrf_token();
+
+// Set security headers AFTER session started
+set_security_headers();
 
 renderHTMLHead('Accessibility Checklist', true);
 ?>

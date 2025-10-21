@@ -45,6 +45,32 @@ Complete session persistence and state management system enabling users to save 
 
 ## 📡 Complete API Reference
 
+### ⚠️ CRITICAL: All API Files Must Load config.php First
+
+**Requirement:**
+```php
+<?php
+require_once __DIR__ . '/../includes/config.php'; // MUST BE FIRST!
+require_once __DIR__ . '/../includes/api-utils.php';
+```
+
+**Why:**
+- `config.php` sets global `$sessionsPath`
+- `config.php` loads `.env` configuration
+- Without it: `$sessionsPath = null` → APIs fail
+
+**Files That MUST Have This:**
+- ✅ php/api/instantiate.php
+- ✅ php/api/save.php
+- ✅ php/api/restore.php
+- ✅ php/api/delete.php
+- ✅ php/api/list.php
+- ✅ php/api/list-detailed.php
+- ✅ php/api/generate-key.php (if needs sessions)
+- ❌ php/api/health.php (doesn't need sessions)
+
+---
+
 ### API Endpoint Summary
 
 | Endpoint | Method | Purpose | Response |

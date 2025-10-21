@@ -42,7 +42,19 @@ function fetchWithCsrf(url, options = {}) {
     }
   }
 
-  return fetch(url, fetchOptions);
+  // DIAGNOSTIC LOGGING - Log request details
+  if (window.debug && typeof window.debug.logApiRequest === "function") {
+    window.debug.logApiRequest(url, fetchOptions);
+  }
+
+  // Make the fetch request and log response
+  return fetch(url, fetchOptions).then((response) => {
+    // Log response details
+    if (window.debug && typeof window.debug.logApiResponse === "function") {
+      window.debug.logApiResponse(url, response);
+    }
+    return response;
+  });
 }
 
 // Export for use in other modules

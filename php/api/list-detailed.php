@@ -6,6 +6,7 @@
  * Similar to list.php but includes state.statusButtons for status calculation
  */
 
+require_once __DIR__ . '/../includes/config.php'; // CRITICAL: Load config first!
 require_once __DIR__ . '/../includes/api-utils.php';
 require_once __DIR__ . '/../includes/type-manager.php';
 

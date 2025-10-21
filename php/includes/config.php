@@ -119,24 +119,34 @@ $GLOBALS['sessionsPath'] = $sessionsPath;
 // This must be done in config.php to ensure consistent session handling
 if ($environment === 'production') {
     // Production: Secure session cookies
+    // CRITICAL FIX: Set cookie path to match application base path
+    // This ensures cookies are sent with ALL requests within the application
+    $cookiePath = $basePath ?: '/';
+
     session_set_cookie_params([
         'lifetime' => 0, // Until browser closes
-        'path' => '/', // Use root path - simpler and more compatible
+        'path' => $cookiePath, // FIXED: Use application base path, not root
         'domain' => '',
         'secure' => true, // HTTPS only
         'httponly' => true, // Not accessible via JavaScript
-        'samesite' => 'Lax' // CSRF protection
+        'samesite' => 'Lax' // CSRF protection (was 'Strict', changed to 'Lax' for same-site POST)
     ]);
+
+    error_log("[SESSION CONFIG] Cookie path set to: $cookiePath (basePath: $basePath)");
 } else {
     // Local development: Less restrictive for testing
+    $cookiePath = $basePath ?: '/';
+
     session_set_cookie_params([
         'lifetime' => 0,
-        'path' => '/',
+        'path' => $cookiePath,
         'domain' => '',
         'secure' => false, // Allow HTTP for local testing
         'httponly' => true,
         'samesite' => 'Lax'
     ]);
+
+    error_log("[SESSION CONFIG] Cookie path set to: $cookiePath (basePath: $basePath)");
 }
 
 // Export configuration for JavaScript injection

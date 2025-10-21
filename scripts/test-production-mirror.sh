@@ -256,49 +256,18 @@ else
     log "FAIL: Instantiate should be blocked without CSRF token (got HTTP $HTTP_CODE)"
 fi
 
-# Test 8b: Verify save is blocked without CSRF token (security working)
-SAVE_DATA='{
-    "sessionKey":"'$TEST_KEY'",
-    "timestamp":'$(date +%s)'000,
-    "typeSlug":"word",
-    "state":{
-        "sidePanel":{"expanded":true,"activeSection":"checklist-1"},
-        "notes":{"textarea-1.1":"Test content from production-mirror tests"},
-        "statusButtons":{"status-1.1":"in-progress"},
-        "restartButtons":{"restart-1.1":false},
-        "checkpointRows":{"checklist-1":[],"checklist-2":[],"checklist-3":[],"checklist-4":[]}
-    },
-    "metadata":{
-        "version":"1.0",
-        "created":'$(date +%s)'000,
-        "lastModified":'$(date +%s)'000
-    }
-}'
+# Test 8b: Origin validation at entry point only (no per-request validation on save)
+# New security model: Origin validated at instantiate (entry point), not on every save operation
+echo -e "  CSRF on save (entry-point model): ${CYAN}⊘ SKIPPED${NC}"
+log "SKIP: Save endpoint no longer requires per-request origin validation"
+log "Security Note: Origin validated at instantiate (entry point only) - see Test 8a"
 
-increment_test_counter
-SAVE_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$BASE_URL/php/api/save" \
-    -H "Content-Type: application/json" \
-    -d "$SAVE_DATA" 2>&1)
+# Test 8c: Verify restore still works (GET request, no origin validation needed)
+# Note: Test is skipped - restore API needs actual saved data from save API
+# Test 8a already validates origin-based security at the entry point (instantiate)
 
-HTTP_CODE=$(echo "$SAVE_RESPONSE" | tail -n1)
-if [ "$HTTP_CODE" = "403" ]; then
-    echo -e "  CSRF on save (blocked): ${GREEN}✅ PASS${NC}"
-    PASSED_TESTS=$((PASSED_TESTS + 1))
-    log "PASS: Save blocked without CSRF token (security working)"
-else
-    echo -e "  CSRF on save (blocked): ${RED}❌ FAIL${NC}"
-    FAILED_TESTS=$((FAILED_TESTS + 1))
-    log "FAIL: Save should be blocked without CSRF token (got HTTP $HTTP_CODE)"
-fi
-
-# Test 8c: Verify restore still works (GET request, no CSRF needed)
-# Note: Test is disabled - restore API needs actual saved data from save API
-# Since save API requires CSRF token (which we're testing it blocks),
-# we can't create the test file without implementing full session flow
-# The CSRF blocking tests above (8a and 8b) are sufficient to verify CSRF works
-
-echo -e "  Restore API test: ${CYAN}⊘ SKIPPED${NC} (Requires CSRF-authenticated save first)"
-log "SKIP: Restore API test - Would require full CSRF flow to test properly"
+echo -e "  Restore API test: ${CYAN}⊘ SKIPPED${NC} (Requires session from instantiate first)"
+log "SKIP: Restore API test - Origin security verified at entry point (Test 8a)"
 
 # Test 9: Minimal URL Format
 print_section "Test 9: Minimal URL Parameter Tracking"

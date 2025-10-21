@@ -19,7 +19,7 @@
 8. [Environment Configuration](#environment-configuration)
 9. [Global PHP Functions](#php-utilities)
 10. [Server Configuration](#server-configuration)
-11. [Implementation Status](#implementation-status)
+11. [Production Deployment](#production-deployment)
 
 ---
 
@@ -621,57 +621,35 @@ sudo ln -sf /Users/a00288946/Projects/accessilist \
 
 ---
 
-## 📊 Implementation Status
+## 📦 Production Deployment
 
-### Completed Features
+### File Manifest (89 Items)
 
-#### Core Application ✅
-- Home page with type selection
-- 11 checklist types configured
-- Main checklist interface (list.php)
-- Session save/restore functionality
-- All 8 API endpoints operational
+**Authoritative Source:** `scripts/deployment/upload-production-files.sh`
 
-#### Reporting System ✅
-- Systemwide aggregate dashboard
-- List report (single checklist detail)
-- Real-time status calculation
-- Interactive filtering
+The production deployment uses an explicit whitelist of 89 files (2 root, 1 config, 23 PHP, 20 JS, 16 CSS, 15 images, 11 JSON).
 
-#### UI/UX ✅
-- Side panel checkpoint navigation
-- Modal dialogs (save confirmations, errors)
-- AEIT information page
-- Responsive design
-- WCAG 2.1 AA compliance
+**Key Points:**
+- Sessions stored outside web root: `/var/websites/webaim/htdocs/training/online/etc/sessions/`
+- Deployment uses rsync with `--files-from` for precision
+- Security files excluded: `config.json`, `.env`, `.git/`, `scripts/`, docs
 
-#### Infrastructure ✅
-- URL routing (extensionless)
-- TypeManager system
-- Scroll buffer system (Path A/B)
-- Docker production mirror
-- State management architecture
-- Testing suite (101 + 42 tests)
+**Deployment Commands:**
+```bash
+# Verify manifest
+./scripts/deployment/verify-deployment-manifest.sh
 
-### In Progress
+# Deploy to production
+./scripts/deployment/upload-production-files.sh
 
-#### Planned Features 🚧
-- **Automatic Status Management** - Auto-change status Ready→Active when typing notes
-- **User Report Page** - Individual checklist report (spec exists, implementation TBD)
-- **Enhanced Analytics** - Additional reporting metrics
+# Or use workflow
+proj-push-deploy-github
+```
 
-### Technical Debt
-
-#### Known Issues
-- Legacy code in some older modules
-- Some CSS could be further optimized
-- Additional test coverage needed for edge cases
-
-#### Future Improvements
-- Consider database for high-volume usage
-- Implement caching for type configurations
-- Add API rate limiting
-- Enhanced error logging
+**Documentation:**
+- Complete file breakdown: `scripts/deployment/upload-production-files.sh` (lines 86-231)
+- Implementation guide: `docs/implementation/IMPLEMENTATION-DEPLOYMENT-EXCLUSIONS.md`
+- Deployment guide: `DEPLOYMENT.md`
 
 ---
 
@@ -747,11 +725,11 @@ ai-push-deploy-github
 
 - **[SAVE-AND-RESTORE.md](SAVE-AND-RESTORE.md)** - Complete API reference, StateManager architecture
 - **[LIST-USER-INTERFACE.md](LIST-USER-INTERFACE.md)** - UI components, side panel, modals, build functions
-- **[TESTING.md](TESTING.md)** - Test suites, proj-test-mirror, external-test-production
+- **[TESTING.md](TESTING.md)** - Test suites, browser E2E and programmatic validation
 - **[SYSTEMWIDE-REPORT.md](SYSTEMWIDE-REPORT.md)** - Aggregate reporting dashboard
 - **[LIST-REPORT.md](LIST-REPORT.md)** - Individual checklist reports
 - **[DEPLOYMENT.md](DEPLOYMENT.md)** - Deployment procedures
-- **[ROLLBACK_PLAN.md](ROLLBACK_PLAN.md)** - Emergency rollback procedures
+- **[SECURITY.md](SECURITY.md)** - Security implementation guide
 
 ---
 

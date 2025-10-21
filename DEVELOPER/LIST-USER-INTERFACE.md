@@ -18,7 +18,6 @@
 7. [UI Components](#ui-components)
 8. [AEIT Page](#aeit-page)
 9. [Accessibility Implementation](#accessibility-implementation)
-10. [Auto Status Management](#auto-status-management)
 
 ---
 
@@ -326,20 +325,6 @@ Unified modal dialog system for save confirmations, errors, and user notificatio
 
 ---
 
-## 🔄 Auto Status Management
-
-**Status:** 📋 Planned (spec complete, implementation pending)
-**Source:** `originals/note-status-logic.md`
-
-**Logic:**
-- Typing in notes → Auto-change Ready → Active
-- Clearing notes → Auto-revert Active → Ready (if auto-changed)
-- Manual status change → Disable auto-behavior for that task
-
-**Purpose:** Reduce manual status updates, respect user intent
-
----
-
 ## 📚 Related Documentation
 
 - **[GENERAL-ARCHITECTURE.md](GENERAL-ARCHITECTURE.md)** - System overview, routing
@@ -351,5 +336,5 @@ Unified modal dialog system for save confirmations, errors, and user notificatio
 ---
 
 *Document Created: October 20, 2025*
-*Synthesized from: note-status-logic.md, WCAG-compliance-report.md + codebase extraction (side-panel.js, simple-modal.js, ModalActions.js, buildCheckpoints.js, buildDemo.js, addRow.js, ui-components.js, php/home.php, php/aeit.php)*
+*Synthesized from: Codebase extraction (side-panel.js, simple-modal.js, ModalActions.js, buildCheckpoints.js, buildDemo.js, addRow.js, ui-components.js, php/home.php, php/aeit.php)*
 *Status: Complete UI component architecture for backend developers*

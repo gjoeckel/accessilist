@@ -63,30 +63,82 @@ Alias /training/online/accessilist \
 
 This app ships a root `.htaccess` that enables simple rewrites and disables client caching for development. Ensure `mod_rewrite`, `mod_headers`, and `mod_alias` are enabled, as they are for otter.
 
-## 5) Writable paths and permissions
+## 5) Session Storage Setup (Secure)
 
-This app writes user progress JSON files to `php/saves/` (and historically `saves/`). Create both and make them writable. Mirroring otter's approach (chmod-based, no chown in CI):
+**Critical:** Sessions are stored OUTSIDE the application directory for security.
 
 ```bash
-DEPLOY_PATH="/var/websites/webaim/htdocs/training/online/accessilist"
-mkdir -p "$DEPLOY_PATH/php/saves" "$DEPLOY_PATH/saves"
-chmod -R 775 "$DEPLOY_PATH/php/saves" "$DEPLOY_PATH/saves"
+# Create sessions directory (outside web root)
+sudo mkdir -p /var/websites/webaim/htdocs/training/online/etc/sessions
+sudo chown www-data:www-data /var/websites/webaim/htdocs/training/online/etc/sessions
+sudo chmod 775 /var/websites/webaim/htdocs/training/online/etc/sessions
 
-# Baseline perms (optional, similar to otter's helper)
-find "$DEPLOY_PATH" -type f -exec chmod 644 {} \;
-find "$DEPLOY_PATH" -type d -exec chmod 755 {} \;
-
-# Quick write test (should create and remove a file without error)
-echo '{}' > "$DEPLOY_PATH/php/saves/_write_test.json" && rm "$DEPLOY_PATH/php/saves/_write_test.json"
+# Verify HTTP access is blocked
+curl -I https://webaim.org/training/online/etc/sessions/
+# Should return: 403 Forbidden ✅
 ```
 
-If you encounter write errors on shared hosting, increase to 777 (as otter does for caches) and harden later.
+**Directory Structure:**
+```
+/var/websites/webaim/htdocs/training/online/
+├── accessilist/       (web root - production)
+├── accessilist2/      (web root - test/staging)
+└── etc/               (OUTSIDE web roots)
+    ├── .env           (shared config for production)
+    ├── .env.accessilist2 (config for test environment)
+    └── sessions/      (shared session storage - SECURE)
+```
 
-## 6) CSS Architecture
+**Security Benefits:**
+- ✅ Sessions not web-accessible (403)
+- ✅ Shared between environments
+- ✅ Outside both web roots
+- ✅ Proper Apache blocking
+
+## 6) Environment Configuration (.env)
+
+**Critical:** Each environment requires a `.env` file in `/var/websites/.../online/etc/`
+
+### Production Environment (.env)
+```bash
+# Location: /var/websites/webaim/htdocs/training/online/etc/.env
+BASE_PATH=/training/online/accessilist
+API_EXT=
+DEBUG=false
+SESSIONS_PATH=/var/websites/webaim/htdocs/training/online/etc/sessions
+```
+
+### Test/Staging Environment (.env.accessilist2)
+```bash
+# Location: /var/websites/webaim/htdocs/training/online/etc/.env.accessilist2
+BASE_PATH=/training/online/accessilist2
+API_EXT=
+DEBUG=true
+SESSIONS_PATH=/var/websites/webaim/htdocs/training/online/etc/sessions
+```
+
+**Configuration Notes:**
+- `BASE_PATH`: URL path to application root
+- `API_EXT`: Empty for extensionless API routes
+- `DEBUG`: Enable/disable debug logging
+- `SESSIONS_PATH`: Absolute path to sessions directory (shared)
+
+**Setup Commands:**
+```bash
+# Create .env files
+sudo nano /var/websites/webaim/htdocs/training/online/etc/.env
+sudo nano /var/websites/webaim/htdocs/training/online/etc/.env.accessilist2
+
+# Set permissions
+sudo chown www-data:www-data /var/websites/webaim/htdocs/training/online/etc/.env*
+sudo chmod 644 /var/websites/webaim/htdocs/training/online/etc/.env*
+```
+
+## 7) CSS Architecture
 
 This application uses individual CSS files for maintainability. No build process is required - all CSS files are included directly in the HTML pages in the correct order for proper cascading.
 
-## 7) Health checks
+## 8) Health checks
 
 - App home: `https://webaim.org/training/online/accessilist/php/home.php`
 - Checklist instance (example): `https://webaim.org/training/online/accessilist/php/list.php?session=ABC&type=camtasia`
@@ -101,31 +153,60 @@ curl -I https://webaim.org/training/online/accessilist/php/home.php
 curl -I 'https://webaim.org/training/online/accessilist/php/list.php?session=ABC&type=camtasia'
 ```
 
-## 8) Backups and rollback
+## 9) Dual Environment Setup
+
+This deployment supports two parallel environments:
+
+### Production (accessilist/)
+- **URL:** `/training/online/accessilist`
+- **Config:** `/var/websites/.../online/etc/.env`
+- **Purpose:** Live production site
+
+### Test/Staging (accessilist2/)
+- **URL:** `/training/online/accessilist2`
+- **Config:** `/var/websites/.../online/etc/.env.accessilist2`
+- **Purpose:** Testing and staging before production deployment
+
+**Workflow:**
+1. Deploy changes to `accessilist2/`
+2. Run full test suite against test environment
+3. Verify browser E2E tests pass
+4. Deploy to `accessilist/` (production)
+5. Run production tests
+
+**Shared Resources:**
+- Both environments use same `/etc/sessions/` directory
+- Sessions are portable between environments
+- Same Apache configuration handles both
+
+## 10) Backups and rollback
 
 Follow the otter pattern of deploying to a sibling folder and switching URLs if needed:
 
 - Deploy initially to `/training/online/accessilist2/`
 - Verify health and behavior
-- Switch links/aliases to point to `checklists2/` or rename directories during a maintenance window
+- Switch to production when stable
 
 Prefer switching an Apache Alias if one is in use; otherwise, rename directories during a maintenance window.
 
-## 9) Logs
+## 11) Logs
 
 This app does not manage logs like otter's `logs/`. Use Apache/PHP error logs. If desired, you can introduce a `logs/` folder and a small logging helper patterned after otter.
 
-## 10) Security notes
+## 12) Security notes
 
 - Enforce HTTPS at the proxy/web server
-- Keep `php/saves/` non-executable; JSON is inert but treat as sensitive
-- Consider restricting listing of `/php/saves/` at the web server
+- Sessions stored outside web root (403 on HTTP access)
+- Origin-based CSRF protection (no cookies required)
+- Security headers set on all HTML responses
+- Rate limiting currently disabled (see SECURITY.md)
 
-## 11) Differences vs otter
+## 13) Differences vs otter
 
 - No Google Sheets or enterprise configs
 - No internal/external API split – simple PHP endpoints under `php/api/`
-- Single writable area: `php/saves/` (plus legacy `saves/`)
+- Sessions stored outside web root (more secure than otter's approach)
+- Origin-based CSRF (simpler than session tokens)
 
 ---
 
