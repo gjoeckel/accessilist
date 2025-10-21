@@ -32,6 +32,8 @@
 - **external-live-production** - Test LIVE production (accessilist) - 3 phases: Programmatic (53) + Permissions (2) + Browser E2E (15)
 - **external-test-browser-ai** - Instructions for AI-driven browser testing (Playwright MCP tools)
 - **proj-deploy-check** - Run pre-deployment validation
+- **proj-compare-staging** - Compare local with accessilist2 (shows what will change on deploy)
+- **proj-compare-live** - Compare local with accessilist (shows difference from production)
 
 ### Development Servers
 - **proj-user-testing** - Start PHP dev server for manual testing (port 8000)
@@ -117,13 +119,13 @@ Project scripts can be run directly:
 
 ## 📊 Summary
 
-**Total Workflows:** 24 (14 global + 10 project)
+**Total Workflows:** 26 (14 global + 12 project)
 
 **Categories:**
 - **AI Session Management** (5): ai-start, ai-end, ai-update, ai-repeat, ai-compress
 - **Git Operations** (4): ai-local-commit, ai-local-merge, ai-merge-finalize, ai-push-*
 - **MCP Management** (2): mcp-health, mcp-restart
-- **Testing** (5): proj-mirror-production, external-test-production, external-live-production, external-test-browser-ai, proj-deploy-check
+- **Testing** (7): proj-mirror-production, external-test-production, external-live-production, external-test-browser-ai, proj-deploy-check, proj-compare-staging, proj-compare-live
 - **Docker** (2): proj-docker-up, proj-docker-down
 - **Code Quality** (1): proj-dry
 - **Deployment** (2): proj-deploy-accessilist2, proj-push-deploy-github
@@ -199,18 +201,22 @@ ai-local-commit          # Commit changes
 ```bash
 proj-deploy-check        # Validate before deploy
 proj-mirror-production   # Final local test (99 tests)
+proj-compare-live        # Preview changes to production
 ai-push-deploy-github    # Deploy to production
 ```
 
 ### Before Deployment (Staging)
 ```bash
+proj-compare-staging      # Preview changes to staging
 proj-deploy-accessilist2  # Deploy to staging
 external-test-production  # Test staging (70 tests: 53+2+15)
 ```
 
-### After Deployment (Live)
+### After Deployment (Verify Sync)
 ```bash
-external-live-production  # Verify live production (70 tests: 53+2+15)
+proj-compare-staging      # Verify staging sync (should show 0 changes)
+proj-compare-live         # Verify live sync (should show 0 changes)
+external-live-production  # Full test suite (70 tests: 53+2+15)
 ```
 
 ### Troubleshooting

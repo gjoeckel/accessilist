@@ -13,6 +13,20 @@
     "timeout": 30000,
     "on_error": "continue"
   },
+  "proj-compare-staging": {
+    "description": "Compare local files with accessilist2 (staging) - shows what will change",
+    "commands": ["./scripts/deployment/compare-with-remote.sh staging"],
+    "auto_approve": true,
+    "timeout": 60000,
+    "on_error": "continue"
+  },
+  "proj-compare-live": {
+    "description": "Compare local files with accessilist (live) - shows what will change",
+    "commands": ["./scripts/deployment/compare-with-remote.sh live"],
+    "auto_approve": true,
+    "timeout": 60000,
+    "on_error": "continue"
+  },
   "proj-mirror-production": {
     "description": "Test local Docker mirror (99 tests: routing, APIs, security, content validation)",
     "commands": [
