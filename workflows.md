@@ -28,8 +28,9 @@
 
 ### Testing & Validation
 - **proj-test-mirror** - Test production mirror configuration (Docker Apache, 100 tests, 100% pass rate)
-- **external-test-production** - Test staging (accessilist2) - use before going live
-- **external-live-production** - Test LIVE production (accessilist) - use after deployment
+- **external-test-production** - Test staging (accessilist2) - Complete 3-phase testing with Playwright
+- **external-live-production** - Test LIVE production (accessilist) - Complete 3-phase testing with Playwright
+- **external-test-browser-ai** - Instructions for AI-driven browser testing (Playwright MCP tools)
 - **proj-deploy-check** - Run pre-deployment validation
 
 ### Development Servers
@@ -88,8 +89,8 @@ Project scripts can be run directly:
 | Workflow | Environment | Tests | URL | Purpose |
 |----------|-------------|-------|-----|---------|
 | **proj-test-mirror** | Local Docker Apache | 100 | http://127.0.0.1:8080 | Pre-deployment testing |
-| **external-test-production** | Staging (accessilist2) | 54 | https://webaim.org/training/online/accessilist2 | Pre-live validation |
-| **external-live-production** | Live Production | 54 | https://webaim.org/training/online/accessilist | Post-deployment verification |
+| **external-test-production** | Staging (accessilist2) | 3 phases | https://webaim.org/training/online/accessilist2 | Pre-live validation (Programmatic→Permissions→Browser) |
+| **external-live-production** | Live Production | 3 phases | https://webaim.org/training/online/accessilist | Post-deployment verification (Programmatic→Permissions→Browser) |
 
 ### Deployment Workflows
 

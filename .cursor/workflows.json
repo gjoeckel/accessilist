@@ -88,15 +88,15 @@
     "on_error": "continue"
   },
   "external-live-production": {
-    "description": "Test LIVE production (accessilist) - use after deployment",
-    "commands": ["./scripts/external/test-production.sh live"],
+    "description": "Test LIVE production (accessilist) - Complete 3-phase testing",
+    "commands": ["./scripts/external/test-orchestrator.sh live"],
     "auto_approve": true,
     "timeout": 120000,
     "on_error": "continue"
   },
   "external-test-production": {
-    "description": "Test staging (accessilist2) - use before going live",
-    "commands": ["./scripts/external/test-production.sh staging"],
+    "description": "Test staging (accessilist2) - Complete 3-phase testing",
+    "commands": ["./scripts/external/test-orchestrator.sh staging"],
     "auto_approve": true,
     "timeout": 120000,
     "on_error": "continue"
