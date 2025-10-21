@@ -718,7 +718,7 @@ else
         -d "{\"sessionKey\":\"$WORKFLOW_SESSION_KEY\",\"typeSlug\":\"word\"}" 2>&1)
 
     instantiate_code=$(echo "$instantiate_response" | tail -n1)
-    instantiate_body=$(echo "$instantiate_response" | head -n -1)
+    instantiate_body=$(echo "$instantiate_response" | sed '$d')
 
     if [ "$instantiate_code" = "200" ] && echo "$instantiate_body" | grep -q '"success":true'; then
         record_pass "Session creation workflow" "(Created $WORKFLOW_SESSION_KEY)"
@@ -756,7 +756,7 @@ if [ "$WORKFLOW_FAILED" = "false" ]; then
         -d "{\"sessionKey\":\"$WORKFLOW_SESSION_KEY\",\"checkpoints\":[{\"id\":1,\"status\":\"active\",\"notes\":\"\"}]}" 2>&1)
 
     save_code=$(echo "$save_response" | tail -n1)
-    save_body=$(echo "$save_response" | head -n -1)
+    save_body=$(echo "$save_response" | sed '$d')
 
     if [ "$save_code" = "200" ] && echo "$save_body" | grep -q '"success":true'; then
         record_pass "Change checkpoint status" "(Status updated to Active)"
@@ -797,7 +797,7 @@ if [ "$WORKFLOW_FAILED" = "false" ]; then
         -d "{\"sessionKey\":\"$WORKFLOW_SESSION_KEY\",\"checkpoints\":[{\"id\":1,\"status\":\"active\",\"notes\":\"$notes_test_text\"}]}" 2>&1)
 
     save_notes_code=$(echo "$save_notes_response" | tail -n1)
-    save_notes_body=$(echo "$save_notes_response" | head -n -1)
+    save_notes_body=$(echo "$save_notes_response" | sed '$d')
 
     if [ "$save_notes_code" = "200" ] && echo "$save_notes_body" | grep -q '"success":true'; then
         record_pass "Add notes to checkpoint" "(Notes saved)"
