@@ -154,195 +154,60 @@ Hide loading overlay
 
 ## 📊 Status Calculation Logic
 
-### JavaScript Implementation: `js/systemwide-report.js`
+### Algorithm
+**File:** `js/systemwide-report.js`
 
-```javascript
-function calculateSessionStatus(state) {
-  if (!state || !state.statusButtons) {
-    return 'ready'; // No state = Ready (not started)
-  }
-
-  const statuses = Object.values(state.statusButtons);
-  const totalTasks = statuses.length;
-
-  if (totalTasks === 0) {
-    return 'ready';
-  }
-
-  const doneTasks = statuses.filter(s => s === 'done').length;
-  const activeTasks = statuses.filter(s => s === 'active').length;
-
-  // All tasks done = Done
-  if (doneTasks === totalTasks) {
-    return 'done';
-  }
-
-  // Any task active = Active
-  if (activeTasks > 0) {
-    return 'active';
-  }
-
-  // Any task done but not all = Active
-  if (doneTasks > 0 && doneTasks < totalTasks) {
-    return 'active';
-  }
-
-  // No tasks started = Ready
-  return 'ready';
-}
-
-function calculateProgress(state) {
-  if (!state || !state.statusButtons) {
-    return { done: 0, total: 0, percentage: 0 };
-  }
-
-  const statuses = Object.values(state.statusButtons);
-  const total = statuses.length;
-  const done = statuses.filter(s => s === 'done').length;
-  const percentage = total > 0 ? Math.round((done / total) * 100) : 0;
-
-  return { done, total, percentage };
-}
-```
-
-### Status Rules
-
+**Status Rules:**
 | Condition | Status |
 |-----------|--------|
 | All tasks = done | **Done** |
 | Any task = active | **Active** |
 | Some tasks = done (but not all) | **Active** |
-| No tasks started (all = ready) | **Ready** (not started) |
-| No state data | **Ready** (not started) |
+| All tasks = ready | **Ready** |
+| No state data | **Ready** |
+
+**Progress:** `done / total` tasks with percentage calculation
+
+**See:** `js/systemwide-report.js` (calculateStatus, createProgressBar functions)
 
 ---
 
 ## 🎨 Table Rendering
 
-### Row Generation
+**File:** `js/systemwide-report.js`
 
-```javascript
-function renderReportsTable(sessions) {
-  const tbody = document.getElementById('reportsTableBody');
-  tbody.innerHTML = '';
+**Process:**
+1. Fetch sessions from `/php/api/list-detailed`
+2. Calculate status and progress for each session
+3. Sort by timestamp (newest first)
+4. Render table rows with: Session key (link), Type, Date, Status badge, Progress
+5. Update filter badge counts (sessions with "at least one" matching task)
 
-  // Sort by timestamp (newest first)
-  sessions.sort((a, b) => b.timestamp - a.timestamp);
+**Filter Logic:**
+- All/Demos: Show text summary (no progress bar), "-" status placeholder
+- Ready/Active/Done: Show progress bar + filter-specific icon
 
-  sessions.forEach(session => {
-    const status = calculateSessionStatus(session.state);
-    const progress = calculateProgress(session.state);
-    const typeDisplay = TypeManager.formatDisplayName(session.typeSlug);
-    const dateDisplay = formatDate(session.created);
-
-    const row = document.createElement('tr');
-    row.className = `report-row status-${status}`;
-    row.dataset.status = status;
-    row.dataset.sessionKey = session.sessionKey;
-
-    row.innerHTML = `
-      <td class="session-cell">
-        <a href="/list-report?session=${session.sessionKey}">
-          ${session.sessionKey}
-        </a>
-      </td>
-      <td class="type-cell">${typeDisplay}</td>
-      <td class="date-cell">${dateDisplay}</td>
-      <td class="status-cell">
-        <span class="status-badge status-${status}">
-          ${formatStatus(status)}
-        </span>
-      </td>
-      <td class="task-cell">
-        <span class="progress-text">
-          ${progress.done} / ${progress.total}
-        </span>
-        <span class="progress-percentage">
-          (${progress.percentage}%)
-        </span>
-      </td>
-    `;
-
-    tbody.appendChild(row);
-  });
-
-  updateFilterCounts(sessions);
-}
-```
-
-### Filter Counts Update
-
-```javascript
-function updateFilterCounts(sessions) {
-  const counts = {
-    all: sessions.length,
-    done: 0,
-    active: 0,
-    ready: 0
-  };
-
-  sessions.forEach(session => {
-    const status = calculateSessionStatus(session.state);
-    counts[status]++;
-  });
-
-  // Update count displays
-  document.querySelector('.count-all').textContent = counts.all;
-  document.querySelector('.count-done').textContent = counts.done;
-  document.querySelector('.count-active').textContent = counts.active;
-  document.querySelector('.count-ready').textContent = counts.ready;
-}
-```
+**See:** `js/systemwide-report.js` (renderTable, createProgressBar, updateFilterCounts)
 
 ---
 
 ## 🎯 Filtering System
 
-### Filter Implementation
+**Filters:** All, Done, Active, Ready, Demos
 
-```javascript
-function setupFilters() {
-  const filterButtons = document.querySelectorAll('.filter-button');
+**Logic:**
+- Shows sessions with "at least one" task matching filter status
+- All: Non-demo sessions (text summary, no progress bar)
+- Demos: Demo sessions only
+- Status filters: Sessions with ≥1 matching task (progress bar shown)
 
-  filterButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      // Update active button
-      filterButtons.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
+**Filter Colors:**
+- Ready: Blue (#1a76bb)
+- Active: Yellow (#fec111)
+- Done: Green (#00834b)
+- All/Demos: Black (#333333)
 
-      // Get filter value
-      const filterValue = this.dataset.filter;
-
-      // Filter rows
-      filterReports(filterValue);
-
-      // Update scroll buffer
-      if (window.ScrollManager) {
-        window.ScrollManager.scheduleReportBufferUpdate();
-      }
-    });
-  });
-}
-
-function filterReports(filter) {
-  const rows = document.querySelectorAll('.report-row');
-
-  rows.forEach(row => {
-    if (filter === 'all') {
-      row.style.display = '';
-    } else {
-      const rowStatus = row.dataset.status;
-      row.style.display = rowStatus === filter ? '' : 'none';
-    }
-  });
-}
-```
-
-### Filter States
-- **All** - Show all sessions
-- **Done** - Show only completed sessions
-- **Active** - Show only in-progress sessions
-- **Ready** - Show only sessions with all tasks ready (not started)
+**See:** `js/systemwide-report.js` (handleFilterClick, renderTable)
 
 ---
 
@@ -370,47 +235,12 @@ function formatDate(timestamp) {
 
 ## 🎨 Status Badges
 
-### CSS Styling: `css/systemwide-report.css`
+**Colors:**
+- Done: Green (#4CAF50)
+- Active: Yellow (#FFC107)
+- Ready: Gray (#9E9E9E)
 
-```css
-/* Status Badges */
-.status-badge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 0.875rem;
-  font-weight: 600;
-  text-transform: uppercase;
-}
-
-.status-badge.status-done {
-  background-color: #4CAF50;
-  color: #fff;
-}
-
-.status-badge.status-active {
-  background-color: #FFC107;
-  color: #000;
-}
-
-.status-badge.status-ready {
-  background-color: #9E9E9E;
-  color: #fff;
-}
-
-/* Row Highlighting */
-.report-row.status-done {
-  background-color: #E8F5E9;
-}
-
-.report-row.status-active {
-  background-color: #FFF9E6;
-}
-
-.report-row.status-ready {
-  background-color: #F5F5F5;
-}
-```
+**See:** `css/systemwide-report.css` for complete styling
 
 ---
 

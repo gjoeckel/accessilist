@@ -170,78 +170,15 @@ AccessiList uses **extensionless URLs** via Apache mod_rewrite (production) or r
 
 ### Routing Implementation
 
-#### `.htaccess` (Apache/Production)
-```apache
-Options -MultiViews
+**Files:** `.htaccess` (Apache/production) and `router.php` (local dev server)
 
-<IfModule mod_rewrite.c>
-  RewriteEngine On
+**Logic:**
+1. Allow direct access to existing files
+2. API routes: `/php/api/save` → `/php/api/save.php`
+3. General PHP: `/php/filename` → `/php/filename.php`
+4. Root-level: `/filename` → `/php/filename.php`
 
-  # Allow direct access to existing files and directories
-  RewriteCond %{REQUEST_FILENAME} -f [OR]
-  RewriteCond %{REQUEST_FILENAME} -d
-  RewriteRule ^ - [L]
-
-  # API Routes: /php/api/save → /php/api/save.php
-  RewriteRule ^php/api/([^/.]+)$ php/api/$1.php [L]
-
-  # General PHP Routes: /php/filename → /php/filename.php
-  RewriteRule ^php/([^/.]+)$ php/$1.php [L]
-
-  # Root-level clean URLs: /filename → /php/filename.php
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule ^([^/.]+)$ php/$1.php [L]
-</IfModule>
-```
-
-#### `router.php` (PHP Dev Server)
-Mirrors `.htaccess` behavior for local testing:
-
-```php
-<?php
-$requestUri = parse_url($_SERVER['REQUEST_URI'], PHP_URL_PATH);
-
-// Allow direct file access
-if ($requestUri !== '/' && file_exists(__DIR__ . $requestUri)) {
-    return false;
-}
-
-// API Routes: /php/api/save → /php/api/save.php
-if (preg_match('#^/php/api/([^/.]+)$#', $requestUri, $matches)) {
-    $apiFile = __DIR__ . '/php/api/' . $matches[1] . '.php';
-    if (file_exists($apiFile)) {
-        require $apiFile;
-        return true;
-    }
-}
-
-// General PHP Routes: /php/filename → /php/filename.php
-if (preg_match('#^/php/([^/.]+)$#', $requestUri, $matches)) {
-    $phpFile = __DIR__ . '/php/' . $matches[1] . '.php';
-    if (file_exists($phpFile)) {
-        require $phpFile;
-        return true;
-    }
-}
-
-// Root-level clean URLs: /filename → /php/filename.php
-if (preg_match('#^/([^/.]+)$#', $requestUri, $matches)) {
-    $phpFile = __DIR__ . '/php/' . $matches[1] . '.php';
-    if (file_exists($phpFile)) {
-        require $phpFile;
-        return true;
-    }
-}
-
-// Root redirect
-if ($requestUri === '/') {
-    require __DIR__ . '/index.php';
-    return true;
-}
-
-return false;
-```
+**See:** `.htaccess` and `router.php` for complete implementation
 
 ### URL Endpoints
 
@@ -278,99 +215,20 @@ return false;
 ### Overview
 Centralized checklist type management system handling 11 configured types. Provides type validation, slug/display name conversion, and type-specific configuration (AEIT links, JSON templates, categories).
 
-### Configuration File: `config/checklist-types.json`
+### Configuration
+**File:** `config/checklist-types.json`
 
-```json
-{
-  "types": {
-    "demo": {
-      "displayName": "Demo",
-      "jsonFile": "demo.json",
-      "buttonId": "demo",
-      "category": "Tutorial"
-    },
-    "word": {
-      "displayName": "Word",
-      "jsonFile": "word.json",
-      "buttonId": "word",
-      "category": "Microsoft",
-      "aeitLink": true
-    },
-    "powerpoint": {
-      "displayName": "PowerPoint",
-      "jsonFile": "powerpoint.json",
-      "buttonId": "powerpoint",
-      "category": "Microsoft",
-      "aeitLink": true
-    },
-    "excel": {
-      "displayName": "Excel",
-      "jsonFile": "excel.json",
-      "buttonId": "excel",
-      "category": "Microsoft",
-      "aeitLink": true
-    },
-    "docs": {
-      "displayName": "Docs",
-      "jsonFile": "docs.json",
-      "buttonId": "docs",
-      "category": "Google",
-      "aeitLink": true
-    },
-    "slides": {
-      "displayName": "Slides",
-      "jsonFile": "slides.json",
-      "buttonId": "slides",
-      "category": "Google",
-      "aeitLink": true
-    },
-    "camtasia": {
-      "displayName": "Camtasia",
-      "jsonFile": "camtasia.json",
-      "buttonId": "camtasia",
-      "category": "Other",
-      "aeitLink": true
-    },
-    "dojo": {
-      "displayName": "Dojo",
-      "jsonFile": "dojo.json",
-      "buttonId": "dojo",
-      "category": "Other",
-      "aeitLink": false
-    }
-  },
-  "defaultType": "camtasia",
-  "categories": {
-    "Tutorial": ["demo"],
-    "Microsoft": ["word", "powerpoint", "excel"],
-    "Google": ["docs", "slides"],
-    "Other": ["camtasia", "dojo"]
-  }
-}
-```
+**11 Types:** demo, word, powerpoint, excel, docs, slides, camtasia, dojo (+ 3 legacy)
+**Categories:** Tutorial, Microsoft, Google, Other
+**Properties:** displayName, jsonFile, buttonId, category, aeitLink (optional)
 
-### PHP Implementation: `php/includes/type-manager.php`
+### Implementations
+- **PHP:** `php/includes/type-manager.php` (static methods)
+- **JavaScript:** `js/type-manager.js` (async static methods)
 
-**Class:** `TypeManager` (static methods)
+**Key Methods:** loadConfig(), validateType(), formatDisplayName(), getAvailableTypes()
 
-**Key Methods:**
-- `loadConfig()` - Load from `config/checklist-types.json`
-- `getAvailableTypes()` - Return array of valid type slugs
-- `validateType($type)` - Validate and return slug or null
-- `formatDisplayName($slug)` - Convert slug to display name
-- `convertDisplayNameToSlug($name)` - Reverse conversion
-
-### JavaScript Implementation: `js/type-manager.js`
-
-**Class:** `TypeManager` (async static methods)
-**Same methods as PHP but async** (loads config via fetch)
-
-### Usage
-- Type validation for API requests
-- Display name conversion for UI
-- JSON template mapping (type → json file)
-- AEIT link config (type → show/hide footer link)
-- Category grouping (home page organization)
+**See:** `config/checklist-types.json` for complete type configuration
 
 ---
 
@@ -468,91 +326,12 @@ services:
 
 ## 🔧 Global PHP Functions
 
-### `php/includes/api-utils.php`
+**Files:**
+- `php/includes/api-utils.php` - API response utilities (send_json, send_error, send_success, validate_session_key)
+- `php/includes/session-utils.php` - Session path helpers
+- `php/includes/type-formatter.php` - Type formatting wrappers
 
-Standard API response utilities used by all 8 API endpoints:
-
-```php
-<?php
-header('Content-Type: application/json');
-
-// Send JSON response and exit
-function send_json($arr) {
-  echo json_encode($arr);
-  exit;
-}
-
-// Send error response with HTTP status code
-function send_error($message, $code = 400) {
-  http_response_code($code);
-  send_json([
-    'success' => false,
-    'message' => $message,
-    'timestamp' => time()
-  ]);
-}
-
-// Send success response (wraps payload in 'data' property)
-function send_success($payload = []) {
-  $base = [
-    'success' => true,
-    'timestamp' => time()
-  ];
-
-  if (!empty($payload)) {
-    $base['data'] = $payload;
-  }
-
-  send_json($base);
-}
-
-// Validate session key format
-function validate_session_key($sessionKey) {
-  // Support 3-char production keys (ABC) and longer test keys (TEST-PROGRESS-50)
-  if (!preg_match('/^[a-zA-Z0-9\-]{3,20}$/', $sessionKey)) {
-    send_error('Invalid session key', 400);
-  }
-}
-
-// Get full path to session file
-function saves_path_for($sessionKey) {
-  return __DIR__ . '/../../sessions/' . $sessionKey . '.json';
-}
-```
-
-### `php/includes/session-utils.php`
-
-Session path helpers for consistent file access:
-
-```php
-<?php
-function get_sessions_directory() {
-    return __DIR__ . '/../../sessions';
-}
-
-function ensure_sessions_directory() {
-    $dir = get_sessions_directory();
-    if (!file_exists($dir)) {
-        mkdir($dir, 0755, true);
-    }
-    return $dir;
-}
-```
-
-### `php/includes/type-formatter.php`
-
-Type formatting utilities:
-
-```php
-<?php
-function format_type_for_display($typeSlug) {
-    return TypeManager::formatDisplayName($typeSlug);
-}
-
-function sanitize_type_slug($type) {
-    return TypeManager::validateType($type);
-}
-```
+**See:** [SAVE-AND-RESTORE.md](SAVE-AND-RESTORE.md) for complete API utilities documentation
 
 ---
 
@@ -579,33 +358,6 @@ Located at `/var/websites/webaim/htdocs/training/online/accessilist/`
 </Directory>
 ```
 
-### macOS Apache (Local Testing - Alternative to Docker)
-
-#### Version
-Apache 2.4.57 (macOS native)
-
-#### Configuration File
-`/etc/apache2/httpd.conf`
-
-#### Key Changes
-```apache
-# Enable PHP module
-LoadModule php_module libexec/apache2/libphp.so
-
-# Enable mod_rewrite
-LoadModule rewrite_module libexec/apache2/mod_rewrite.so
-
-# Allow .htaccess overrides
-<Directory "/Library/WebServer/Documents">
-    AllowOverride All
-</Directory>
-```
-
-#### Symlink (Security Workaround)
-```bash
-sudo ln -sf /Users/a00288946/Projects/accessilist \
-  /Library/WebServer/Documents/accessilist
-```
 
 ### PHP Configuration
 

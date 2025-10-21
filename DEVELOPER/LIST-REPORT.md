@@ -208,463 +208,108 @@ Highlight active checkpoint button
 
 ---
 
-## 🔍 JavaScript Implementation: `js/list-report.js`
+## 🔍 JavaScript Implementation
 
-### Data Processing
+**File:** `js/list-report.js`
 
-```javascript
-async function loadReportData() {
-  // Extract session key from URL
-  const urlParams = new URLSearchParams(window.location.search);
-  const sessionKey = urlParams.get('session');
+**Data Flow:**
+1. Extract session key from URL
+2. Fetch session data from `/php/api/restore`
+3. Load checklist template JSON
+4. Build checkpoint sections with tasks
+5. Create read-only textareas for notes
+6. Build side panel navigation
+7. Setup filters and counts
 
-  if (!sessionKey) {
-    showError('Invalid Session Key: No session specified');
-    return;
-  }
+**Key Functions:**
+- `loadReportData()` - Fetch and load session
+- `createCheckpointSection()` - Build checkpoint with progress summary
+- `createTaskRow()` - Build task row with status badge + read-only textarea
+- `filterReport()` - Show/hide rows by status
 
-  try {
-    // Fetch saved session data
-    const response = await fetch(`/php/api/restore?sessionKey=${sessionKey}`);
-    const result = await response.json();
-
-    if (!result.success) {
-      showError(result.message || 'Failed to load session');
-      return;
-    }
-
-    const sessionData = result.data;
-
-    // Load checklist template
-    const templatePath = getTemplatePath(sessionData.typeSlug);
-    const templateResponse = await fetch(templatePath);
-    const template = await templateResponse.json();
-
-    // Build report
-    buildReport(template, sessionData);
-
-  } catch (error) {
-    console.error('Error loading report:', error);
-    showError('Failed to load report data');
-  }
-}
-
-function buildReport(template, sessionData) {
-  const reportSection = document.querySelector('.report-section');
-  reportSection.innerHTML = '';
-
-  template.checkpoints.forEach((checkpoint, checkpointIndex) => {
-    const section = createCheckpointSection(
-      checkpoint,
-      checkpointIndex + 1,
-      sessionData.state
-    );
-    reportSection.appendChild(section);
-  });
-
-  buildSidePanelNavigation(template.checkpoints.length);
-  updateFilterCounts();
-  hideLoadingOverlay();
-}
-```
-
-### Checkpoint Section Builder
-
-```javascript
-function createCheckpointSection(checkpoint, checkpointNumber, state) {
-  const section = document.createElement('section');
-  section.className = 'report-checkpoint';
-  section.dataset.checkpoint = checkpointNumber;
-
-  // Heading
-  const heading = document.createElement('h2');
-  heading.id = `checkpoint-${checkpointNumber}-caption`;
-  heading.className = 'report-checkpoint-heading';
-  heading.tabIndex = -1;
-  heading.textContent = `Checkpoint ${checkpointNumber}: ${checkpoint.checkpointTitle}`;
-
-  // Progress summary
-  const progress = calculateCheckpointProgress(checkpoint.tasks, state);
-  const summary = document.createElement('div');
-  summary.className = 'checkpoint-summary';
-  summary.innerHTML = `
-    <span class="checkpoint-progress">
-      Progress: <strong>${progress.done} / ${progress.total}</strong> tasks done
-      (${progress.percentage}%)
-    </span>
-  `;
-
-  // Table
-  const table = createReportTable(checkpoint.tasks, state);
-
-  section.appendChild(heading);
-  section.appendChild(summary);
-  section.appendChild(table);
-
-  return section;
-}
-```
-
-### Task Row Builder
-
-```javascript
-function createTaskRow(task, taskId, state) {
-  const row = document.createElement('tr');
-  row.className = 'report-row';
-  row.dataset.taskId = taskId;
-
-  // Get saved status and notes
-  const status = state.statusButtons?.[taskId] || 'ready';
-  const notes = state.textareas?.[taskId] || '';
-
-  row.dataset.status = status;
-
-  // Task cell
-  const taskCell = document.createElement('td');
-  taskCell.className = 'task-cell';
-  taskCell.innerHTML = `<span class="task-text">${task.task}</span>`;
-
-  // Status cell
-  const statusCell = document.createElement('td');
-  statusCell.className = 'status-cell';
-  statusCell.innerHTML = `<span class="status-badge status-${status}">${formatStatus(status)}</span>`;
-
-  // Notes cell with read-only scrollable textarea
-  const notesCell = document.createElement('td');
-  notesCell.className = 'notes-cell';
-
-  const textarea = document.createElement('textarea');
-  textarea.className = 'notes-display';
-  textarea.readOnly = true;
-  textarea.tabIndex = -1;
-  textarea.setAttribute('aria-label', `Notes for task: ${task.task}`);
-  textarea.value = notes;
-
-  notesCell.appendChild(textarea);
-
-  row.appendChild(taskCell);
-  row.appendChild(statusCell);
-  row.appendChild(notesCell);
-
-  return row;
-}
-```
+**See:** `js/list-report.js` for complete implementation
 
 ---
 
 ## 🎯 Filtering System
 
-### Filter Implementation
+**Filters:** All, Done, Active
 
-```javascript
-function setupFilters() {
-  const filterButtons = document.querySelectorAll('.filter-button');
+**Logic:**
+- Filter rows by status (show/hide)
+- Hide checkpoints with no visible rows
+- Update side panel visibility
+- Recalculate scroll buffer
 
-  filterButtons.forEach(button => {
-    button.addEventListener('click', function() {
-      // Update active button
-      filterButtons.forEach(b => b.classList.remove('active'));
-      this.classList.add('active');
-
-      // Get filter value
-      const filterValue = this.dataset.filter;
-
-      // Filter rows and checkpoints
-      filterReport(filterValue);
-
-      // Update scroll buffer
-      if (window.ScrollManager) {
-        window.ScrollManager.scheduleReportBufferUpdate();
-      }
-    });
-  });
-}
-
-function filterReport(filter) {
-  const checkpoints = document.querySelectorAll('.report-checkpoint');
-
-  checkpoints.forEach(checkpoint => {
-    const rows = checkpoint.querySelectorAll('.report-row');
-    let visibleRowCount = 0;
-
-    rows.forEach(row => {
-      const rowStatus = row.dataset.status;
-
-      if (filter === 'all') {
-        row.style.display = '';
-        visibleRowCount++;
-      } else if (rowStatus === filter) {
-        row.style.display = '';
-        visibleRowCount++;
-      } else {
-        row.style.display = 'none';
-      }
-    });
-
-    // Hide checkpoint if no visible rows
-    checkpoint.style.display = visibleRowCount > 0 ? 'block' : 'none';
-  });
-
-  // Update side panel (hide/show checkpoint buttons)
-  updateSidePanelVisibility();
-}
-```
-
-### Filter States
-- **All** - Show all tasks
-- **Done** - Show only completed tasks
-- **Active** - Show only in-progress tasks (includes both active and partial-done)
+**See:** `js/list-report.js` (setupFilters, filterReport)
 
 ---
 
 ## 🧭 Side Panel Navigation
 
-### Side Panel Builder
+**Features:**
+- Numbered buttons for each checkpoint
+- Click to scroll to checkpoint
+- Hide/show based on filter visibility
+- Smooth scroll with focus management
 
-```javascript
-function buildSidePanelNavigation(checkpointCount) {
-  const nav = document.getElementById('checkpoint-nav');
-  nav.innerHTML = '';
-
-  for (let i = 1; i <= checkpointCount; i++) {
-    const li = document.createElement('li');
-    const button = document.createElement('button');
-
-    button.className = 'checkpoint-nav-button';
-    button.textContent = i;
-    button.dataset.checkpoint = i;
-    button.setAttribute('aria-label', `Go to Checkpoint ${i}`);
-
-    button.addEventListener('click', function() {
-      scrollToCheckpoint(i);
-    });
-
-    li.appendChild(button);
-    nav.appendChild(li);
-  }
-}
-
-function scrollToCheckpoint(checkpointNumber) {
-  const checkpoint = document.querySelector(
-    `.report-checkpoint[data-checkpoint="${checkpointNumber}"]`
-  );
-
-  if (checkpoint && checkpoint.style.display !== 'none') {
-    const heading = checkpoint.querySelector('.report-checkpoint-heading');
-    if (heading) {
-      heading.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      heading.focus();
-    }
-  }
-}
-```
+**See:** `js/list-report.js` (buildSidePanelNavigation, scrollToCheckpoint)
 
 ---
 
 ## 📝 Read-Only Scrollable Textareas
 
-### Purpose
-Display task notes in read-only, scrollable textareas that allow scrolling but prevent editing and are excluded from tab order.
+**Purpose:** Display task notes in scrollable, read-only textareas
 
-### Implementation
+**Attributes:**
+- `readonly` (not disabled) - Allows copy/paste, screen reader access
+- `tabindex="-1"` - Excluded from tab order
+- `aria-label` - Descriptive screen reader label
+- `pointer-events: auto` - Enable scrolling
 
-```css
-/* css/list-report.css */
-.notes-display {
-  width: 100%;
-  min-height: 60px;
-  max-height: 200px;
-  overflow-y: auto;
-  resize: vertical;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-family: inherit;
-  font-size: 0.875rem;
-  line-height: 1.4;
-  background-color: #f9f9f9;
+**Styling:** Custom scrollbar, max-height: 200px
 
-  /* Read-only attributes */
-  pointer-events: auto; /* Allow scrolling */
-  cursor: default;
-}
-
-.notes-display:focus {
-  outline: none; /* No focus indicator for read-only */
-}
-
-/* Scrollbar styling for better UX */
-.notes-display::-webkit-scrollbar {
-  width: 8px;
-}
-
-.notes-display::-webkit-scrollbar-track {
-  background: #f1f1f1;
-}
-
-.notes-display::-webkit-scrollbar-thumb {
-  background: #888;
-  border-radius: 4px;
-}
-
-.notes-display::-webkit-scrollbar-thumb:hover {
-  background: #555;
-}
-```
-
-### HTML Attributes
-
-```html
-<textarea
-  class="notes-display"
-  readonly                    <!-- Prevents editing -->
-  tabindex="-1"               <!-- Excludes from tab order -->
-  aria-label="Notes for task: ..."  <!-- Screen reader description -->
->Task notes content here...</textarea>
-```
-
-### Accessibility Features
-- **readOnly (not disabled)** - Allows copy/paste, screen reader access
-- **tabindex="-1"** - Excluded from keyboard navigation
-- **aria-label** - Descriptive label for screen readers
-- **Scrollable** - Long notes can be scrolled
+**See:** `css/list-report.css` (.notes-display class)
 
 ---
 
 ## 📊 Progress Calculation
 
-### Checkpoint Progress
+**Per Checkpoint:** Count done tasks / total tasks, calculate percentage
+**Overall:** Sum all done tasks across checkpoints / total tasks
 
-```javascript
-function calculateCheckpointProgress(tasks, state) {
-  const total = tasks.length;
-  let done = 0;
-
-  tasks.forEach((task, index) => {
-    const status = state.statusButtons?.[index];
-    if (status === 'done') {
-      done++;
-    }
-  });
-
-  const percentage = total > 0 ? Math.round((done / total) * 100) : 0;
-
-  return { done, total, percentage };
-}
-```
-
-### Overall Progress
-
-```javascript
-function calculateOverallProgress(template, state) {
-  let totalTasks = 0;
-  let doneTasks = 0;
-
-  template.checkpoints.forEach(checkpoint => {
-    totalTasks += checkpoint.tasks.length;
-
-    checkpoint.tasks.forEach((task, index) => {
-      const status = state.statusButtons?.[index];
-      if (status === 'done') {
-        doneTasks++;
-      }
-    });
-  });
-
-  const percentage = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
-
-  return { done: doneTasks, total: totalTasks, percentage };
-}
-```
+**See:** `js/list-report.js` (calculateCheckpointProgress, calculateOverallProgress)
 
 ---
 
 ## 🔗 Navigation
 
-### Back Button
+**Back Button:** Returns to checklist (`/list?type=X&session=Y`)
+**Refresh Button:** Reloads page to fetch latest data
 
-```javascript
-document.getElementById('backButton').addEventListener('click', function() {
-  const sessionKey = new URLSearchParams(window.location.search).get('session');
-  const typeSlug = getCurrentTypeSlug();
-
-  // Navigate back to checklist
-  window.location.href = `/list?type=${typeSlug}&session=${sessionKey}`;
-});
-```
-
-### Refresh Button
-
-```javascript
-document.getElementById('refreshButton').addEventListener('click', function() {
-  // Reload current page
-  window.location.reload();
-});
-```
+**See:** `js/list-report.js` (button event handlers)
 
 ---
 
 ## 🎨 Status Badges
 
-### CSS Styling
+**Colors:** Done (Green), Active (Yellow), Ready (Gray)
 
-```css
-.status-badge {
-  display: inline-block;
-  padding: 4px 12px;
-  border-radius: 12px;
-  font-size: 0.75rem;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.status-badge.status-done {
-  background-color: #4CAF50;
-  color: #fff;
-}
-
-.status-badge.status-active {
-  background-color: #FFC107;
-  color: #000;
-}
-
-.status-badge.status-ready {
-  background-color: #9E9E9E;
-  color: #fff;
-}
-```
+**See:** `css/list-report.css` (.status-badge classes)
 
 ---
 
 ## ⚠️ Error Handling
 
-### Invalid Session Key
+**Handled Errors:**
+- Invalid/missing session parameter
+- Session not found (404)
+- Malformed session key format
+- API fetch failures
 
-```javascript
-if (!sessionKey || sessionKey.trim() === '') {
-  showError('Invalid Session Key: No session specified');
-  return;
-}
-```
+**Display:** Error overlay with clear message
 
-### Session Not Found
-
-```javascript
-if (response.status === 404) {
-  showError('Session Not Found: The requested session does not exist');
-  return;
-}
-```
-
-### Invalid Session Format
-
-```javascript
-if (!sessionKey.match(/^[a-zA-Z0-9\-]{3,20}$/)) {
-  showError('Invalid Session Key: Malformed session key format');
-  return;
-}
-```
+**See:** `js/list-report.js` (showError, loadReportData)
 
 ---
 
