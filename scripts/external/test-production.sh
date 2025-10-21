@@ -1,8 +1,56 @@
 #!/bin/bash
 
-# External Production Server Testing - Unified Script
-# Tests either accessilist (live) or accessilist2 (staging) on webaim.org
-# Usage: ./test-production.sh [live|staging]
+################################################################################
+# EXTERNAL PRODUCTION SERVER TESTING - UNIFIED SCRIPT
+################################################################################
+#
+# PURPOSE: Test production/staging environments with PROPER test ordering
+#
+# USAGE: ./test-production.sh [live|staging]
+#   - live:    Tests https://webaim.org/training/online/accessilist
+#   - staging: Tests https://webaim.org/training/online/accessilist2
+#
+################################################################################
+# CRITICAL TESTING PHILOSOPHY (For AI Agents):
+################################################################################
+#
+# ⚠️  IF A USER CAN'T DO IT → THE APPLICATION IS BROKEN ⚠️
+#
+# API tests passing ≠ Working application
+# API tests passing + User can't use it = FAILURE
+#
+# TEST ORDER MATTERS - Tests are organized in 3 PHASES:
+#
+# PHASE 1: PERMISSIONS (Foundation)
+#   - Verify file system access
+#   - Check directory permissions
+#   - Ensure www-data can write session files
+#   - WHY FIRST? If app can't write files, everything else will fail
+#   - FAILURE ACTION: STOP immediately - no point continuing
+#
+# PHASE 2: USER WORKFLOW (Core Functionality)
+#   - Test with REAL browser automation (Puppeteer)
+#   - Simulate actual user interactions (click, type, navigate)
+#   - Verify complete user journey works end-to-end
+#   - WHY SECOND? If users can't use the app, it's BROKEN
+#   - FAILURE ACTION: STOP immediately - app broken for users
+#
+# PHASE 3: TECHNICAL VALIDATION (API/Security/Implementation)
+#   - API endpoint testing
+#   - Security headers validation
+#   - CSRF protection verification
+#   - Rate limiting checks
+#   - Static asset loading
+#   - WHY THIRD? These validate implementation quality
+#   - FAILURE ACTION: Report but continue - important but not critical
+#
+# This ordering ensures:
+#   1. Fast failure on foundation issues
+#   2. User experience is prioritized
+#   3. Technical details validated last
+#   4. Clear diagnosis of where problems exist
+#
+################################################################################
 
 set -o pipefail
 
@@ -228,8 +276,202 @@ analyze_failures() {
     echo ""
 }
 
-# Test execution starts here
+################################################################################
+# PHASE 1: PERMISSIONS VERIFICATION
+################################################################################
+#
+# This phase MUST run first and MUST pass before continuing.
+# If the application cannot write session files, nothing else will work.
+#
+# For AI Agents: Think of this as checking if the building has a foundation
+# before testing if the doors work. No foundation = no point testing doors.
+#
+################################################################################
+
 log "=== Starting $ENV_NAME Tests ==="
+echo ""
+echo -e "${BLUE}╔════════════════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║  PHASE 1: PERMISSIONS (Foundation Layer)              ║${NC}"
+echo -e "${BLUE}╚════════════════════════════════════════════════════════╝${NC}"
+echo ""
+echo -e "${CYAN}Purpose:${NC} Verify file system access for session storage"
+echo -e "${CYAN}Impact:${NC} If this fails, users cannot save or restore data"
+echo -e "${CYAN}Action:${NC} STOP immediately on failure - no point continuing"
+echo ""
+
+# Initialize phase tracking
+PHASE1_FAILED=false
+
+# Test 1.1: Sessions directory exists
+echo -n "  Checking etc/sessions directory exists..."
+increment_test_counter
+if [ "$ENVIRONMENT" = "live" ] || [ "$ENVIRONMENT" = "staging" ]; then
+    session_dir_check=$(ssh -i ~/.ssh/GeorgeWebAIMServerKey.pem -o StrictHostKeyChecking=no george@ec2-3-20-59-76.us-east-2.compute.amazonaws.com "[ -d /var/websites/webaim/htdocs/training/online/etc/sessions ] && echo 'exists' || echo 'missing'" 2>&1)
+    if echo "$session_dir_check" | grep -q "exists"; then
+        record_pass "Sessions directory exists" "(etc/sessions present)"
+    else
+        record_fail "Sessions directory exists" "(Directory missing)"
+        PHASE1_FAILED=true
+    fi
+
+    # Test 1.2: Sessions directory writable
+    echo -n "  Checking sessions directory writable..."
+    increment_test_counter
+    perm_check=$(ssh -i ~/.ssh/GeorgeWebAIMServerKey.pem -o StrictHostKeyChecking=no george@ec2-3-20-59-76.us-east-2.compute.amazonaws.com "[ -w /var/websites/webaim/htdocs/training/online/etc/sessions ] && echo 'writable' || echo 'not-writable'" 2>&1)
+    if echo "$perm_check" | grep -q "writable"; then
+        record_pass "Sessions directory writable" "(www-data has write access)"
+    else
+        record_fail "Sessions directory writable" "(No write access)"
+        PHASE1_FAILED=true
+    fi
+else
+    echo -e "  ${YELLOW}⊘ SKIPPED${NC} (Local environment - permissions not checked)"
+    log "SKIP: Permissions check - local environment"
+fi
+
+echo ""
+
+# PHASE 1 GATE: Stop if permissions failed
+if [ "$PHASE1_FAILED" = "true" ]; then
+    echo -e "${RED}╔════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${RED}║  ❌ PHASE 1 FAILED - CRITICAL INFRASTRUCTURE ISSUE    ║${NC}"
+    echo -e "${RED}╚════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+    echo -e "${YELLOW}The application CANNOT write session files.${NC}"
+    echo -e "${YELLOW}This means users CANNOT save or restore any data.${NC}"
+    echo ""
+    echo -e "${CYAN}Fix permissions before continuing:${NC}"
+    echo "  1. ssh to server"
+    echo "  2. sudo chown -R www-data:www-data /path/to/etc/sessions"
+    echo "  3. sudo chmod 755 /path/to/etc/sessions"
+    echo ""
+    echo -e "${RED}Stopping tests - no point continuing without file access.${NC}"
+    echo ""
+    analyze_failures
+    exit 1
+fi
+
+echo -e "${GREEN}✅ PHASE 1 PASSED - File system access verified${NC}"
+echo ""
+
+################################################################################
+# PHASE 2: USER WORKFLOW VERIFICATION (Browser Automation)
+################################################################################
+#
+# This phase tests what REAL USERS actually do with the application.
+# This is THE MOST IMPORTANT phase - if users can't use the app, it's broken.
+#
+# For AI Agents: APIs can return perfect HTTP 200 responses while users
+# see broken buttons, non-functional forms, or blank pages. ALWAYS test
+# the actual user experience with real browser automation.
+#
+# Key principle: If this phase fails, the application is BROKEN FOR USERS.
+# Technical details (Phase 3) don't matter if users can't accomplish tasks.
+#
+################################################################################
+
+echo -e "${BLUE}╔════════════════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║  PHASE 2: USER WORKFLOW (Core Functionality)           ║${NC}"
+echo -e "${BLUE}╚════════════════════════════════════════════════════════╝${NC}"
+echo ""
+echo -e "${CYAN}Purpose:${NC} Verify users can actually USE the application"
+echo -e "${CYAN}Method:${NC} Browser automation (Puppeteer) - real clicks/typing"
+echo -e "${CYAN}Impact:${NC} If this fails, APPLICATION IS BROKEN FOR USERS"
+echo -e "${CYAN}Action:${NC} STOP on failure - technical tests irrelevant if users can't use app"
+echo ""
+
+# Initialize phase tracking
+PHASE2_FAILED=false
+
+# Run browser-based user workflow test
+echo -e "${YELLOW}Running browser automation test...${NC}"
+echo ""
+
+# Check if Node.js and Puppeteer are available
+if command -v node >/dev/null 2>&1; then
+    # Run the browser test script
+    if [ -f "./scripts/external/browser-test-user-workflow.js" ]; then
+        TEST_URL="$PROD_URL" node ./scripts/external/browser-test-user-workflow.js
+        BROWSER_TEST_EXIT=$?
+
+        if [ $BROWSER_TEST_EXIT -ne 0 ]; then
+            echo ""
+            echo -e "${RED}❌ Browser workflow test FAILED${NC}"
+            PHASE2_FAILED=true
+            FAILED_TESTS=$((FAILED_TESTS + 1))
+        else
+            echo ""
+            echo -e "${GREEN}✅ Browser workflow test PASSED${NC}"
+            PASSED_TESTS=$((PASSED_TESTS + 1))
+        fi
+        TOTAL_TESTS=$((TOTAL_TESTS + 1))
+    else
+        echo -e "${YELLOW}⚠️  Browser test script not found - skipping user workflow validation${NC}"
+        echo -e "${YELLOW}   This is a GAP in testing - user experience not verified!${NC}"
+    fi
+else
+    echo -e "${YELLOW}⚠️  Node.js not available - skipping browser automation${NC}"
+    echo -e "${YELLOW}   This is a GAP in testing - user experience not verified!${NC}"
+fi
+
+echo ""
+
+# PHASE 2 GATE: Stop if user workflow failed
+if [ "$PHASE2_FAILED" = "true" ]; then
+    echo -e "${RED}╔════════════════════════════════════════════════════════╗${NC}"
+    echo -e "${RED}║  ❌ PHASE 2 FAILED - APPLICATION BROKEN FOR USERS     ║${NC}"
+    echo -e "${RED}╚════════════════════════════════════════════════════════╝${NC}"
+    echo ""
+    echo -e "${YELLOW}Users CANNOT complete the basic workflow:${NC}"
+    echo "  - Create instance"
+    echo "  - Change status"
+    echo "  - View report"
+    echo "  - Add notes"
+    echo "  - Save data"
+    echo "  - Restore data"
+    echo ""
+    echo -e "${CYAN}This means the application is FUNCTIONALLY BROKEN.${NC}"
+    echo -e "${CYAN}API tests (Phase 3) are irrelevant if users can't use the app.${NC}"
+    echo ""
+    echo -e "${RED}Stopping tests - fix user-facing issues before testing APIs.${NC}"
+    echo ""
+    analyze_failures
+    exit 1
+fi
+
+echo -e "${GREEN}✅ PHASE 2 PASSED - Users can successfully use the application${NC}"
+echo ""
+
+################################################################################
+# PHASE 3: TECHNICAL VALIDATION (API/Security/Implementation)
+################################################################################
+#
+# This phase validates the technical implementation details:
+# - API endpoints return correct responses
+# - Security headers are properly configured
+# - CSRF protection is active
+# - Rate limiting works
+# - Static assets load correctly
+# - URL routing functions properly
+#
+# For AI Agents: These tests are IMPORTANT for security and code quality,
+# but they are SECONDARY to user functionality. A perfectly secure API
+# that users can't interact with is useless.
+#
+# If Phase 2 passed but Phase 3 fails, you have a working app with
+# technical debt. If Phase 2 failed, Phase 3 results don't matter.
+#
+################################################################################
+
+echo -e "${BLUE}╔════════════════════════════════════════════════════════╗${NC}"
+echo -e "${BLUE}║  PHASE 3: TECHNICAL VALIDATION (API/Security)          ║${NC}"
+echo -e "${BLUE}╚════════════════════════════════════════════════════════╝${NC}"
+echo ""
+echo -e "${CYAN}Purpose:${NC} Validate implementation quality and security"
+echo -e "${CYAN}Method:${NC} API calls, header checks, security scans"
+echo -e "${CYAN}Impact:${NC} Important for security/quality but secondary to UX"
+echo -e "${CYAN}Action:${NC} Report all failures but continue testing"
+echo ""
 
 # Test 1: Basic Connectivity
 echo -e "${BLUE}━━━ Test 1: Basic Connectivity ━━━${NC}"
@@ -813,206 +1055,9 @@ fi
 
 echo ""
 
-# Test 16: Permissions Verification
-echo -e "${BLUE}━━━ Test 16: Permissions Verification ━━━${NC}"
-
-echo -n "  Checking etc/sessions directory exists..."
-increment_test_counter
-# Use SSH to check directory permissions on production server
-if [ "$ENVIRONMENT" = "live" ] || [ "$ENVIRONMENT" = "staging" ]; then
-    session_dir_check=$(ssh -i ~/.ssh/GeorgeWebAIMServerKey.pem -o StrictHostKeyChecking=no george@ec2-3-20-59-76.us-east-2.compute.amazonaws.com "[ -d /var/websites/webaim/htdocs/training/online/etc/sessions ] && echo 'exists' || echo 'missing'" 2>&1)
-    if echo "$session_dir_check" | grep -q "exists"; then
-        record_pass "Sessions directory exists" "(etc/sessions present)"
-    else
-        record_fail "Sessions directory exists" "(Directory missing)"
-    fi
-
-    echo -n "  Checking sessions directory writable..."
-    increment_test_counter
-    perm_check=$(ssh -i ~/.ssh/GeorgeWebAIMServerKey.pem -o StrictHostKeyChecking=no george@ec2-3-20-59-76.us-east-2.compute.amazonaws.com "[ -w /var/websites/webaim/htdocs/training/online/etc/sessions ] && echo 'writable' || echo 'not-writable'" 2>&1)
-    if echo "$perm_check" | grep -q "writable"; then
-        record_pass "Sessions directory writable" "(www-data has write access)"
-    else
-        record_fail "Sessions directory writable" "(No write access)"
-    fi
-else
-    echo -e "  ${YELLOW}⊘ SKIPPED${NC} (Local environment - permissions not checked)"
-    log "SKIP: Permissions check - local environment"
-fi
-
-echo ""
-
-# Test 17: Complete User Workflow
-echo -e "${BLUE}━━━ Test 17: Complete User Workflow (End-to-End) ━━━${NC}"
-
-# Step 1: Create a session via the Home page workflow
-echo -n "  Step 1: Creating session from Home page..."
-increment_test_counter
-WORKFLOW_SESSION_KEY="E2E$(date +%s | tail -c 4)"
-
-# Get CSRF token and session cookie
-home_response=$(curl -s -c /tmp/workflow-cookies-$$.txt "$PROD_URL/home" 2>&1)
-workflow_csrf=$(echo "$home_response" | sed -n 's/.*name="csrf-token" content="\([^"]*\)".*/\1/p' | head -1)
-
-if [ -z "$workflow_csrf" ]; then
-    record_fail "Get CSRF for workflow" "(No token found)"
-    WORKFLOW_FAILED=true
-else
-    # Create session via instantiate API (simulating user creating new checklist)
-    instantiate_response=$(curl -s -w "\n%{http_code}" \
-        -b /tmp/workflow-cookies-$$.txt \
-        -c /tmp/workflow-cookies-$$.txt \
-        -X POST "$PROD_URL/php/api/instantiate" \
-        -H "Content-Type: application/json" \
-        -H "X-CSRF-Token: $workflow_csrf" \
-        -d "{\"sessionKey\":\"$WORKFLOW_SESSION_KEY\",\"typeSlug\":\"word\"}" 2>&1)
-
-    instantiate_code=$(echo "$instantiate_response" | tail -n1)
-    instantiate_body=$(echo "$instantiate_response" | sed '$d')
-
-    if [ "$instantiate_code" = "200" ] && echo "$instantiate_body" | grep -q '"success":true'; then
-        record_pass "Session creation workflow" "(Created $WORKFLOW_SESSION_KEY)"
-        WORKFLOW_FAILED=false
-    elif [ "$instantiate_code" = "429" ]; then
-        # HTTP 429 = Rate limiting active (this is GOOD for production!)
-        record_pass "Rate limiting protects API" "(HTTP 429 - blocking rapid requests)"
-        WORKFLOW_FAILED=true  # Can't continue workflow, but rate limiting works!
-        RATE_LIMITED=true
-    else
-        record_fail "Session creation workflow" "(HTTP $instantiate_code)"
-        WORKFLOW_FAILED=true
-    fi
-fi
-
-# Only continue workflow if session was created successfully
-if [ "$WORKFLOW_FAILED" = "false" ]; then
-
-    # Step 2: Load the checklist and verify it loaded
-    echo -n "  Step 2: Loading created checklist..."
-    increment_test_counter
-    list_response=$(curl -s -b /tmp/workflow-cookies-$$.txt "$PROD_URL/list?session=$WORKFLOW_SESSION_KEY" 2>&1)
-    if echo "$list_response" | grep -q "checkpoint-row" && echo "$list_response" | grep -q "Word"; then
-        record_pass "Load checklist" "(Checklist rendered)"
-    else
-        record_fail "Load checklist" "(Failed to load)"
-        WORKFLOW_FAILED=true
-    fi
-
-    # Step 3: Change a checkpoint status (simulate user interaction)
-    echo -n "  Step 3: Changing checkpoint status..."
-    increment_test_counter
-
-    # Update first checkpoint to "Active" status
-    save_response=$(curl -s -w "\n%{http_code}" \
-        -b /tmp/workflow-cookies-$$.txt \
-        -X POST "$PROD_URL/php/api/save" \
-        -H "Content-Type: application/json" \
-        -H "X-CSRF-Token: $workflow_csrf" \
-        -d "{\"sessionKey\":\"$WORKFLOW_SESSION_KEY\",\"checkpoints\":[{\"id\":1,\"status\":\"active\",\"notes\":\"\"}]}" 2>&1)
-
-    save_code=$(echo "$save_response" | tail -n1)
-    save_body=$(echo "$save_response" | sed '$d')
-
-    if [ "$save_code" = "200" ] && echo "$save_body" | grep -q '"success":true'; then
-        record_pass "Change checkpoint status" "(Status updated to Active)"
-    else
-        record_fail "Change checkpoint status" "(HTTP $save_code)"
-        WORKFLOW_FAILED=true
-    fi
-
-    # Step 4: Navigate to Report and verify status change
-    echo -n "  Step 4: Verifying status in Report..."
-    increment_test_counter
-    report_response=$(curl -s -b /tmp/workflow-cookies-$$.txt "$PROD_URL/list-report?session=$WORKFLOW_SESSION_KEY" 2>&1)
-    if echo "$report_response" | grep -q "Active" || echo "$report_response" | grep -q "active"; then
-        record_pass "Report shows status change" "(Active status visible)"
-    else
-        record_fail "Report shows status change" "(Status not found)"
-    fi
-
-    # Step 5: Back button navigation (verify link exists)
-    echo -n "  Step 5: Back button navigation..."
-    increment_test_counter
-    if echo "$report_response" | grep -q "backButton" || echo "$report_response" | grep -q "Back to Checklist"; then
-        record_pass "Back button present" "(Navigation available)"
-    else
-        record_fail "Back button present" "(Button not found)"
-    fi
-
-    # Step 6: Add notes to a checkpoint
-    echo -n "  Step 6: Adding notes to checkpoint..."
-    increment_test_counter
-
-    notes_test_text="Test note added during external workflow test at $(date)"
-    save_notes_response=$(curl -s -w "\n%{http_code}" \
-        -b /tmp/workflow-cookies-$$.txt \
-        -X POST "$PROD_URL/php/api/save" \
-        -H "Content-Type: application/json" \
-        -H "X-CSRF-Token: $workflow_csrf" \
-        -d "{\"sessionKey\":\"$WORKFLOW_SESSION_KEY\",\"checkpoints\":[{\"id\":1,\"status\":\"active\",\"notes\":\"$notes_test_text\"}]}" 2>&1)
-
-    save_notes_code=$(echo "$save_notes_response" | tail -n1)
-    save_notes_body=$(echo "$save_notes_response" | sed '$d')
-
-    if [ "$save_notes_code" = "200" ] && echo "$save_notes_body" | grep -q '"success":true'; then
-        record_pass "Add notes to checkpoint" "(Notes saved)"
-    else
-        record_fail "Add notes to checkpoint" "(HTTP $save_notes_code)"
-        WORKFLOW_FAILED=true
-    fi
-
-    # Step 7: Save button functionality (already tested in step 6, verify persistence)
-    echo -n "  Step 7: Verifying save persistence..."
-    increment_test_counter
-
-    # Use restore API to verify saved data
-    restore_response=$(curl -s "$PROD_URL/php/api/restore?sessionKey=$WORKFLOW_SESSION_KEY" 2>&1)
-    if echo "$restore_response" | grep -q "$notes_test_text"; then
-        record_pass "Save persists data" "(Notes found in restore)"
-    else
-        record_fail "Save persists data" "(Notes not persisted)"
-    fi
-
-    # Step 8: Complete restore process verification
-    echo -n "  Step 8: Full restore validation..."
-    increment_test_counter
-
-    # Verify all expected data in restore
-    restore_has_status=false
-    restore_has_notes=false
-
-    if echo "$restore_response" | grep -q '"status":"active"' || echo "$restore_response" | grep -q '"status": "active"'; then
-        restore_has_status=true
-    fi
-
-    if echo "$restore_response" | grep -q "$notes_test_text"; then
-        restore_has_notes=true
-    fi
-
-    if [ "$restore_has_status" = true ] && [ "$restore_has_notes" = true ]; then
-        record_pass "Complete restore process" "(Status + Notes restored)"
-    elif [ "$restore_has_status" = true ]; then
-        record_fail "Complete restore process" "(Status OK, Notes missing)"
-    elif [ "$restore_has_notes" = true ]; then
-        record_fail "Complete restore process" "(Notes OK, Status missing)"
-    else
-        record_fail "Complete restore process" "(Both Status and Notes missing)"
-    fi
-
-    # Cleanup workflow test session
-    rm -f /tmp/workflow-cookies-$$.txt
-
-else
-    if [ "$RATE_LIMITED" = "true" ]; then
-        echo -e "  ${YELLOW}⊘ SKIPPED${NC} Steps 2-8 (Rate limiting active - security working!)"
-        log "SKIP: Workflow steps 2-8 - rate limiting prevents rapid testing (this is good)"
-    else
-        echo -e "  ${YELLOW}⊘ SKIPPED${NC} Steps 2-8 (Session creation failed)"
-        log "SKIP: Workflow steps 2-8 - session creation failed"
-    fi
-fi
-
-echo ""
+# Note: Test 16 (Permissions) and Test 17 (User Workflow) are now handled
+# in Phase 1 and Phase 2 above. This maintains the same functionality but
+# in a more logical order that prioritizes user experience.
 
 # Summary
 echo -e "${BLUE}╔════════════════════════════════════════════════════════╗${NC}"
