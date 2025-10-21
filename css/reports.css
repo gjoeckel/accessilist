@@ -238,7 +238,7 @@ td.reports-progress-cell,
    FILTER BUTTONS (Shared by systemwide-report.php and list-report.php)
    ==================================================================== */
 
-/* Filter button colors on hover/focus only (not active) */
+/* Filter button colors on hover/focus */
 .filter-button[data-filter="ready"]:is(:hover, :focus) {
   background-color: #1a76bb !important;
   color: white !important;
@@ -257,6 +257,37 @@ td.reports-progress-cell,
 .filter-button[data-filter="all"]:is(:hover, :focus) {
   background-color: #333333 !important;
   color: white !important;
+}
+
+/* Filter button colors when active (selected) */
+.filter-button[data-filter="ready"].active {
+  background-color: #1a76bb !important;
+  color: white !important;
+  border-color: #1a76bb !important;
+}
+
+.filter-button[data-filter="active"].active {
+  background-color: #fec111 !important;
+  color: #333333 !important;
+  border-color: #fec111 !important;
+}
+
+.filter-button[data-filter="done"].active {
+  background-color: #00834b !important;
+  color: white !important;
+  border-color: #00834b !important;
+}
+
+.filter-button[data-filter="all"].active {
+  background-color: #333333 !important;
+  color: white !important;
+  border-color: #333333 !important;
+}
+
+.filter-button[data-filter="demos"].active {
+  background-color: #333333 !important;
+  color: white !important;
+  border-color: #333333 !important;
 }
 
 /* Filter button golden ring on hover/focus only (not on active state) */
@@ -333,12 +364,7 @@ td.reports-progress-cell,
   pointer-events: auto; /* Ensure clicks work (parent has pointer-events: none) */
 }
 
-/* Active filter button state */
-.filter-button.active {
-  background-color: #333333;
-  border-color: #333333;
-  color: white;
-}
+/* Note: Active filter button colors are defined per data-filter attribute above */
 
 .filter-count {
   background-color: rgba(0, 0, 0, 0.1);

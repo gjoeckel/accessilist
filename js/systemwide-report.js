@@ -246,15 +246,25 @@ export class ReportsManager {
         (checklist) => checklist.typeSlug === "demo"
       );
     } else {
-      // Filter by calculated status (done, active, ready)
-      // Shows NON-demo sessions with matching status
+      // Filter by status (done, active, ready)
+      // Shows NON-demo sessions with AT LEAST ONE task of the filter status
       // EXCLUDE demo sessions AND "not saved" sessions
-      filtered = this.allChecklists.filter(
-        (checklist) =>
-          checklist.calculatedStatus === this.currentFilter &&
-          checklist.metadata?.lastModified && // Only show saved sessions
-          checklist.typeSlug !== "demo" // Exclude demo sessions
-      );
+      filtered = this.allChecklists.filter((checklist) => {
+        if (
+          !checklist.metadata?.lastModified ||
+          checklist.typeSlug === "demo"
+        ) {
+          return false; // Exclude not-saved and demo sessions
+        }
+
+        // Check if session has at least one task with the filter status
+        const statusButtons = checklist.state?.statusButtons || {};
+        const statuses = Object.values(statusButtons).map((s) =>
+          typeof s === "object" ? s.state : s
+        );
+
+        return statuses.some((status) => status === this.currentFilter);
+      });
     }
 
     // Clear table
@@ -325,11 +335,11 @@ export class ReportsManager {
     // Get statusButtons for filter-dependent progress calculation
     const statusButtons = checklist.state?.statusButtons || {};
 
-    // Status column: Show "-" for All and Demos filters, show icon for status-based filters
+    // Status column: Show "-" for All and Demos filters, show icon matching the active filter
     const statusDisplay =
       this.currentFilter === "all" || this.currentFilter === "demos"
         ? '<span class="status-placeholder" style="text-align: center; display: block;">-</span>'
-        : this.createStatusBadge(checklist.calculatedStatus);
+        : this.createStatusBadge(this.currentFilter);
 
     // Build row HTML
     row.innerHTML = `
