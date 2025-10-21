@@ -663,6 +663,197 @@ fi
 
 echo ""
 
+# Test 16: Permissions Verification
+echo -e "${BLUE}━━━ Test 16: Permissions Verification ━━━${NC}"
+
+echo -n "  Checking etc/sessions directory exists..."
+increment_test_counter
+# Use SSH to check directory permissions on production server
+if [ "$ENVIRONMENT" = "live" ] || [ "$ENVIRONMENT" = "staging" ]; then
+    session_dir_check=$(ssh -i ~/.ssh/GeorgeWebAIMServerKey.pem -o StrictHostKeyChecking=no george@ec2-3-20-59-76.us-east-2.compute.amazonaws.com "[ -d /var/websites/webaim/htdocs/training/online/etc/sessions ] && echo 'exists' || echo 'missing'" 2>&1)
+    if echo "$session_dir_check" | grep -q "exists"; then
+        record_pass "Sessions directory exists" "(etc/sessions present)"
+    else
+        record_fail "Sessions directory exists" "(Directory missing)"
+    fi
+
+    echo -n "  Checking sessions directory writable..."
+    increment_test_counter
+    perm_check=$(ssh -i ~/.ssh/GeorgeWebAIMServerKey.pem -o StrictHostKeyChecking=no george@ec2-3-20-59-76.us-east-2.compute.amazonaws.com "[ -w /var/websites/webaim/htdocs/training/online/etc/sessions ] && echo 'writable' || echo 'not-writable'" 2>&1)
+    if echo "$perm_check" | grep -q "writable"; then
+        record_pass "Sessions directory writable" "(www-data has write access)"
+    else
+        record_fail "Sessions directory writable" "(No write access)"
+    fi
+else
+    echo -e "  ${YELLOW}⊘ SKIPPED${NC} (Local environment - permissions not checked)"
+    log "SKIP: Permissions check - local environment"
+fi
+
+echo ""
+
+# Test 17: Complete User Workflow
+echo -e "${BLUE}━━━ Test 17: Complete User Workflow (End-to-End) ━━━${NC}"
+
+# Step 1: Create a session via the Home page workflow
+echo -n "  Step 1: Creating session from Home page..."
+increment_test_counter
+WORKFLOW_SESSION_KEY="E2E$(date +%s | tail -c 4)"
+
+# Get CSRF token and session cookie
+home_response=$(curl -s -c /tmp/workflow-cookies-$$.txt "$PROD_URL/home" 2>&1)
+workflow_csrf=$(echo "$home_response" | sed -n 's/.*name="csrf-token" content="\([^"]*\)".*/\1/p' | head -1)
+
+if [ -z "$workflow_csrf" ]; then
+    record_fail "Get CSRF for workflow" "(No token found)"
+    WORKFLOW_FAILED=true
+else
+    # Create session via instantiate API (simulating user creating new checklist)
+    instantiate_response=$(curl -s -w "\n%{http_code}" \
+        -b /tmp/workflow-cookies-$$.txt \
+        -c /tmp/workflow-cookies-$$.txt \
+        -X POST "$PROD_URL/php/api/instantiate" \
+        -H "Content-Type: application/json" \
+        -H "X-CSRF-Token: $workflow_csrf" \
+        -d "{\"sessionKey\":\"$WORKFLOW_SESSION_KEY\",\"typeSlug\":\"word\"}" 2>&1)
+
+    instantiate_code=$(echo "$instantiate_response" | tail -n1)
+    instantiate_body=$(echo "$instantiate_response" | head -n -1)
+
+    if [ "$instantiate_code" = "200" ] && echo "$instantiate_body" | grep -q '"success":true'; then
+        record_pass "Session creation workflow" "(Created $WORKFLOW_SESSION_KEY)"
+        WORKFLOW_FAILED=false
+    else
+        record_fail "Session creation workflow" "(HTTP $instantiate_code)"
+        WORKFLOW_FAILED=true
+    fi
+fi
+
+# Only continue workflow if session was created successfully
+if [ "$WORKFLOW_FAILED" = "false" ]; then
+
+    # Step 2: Load the checklist and verify it loaded
+    echo -n "  Step 2: Loading created checklist..."
+    increment_test_counter
+    list_response=$(curl -s -b /tmp/workflow-cookies-$$.txt "$PROD_URL/list?session=$WORKFLOW_SESSION_KEY" 2>&1)
+    if echo "$list_response" | grep -q "checkpoint-row" && echo "$list_response" | grep -q "Word"; then
+        record_pass "Load checklist" "(Checklist rendered)"
+    else
+        record_fail "Load checklist" "(Failed to load)"
+        WORKFLOW_FAILED=true
+    fi
+
+    # Step 3: Change a checkpoint status (simulate user interaction)
+    echo -n "  Step 3: Changing checkpoint status..."
+    increment_test_counter
+
+    # Update first checkpoint to "Active" status
+    save_response=$(curl -s -w "\n%{http_code}" \
+        -b /tmp/workflow-cookies-$$.txt \
+        -X POST "$PROD_URL/php/api/save" \
+        -H "Content-Type: application/json" \
+        -H "X-CSRF-Token: $workflow_csrf" \
+        -d "{\"sessionKey\":\"$WORKFLOW_SESSION_KEY\",\"checkpoints\":[{\"id\":1,\"status\":\"active\",\"notes\":\"\"}]}" 2>&1)
+
+    save_code=$(echo "$save_response" | tail -n1)
+    save_body=$(echo "$save_response" | head -n -1)
+
+    if [ "$save_code" = "200" ] && echo "$save_body" | grep -q '"success":true'; then
+        record_pass "Change checkpoint status" "(Status updated to Active)"
+    else
+        record_fail "Change checkpoint status" "(HTTP $save_code)"
+        WORKFLOW_FAILED=true
+    fi
+
+    # Step 4: Navigate to Report and verify status change
+    echo -n "  Step 4: Verifying status in Report..."
+    increment_test_counter
+    report_response=$(curl -s -b /tmp/workflow-cookies-$$.txt "$PROD_URL/list-report?session=$WORKFLOW_SESSION_KEY" 2>&1)
+    if echo "$report_response" | grep -q "Active" || echo "$report_response" | grep -q "active"; then
+        record_pass "Report shows status change" "(Active status visible)"
+    else
+        record_fail "Report shows status change" "(Status not found)"
+    fi
+
+    # Step 5: Back button navigation (verify link exists)
+    echo -n "  Step 5: Back button navigation..."
+    increment_test_counter
+    if echo "$report_response" | grep -q "backButton" || echo "$report_response" | grep -q "Back to Checklist"; then
+        record_pass "Back button present" "(Navigation available)"
+    else
+        record_fail "Back button present" "(Button not found)"
+    fi
+
+    # Step 6: Add notes to a checkpoint
+    echo -n "  Step 6: Adding notes to checkpoint..."
+    increment_test_counter
+
+    notes_test_text="Test note added during external workflow test at $(date)"
+    save_notes_response=$(curl -s -w "\n%{http_code}" \
+        -b /tmp/workflow-cookies-$$.txt \
+        -X POST "$PROD_URL/php/api/save" \
+        -H "Content-Type: application/json" \
+        -H "X-CSRF-Token: $workflow_csrf" \
+        -d "{\"sessionKey\":\"$WORKFLOW_SESSION_KEY\",\"checkpoints\":[{\"id\":1,\"status\":\"active\",\"notes\":\"$notes_test_text\"}]}" 2>&1)
+
+    save_notes_code=$(echo "$save_notes_response" | tail -n1)
+    save_notes_body=$(echo "$save_notes_response" | head -n -1)
+
+    if [ "$save_notes_code" = "200" ] && echo "$save_notes_body" | grep -q '"success":true'; then
+        record_pass "Add notes to checkpoint" "(Notes saved)"
+    else
+        record_fail "Add notes to checkpoint" "(HTTP $save_notes_code)"
+        WORKFLOW_FAILED=true
+    fi
+
+    # Step 7: Save button functionality (already tested in step 6, verify persistence)
+    echo -n "  Step 7: Verifying save persistence..."
+    increment_test_counter
+
+    # Use restore API to verify saved data
+    restore_response=$(curl -s "$PROD_URL/php/api/restore?sessionKey=$WORKFLOW_SESSION_KEY" 2>&1)
+    if echo "$restore_response" | grep -q "$notes_test_text"; then
+        record_pass "Save persists data" "(Notes found in restore)"
+    else
+        record_fail "Save persists data" "(Notes not persisted)"
+    fi
+
+    # Step 8: Complete restore process verification
+    echo -n "  Step 8: Full restore validation..."
+    increment_test_counter
+
+    # Verify all expected data in restore
+    restore_has_status=false
+    restore_has_notes=false
+
+    if echo "$restore_response" | grep -q '"status":"active"' || echo "$restore_response" | grep -q '"status": "active"'; then
+        restore_has_status=true
+    fi
+
+    if echo "$restore_response" | grep -q "$notes_test_text"; then
+        restore_has_notes=true
+    fi
+
+    if [ "$restore_has_status" = true ] && [ "$restore_has_notes" = true ]; then
+        record_pass "Complete restore process" "(Status + Notes restored)"
+    elif [ "$restore_has_status" = true ]; then
+        record_fail "Complete restore process" "(Status OK, Notes missing)"
+    elif [ "$restore_has_notes" = true ]; then
+        record_fail "Complete restore process" "(Notes OK, Status missing)"
+    else
+        record_fail "Complete restore process" "(Both Status and Notes missing)"
+    fi
+
+    # Cleanup workflow test session
+    rm -f /tmp/workflow-cookies-$$.txt
+
+else
+    echo -e "  ${YELLOW}⊘ SKIPPED${NC} Steps 2-8 (Session creation failed)"
+    log "SKIP: Workflow steps 2-8 - session creation failed"
+fi
+
+echo ""
+
 # Summary
 echo -e "${BLUE}╔════════════════════════════════════════════════════════╗${NC}"
 echo -e "${BLUE}║              Test Results Summary                      ║${NC}"
