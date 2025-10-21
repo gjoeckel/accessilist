@@ -27,9 +27,9 @@
 ## 📦 Project-Specific Workflows (This Project Only)
 
 ### Testing & Validation
-- **proj-test-mirror** - Test production mirror configuration (Docker Apache, 100 tests, 100% pass rate)
-- **external-test-production** - Test staging (accessilist2) - Complete 3-phase testing with Playwright
-- **external-live-production** - Test LIVE production (accessilist) - Complete 3-phase testing with Playwright
+- **proj-mirror-production** - Test local Docker mirror (99 tests: routing, APIs, security, content validation)
+- **external-test-production** - Test staging (accessilist2) - 3 phases: Programmatic (53) + Permissions (2) + Browser E2E (15)
+- **external-live-production** - Test LIVE production (accessilist) - 3 phases: Programmatic (53) + Permissions (2) + Browser E2E (15)
 - **external-test-browser-ai** - Instructions for AI-driven browser testing (Playwright MCP tools)
 - **proj-deploy-check** - Run pre-deployment validation
 
@@ -88,9 +88,9 @@ Project scripts can be run directly:
 
 | Workflow | Environment | Tests | URL | Purpose |
 |----------|-------------|-------|-----|---------|
-| **proj-test-mirror** | Local Docker Apache | 100 | http://127.0.0.1:8080 | Pre-deployment testing |
-| **external-test-production** | Staging (accessilist2) | 3 phases | https://webaim.org/training/online/accessilist2 | Pre-live validation (Programmatic→Permissions→Browser) |
-| **external-live-production** | Live Production | 3 phases | https://webaim.org/training/online/accessilist | Post-deployment verification (Programmatic→Permissions→Browser) |
+| **proj-mirror-production** | Local Docker Apache | 99 | http://127.0.0.1:8080 | Pre-deployment testing |
+| **external-test-production** | Staging (accessilist2) | 70 (3 phases) | https://webaim.org/training/online/accessilist2 | Pre-live validation (Programmatic→Permissions→Browser E2E) |
+| **external-live-production** | Live Production | 70 (3 phases) | https://webaim.org/training/online/accessilist | Post-deployment verification (Programmatic→Permissions→Browser E2E) |
 
 ### Deployment Workflows
 
@@ -117,16 +117,17 @@ Project scripts can be run directly:
 
 ## 📊 Summary
 
-**Total Workflows:** 22 (14 global + 8 project)
+**Total Workflows:** 24 (14 global + 10 project)
 
 **Categories:**
 - **AI Session Management** (5): ai-start, ai-end, ai-update, ai-repeat, ai-compress
 - **Git Operations** (4): ai-local-commit, ai-local-merge, ai-merge-finalize, ai-push-*
 - **MCP Management** (2): mcp-health, mcp-restart
-- **Testing** (3): proj-test-mirror, external-test-production, external-live-production
+- **Testing** (5): proj-mirror-production, external-test-production, external-live-production, external-test-browser-ai, proj-deploy-check
 - **Docker** (2): proj-docker-up, proj-docker-down
 - **Code Quality** (1): proj-dry
-- **Deployment** (2): proj-deploy-check, ai-push-deploy-github
+- **Deployment** (2): proj-deploy-accessilist2, proj-push-deploy-github
+- **Development** (1): proj-user-testing
 - **Utilities** (2): ai-clean, ai-docs-sync
 
 ---
@@ -187,29 +188,29 @@ LAST_MAIN_ENTRY=$(git show main:changelog.md 2>/dev/null | grep "^### " | head -
 
 ### Daily Development
 ```bash
-ai-start              # Start session
-proj-user-testing     # Start dev server for manual testing
+ai-start                 # Start session
+proj-user-testing        # Start dev server for manual testing
 # Visit http://localhost:8000/home
-proj-test-mirror      # Run automated tests (100% pass)
-ai-local-commit       # Commit changes
+proj-mirror-production   # Run automated tests (99 tests, 100% pass)
+ai-local-commit          # Commit changes
 ```
 
 ### Before Deployment
 ```bash
-proj-deploy-check     # Validate before deploy
-proj-test-mirror      # Final local test
-ai-push-deploy-github # Deploy to production
+proj-deploy-check        # Validate before deploy
+proj-mirror-production   # Final local test (99 tests)
+ai-push-deploy-github    # Deploy to production
 ```
 
 ### Before Deployment (Staging)
 ```bash
 proj-deploy-accessilist2  # Deploy to staging
-external-test-production  # Test staging (54 tests)
+external-test-production  # Test staging (70 tests: 53+2+15)
 ```
 
 ### After Deployment (Live)
 ```bash
-external-live-production  # Verify live production (54 tests)
+external-live-production  # Verify live production (70 tests: 53+2+15)
 ```
 
 ### Troubleshooting
@@ -222,5 +223,5 @@ proj-docker-up
 
 ---
 
-_Last updated: October 15, 2025_
+_Last updated: October 21, 2025_
 _Auto-generated from ~/.cursor/workflows.json and .cursor/workflows.json_

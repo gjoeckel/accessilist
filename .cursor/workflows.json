@@ -13,8 +13,8 @@
     "timeout": 30000,
     "on_error": "continue"
   },
-  "proj-test-mirror": {
-    "description": "Test production mirror configuration (Docker Apache)",
+  "proj-mirror-production": {
+    "description": "Test local Docker mirror (99 tests: routing, APIs, security, content validation)",
     "commands": [
       "docker compose up -d",
       "sleep 8",
@@ -88,24 +88,26 @@
     "on_error": "continue"
   },
   "external-live-production": {
-    "description": "Test LIVE production (accessilist) - Complete 3-phase testing",
+    "description": "Test LIVE production - 3 phases: Programmatic (53) + Permissions (2) + Browser E2E (15)",
     "commands": ["./scripts/external/test-orchestrator.sh live"],
     "auto_approve": true,
-    "timeout": 120000,
+    "timeout": 180000,
     "on_error": "continue"
   },
   "external-test-production": {
-    "description": "Test staging (accessilist2) - Complete 3-phase testing",
+    "description": "Test staging (accessilist2) - 3 phases: Programmatic (53) + Permissions (2) + Browser E2E (15)",
     "commands": ["./scripts/external/test-orchestrator.sh staging"],
     "auto_approve": true,
-    "timeout": 120000,
+    "timeout": 180000,
     "on_error": "continue"
   },
   "ai-local-commit-safe": {
     "description": "Run tests and commit if passing (enforced testing with changelog automation)",
     "commands": [
+      "echo '🧪 Starting Docker Apache for testing...'",
       "docker compose up -d",
       "sleep 8",
+      "echo '🔍 Running 99 production mirror tests...'",
       "BASE_URL=http://127.0.0.1:8080 ./scripts/test-production-mirror.sh",
       "bash ~/cursor-global/scripts/git-local-commit.sh"
     ],
@@ -116,8 +118,10 @@
   "ai-local-merge-safe": {
     "description": "Merge current branch to main with enforced testing (safe variant with smart changelog merge)",
     "commands": [
+      "echo '🧪 Starting Docker Apache for testing...'",
       "docker compose up -d",
       "sleep 8",
+      "echo '🔍 Running 99 production mirror tests...'",
       "BASE_URL=http://127.0.0.1:8080 ./scripts/test-production-mirror.sh",
       "bash ~/cursor-global/scripts/git-local-merge.sh"
     ],
