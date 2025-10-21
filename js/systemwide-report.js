@@ -174,15 +174,21 @@ export class ReportsManager {
     };
 
     this.allChecklists.forEach((checklist) => {
+      const isDemo = checklist.typeSlug === "demo";
+      const isSaved = !!checklist.metadata?.lastModified;
       const status = checklist.calculatedStatus;
-      if (counts.hasOwnProperty(status)) {
-        counts[status]++;
-      }
-      counts["all"]++; // Count all checklists
 
-      // Count demo sessions
-      if (checklist.typeSlug === "demo") {
+      // Count demo sessions (all demos, saved or not)
+      if (isDemo) {
         counts["demos"]++;
+      } else {
+        // Count non-demo sessions for "All" filter
+        counts["all"]++;
+
+        // Count status-based filters (only saved non-demo sessions)
+        if (isSaved && counts.hasOwnProperty(status)) {
+          counts[status]++;
+        }
       }
     });
 
@@ -207,8 +213,11 @@ export class ReportsManager {
     // Filter checklists by current filter
     let filtered;
     if (this.currentFilter === "all") {
-      // Show all sessions (demos and non-demos, including "not saved")
-      filtered = this.allChecklists;
+      // Show all NON-demo sessions (exclude demo sessions)
+      // Includes "not saved" non-demo sessions
+      filtered = this.allChecklists.filter(
+        (checklist) => checklist.typeSlug !== "demo"
+      );
     } else if (this.currentFilter === "demos") {
       // Show ONLY demo sessions (typeSlug === "demo"), hide all non-demo sessions
       // Includes both saved and not saved demo sessions
@@ -217,12 +226,13 @@ export class ReportsManager {
       );
     } else {
       // Filter by calculated status (done, active, ready)
-      // Shows sessions of ANY type (demo or non-demo) with matching status
-      // EXCLUDE "not saved" sessions (only show saved sessions with actual status)
+      // Shows NON-demo sessions with matching status
+      // EXCLUDE demo sessions AND "not saved" sessions
       filtered = this.allChecklists.filter(
         (checklist) =>
           checklist.calculatedStatus === this.currentFilter &&
-          checklist.metadata?.lastModified // Only show saved sessions
+          checklist.metadata?.lastModified && // Only show saved sessions
+          checklist.typeSlug !== "demo" // Exclude demo sessions
       );
     }
 
