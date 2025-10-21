@@ -1,8 +1,8 @@
 # MCP Architecture - Corrected Global Installation
 
-**Date**: October 21, 2025  
-**Issue**: MCP configs were pointing to project-specific paths  
-**Solution**: Moved MCP servers to `~/cursor-global/mcp-servers/`  
+**Date**: October 21, 2025
+**Issue**: MCP configs were pointing to project-specific paths
+**Solution**: Moved MCP servers to `~/cursor-global/mcp-servers/`
 **Status**: ✅ FIXED - Now truly global
 
 ---
@@ -135,7 +135,7 @@ echo "✅ MCP servers synced to global location"
   }
 }
 ```
-**Use for**: Published packages  
+**Use for**: Published packages
 **Example**: filesystem, memory
 
 ### **Pattern 2: Global npm Install**
@@ -295,7 +295,6 @@ Same as above (synchronized)
 
 ---
 
-*Document Created: October 21, 2025*  
-*Issue: Project-specific paths in global config*  
+*Document Created: October 21, 2025*
+*Issue: Project-specific paths in global config*
 *Status: ✅ RESOLVED - MCP servers now truly global*
-

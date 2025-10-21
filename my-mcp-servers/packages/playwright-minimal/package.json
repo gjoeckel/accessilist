@@ -1,9 +1,27 @@
 {
   "name": "mcp-playwright-minimal",
   "version": "1.0.0",
-  "description": "Minimal Playwright MCP server (4 essential tools) - drop-in replacement for puppeteer-minimal",
+  "description": "Playwright MCP Server with minimal tool set (4 essential tools, multi-browser support)",
   "type": "module",
   "main": "build/index.js",
+  "author": "gjoeckel",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/gjoeckel/my-mcp-servers.git",
+    "directory": "packages/playwright-minimal"
+  },
+  "keywords": [
+    "mcp",
+    "playwright",
+    "browser",
+    "automation",
+    "testing",
+    "multi-browser",
+    "chromium",
+    "firefox",
+    "webkit"
+  ],
   "scripts": {
     "build": "tsc && chmod +x build/index.js",
     "prepare": "npm run build"
