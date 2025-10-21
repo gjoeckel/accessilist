@@ -174,9 +174,9 @@ Phase 1: 53/53 tests passed (100%)
 - Checklist instantiation
 
 #### 3. User Interactions (4 tests)
-- Checkpoint status toggle (Not Started → Active → Done)
+- Checkpoint status toggle (Ready → Active → Done)
 - Textarea input and persistence
-- Filter buttons (All, Done, Active, Not Started)
+- Filter buttons (All, Done, Active, Ready)
 - Side panel navigation
 
 #### 4. Save & Restore (3 tests)

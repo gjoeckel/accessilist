@@ -233,7 +233,7 @@ export class ReportsManager {
       const messages = {
         done: "No tasks done",
         active: "No tasks active",
-        ready: "All tasks started",
+        ready: "No tasks ready",
         demos: "No demo sessions found",
       };
 
@@ -285,10 +285,8 @@ export class ReportsManager {
       ? this.formatDate(checklist.metadata.lastModified)
       : "-";
 
-    // Calculate progress
-    const progress = this.calculateProgress(
-      checklist.state?.statusButtons || {}
-    );
+    // Get statusButtons for filter-dependent progress calculation
+    const statusButtons = checklist.state?.statusButtons || {};
 
     // Build row HTML
     row.innerHTML = `
@@ -302,8 +300,7 @@ export class ReportsManager {
               checklist.calculatedStatus
             )}</td>
             <td class="task-cell">${this.createProgressBar(
-              progress.done,
-              progress.total,
+              statusButtons,
               checklist.calculatedStatus,
               isSaved
             )}</td>
@@ -315,24 +312,6 @@ export class ReportsManager {
     return row;
   }
 
-  /**
-   * Calculate progress (done tasks / total tasks)
-   */
-  calculateProgress(statusButtons) {
-    if (
-      !statusButtons ||
-      typeof statusButtons !== "object" ||
-      Object.keys(statusButtons).length === 0
-    ) {
-      return { done: 0, total: 0 };
-    }
-
-    const statuses = Object.values(statusButtons);
-    const total = statuses.length;
-    const done = statuses.filter((s) => s === "done").length;
-
-    return { done, total };
-  }
 
   /**
    * Create instance link HTML
@@ -366,8 +345,7 @@ export class ReportsManager {
 
     const labels = {
       done: "Done",
-      ready: "Not Started",
-      active: "Active",
+      ready: "Ready",
       active: "Active",
     };
 
@@ -384,22 +362,79 @@ export class ReportsManager {
   }
 
   /**
-   * Create progress bar HTML
+   * Create progress bar HTML (filter-dependent)
    */
-  createProgressBar(done, total, status, isSaved = true) {
-    // Show "not saved" for unsaved checklists or when no tasks
-    if (!isSaved || total === 0) {
+  createProgressBar(statusButtons, status, isSaved = true) {
+    // Show "not saved" for unsaved checklists or when no statusButtons
+    if (!isSaved || !statusButtons || Object.keys(statusButtons).length === 0) {
       return '<span class="progress-text" style="text-align: center; display: block;">not saved</span>';
     }
 
-    const percentage = (done / total) * 100;
+    const statuses = Object.values(statusButtons);
+    const total = statuses.length;
+    const doneCount = statuses.filter(s => s === "done").length;
+    const activeCount = statuses.filter(s => s === "active").length;
+    const readyCount = statuses.filter(s => s === "ready").length;
 
+    // ALL FILTER: No progress bar, just text summary
+    if (this.currentFilter === "all") {
+      return `<span class="progress-text" style="text-align: center; display: block;">${doneCount} Done | ${activeCount} Active | ${readyCount} Ready | ${total}</span>`;
+    }
+
+    // DONE FILTER: V/X (done / total)
+    if (this.currentFilter === "done") {
+      const percentage = (doneCount / total) * 100;
+      return `
+              <div class="progress-container">
+                  <div class="progress-bar">
+                      <div class="progress-fill ${status}" style="width: ${percentage}%"></div>
+                  </div>
+                  <span class="progress-text">${doneCount}/${total}</span>
+              </div>
+          `;
+    }
+
+    // ACTIVE FILTER: Z/(X-V) (active / (total - done))
+    if (this.currentFilter === "active") {
+      const eligible = total - doneCount; // Only active + ready are eligible
+      const percentage = eligible > 0 ? (activeCount / eligible) * 100 : 0;
+      return `
+              <div class="progress-container">
+                  <div class="progress-bar">
+                      <div class="progress-fill ${status}" style="width: ${percentage}%"></div>
+                  </div>
+                  <span class="progress-text">${activeCount}/${eligible}</span>
+              </div>
+          `;
+    }
+
+    // READY FILTER: Y/(X-Z-V) (ready / (total - active - done))
+    if (this.currentFilter === "ready") {
+      const eligible = total - activeCount - doneCount; // Only ready are eligible
+      const percentage = eligible > 0 ? (readyCount / eligible) * 100 : 0;
+      return `
+              <div class="progress-container">
+                  <div class="progress-bar">
+                      <div class="progress-fill ${status}" style="width: ${percentage}%"></div>
+                  </div>
+                  <span class="progress-text">${readyCount}/${eligible}</span>
+              </div>
+          `;
+    }
+
+    // DEMOS FILTER: Use same logic as All (no progress bar)
+    if (this.currentFilter === "demos") {
+      return `<span class="progress-text" style="text-align: center; display: block;">${doneCount} Done | ${activeCount} Active | ${readyCount} Ready | ${total}</span>`;
+    }
+
+    // Fallback (shouldn't reach here)
+    const percentage = (doneCount / total) * 100;
     return `
             <div class="progress-container">
                 <div class="progress-bar">
                     <div class="progress-fill ${status}" style="width: ${percentage}%"></div>
                 </div>
-                <span class="progress-text">${done}/${total}</span>
+                <span class="progress-text">${doneCount}/${total}</span>
             </div>
         `;
   }

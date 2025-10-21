@@ -125,8 +125,8 @@ renderHTMLHead('Systemwide Report');
             class="filter-button"
             data-filter="ready"
             aria-pressed="false"
-            aria-label="Show reports where all tasks are not started">
-            <span class="filter-label">Not Started</span>
+            aria-label="Show reports where all tasks are ready">
+            <span class="filter-label">Ready</span>
             <span class="filter-count" id="count-ready">0</span>
         </button>
         <button

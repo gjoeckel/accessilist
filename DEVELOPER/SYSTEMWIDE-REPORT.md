@@ -15,7 +15,7 @@ The Systemwide Report (`/systemwide-report`) is an aggregate dashboard displayin
 - **Aggregate View** - All saved checklists in one dashboard
 - **Real-Time Status** - Client-side status calculation from state data
 - **Progress Tracking** - Done tasks / Total tasks for each checklist
-- **Interactive Filtering** - Filter by status (Done, Active, Not Started)
+- **Interactive Filtering** - Filter by status (Done, Active, Ready, All, Demos)
 - **Sortable Table** - Sort by session key, type, date, status, progress
 - **Clickable Links** - Navigate to individual list reports
 
@@ -55,7 +55,7 @@ The Systemwide Report (`/systemwide-report`) is an aggregate dashboard displayin
         Active (<span class="count-active">0</span>)
       </button>
       <button class="filter-button" data-filter="ready">
-        Not Started (<span class="count-ready">0</span>)
+        Ready (<span class="count-ready">0</span>)
       </button>
     </div>
 
@@ -159,7 +159,7 @@ Hide loading overlay
 ```javascript
 function calculateSessionStatus(state) {
   if (!state || !state.statusButtons) {
-    return 'ready'; // No state = Not Started
+    return 'ready'; // No state = Ready (not started)
   }
 
   const statuses = Object.values(state.statusButtons);
@@ -187,7 +187,7 @@ function calculateSessionStatus(state) {
     return 'active';
   }
 
-  // No tasks started = Not Started
+  // No tasks started = Ready
   return 'ready';
 }
 
@@ -212,8 +212,8 @@ function calculateProgress(state) {
 | All tasks = done | **Done** |
 | Any task = active | **Active** |
 | Some tasks = done (but not all) | **Active** |
-| No tasks started (all = ready) | **Not Started** (ready) |
-| No state data | **Not Started** (ready) |
+| No tasks started (all = ready) | **Ready** (not started) |
+| No state data | **Ready** (not started) |
 
 ---
 
@@ -342,7 +342,7 @@ function filterReports(filter) {
 - **All** - Show all sessions
 - **Done** - Show only completed sessions
 - **Active** - Show only in-progress sessions
-- **Not Started** - Show only ready (untouched) sessions
+- **Ready** - Show only sessions with all tasks ready (not started)
 
 ---
 
@@ -509,7 +509,7 @@ From `proj-test-mirror` (16 systemwide report tests):
 - ✅ Page load verification
 - ✅ List-detailed API endpoint
 - ✅ JavaScript module loading
-- ✅ Filter buttons (Done, Active, Not Started)
+- ✅ Filter buttons (Done, Active, Ready, All, Demos)
 - ✅ Reports table structure
 - ✅ Status/Progress columns
 - ✅ Refresh and Home buttons
@@ -521,7 +521,7 @@ From `proj-test-mirror` (16 systemwide report tests):
 
 1. Load `/systemwide-report`
 2. Verify all sessions displayed
-3. Test each filter (All, Done, Active, Not Started)
+3. Test each filter (All, Done, Active, Ready, Demos)
 4. Verify counts match filtered rows
 5. Click session link → navigates to list report
 6. Click Refresh → data reloads

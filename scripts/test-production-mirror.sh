@@ -378,7 +378,7 @@ test_endpoint_content "Systemwide report JS module" "$BASE_URL/systemwide-report
 test_endpoint_content "Filter buttons present" "$BASE_URL/systemwide-report" "filter-button" "Filter UI exists"
 test_endpoint_content "Filter label: Done" "$BASE_URL/systemwide-report" ">Done<" "Updated terminology"
 test_endpoint_content "Filter label: Active" "$BASE_URL/systemwide-report" ">Active<" "Updated terminology"
-test_endpoint_content "Filter label: Not Started" "$BASE_URL/systemwide-report" ">Not Started<" "Updated terminology"
+test_endpoint_content "Filter label: Ready" "$BASE_URL/systemwide-report" ">Ready<" "Updated terminology"
 test_endpoint_content "Reports table CSS class" "$BASE_URL/systemwide-report" "reports-table" "New CSS class"
 test_endpoint_content "Reports status column" "$BASE_URL/systemwide-report" "<th class=\"status-cell\">Status</th>" "Status column present"
 test_endpoint_content "Reports progress column" "$BASE_URL/systemwide-report" "<th class=\"task-cell\">Progress</th>" "Progress column present"
