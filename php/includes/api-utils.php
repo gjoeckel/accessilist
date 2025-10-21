@@ -1,7 +1,12 @@
 <?php
-header('Content-Type: application/json');
+// Don't send headers at file load - send in response functions instead
+// This allows session_start() to be called before any headers are sent
 
 function send_json($arr) {
+  // Send Content-Type header here (not at file load)
+  if (!headers_sent()) {
+    header('Content-Type: application/json');
+  }
   echo json_encode($arr);
   exit;
 }
