@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../includes/config.php'; // Must load first for session config
 require_once __DIR__ . '/../includes/api-utils.php';
 require_once __DIR__ . '/../includes/type-formatter.php';
 require_once __DIR__ . '/../includes/type-manager.php';

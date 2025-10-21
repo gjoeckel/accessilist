@@ -23,12 +23,12 @@ function generate_csrf_token() {
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-    
+
     // Generate new token if none exists
     if (empty($_SESSION['csrf_token'])) {
         $_SESSION['csrf_token'] = bin2hex(random_bytes(32));
     }
-    
+
     return $_SESSION['csrf_token'];
 }
 
@@ -44,7 +44,7 @@ function validate_csrf_token($token) {
     if (session_status() === PHP_SESSION_NONE) {
         session_start();
     }
-    
+
     // Check token exists and matches
     if (!isset($_SESSION['csrf_token']) || !hash_equals($_SESSION['csrf_token'], $token)) {
         http_response_code(403);

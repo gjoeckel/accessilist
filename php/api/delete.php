@@ -1,4 +1,5 @@
 <?php
+require_once __DIR__ . '/../includes/config.php'; // Must load first for session config
 require_once __DIR__ . '/../includes/api-utils.php';
 require_once __DIR__ . '/../includes/csrf.php';
 require_once __DIR__ . '/../includes/rate-limiter.php';
