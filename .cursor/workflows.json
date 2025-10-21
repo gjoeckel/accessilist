@@ -95,26 +95,24 @@
     "on_error": "continue"
   },
   "ai-local-commit-safe": {
-    "description": "Run tests and commit if passing (enforced testing)",
+    "description": "Run tests and commit if passing (enforced testing with changelog automation)",
     "commands": [
       "docker compose up -d",
       "sleep 8",
       "BASE_URL=http://127.0.0.1:8080 ./scripts/test-production-mirror.sh",
-      "git add -A",
-      "git commit"
+      "bash ~/cursor-global/scripts/git-local-commit.sh"
     ],
     "auto_approve": false,
     "timeout": 180000,
     "on_error": "stop"
   },
   "ai-local-merge-safe": {
-    "description": "Merge current branch to main with enforced testing (safe variant)",
+    "description": "Merge current branch to main with enforced testing (safe variant with smart changelog merge)",
     "commands": [
       "docker compose up -d",
       "sleep 8",
       "BASE_URL=http://127.0.0.1:8080 ./scripts/test-production-mirror.sh",
-      "git checkout main",
-      "git merge -"
+      "bash ~/cursor-global/scripts/git-local-merge.sh"
     ],
     "auto_approve": false,
     "timeout": 180000,

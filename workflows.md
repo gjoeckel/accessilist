@@ -135,6 +135,47 @@ Project scripts can be run directly:
 
 ---
 
+## 📝 Changelog Handling Design
+
+### How Changelog Automation Works
+
+**Design Philosophy:** Smart merge happens at **merge time**, not commit time.
+
+#### During Commits (`ai-local-commit`, `ai-local-commit-safe`)
+- ✅ Adds changelog entry to current branch
+- ✅ Records files changed and timestamp
+- ❌ Does NOT check main's changelog
+- **Why:** Feature branches build their own independent history
+
+#### During Merges (`ai-local-merge`, `ai-local-merge-safe`)
+- ✅ **Retrieves last entry from main BEFORE merge**
+- ✅ **Extracts only NEW entries from feature branch**
+- ✅ **Pre-merges new entries into main's changelog**
+- ✅ **Prevents changelog conflicts entirely**
+- **Why:** This is when branches converge and conflicts could occur
+
+#### Key Benefits
+1. **Feature branches are independent** - Can evolve without cross-branch dependencies
+2. **Conflict resolution at merge time** - Where it should be (clean separation of concerns)
+3. **Smart merge prevents conflicts** - Pre-merges changelog entries before branch merge
+4. **Proven in practice** - Recently merged security-updates with zero changelog conflicts
+
+#### Technical Implementation
+The smart merge logic (in `~/cursor-global/scripts/git-local-merge.sh` lines 141-166):
+```bash
+# 1. Get last entry from main BEFORE switching branches
+LAST_MAIN_ENTRY=$(git show main:changelog.md 2>/dev/null | grep "^### " | head -1)
+
+# 2. Extract only NEW entries from feature branch
+# 3. Switch to main
+# 4. Pre-merge new entries into main's changelog
+# 5. Then merge branches (changelog already resolved!)
+```
+
+**Result:** Changelog conflicts are virtually eliminated. The merge workflow handles all the complexity.
+
+---
+
 ## 🎯 Common Workflows
 
 ### Daily Development
