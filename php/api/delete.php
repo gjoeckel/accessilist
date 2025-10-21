@@ -10,7 +10,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'DELETE') {
 }
 
 // Rate limiting: 50 deletes per hour per IP
-enforce_rate_limit($_SERVER['REMOTE_ADDR'] . '_delete', 50, 3600);
+// Environment-aware rate limiting
+// Production: 50/hour, Staging: 250/hour, Development: 2500/hour
+enforce_rate_limit_smart('delete');
 
 // CSRF protection
 validate_csrf_from_header();

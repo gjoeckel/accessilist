@@ -4,7 +4,9 @@ require_once __DIR__ . '/../includes/type-manager.php';
 require_once __DIR__ . '/../includes/rate-limiter.php';
 
 // Rate limiting: 100 list requests per hour per IP
-enforce_rate_limit($_SERVER['REMOTE_ADDR'] . '_list', 100, 3600);
+// Environment-aware rate limiting
+// Production: 100/hour, Staging: 500/hour, Development: 5000/hour
+enforce_rate_limit_smart('list');
 
 // Get all JSON files from the sessions directory using the same path as other APIs
 global $sessionsPath;

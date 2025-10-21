@@ -7,7 +7,9 @@ require_once __DIR__ . '/../includes/csrf.php';
 require_once __DIR__ . '/../includes/rate-limiter.php';
 
 // Rate limiting: 100 saves per hour per IP
-enforce_rate_limit($_SERVER['REMOTE_ADDR'] . '_save', 100, 3600);
+// Environment-aware rate limiting
+// Production: 100/hour, Staging: 500/hour, Development: 5000/hour
+enforce_rate_limit_smart('save');
 
 // CSRF protection for POST requests
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

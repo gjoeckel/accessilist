@@ -101,6 +101,51 @@ class RateLimiter {
 }
 
 /**
+ * Get environment-appropriate rate limits
+ *
+ * Production: Strict limits for security
+ * Staging (accessilist2): 5x higher limits for testing
+ * Development: 50x higher limits (essentially unlimited)
+ *
+ * @param string $endpoint API endpoint name
+ * @return array [maxAttempts, windowSeconds]
+ */
+function get_rate_limit_for_environment($endpoint) {
+    global $environment;
+
+    // Detect if this is accessilist2 (staging) vs accessilist (production)
+    $is_accessilist2 = strpos($_SERVER['HTTP_HOST'] ?? '', 'accessilist2') !== false ||
+                       strpos($_SERVER['REQUEST_URI'] ?? '', 'accessilist2') !== false;
+
+    // Base limits (production values)
+    $base_limits = [
+        'instantiate' => [20, 3600],     // 20 per hour
+        'save' => [100, 3600],            // 100 per hour
+        'delete' => [50, 3600],           // 50 per hour
+        'list' => [100, 3600],            // 100 per hour
+        'restore' => [200, 3600]          // 200 per hour
+    ];
+
+    // Get base limit for this endpoint
+    $limit = $base_limits[$endpoint] ?? [100, 3600];
+    list($baseAttempts, $window) = $limit;
+
+    // Apply multiplier based on environment
+    if ($environment === 'local' || $environment === 'development') {
+        // Development: 50x limits (essentially unlimited)
+        $adjustedAttempts = $baseAttempts * 50;
+    } elseif ($is_accessilist2) {
+        // Staging (accessilist2): 5x limits (allows testing)
+        $adjustedAttempts = $baseAttempts * 5;
+    } else {
+        // Production: strict limits
+        $adjustedAttempts = $baseAttempts;
+    }
+
+    return [$adjustedAttempts, $window];
+}
+
+/**
  * Enforce rate limit on identifier
  *
  * @param string $identifier Unique identifier to rate limit
@@ -111,5 +156,29 @@ class RateLimiter {
 function enforce_rate_limit($identifier, $maxAttempts = 100, $windowSeconds = 3600) {
     $limiter = new RateLimiter($maxAttempts, $windowSeconds);
     $limiter->checkLimit($identifier);
+}
+
+/**
+ * Enforce environment-aware rate limit
+ *
+ * Automatically adjusts limits based on environment:
+ * - Production: Strict (baseline)
+ * - Staging: 5x higher (allows testing)
+ * - Development: 50x higher (essentially unlimited)
+ *
+ * @param string $endpoint Endpoint name (instantiate, save, delete, list, restore)
+ * @param string|null $identifier Optional custom identifier (defaults to IP)
+ * @return void Dies with 429 status if limit exceeded
+ */
+function enforce_rate_limit_smart($endpoint, $identifier = null) {
+    // Use IP if no identifier provided
+    $identifier = $identifier ?? $_SERVER['REMOTE_ADDR'];
+
+    // Get environment-appropriate limits
+    list($maxAttempts, $windowSeconds) = get_rate_limit_for_environment($endpoint);
+
+    // Apply rate limiting with adjusted limits
+    $limiter = new RateLimiter($maxAttempts, $windowSeconds);
+    $limiter->checkLimit($identifier . '_' . $endpoint);
 }
 ?>

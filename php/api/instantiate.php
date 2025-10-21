@@ -11,8 +11,9 @@ if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
     send_error('Method not allowed', 405);
 }
 
-// Rate limiting: 20 instantiations per hour per IP
-enforce_rate_limit($_SERVER['REMOTE_ADDR'] . '_instantiate', 20, 3600);
+// Environment-aware rate limiting
+// Production: 20/hour, Staging: 100/hour, Development: 1000/hour
+enforce_rate_limit_smart('instantiate');
 
 // CSRF protection
 validate_csrf_from_header();
