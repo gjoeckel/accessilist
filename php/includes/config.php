@@ -115,6 +115,30 @@ if ($environment === 'production') {
 // Export sessions path globally for use in all PHP files
 $GLOBALS['sessionsPath'] = $sessionsPath;
 
+// Configure PHP session parameters BEFORE any session_start() calls
+// This must be done in config.php to ensure consistent session handling
+if ($environment === 'production') {
+    // Production: Secure session cookies
+    session_set_cookie_params([
+        'lifetime' => 0, // Until browser closes
+        'path' => $basePath . '/', // Match the application base path
+        'domain' => '',
+        'secure' => true, // HTTPS only
+        'httponly' => true, // Not accessible via JavaScript
+        'samesite' => 'Lax' // CSRF protection
+    ]);
+} else {
+    // Local development: Less restrictive for testing
+    session_set_cookie_params([
+        'lifetime' => 0,
+        'path' => '/',
+        'domain' => '',
+        'secure' => false, // Allow HTTP for local testing
+        'httponly' => true,
+        'samesite' => 'Lax'
+    ]);
+}
+
 // Export configuration for JavaScript injection
 $envConfig = [
     'environment' => $environment,
