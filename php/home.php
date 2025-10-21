@@ -109,7 +109,7 @@ renderHTMLHead('Accessibility Checklists');
         // Create session and redirect to minimal URL
         // STRICT MODE: Use path helper (handles environment-specific API extension)
         const apiPath = window.getAPIPath('instantiate');
-        const response = await fetch(apiPath, {
+        const response = await fetchWithCsrf(apiPath, {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
