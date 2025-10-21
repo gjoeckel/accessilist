@@ -53,10 +53,10 @@ cleanup() {
     # Remove temp files
     rm -f /tmp/test-cookies-$$.txt
     rm -f /tmp/workflow-cookies-$$.txt
-    
+
     # Kill hung processes
     pkill -P $$ curl
-    
+
     # Log interruptions
     echo "Script interrupted" >> LOG_FILE
 }
@@ -168,7 +168,7 @@ PHASE 1: PERMISSIONS
 PHASE 2: USER WORKFLOW
 ⏳ Launching browser... (This may take 10-60 seconds)
   [Progress visible, timeout after 60s if stuck]
-  
+
 [Cleanup runs automatically on any exit]
 ```
 
@@ -215,4 +215,3 @@ Scripts can now:
 - **Handle interrupts** gracefully
 
 **No more stuck scripts!** 🎯
-
