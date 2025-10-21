@@ -131,149 +131,26 @@ record_fail() {
     FAILURE_OCCURRED=true
 }
 
-# Diagnostic analysis function - called when tests fail
+# Diagnostic analysis function - delegates to external script
+# For AI Agents: This demonstrates the principle of separating concerns.
+# Test execution logic stays here, diagnostic logic is modular and reusable.
 analyze_failures() {
     if [ "$FAILURE_OCCURRED" != "true" ]; then
         return 0
     fi
 
-    echo ""
-    echo -e "${RED}╔════════════════════════════════════════════════════════╗${NC}"
-    echo -e "${RED}║  🔍 AUTOMATIC FAILURE DIAGNOSIS                        ║${NC}"
-    echo -e "${RED}╚════════════════════════════════════════════════════════╝${NC}"
-    echo ""
+    # Call external diagnostic script with context
+    DIAGNOSTIC_SCRIPT="./scripts/external/diagnose-test-failures.sh"
 
-    # Analyze common failure patterns
-    echo -e "${YELLOW}📋 Analyzing Failures...${NC}"
-    echo ""
-
-    # POTENTIAL ISSUES
-    echo -e "${BLUE}🔍 POTENTIAL ISSUES IDENTIFIED:${NC}"
-    echo ""
-
-    issue_count=0
-
-    # Issue 1: Rate Limiting (HTTP 429)
-    if echo "$LAST_FAILURE_DETAILS" | grep -q "429"; then
-        issue_count=$((issue_count + 1))
-        echo -e "${YELLOW}Issue $issue_count: Rate Limiting Active${NC}"
-        echo "  - API is blocking rapid requests with HTTP 429"
-        echo "  - This prevents automated testing but protects production"
+    if [ -f "$DIAGNOSTIC_SCRIPT" ]; then
+        "$DIAGNOSTIC_SCRIPT" "$LOG_FILE" "$ENVIRONMENT" "$LAST_FAILURE_TEST" "$LAST_FAILURE_DETAILS"
+    else
+        # Fallback if diagnostic script missing
         echo ""
-        echo -e "  ${GREEN}Fixes/Alternatives:${NC}"
-        echo "    1. Add delays (sleep 2-5s) between API requests"
-        echo "    2. Whitelist test IP in rate-limiter.php"
-        echo "    3. Run tests from authenticated admin session"
+        echo -e "${YELLOW}⚠️  Diagnostic script not found: $DIAGNOSTIC_SCRIPT${NC}"
+        echo -e "${YELLOW}Please review log file: $LOG_FILE${NC}"
         echo ""
     fi
-
-    # Issue 2: CSRF Token Issues (HTTP 403)
-    if echo "$LAST_FAILURE_DETAILS" | grep -q "403"; then
-        issue_count=$((issue_count + 1))
-        echo -e "${YELLOW}Issue $issue_count: CSRF Protection Blocking Request${NC}"
-        echo "  - Request was blocked due to missing/invalid CSRF token"
-        echo "  - Session cookie may not be persisting correctly"
-        echo ""
-        echo -e "  ${GREEN}Fixes/Alternatives:${NC}"
-        echo "    1. Verify CSRF token is in meta tag (curl -s URL | grep csrf-token)"
-        echo "    2. Check session cookie is being sent (-b cookie-file)"
-        echo "    3. Verify X-CSRF-Token header matches session token"
-        echo ""
-    fi
-
-    # Issue 3: Missing Files/Resources (HTTP 404)
-    if echo "$LAST_FAILURE_DETAILS" | grep -q "404"; then
-        issue_count=$((issue_count + 1))
-        echo -e "${YELLOW}Issue $issue_count: Resource Not Found${NC}"
-        echo "  - File or endpoint does not exist on server"
-        echo "  - May indicate incomplete deployment or wrong URL"
-        echo ""
-        echo -e "  ${GREEN}Fixes/Alternatives:${NC}"
-        echo "    1. Verify deployment completed: ./scripts/deployment/verify-deployment-manifest.sh"
-        echo "    2. Check file exists on server: ssh ... 'ls -la /path/to/file'"
-        echo "    3. Review deployment exclusions in .deployignore"
-        echo ""
-    fi
-
-    # Issue 4: Permission/Access Issues (HTTP 403 non-CSRF)
-    if echo "$LAST_FAILURE_DETAILS" | grep -qi "permission\|writable\|accessible"; then
-        issue_count=$((issue_count + 1))
-        echo -e "${YELLOW}Issue $issue_count: Permission/Access Problem${NC}"
-        echo "  - Directory or file permissions may be incorrect"
-        echo "  - Web server (www-data) may lack necessary access"
-        echo ""
-        echo -e "  ${GREEN}Fixes/Alternatives:${NC}"
-        echo "    1. Check directory permissions: ssh ... 'ls -la /path/to/directory'"
-        echo "    2. Fix ownership: ssh ... 'sudo chown -R www-data:www-data /path/'"
-        echo "    3. Fix permissions: ssh ... 'sudo chmod 755 /dir && sudo chmod 644 /files'"
-        echo ""
-    fi
-
-    # Issue 5: Content Not Found
-    if echo "$LAST_FAILURE_DETAILS" | grep -qi "content not found\|missing"; then
-        issue_count=$((issue_count + 1))
-        echo -e "${YELLOW}Issue $issue_count: Expected Content Missing${NC}"
-        echo "  - Page loaded but doesn't contain expected text/elements"
-        echo "  - May indicate JavaScript rendering or deployment issue"
-        echo ""
-        echo -e "  ${GREEN}Fixes/Alternatives:${NC}"
-        echo "    1. Check if content is JS-rendered (view page source vs DOM)"
-        echo "    2. Verify JS files deployed: curl -s URL/js/main.js | head"
-        echo "    3. Check browser console for JS errors (manual test)"
-        echo ""
-    fi
-
-    # If no specific issues identified
-    if [ $issue_count -eq 0 ]; then
-        echo -e "${YELLOW}Issue 1: Unknown Failure Pattern${NC}"
-        echo "  - Test failed but doesn't match known patterns"
-        echo "  - Last failure: $LAST_FAILURE_TEST"
-        echo "  - Details: $LAST_FAILURE_DETAILS"
-        echo ""
-        echo -e "  ${GREEN}Fixes/Alternatives:${NC}"
-        echo "    1. Review full log file: $LOG_FILE"
-        echo "    2. Run test manually to see full output"
-        echo "    3. Check server error logs: ssh ... 'tail -50 /var/log/apache2/error.log'"
-        echo ""
-    fi
-
-    # ADDITIONAL INFO NEEDED
-    echo -e "${BLUE}📊 ADDITIONAL INFORMATION NEEDED:${NC}"
-    echo ""
-    echo "To better diagnose this issue, please provide:"
-    echo ""
-    echo "  1. Full error output from failed test:"
-    echo "     → Review: $LOG_FILE"
-    echo ""
-    echo "  2. Server-side logs (if accessible):"
-    echo "     → Apache error log: /var/log/apache2/error.log"
-    echo "     → PHP error log: /var/log/php/error.log"
-    echo ""
-    echo "  3. Network response details:"
-    echo "     → Run: curl -v $PROD_URL/<failed-endpoint>"
-    echo ""
-    echo "  4. Recent deployment changes:"
-    echo "     → Run: git log --oneline -10"
-    echo ""
-
-    # NEXT STEPS
-    echo -e "${BLUE}🔧 RECOMMENDED NEXT STEPS:${NC}"
-    echo ""
-    echo "  1. Review diagnostic output above"
-    echo "  2. Gather additional information if needed"
-    echo "  3. Choose most likely fix from alternatives"
-    echo "  4. Test fix on staging (accessilist2) first"
-    echo "  5. Re-run this test script to verify"
-    echo ""
-
-    echo -e "${YELLOW}⏸️  WAITING FOR YOUR DECISION...${NC}"
-    echo ""
-    echo "What would you like to do next?"
-    echo "  → Investigate a specific issue"
-    echo "  → Apply one of the suggested fixes"
-    echo "  → Request more detailed analysis"
-    echo "  → Continue despite failures"
-    echo ""
 }
 
 ################################################################################
