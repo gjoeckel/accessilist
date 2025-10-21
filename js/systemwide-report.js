@@ -207,18 +207,22 @@ export class ReportsManager {
     // Filter checklists by current filter
     let filtered;
     if (this.currentFilter === "all") {
-      // Show all sessions (demos and non-demos)
+      // Show all sessions (demos and non-demos, including "not saved")
       filtered = this.allChecklists;
     } else if (this.currentFilter === "demos") {
       // Show ONLY demo sessions (typeSlug === "demo"), hide all non-demo sessions
+      // Includes both saved and not saved demo sessions
       filtered = this.allChecklists.filter(
         (checklist) => checklist.typeSlug === "demo"
       );
     } else {
       // Filter by calculated status (done, active, ready)
       // Shows sessions of ANY type (demo or non-demo) with matching status
+      // EXCLUDE "not saved" sessions (only show saved sessions with actual status)
       filtered = this.allChecklists.filter(
-        (checklist) => checklist.calculatedStatus === this.currentFilter
+        (checklist) =>
+          checklist.calculatedStatus === this.currentFilter &&
+          checklist.metadata?.lastModified // Only show saved sessions
       );
     }
 
@@ -290,6 +294,11 @@ export class ReportsManager {
     // Get statusButtons for filter-dependent progress calculation
     const statusButtons = checklist.state?.statusButtons || {};
 
+    // Status column: Show "-" for not saved sessions, otherwise show status badge
+    const statusDisplay = isSaved
+      ? this.createStatusBadge(checklist.calculatedStatus)
+      : '<span class="status-placeholder">-</span>';
+
     // Build row HTML
     row.innerHTML = `
             <td class="task-cell">${this.escapeHtml(formattedType)}</td>
@@ -298,9 +307,7 @@ export class ReportsManager {
               checklist.sessionKey,
               typeSlug
             )}</td>
-            <td class="status-cell">${this.createStatusBadge(
-              checklist.calculatedStatus
-            )}</td>
+            <td class="status-cell">${statusDisplay}</td>
             <td class="task-cell">${this.createProgressBar(
               statusButtons,
               checklist.calculatedStatus,
