@@ -46,13 +46,13 @@ if [ "$ENVIRONMENT" = "live" ] || [ "$ENVIRONMENT" = "staging" ]; then
         -o StrictHostKeyChecking=no \
         george@ec2-3-20-59-76.us-east-2.compute.amazonaws.com \
         "[ -d /var/websites/webaim/htdocs/training/online/etc/sessions ] && echo 'exists' || echo 'missing'" 2>&1)
-    
+
     if echo "$session_dir_check" | grep -q "exists"; then
         record_pass "Sessions directory" "(exists)"
     else
         record_fail "Sessions directory" "(missing)"
     fi
-    
+
     # Test 2: Sessions directory writable
     echo -n "  Checking write permissions..."
     increment_test_counter
@@ -61,7 +61,7 @@ if [ "$ENVIRONMENT" = "live" ] || [ "$ENVIRONMENT" = "staging" ]; then
         -o StrictHostKeyChecking=no \
         george@ec2-3-20-59-76.us-east-2.compute.amazonaws.com \
         "[ -w /var/websites/webaim/htdocs/training/online/etc/sessions ] && echo 'writable' || echo 'not-writable'" 2>&1)
-    
+
     if echo "$perm_check" | grep -q "writable"; then
         record_pass "Write permissions" "(www-data can write)"
     else
@@ -83,4 +83,3 @@ echo "PHASE2_PASSED=$PASSED_TESTS"
 echo "PHASE2_FAILED=$FAILED_TESTS"
 
 exit $FAILED_TESTS
-

@@ -109,12 +109,12 @@ if [ $PHASE1_EXIT -ne 0 ]; then
     echo -e "${YELLOW}Critical issues with CSRF protection or rate limiting.${NC}"
     echo -e "${YELLOW}These must be fixed before continuing.${NC}"
     echo ""
-    
+
     # Run diagnostic analysis
     if [ -f "$SCRIPT_DIR/diagnose-test-failures.sh" ]; then
         "$SCRIPT_DIR/diagnose-test-failures.sh" "$LOG_FILE" "$ENVIRONMENT" "Phase 1" "CSRF/Security"
     fi
-    
+
     exit 1
 fi
 
@@ -151,11 +151,11 @@ if [ $PHASE2_EXIT -ne 0 ]; then
     echo -e "${YELLOW}Cannot write to sessions directory.${NC}"
     echo -e "${YELLOW}Users cannot save or restore data.${NC}"
     echo ""
-    
+
     if [ -f "$SCRIPT_DIR/diagnose-test-failures.sh" ]; then
         "$SCRIPT_DIR/diagnose-test-failures.sh" "$LOG_FILE" "$ENVIRONMENT" "Phase 2" "Permissions"
     fi
-    
+
     exit 1
 fi
 
@@ -184,11 +184,11 @@ else
     echo -e "${RED}❌ PHASE 3 FAILED - Browser UI tests failed${NC}"
     FAILED_TESTS=$((FAILED_TESTS + 1))
     TOTAL_TESTS=$((TOTAL_TESTS + 10))
-    
+
     if [ -f "$SCRIPT_DIR/diagnose-test-failures.sh" ]; then
         "$SCRIPT_DIR/diagnose-test-failures.sh" "$LOG_FILE" "$ENVIRONMENT" "Phase 3" "Browser UI"
     fi
-    
+
     exit 1
 fi
 
@@ -224,4 +224,3 @@ else
     echo -e "${CYAN}Log file:${NC} $LOG_FILE"
     exit 1
 fi
-

@@ -51,4 +51,3 @@ else
     echo -e "${YELLOW}   Expected: $SCRIPT_DIR/browser-test-playwright.sh${NC}"
     exit 1
 fi
-
