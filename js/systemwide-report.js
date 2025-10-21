@@ -207,14 +207,16 @@ export class ReportsManager {
     // Filter checklists by current filter
     let filtered;
     if (this.currentFilter === "all") {
+      // Show all sessions (demos and non-demos)
       filtered = this.allChecklists;
     } else if (this.currentFilter === "demos") {
-      // Filter by typeSlug for demo sessions
+      // Show ONLY demo sessions (typeSlug === "demo"), hide all non-demo sessions
       filtered = this.allChecklists.filter(
         (checklist) => checklist.typeSlug === "demo"
       );
     } else {
       // Filter by calculated status (done, active, ready)
+      // Shows sessions of ANY type (demo or non-demo) with matching status
       filtered = this.allChecklists.filter(
         (checklist) => checklist.calculatedStatus === this.currentFilter
       );
@@ -312,7 +314,6 @@ export class ReportsManager {
     return row;
   }
 
-
   /**
    * Create instance link HTML
    */
@@ -372,9 +373,9 @@ export class ReportsManager {
 
     const statuses = Object.values(statusButtons);
     const total = statuses.length;
-    const doneCount = statuses.filter(s => s === "done").length;
-    const activeCount = statuses.filter(s => s === "active").length;
-    const readyCount = statuses.filter(s => s === "ready").length;
+    const doneCount = statuses.filter((s) => s === "done").length;
+    const activeCount = statuses.filter((s) => s === "active").length;
+    const readyCount = statuses.filter((s) => s === "ready").length;
 
     // ALL FILTER: No progress bar, just text summary
     if (this.currentFilter === "all") {
