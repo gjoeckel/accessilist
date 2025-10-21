@@ -129,10 +129,13 @@ php/api/health.php
 # ----------------------------------------------------------------------------
 php/includes/config.php
 php/includes/api-utils.php
+php/includes/csrf.php
 php/includes/html-head.php
 php/includes/footer.php
 php/includes/noscript.php
 php/includes/common-scripts.php
+php/includes/rate-limiter.php
+php/includes/security-headers.php
 php/includes/session-utils.php
 php/includes/type-manager.php
 php/includes/type-formatter.php
@@ -147,6 +150,7 @@ js/StatusManager.js
 js/buildCheckpoints.js
 js/buildDemo.js
 js/addRow.js
+js/csrf-utils.js
 js/simple-modal.js
 js/ModalActions.js
 js/side-panel.js
