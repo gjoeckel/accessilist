@@ -89,14 +89,14 @@
   },
   "external-test-production": {
     "description": "Test LIVE production (accessilist) - use after deployment",
-    "commands": ["./scripts/external/test-live-production.sh"],
+    "commands": ["./scripts/external/test-production.sh live"],
     "auto_approve": true,
     "timeout": 120000,
     "on_error": "continue"
   },
   "external-test-accessilist2": {
     "description": "Test accessilist2 (test instance) - use before going live",
-    "commands": ["./scripts/external/test-accessilist2.sh"],
+    "commands": ["./scripts/external/test-production.sh staging"],
     "auto_approve": true,
     "timeout": 120000,
     "on_error": "continue"
