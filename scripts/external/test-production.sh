@@ -226,7 +226,9 @@ PHASE1_FAILED=false
 echo -n "  Checking etc/sessions directory exists..."
 increment_test_counter
 if [ "$ENVIRONMENT" = "live" ] || [ "$ENVIRONMENT" = "staging" ]; then
-    session_dir_check=$(ssh -i ~/.ssh/GeorgeWebAIMServerKey.pem -o StrictHostKeyChecking=no george@ec2-3-20-59-76.us-east-2.compute.amazonaws.com "[ -d /var/websites/webaim/htdocs/training/online/etc/sessions ] && echo 'exists' || echo 'missing'" 2>&1)
+    # Add SSH timeout (10 seconds max) to prevent hanging
+    # For AI Agents: ALWAYS timeout SSH commands - they can hang indefinitely
+    session_dir_check=$(timeout 10 ssh -i ~/.ssh/GeorgeWebAIMServerKey.pem -o ConnectTimeout=5 -o StrictHostKeyChecking=no george@ec2-3-20-59-76.us-east-2.compute.amazonaws.com "[ -d /var/websites/webaim/htdocs/training/online/etc/sessions ] && echo 'exists' || echo 'missing'" 2>&1)
     if echo "$session_dir_check" | grep -q "exists"; then
         record_pass "Sessions directory exists" "(etc/sessions present)"
     else
@@ -237,7 +239,7 @@ if [ "$ENVIRONMENT" = "live" ] || [ "$ENVIRONMENT" = "staging" ]; then
     # Test 1.2: Sessions directory writable
     echo -n "  Checking sessions directory writable..."
     increment_test_counter
-    perm_check=$(ssh -i ~/.ssh/GeorgeWebAIMServerKey.pem -o StrictHostKeyChecking=no george@ec2-3-20-59-76.us-east-2.compute.amazonaws.com "[ -w /var/websites/webaim/htdocs/training/online/etc/sessions ] && echo 'writable' || echo 'not-writable'" 2>&1)
+    perm_check=$(timeout 10 ssh -i ~/.ssh/GeorgeWebAIMServerKey.pem -o ConnectTimeout=5 -o StrictHostKeyChecking=no george@ec2-3-20-59-76.us-east-2.compute.amazonaws.com "[ -w /var/websites/webaim/htdocs/training/online/etc/sessions ] && echo 'writable' || echo 'not-writable'" 2>&1)
     if echo "$perm_check" | grep -q "writable"; then
         record_pass "Sessions directory writable" "(www-data has write access)"
     else
@@ -305,12 +307,14 @@ PHASE2_FAILED=false
 
 # Run browser-based user workflow test
 echo -e "${YELLOW}Running browser automation test...${NC}"
+echo -e "${CYAN}(This may take 10-60 seconds - please wait)${NC}"
 echo ""
 
 # Check if Node.js and Puppeteer are available
 if command -v node >/dev/null 2>&1; then
     # Run the browser test script with timeout protection
     if [ -f "./scripts/external/browser-test-user-workflow.js" ]; then
+        echo -e "${CYAN}⏳ Launching browser...${NC}"
         # Use timeout command to prevent hanging (60 second max for browser tests)
         # For AI Agents: Always wrap potentially long-running operations in timeout
         timeout 60 env TEST_URL="$PROD_URL" node ./scripts/external/browser-test-user-workflow.js 2>&1
@@ -414,6 +418,7 @@ echo ""
 
 # Test 1: Basic Connectivity
 echo -e "${BLUE}━━━ Test 1: Basic Connectivity ━━━${NC}"
+echo -e "${CYAN}⏳ Testing endpoints...${NC}"
 
 echo -n "  Testing: Production root... "
 increment_test_counter
@@ -868,6 +873,7 @@ echo ""
 
 # Test 12: Security Headers & Protections
 echo -e "${BLUE}━━━ Test 12: Security Headers & Protections ━━━${NC}"
+echo -e "${CYAN}⏳ Checking security headers...${NC}"
 
 echo -n "  Checking HTTPS... "
 increment_test_counter
