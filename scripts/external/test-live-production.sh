@@ -28,9 +28,10 @@ LOG_FILE="$PROJECT_DIR/logs/external-production-test-$(date +%Y%m%d-%H%M%S).log"
 mkdir -p "$PROJECT_DIR/logs"
 
 echo -e "${BLUE}╔════════════════════════════════════════════════════════╗${NC}"
-echo -e "${BLUE}║     External Production Server Testing Suite          ║${NC}"
+echo -e "${BLUE}║   External LIVE Production Testing (accessilist)      ║${NC}"
 echo -e "${BLUE}╚════════════════════════════════════════════════════════╝${NC}"
 echo ""
+echo -e "${YELLOW}⚠️  LIVE PRODUCTION: accessilist (live instance)${NC}"
 echo -e "${CYAN}Production Server:${NC}"
 echo "  URL: $PROD_URL"
 echo "  Log File: $LOG_FILE"
@@ -288,8 +289,8 @@ fi
 
 echo ""
 
-# Test 12: Security Headers
-echo -e "${BLUE}━━━ Test 12: Security & Headers ━━━${NC}"
+# Test 12: Security Headers & Protections
+echo -e "${BLUE}━━━ Test 12: Security Headers & Protections ━━━${NC}"
 
 echo -n "  Checking HTTPS..."
 increment_test_counter
@@ -308,6 +309,110 @@ if echo "$content_type" | grep -q "text/html"; then
     record_pass "Content-Type header" "(text/html)"
 else
     record_fail "Content-Type header" "(Missing or incorrect)"
+fi
+
+echo -n "  Checking X-Frame-Options header..."
+increment_test_counter
+headers=$(curl -s -I "$PROD_URL/home" 2>&1)
+if echo "$headers" | grep -qi "X-Frame-Options.*DENY"; then
+    record_pass "X-Frame-Options" "(DENY - clickjacking protected)"
+else
+    record_fail "X-Frame-Options" "(Missing or incorrect)"
+fi
+
+echo -n "  Checking X-Content-Type-Options header..."
+increment_test_counter
+if echo "$headers" | grep -qi "X-Content-Type-Options.*nosniff"; then
+    record_pass "X-Content-Type-Options" "(nosniff - MIME sniffing protected)"
+else
+    record_fail "X-Content-Type-Options" "(Missing)"
+fi
+
+echo -n "  Checking Content-Security-Policy header..."
+increment_test_counter
+if echo "$headers" | grep -qi "Content-Security-Policy"; then
+    record_pass "Content-Security-Policy" "(CSP enabled)"
+else
+    record_fail "Content-Security-Policy" "(Missing)"
+fi
+
+echo -n "  Checking Strict-Transport-Security header..."
+increment_test_counter
+if echo "$headers" | grep -qi "Strict-Transport-Security"; then
+    record_pass "HSTS" "(Enforces HTTPS)"
+else
+    record_fail "HSTS" "(Missing - production should enforce HTTPS)"
+fi
+
+echo ""
+
+# Test 13: CSRF Protection
+echo -e "${BLUE}━━━ Test 13: CSRF Protection ━━━${NC}"
+
+echo -n "  Checking CSRF token in page..."
+increment_test_counter
+page_content=$(curl -s -L "$PROD_URL/home" 2>&1)
+if echo "$page_content" | grep -q 'name="csrf-token"'; then
+    record_pass "CSRF meta tag present" "(Token in page)"
+else
+    record_fail "CSRF meta tag present" "(Missing)"
+fi
+
+echo -n "  Checking csrf-utils.js loaded..."
+increment_test_counter
+if echo "$page_content" | grep -q 'csrf-utils.js'; then
+    record_pass "CSRF utilities loaded" "(csrf-utils.js present)"
+else
+    record_fail "CSRF utilities loaded" "(Missing)"
+fi
+
+echo -n "  Testing CSRF blocks unauthenticated POST..."
+increment_test_counter
+csrf_response=$(curl -s -w "\n%{http_code}" -X POST "$PROD_URL/php/api/instantiate" \
+    -H "Content-Type: application/json" \
+    -d '{"sessionKey":"TST","typeSlug":"word"}' 2>&1)
+http_code=$(echo "$csrf_response" | tail -n1)
+if [ "$http_code" = "403" ]; then
+    record_pass "CSRF protection active" "(403 - blocked without token)"
+else
+    record_fail "CSRF protection active" "(Expected 403, got $http_code)"
+fi
+
+echo ""
+
+# Test 14: Rate Limiting
+echo -e "${BLUE}━━━ Test 14: Rate Limiting ━━━${NC}"
+
+echo -n "  Checking rate limiter files present..."
+increment_test_counter
+rl_content=$(curl -s -L "$PROD_URL/php/includes/rate-limiter.php" 2>&1)
+if echo "$rl_content" | grep -q "class RateLimiter"; then
+    record_pass "Rate limiter deployed" "(rate-limiter.php present)"
+else
+    record_fail "Rate limiter deployed" "(Missing or not accessible)"
+fi
+
+echo ""
+
+# Test 15: Sessions Security
+echo -e "${BLUE}━━━ Test 15: Sessions Security ━━━${NC}"
+
+echo -n "  Testing sessions NOT accessible via HTTP..."
+increment_test_counter
+session_http=$(curl -s -o /dev/null -w "%{http_code}" "$PROD_URL/sessions/1A8.json" 2>&1)
+if [ "$session_http" = "404" ] || [ "$session_http" = "403" ]; then
+    record_pass "Sessions HTTP blocked" "(HTTP $session_http - not accessible)"
+else
+    record_fail "Sessions HTTP blocked" "(HTTP $session_http - SECURITY ISSUE!)"
+fi
+
+echo -n "  Testing etc/sessions NOT accessible via HTTP..."
+increment_test_counter
+etc_http=$(curl -s -o /dev/null -w "%{http_code}" "https://webaim.org/training/online/etc/sessions/1A8.json" 2>&1)
+if [ "$etc_http" = "404" ] || [ "$etc_http" = "403" ]; then
+    record_pass "etc/sessions HTTP blocked" "(HTTP $etc_http - outside web root)"
+else
+    record_fail "etc/sessions HTTP blocked" "(HTTP $etc_http - SECURITY ISSUE!)"
 fi
 
 echo ""

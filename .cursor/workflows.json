@@ -88,8 +88,15 @@
     "on_error": "continue"
   },
   "external-test-production": {
-    "description": "Test actual production server at webaim.org",
-    "commands": ["./scripts/external/test-production.sh"],
+    "description": "Test LIVE production (accessilist) - use after deployment",
+    "commands": ["./scripts/external/test-live-production.sh"],
+    "auto_approve": true,
+    "timeout": 120000,
+    "on_error": "continue"
+  },
+  "external-test-accessilist2": {
+    "description": "Test accessilist2 (test instance) - use before going live",
+    "commands": ["./scripts/external/test-accessilist2.sh"],
     "auto_approve": true,
     "timeout": 120000,
     "on_error": "continue"
