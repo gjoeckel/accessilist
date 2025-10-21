@@ -27,8 +27,9 @@
 ## 📦 Project-Specific Workflows (This Project Only)
 
 ### Testing & Validation
-- **proj-test-mirror** - Test production mirror configuration (Docker Apache, 75 tests, 100% pass rate)
-- **external-test-production** - Test actual production server at webaim.org (42 tests)
+- **proj-test-mirror** - Test production mirror configuration (Docker Apache, 100 tests, 100% pass rate)
+- **external-test-production** - Test staging (accessilist2) - use before going live
+- **external-live-production** - Test LIVE production (accessilist) - use after deployment
 - **proj-deploy-check** - Run pre-deployment validation
 
 ### Development Servers
@@ -36,10 +37,14 @@
 - **proj-docker-up** - Start Docker Apache server (port 8080)
 - **proj-docker-down** - Stop Docker Apache server
 
+### Deployment
+- **proj-deploy-accessilist2** - Deploy to TEST directory (accessilist2) for validation
+- **proj-push-deploy-github** - Deploy to production using explicit file list (89 files)
+
 ### Code Quality
 - **proj-dry** - Run duplicate code detection (AccessiList-specific)
 
-**Total Project:** 7 workflows
+**Total Project:** 10 workflows
 
 ---
 
@@ -82,8 +87,9 @@ Project scripts can be run directly:
 
 | Workflow | Environment | Tests | URL | Purpose |
 |----------|-------------|-------|-----|---------|
-| **proj-test-mirror** | Local Docker Apache | 75 | http://127.0.0.1:8080 | Pre-deployment testing |
-| **external-test-production** | Live Production | 41 | https://webaim.org/training/online/accessilist | Post-deployment verification |
+| **proj-test-mirror** | Local Docker Apache | 100 | http://127.0.0.1:8080 | Pre-deployment testing |
+| **external-test-production** | Staging (accessilist2) | 54 | https://webaim.org/training/online/accessilist2 | Pre-live validation |
+| **external-live-production** | Live Production | 54 | https://webaim.org/training/online/accessilist | Post-deployment verification |
 
 ### Deployment Workflows
 
@@ -110,13 +116,13 @@ Project scripts can be run directly:
 
 ## 📊 Summary
 
-**Total Workflows:** 21 (14 global + 7 project)
+**Total Workflows:** 22 (14 global + 8 project)
 
 **Categories:**
 - **AI Session Management** (5): ai-start, ai-end, ai-update, ai-repeat, ai-compress
 - **Git Operations** (4): ai-local-commit, ai-local-merge, ai-merge-finalize, ai-push-*
 - **MCP Management** (2): mcp-health, mcp-restart
-- **Testing** (2): proj-test-mirror, external-test-production
+- **Testing** (3): proj-test-mirror, external-test-production, external-live-production
 - **Docker** (2): proj-docker-up, proj-docker-down
 - **Code Quality** (1): proj-dry
 - **Deployment** (2): proj-deploy-check, ai-push-deploy-github
@@ -194,9 +200,15 @@ proj-test-mirror      # Final local test
 ai-push-deploy-github # Deploy to production
 ```
 
-### After Deployment
+### Before Deployment (Staging)
 ```bash
-external-test-production  # Verify production (41 tests)
+proj-deploy-accessilist2  # Deploy to staging
+external-test-production  # Test staging (54 tests)
+```
+
+### After Deployment (Live)
+```bash
+external-live-production  # Verify live production (54 tests)
 ```
 
 ### Troubleshooting
