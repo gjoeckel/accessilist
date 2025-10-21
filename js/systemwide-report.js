@@ -497,7 +497,7 @@ export class ReportsManager {
         ? window.getAPIPath("delete")
         : "/php/api/delete.php";
 
-      const response = await fetch(apiPath + "?session=" + sessionKey, {
+      const response = await fetchWithCsrf(apiPath + "?session=" + sessionKey, {
         method: "DELETE",
       });
 

@@ -1,5 +1,9 @@
 <?php
 require_once __DIR__ . '/../includes/api-utils.php';
+require_once __DIR__ . '/../includes/rate-limiter.php';
+
+// Rate limiting: 200 restores per hour per IP
+enforce_rate_limit($_SERVER['REMOTE_ADDR'] . '_restore', 200, 3600);
 
 // Get session key from query parameters
 $sessionKey = isset($_GET['sessionKey']) ? $_GET['sessionKey'] : '';
@@ -29,4 +33,4 @@ if ($decoded === null) {
 }
 
 // Return the saved data using standard response format
-send_success($decoded); 
+send_success($decoded);

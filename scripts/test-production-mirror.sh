@@ -230,31 +230,32 @@ test_endpoint_content "Home page content" "$BASE_URL/home" "Accessibility Checkl
 # test_endpoint_content "Admin page content" "$BASE_URL/admin" "Admin" "Admin page has correct content"
 test_endpoint_content "Systemwide report page content" "$BASE_URL/systemwide-report" "Systemwide Report" "Systemwide report page has correct content"
 
-# Test 8: Save/Restore API Workflow
-print_section "Test 8: Save/Restore API Workflow"
-log "=== Test 8: Save/Restore API ==="
+# Test 8: CSRF Protection Verification
+print_section "Test 8: CSRF Protection Verification"
+log "=== Test 8: CSRF Protection ==="
 
 # Generate a test session key
 TEST_KEY="TST$(date +%s | tail -c 4)"
 echo "  Using test session key: $TEST_KEY"
 
-# Test instantiate
+# Test 8a: Verify instantiate is blocked without CSRF token (security working)
 increment_test_counter
-INSTANTIATE_RESPONSE=$(curl -s -X POST "$BASE_URL/php/api/instantiate" \
+INSTANTIATE_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$BASE_URL/php/api/instantiate" \
     -H "Content-Type: application/json" \
-    -d "{\"session\":\"$TEST_KEY\",\"type\":\"word\"}" 2>&1)
+    -d "{\"sessionKey\":\"$TEST_KEY\",\"typeSlug\":\"word\"}" 2>&1)
 
-if echo "$INSTANTIATE_RESPONSE" | grep -q "success"; then
-    echo -e "  Instantiate API: ${GREEN}✅ PASS${NC}"
+HTTP_CODE=$(echo "$INSTANTIATE_RESPONSE" | tail -n1)
+if [ "$HTTP_CODE" = "403" ]; then
+    echo -e "  CSRF on instantiate (blocked): ${GREEN}✅ PASS${NC}"
     PASSED_TESTS=$((PASSED_TESTS + 1))
-    log "PASS: Instantiate API"
+    log "PASS: Instantiate blocked without CSRF token (security working)"
 else
-    echo -e "  Instantiate API: ${RED}❌ FAIL${NC}"
+    echo -e "  CSRF on instantiate (blocked): ${RED}❌ FAIL${NC}"
     FAILED_TESTS=$((FAILED_TESTS + 1))
-    log "FAIL: Instantiate API"
+    log "FAIL: Instantiate should be blocked without CSRF token (got HTTP $HTTP_CODE)"
 fi
 
-# Test save with correct data format
+# Test 8b: Verify save is blocked without CSRF token (security working)
 SAVE_DATA='{
     "sessionKey":"'$TEST_KEY'",
     "timestamp":'$(date +%s)'000,
@@ -274,37 +275,35 @@ SAVE_DATA='{
 }'
 
 increment_test_counter
-SAVE_RESPONSE=$(curl -s -X POST "$BASE_URL/php/api/save" \
+SAVE_RESPONSE=$(curl -s -w "\n%{http_code}" -X POST "$BASE_URL/php/api/save" \
     -H "Content-Type: application/json" \
     -d "$SAVE_DATA" 2>&1)
 
-if echo "$SAVE_RESPONSE" | grep -q '"success":true'; then
-    echo -e "  Save API: ${GREEN}✅ PASS${NC}"
+HTTP_CODE=$(echo "$SAVE_RESPONSE" | tail -n1)
+if [ "$HTTP_CODE" = "403" ]; then
+    echo -e "  CSRF on save (blocked): ${GREEN}✅ PASS${NC}"
     PASSED_TESTS=$((PASSED_TESTS + 1))
-    log "PASS: Save API"
+    log "PASS: Save blocked without CSRF token (security working)"
 else
-    echo -e "  Save API: ${RED}❌ FAIL${NC}"
+    echo -e "  CSRF on save (blocked): ${RED}❌ FAIL${NC}"
     FAILED_TESTS=$((FAILED_TESTS + 1))
-    log "FAIL: Save API - Response: $SAVE_RESPONSE"
+    log "FAIL: Save should be blocked without CSRF token (got HTTP $HTTP_CODE)"
 fi
 
-# Verify file was created
-if [ -f "$PROJECT_DIR/sessions/$TEST_KEY.json" ]; then
-    echo "  ✓ Session file created successfully"
-else
-    echo "  ✗ Session file not created"
-fi
+# Test 8c: Verify restore still works (GET request, no CSRF needed)
+# Create a test session file manually for restore test
+mkdir -p "$PROJECT_DIR/sessions"
+echo "$SAVE_DATA" > "$PROJECT_DIR/sessions/$TEST_KEY.json"
 
-# Test restore
 increment_test_counter
 RESTORE_RESPONSE=$(curl -s "$BASE_URL/php/api/restore?sessionKey=$TEST_KEY" 2>&1)
 
 if echo "$RESTORE_RESPONSE" | grep -q "Test content from production-mirror tests"; then
-    echo -e "  Restore API: ${GREEN}✅ PASS${NC}"
+    echo -e "  Restore API (GET allowed): ${GREEN}✅ PASS${NC}"
     PASSED_TESTS=$((PASSED_TESTS + 1))
-    log "PASS: Restore API"
+    log "PASS: Restore API (GET requests don't need CSRF)"
 else
-    echo -e "  Restore API: ${RED}❌ FAIL${NC}"
+    echo -e "  Restore API (GET allowed): ${RED}❌ FAIL${NC}"
     FAILED_TESTS=$((FAILED_TESTS + 1))
     log "FAIL: Restore API - Response: $RESTORE_RESPONSE"
 fi
@@ -312,7 +311,7 @@ fi
 # Cleanup test session
 if [ -f "$PROJECT_DIR/sessions/$TEST_KEY.json" ]; then
     rm "$PROJECT_DIR/sessions/$TEST_KEY.json"
-    echo "  Cleaned up test session file"
+    echo "  ✓ Cleaned up test session file"
 fi
 
 # Test 9: Minimal URL Format

@@ -2,6 +2,14 @@
 require_once 'php/includes/config.php';
 require_once 'php/includes/session-utils.php';
 require_once 'php/includes/type-manager.php';
+require_once 'php/includes/security-headers.php';
+require_once 'php/includes/csrf.php';
+
+// Set security headers
+set_security_headers();
+
+// Generate CSRF token for the session and make it globally available
+$GLOBALS['csrfToken'] = generate_csrf_token();
 
 // Handle minimal URL parameter format: ?=EDF
 $requestUri = $_SERVER['REQUEST_URI'] ?? '';
