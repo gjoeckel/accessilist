@@ -76,7 +76,7 @@ record_fail() {
     FAILED_TESTS=$((FAILED_TESTS + 1))
     echo -e " ${RED}❌ FAIL${NC} $2"
     log "FAIL: $1 $2"
-    
+
     # Store failure details for diagnostic analysis
     LAST_FAILURE_TEST="$1"
     LAST_FAILURE_DETAILS="$2"
@@ -88,23 +88,23 @@ analyze_failures() {
     if [ "$FAILURE_OCCURRED" != "true" ]; then
         return 0
     fi
-    
+
     echo ""
     echo -e "${RED}╔════════════════════════════════════════════════════════╗${NC}"
     echo -e "${RED}║  🔍 AUTOMATIC FAILURE DIAGNOSIS                        ║${NC}"
     echo -e "${RED}╚════════════════════════════════════════════════════════╝${NC}"
     echo ""
-    
+
     # Analyze common failure patterns
     echo -e "${YELLOW}📋 Analyzing Failures...${NC}"
     echo ""
-    
+
     # POTENTIAL ISSUES
     echo -e "${BLUE}🔍 POTENTIAL ISSUES IDENTIFIED:${NC}"
     echo ""
-    
+
     issue_count=0
-    
+
     # Issue 1: Rate Limiting (HTTP 429)
     if echo "$LAST_FAILURE_DETAILS" | grep -q "429"; then
         issue_count=$((issue_count + 1))
@@ -118,7 +118,7 @@ analyze_failures() {
         echo "    3. Run tests from authenticated admin session"
         echo ""
     fi
-    
+
     # Issue 2: CSRF Token Issues (HTTP 403)
     if echo "$LAST_FAILURE_DETAILS" | grep -q "403"; then
         issue_count=$((issue_count + 1))
@@ -132,7 +132,7 @@ analyze_failures() {
         echo "    3. Verify X-CSRF-Token header matches session token"
         echo ""
     fi
-    
+
     # Issue 3: Missing Files/Resources (HTTP 404)
     if echo "$LAST_FAILURE_DETAILS" | grep -q "404"; then
         issue_count=$((issue_count + 1))
@@ -146,7 +146,7 @@ analyze_failures() {
         echo "    3. Review deployment exclusions in .deployignore"
         echo ""
     fi
-    
+
     # Issue 4: Permission/Access Issues (HTTP 403 non-CSRF)
     if echo "$LAST_FAILURE_DETAILS" | grep -qi "permission\|writable\|accessible"; then
         issue_count=$((issue_count + 1))
@@ -160,7 +160,7 @@ analyze_failures() {
         echo "    3. Fix permissions: ssh ... 'sudo chmod 755 /dir && sudo chmod 644 /files'"
         echo ""
     fi
-    
+
     # Issue 5: Content Not Found
     if echo "$LAST_FAILURE_DETAILS" | grep -qi "content not found\|missing"; then
         issue_count=$((issue_count + 1))
@@ -174,7 +174,7 @@ analyze_failures() {
         echo "    3. Check browser console for JS errors (manual test)"
         echo ""
     fi
-    
+
     # If no specific issues identified
     if [ $issue_count -eq 0 ]; then
         echo -e "${YELLOW}Issue 1: Unknown Failure Pattern${NC}"
@@ -188,7 +188,7 @@ analyze_failures() {
         echo "    3. Check server error logs: ssh ... 'tail -50 /var/log/apache2/error.log'"
         echo ""
     fi
-    
+
     # ADDITIONAL INFO NEEDED
     echo -e "${BLUE}📊 ADDITIONAL INFORMATION NEEDED:${NC}"
     echo ""
@@ -207,7 +207,7 @@ analyze_failures() {
     echo "  4. Recent deployment changes:"
     echo "     → Run: git log --oneline -10"
     echo ""
-    
+
     # NEXT STEPS
     echo -e "${BLUE}🔧 RECOMMENDED NEXT STEPS:${NC}"
     echo ""
@@ -217,7 +217,7 @@ analyze_failures() {
     echo "  4. Test fix on staging (accessilist2) first"
     echo "  5. Re-run this test script to verify"
     echo ""
-    
+
     echo -e "${YELLOW}⏸️  WAITING FOR YOUR DECISION...${NC}"
     echo ""
     echo "What would you like to do next?"
@@ -1037,9 +1037,9 @@ else
     echo ""
     echo -e "${CYAN}Log file:${NC} $LOG_FILE"
     echo ""
-    
+
     # Run automatic diagnostic analysis
     analyze_failures
-    
+
     exit 1
 fi
