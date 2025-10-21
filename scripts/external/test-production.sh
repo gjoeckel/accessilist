@@ -54,6 +54,49 @@
 
 set -o pipefail
 
+################################################################################
+# ERROR RECOVERY & CLEANUP
+################################################################################
+# For AI Agents: Always add cleanup and error recovery mechanisms.
+# Scripts can get stuck, timeout, or crash - handle gracefully.
+################################################################################
+
+# Cleanup function - runs on script exit (success, failure, or interrupt)
+cleanup() {
+    local exit_code=$?
+
+    # Remove temporary files
+    rm -f /tmp/test-cookies-$$.txt 2>/dev/null
+    rm -f /tmp/workflow-cookies-$$.txt 2>/dev/null
+
+    # Kill any hung curl processes
+    pkill -P $$ curl 2>/dev/null || true
+
+    # If script was interrupted, log it
+    if [ $exit_code -eq 130 ] || [ $exit_code -eq 143 ]; then
+        echo "" >> "$LOG_FILE"
+        echo "$(date '+%Y-%m-%d %H:%M:%S') - Script interrupted or timed out" >> "$LOG_FILE"
+        echo ""
+        echo -e "${YELLOW}⚠️  Script was interrupted or timed out${NC}"
+        echo -e "${CYAN}Partial results saved to: $LOG_FILE${NC}"
+    fi
+
+    exit $exit_code
+}
+
+# Set up trap to call cleanup on exit, interrupt, or error
+trap cleanup EXIT INT TERM
+
+# Timeout handler - prevents scripts from hanging indefinitely
+# For AI Agents: Always add timeouts to network operations
+set_timeouts() {
+    # Default curl timeout for all commands
+    # This prevents hung connections from blocking the entire test suite
+    alias curl='curl --max-time 30 --connect-timeout 10'
+}
+
+set_timeouts
+
 # Check for environment argument
 ENVIRONMENT=${1:-staging}  # Default to staging for safety
 
@@ -266,20 +309,39 @@ echo ""
 
 # Check if Node.js and Puppeteer are available
 if command -v node >/dev/null 2>&1; then
-    # Run the browser test script
+    # Run the browser test script with timeout protection
     if [ -f "./scripts/external/browser-test-user-workflow.js" ]; then
-        TEST_URL="$PROD_URL" node ./scripts/external/browser-test-user-workflow.js
+        # Use timeout command to prevent hanging (60 second max for browser tests)
+        # For AI Agents: Always wrap potentially long-running operations in timeout
+        timeout 60 env TEST_URL="$PROD_URL" node ./scripts/external/browser-test-user-workflow.js 2>&1
         BROWSER_TEST_EXIT=$?
 
-        if [ $BROWSER_TEST_EXIT -ne 0 ]; then
+        # Check exit codes
+        # 0 = success
+        # 124 = timeout (from timeout command)
+        # 130 = Ctrl+C interrupt
+        # Other = actual test failure
+
+        if [ $BROWSER_TEST_EXIT -eq 0 ]; then
             echo ""
-            echo -e "${RED}❌ Browser workflow test FAILED${NC}"
+            echo -e "${GREEN}✅ Browser workflow test PASSED${NC}"
+            PASSED_TESTS=$((PASSED_TESTS + 1))
+        elif [ $BROWSER_TEST_EXIT -eq 124 ]; then
+            echo ""
+            echo -e "${YELLOW}⚠️  Browser test TIMED OUT after 60s${NC}"
+            echo -e "${YELLOW}   This may indicate a hung browser or slow network${NC}"
+            PHASE2_FAILED=true
+            FAILED_TESTS=$((FAILED_TESTS + 1))
+        elif [ $BROWSER_TEST_EXIT -eq 130 ]; then
+            echo ""
+            echo -e "${YELLOW}⚠️  Browser test INTERRUPTED by user${NC}"
             PHASE2_FAILED=true
             FAILED_TESTS=$((FAILED_TESTS + 1))
         else
             echo ""
-            echo -e "${GREEN}✅ Browser workflow test PASSED${NC}"
-            PASSED_TESTS=$((PASSED_TESTS + 1))
+            echo -e "${RED}❌ Browser workflow test FAILED (exit code: $BROWSER_TEST_EXIT)${NC}"
+            PHASE2_FAILED=true
+            FAILED_TESTS=$((FAILED_TESTS + 1))
         fi
         TOTAL_TESTS=$((TOTAL_TESTS + 1))
     else
