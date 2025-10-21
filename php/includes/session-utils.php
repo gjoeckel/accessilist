@@ -16,7 +16,9 @@
 require_once __DIR__ . '/type-manager.php';
 
 function getChecklistTypeFromSession($sessionKey, $defaultType = 'camtasia') {
-    $sessionFile = "sessions/{$sessionKey}.json";
+    // Use centralized saves_path_for() function for consistent path handling
+    require_once __DIR__ . '/api-utils.php';
+    $sessionFile = saves_path_for($sessionKey);
 
     if (!file_exists($sessionFile)) {
         return $defaultType;

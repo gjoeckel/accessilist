@@ -103,6 +103,18 @@ $apiExtension = $_ENV[$apiExtKey] ?? '';
 $debugKey = 'DEBUG_' . $envKey;
 $debugMode = ($_ENV[$debugKey] ?? 'false') === 'true';
 
+// Sessions directory path (outside web root in production for security)
+if ($environment === 'production') {
+    // Production: Store in etc/sessions (sibling to .env, outside web root)
+    $sessionsPath = $_ENV['SESSIONS_PATH'] ?? '/var/websites/webaim/htdocs/training/online/etc/sessions';
+} else {
+    // Local development: keep in project for convenience
+    $sessionsPath = __DIR__ . '/../../sessions';
+}
+
+// Export sessions path globally for use in all PHP files
+$GLOBALS['sessionsPath'] = $sessionsPath;
+
 // Export configuration for JavaScript injection
 $envConfig = [
     'environment' => $environment,

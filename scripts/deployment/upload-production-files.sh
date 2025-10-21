@@ -216,9 +216,10 @@ json/test-7.json
 json/test-10-checkpoints.json
 
 # ----------------------------------------------------------------------------
-# DATA DIRECTORIES (1 file)
+# DATA DIRECTORIES
 # ----------------------------------------------------------------------------
-sessions/.htaccess
+# NOTE: sessions/.htaccess removed - sessions now stored in etc/sessions (outside web root)
+# No .htaccess needed for etc/ directory (already inaccessible via HTTP)
 
 # ============================================================================
 # END OF FILE LIST - Total: 89 files
@@ -287,11 +288,12 @@ fi
 # ============================================================================
 log_info "Running post-deployment tasks..."
 
-# Ensure sessions directory exists and is writable by Apache
+# Ensure sessions directory exists in etc/ (outside web root for security)
+# Location: /var/websites/webaim/htdocs/training/online/etc/sessions
 # Use 775: Owner + Group can write, Others read-only (secure)
 # Apache runs as www-data (group member) so group write access is sufficient
-ssh -i "$SSH_KEY" "${DEPLOY_TARGET}" "cd ${DEPLOY_PATH} && mkdir -p sessions && chmod 775 sessions"
-log_success "Sessions directory verified (permissions: 775 - secure group write access)"
+ssh -i "$SSH_KEY" "${DEPLOY_TARGET}" "mkdir -p /var/websites/webaim/htdocs/training/online/etc/sessions && chmod 775 /var/websites/webaim/htdocs/training/online/etc/sessions"
+log_success "Sessions directory verified in etc/ (outside web root - permissions: 775)"
 
 # ============================================================================
 # DEPLOYMENT SUMMARY

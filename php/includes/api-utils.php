@@ -37,5 +37,7 @@ function validate_session_key($sessionKey) {
 }
 
 function saves_path_for($sessionKey) {
-  return __DIR__ . '/../../sessions/' . $sessionKey . '.json';
+  // Use environment-configured sessions path (defaults to etc/sessions in production)
+  global $sessionsPath;
+  return $sessionsPath . '/' . $sessionKey . '.json';
 }

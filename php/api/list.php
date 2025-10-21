@@ -7,8 +7,8 @@ require_once __DIR__ . '/../includes/rate-limiter.php';
 enforce_rate_limit($_SERVER['REMOTE_ADDR'] . '_list', 100, 3600);
 
 // Get all JSON files from the sessions directory using the same path as other APIs
-$savesDir = dirname(saves_path_for('dummy')) . '/';
-$files = glob($savesDir . '*.json');
+global $sessionsPath;
+$files = glob($sessionsPath . '/*.json');
 
 if ($files === false) {
     send_error('Failed to access sessions directory', 500);

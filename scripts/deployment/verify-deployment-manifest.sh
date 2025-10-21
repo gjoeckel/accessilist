@@ -155,8 +155,8 @@ declare -a PRODUCTION_FILES=(
     "json/test-7.json"
     "json/test-10-checkpoints.json"
 
-    # Sessions (1 file)
-    "sessions/.htaccess"
+    # Sessions - NOTE: No longer deploying sessions/.htaccess
+    # Sessions now stored in etc/sessions (outside web root) - no .htaccess needed
 )
 
 # Verify each file
@@ -183,13 +183,17 @@ echo -e "   Files Found:   ${GREEN}$FOUND_COUNT${NC} / 89"
 echo -e "   Files Missing: $([ $MISSING_COUNT -eq 0 ] && echo -e ${GREEN} || echo -e ${RED})$MISSING_COUNT${NC}"
 echo ""
 
-# Check sessions directory
+# Check sessions directory (can be real directory or symlink to etc/sessions)
 SESSIONS_EXISTS=0
-if [ -d "sessions" ]; then
-    echo -e "${GREEN}✅ sessions/ directory exists${NC}"
+if [ -d "sessions" ] || [ -L "sessions" ]; then
+    if [ -L "sessions" ]; then
+        echo -e "${GREEN}✅ sessions/ symlink exists (points to etc/sessions - secure)${NC}"
+    else
+        echo -e "${YELLOW}⚠️  sessions/ is a real directory (consider migrating to etc/sessions)${NC}"
+    fi
     SESSIONS_EXISTS=1
 else
-    echo -e "${YELLOW}⚠️  sessions/ directory missing (will be created on first save)${NC}"
+    echo -e "${YELLOW}⚠️  sessions/ directory missing (will be created in etc/ on deployment)${NC}"
 fi
 
 TOTAL_FOUND=$((FOUND_COUNT + SESSIONS_EXISTS))

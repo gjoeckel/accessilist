@@ -10,8 +10,8 @@ require_once __DIR__ . '/../includes/api-utils.php';
 require_once __DIR__ . '/../includes/type-manager.php';
 
 // Get all JSON files from the sessions directory
-$savesDir = dirname(saves_path_for('dummy')) . '/';
-$files = glob($savesDir . '*.json');
+global $sessionsPath;
+$files = glob($sessionsPath . '/*.json');
 
 if ($files === false) {
     send_error('Failed to access sessions directory', 500);

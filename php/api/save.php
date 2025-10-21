@@ -14,9 +14,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 // Verify sessions directory exists
-$savesDir = __DIR__ . '/../../sessions';
-if (!file_exists($savesDir)) {
-    send_error('Saves directory not found', 500);
+global $sessionsPath;
+if (!file_exists($sessionsPath)) {
+    send_error('Sessions directory not found', 500);
 }
 
 // Get POST data

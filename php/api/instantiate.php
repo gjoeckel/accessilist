@@ -17,8 +17,8 @@ enforce_rate_limit($_SERVER['REMOTE_ADDR'] . '_instantiate', 20, 3600);
 validate_csrf_from_header();
 
 // Ensure sessions directory exists
-$savesDir = __DIR__ . '/../../sessions';
-if (!file_exists($savesDir) && !mkdir($savesDir, 0755, true)) {
+global $sessionsPath;
+if (!file_exists($sessionsPath) && !mkdir($sessionsPath, 0755, true)) {
     send_error('Failed to create sessions directory', 500);
 }
 

@@ -41,10 +41,10 @@ function generateRandomKey() {
  * No fallbacks - returns error if exhausted
  */
 function generateUniqueKey() {
-    $savesDir = __DIR__ . '/../../sessions';
+    global $sessionsPath;
 
-    if (!file_exists($savesDir)) {
-        send_error('Saves directory not found', 500);
+    if (!file_exists($sessionsPath)) {
+        send_error('Sessions directory not found', 500);
     }
 
     // Try up to 100 times to find unique key
@@ -59,7 +59,8 @@ function generateUniqueKey() {
             continue;
         }
 
-        $filename = "$savesDir/$key.json";
+        // Use saves_path_for() for consistent path handling
+        $filename = saves_path_for($key);
 
         if (!file_exists($filename)) {
             return $key;
