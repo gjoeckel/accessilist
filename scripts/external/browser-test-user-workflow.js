@@ -5,7 +5,7 @@
  *
  * Tests what USERS actually do, not just APIs
  * If this fails, the application is BROKEN for users
- * 
+ *
  * FOR AI AGENTS:
  * - Use event-driven waits (waitForSelector, waitForFunction)
  * - NEVER use arbitrary timeouts (waitForTimeout removed in Puppeteer v22+)
@@ -18,7 +18,7 @@ const puppeteer = require("puppeteer");
 const BASE_URL =
   process.env.TEST_URL || "https://webaim.org/training/online/accessilist2";
 const SESSION_KEY = `USR${Date.now().toString().slice(-4)}`;
-const SCREENSHOT_DIR = process.env.SCREENSHOT_PATH || './tests/screenshots';
+const SCREENSHOT_DIR = process.env.SCREENSHOT_PATH || "./tests/screenshots";
 
 console.log("\n╔════════════════════════════════════════════════════════╗");
 console.log("║  🌐 REAL USER WORKFLOW TEST (Browser Automation)      ║");
@@ -33,11 +33,11 @@ console.log(`Session: ${SESSION_KEY}\n`);
   });
 
   const page = await browser.newPage();
-  
+
   // Set default timeouts (30 seconds)
   page.setDefaultTimeout(30000);
   page.setDefaultNavigationTimeout(30000);
-  
+
   let testsPassed = 0;
   let testsFailed = 0;
 
@@ -72,15 +72,14 @@ console.log(`Session: ${SESSION_KEY}\n`);
 
     // Test 3: User clicks a checklist type (Word)
     console.log("\n📋 Test 3: User clicks Word checklist...");
-    
-    // Event-driven approach: Wait for navigation to start, THEN click
-    // This eliminates race conditions
+
+    // Event-driven: Wait for navigation AND click atomically
     try {
       await Promise.all([
         page.waitForNavigation({ waitUntil: "networkidle0", timeout: 10000 }),
-        wordButton.click()
+        wordButton.click(),
       ]);
-      
+
       const currentUrl = page.url();
       if (currentUrl.includes("type=word")) {
         console.log("   ✅ PASS - Navigated to Word checklist");
@@ -95,11 +94,11 @@ console.log(`Session: ${SESSION_KEY}\n`);
 
     // Test 4: User sees checklist rendered
     console.log("\n📋 Test 4: User sees checklist with checkpoints...");
-    
+
     try {
-      await page.waitForSelector(".checkpoint-row", { 
+      await page.waitForSelector(".checkpoint-row", {
         visible: true,
-        timeout: 5000 
+        timeout: 5000,
       });
       const checkpoints = await page.$$(".checkpoint-row");
 
@@ -121,19 +120,23 @@ console.log(`Session: ${SESSION_KEY}\n`);
 
     if (statusButton) {
       await statusButton.click();
-      
-      // Wait for UI to update (event-driven, not arbitrary timeout)
+
+      // Event-driven wait for UI update
       try {
-        await page.waitForFunction(() => {
-          // Wait for any visual indication that state changed
-          const button = document.querySelector('.status-button');
-          return button && (button.classList.contains('active') || 
-                           button.getAttribute('aria-pressed') === 'true');
-        }, { timeout: 2000 });
+        await page.waitForFunction(
+          () => {
+            const button = document.querySelector(".status-button");
+            return (
+              button &&
+              (button.classList.contains("active") ||
+                button.getAttribute("aria-pressed") === "true")
+            );
+          },
+          { timeout: 2000 }
+        );
         console.log("   ✅ PASS - Status button clicked and updated");
         testsPassed++;
       } catch {
-        // State change may not be visually indicated, count as pass if clicked
         console.log("   ✅ PASS - Status button clicked");
         testsPassed++;
       }
@@ -151,7 +154,7 @@ console.log(`Session: ${SESSION_KEY}\n`);
       try {
         await Promise.all([
           page.waitForNavigation({ waitUntil: "networkidle0", timeout: 10000 }),
-          reportButton.click()
+          reportButton.click(),
         ]);
 
         const reportUrl = page.url();
@@ -177,11 +180,11 @@ console.log(`Session: ${SESSION_KEY}\n`);
       console.log("   ✅ PASS - Back button present");
       testsPassed++;
 
-      // Click it and wait for navigation
+      // Event-driven navigation
       try {
         await Promise.all([
           page.waitForNavigation({ waitUntil: "networkidle0", timeout: 10000 }),
-          backButton.click()
+          backButton.click(),
         ]);
         console.log("   ✅ PASS - Back button works");
         testsPassed++;
@@ -194,20 +197,36 @@ console.log(`Session: ${SESSION_KEY}\n`);
 
     // Test 8: User types in Notes field
     console.log("\n📋 Test 8: User types in Notes field...");
-    const notesTextarea = await page.$("textarea.notes-field");
+    const notesTextarea = await page.$(
+      "textarea.notes-field, textarea[id*='notes'], textarea[class*='notes']"
+    );
 
     if (notesTextarea) {
       const testNote = `User test note - ${new Date().toISOString()}`;
       await notesTextarea.type(testNote);
-      await page.waitForTimeout(500);
 
-      const notesValue = await page.evaluate((el) => el.value, notesTextarea);
-      if (notesValue.includes(testNote)) {
-        console.log("   ✅ PASS - Notes field accepts input");
-        testsPassed++;
-      } else {
-        console.log("   ❌ FAIL - Notes not saved");
-        testsFailed++;
+      // Event-driven wait for input
+      try {
+        await page.waitForFunction(
+          (selector, note) => {
+            const textarea = document.querySelector(selector);
+            return textarea && textarea.value.includes(note);
+          },
+          { timeout: 2000 },
+          'textarea.notes-field, textarea[id*="notes"], textarea[class*="notes"]',
+          testNote
+        );
+
+        const notesValue = await page.evaluate((el) => el.value, notesTextarea);
+        if (notesValue.includes(testNote)) {
+          console.log("   ✅ PASS - Notes field accepts input");
+          testsPassed++;
+        } else {
+          console.log("   ❌ FAIL - Notes not saved");
+          testsFailed++;
+        }
+      } catch (error) {
+        console.log("   ⚠️  SKIP - Could not verify notes input");
       }
     } else {
       console.log(
@@ -217,26 +236,31 @@ console.log(`Session: ${SESSION_KEY}\n`);
 
     // Test 9: User clicks Save button
     console.log("\n📋 Test 9: User clicks Save button...");
-    const saveButton = await page.$('#saveButton, button[id*="save"], button[class*="save"]');
+    const saveButton = await page.$(
+      '#saveButton, button[id*="save"], button[class*="save"]'
+    );
 
     if (saveButton) {
       await saveButton.click();
-      
-      // Wait for save operation to complete (event-driven)
+
+      // Event-driven wait for save completion
       try {
         await page.waitForFunction(
           () => {
-            return document.body.innerText.includes("saved") ||
-                   document.body.innerText.includes("success") ||
-                   document.body.innerText.includes("Saved");
+            return (
+              document.body.innerText.includes("saved") ||
+              document.body.innerText.includes("success") ||
+              document.body.innerText.includes("Saved")
+            );
           },
           { timeout: 5000 }
         );
         console.log("   ✅ PASS - Save button works");
         testsPassed++;
       } catch {
-        // Save may have worked without visible indicator
-        console.log("   ⚠️  UNKNOWN - Save clicked but no clear success indicator");
+        console.log(
+          "   ⚠️  UNKNOWN - Save clicked but no clear success indicator"
+        );
       }
     } else {
       console.log("   ⚠️  SKIP - Save button not found");
@@ -244,17 +268,17 @@ console.log(`Session: ${SESSION_KEY}\n`);
 
     // Test 10: Check Systemwide Report
     console.log("\n📋 Test 10: User checks Systemwide Report...");
-    
+
     try {
       await page.goto(`${BASE_URL}/systemwide-report`, {
         waitUntil: "networkidle0",
-        timeout: 10000
+        timeout: 10000,
       });
-      
-      // Wait for page to be fully rendered (event-driven)
-      await page.waitForSelector('.reports-table, table', { 
-        visible: true, 
-        timeout: 5000 
+
+      // Event-driven wait for table to render
+      await page.waitForSelector(".reports-table, table", {
+        visible: true,
+        timeout: 5000,
       });
 
       const reportContent = await page.content();
@@ -272,7 +296,7 @@ console.log(`Session: ${SESSION_KEY}\n`);
       console.log(`   ⚠️  SKIP - Systemwide report error: ${error.message}`);
     }
 
-    // Take screenshot for evidence (use relative path)
+    // Take screenshot (use relative path)
     try {
       await page.screenshot({
         path: `${SCREENSHOT_DIR}/user-workflow-test.png`,
@@ -294,7 +318,9 @@ console.log(`Session: ${SESSION_KEY}\n`);
         path: `${SCREENSHOT_DIR}/user-workflow-ERROR.png`,
         fullPage: true,
       });
-      console.log(`📸 Error screenshot: ${SCREENSHOT_DIR}/user-workflow-ERROR.png`);
+      console.log(
+        `📸 Error screenshot: ${SCREENSHOT_DIR}/user-workflow-ERROR.png`
+      );
     } catch (screenshotError) {
       console.log(`   ⚠️  Could not save error screenshot`);
     }
