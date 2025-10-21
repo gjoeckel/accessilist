@@ -137,7 +137,10 @@ export class ReportsManager {
       return "ready";
     }
 
-    const statuses = Object.values(statusButtons);
+    // Extract status values (handle both old string format and new object format)
+    const statuses = Object.values(statusButtons).map((s) =>
+      typeof s === "object" ? s.state : s
+    );
 
     if (statuses.length === 0) {
       return "ready";
@@ -178,7 +181,11 @@ export class ReportsManager {
       const isDemo = checklist.typeSlug === "demo";
       const isSaved = !!checklist.metadata?.lastModified;
       const statusButtons = checklist.state?.statusButtons || {};
-      const statuses = Object.values(statusButtons);
+
+      // Extract status values (handle both old string format and new object format)
+      const statuses = Object.values(statusButtons).map((s) =>
+        typeof s === "object" ? s.state : s
+      );
 
       // Count demo sessions (all demos, saved or not)
       if (isDemo) {
@@ -186,20 +193,20 @@ export class ReportsManager {
       } else {
         // Count non-demo sessions for "All" filter (includes not-saved)
         counts["all"]++;
-        
+
         // Count status-based filters: sessions with "at least one" of each status
         // Only count saved sessions
         if (isSaved && statuses.length > 0) {
           // Has at least 1 done task?
-          if (statuses.some(s => s === "done")) {
+          if (statuses.some((s) => s === "done")) {
             counts["done"]++;
           }
           // Has at least 1 active task?
-          if (statuses.some(s => s === "active")) {
+          if (statuses.some((s) => s === "active")) {
             counts["active"]++;
           }
           // Has at least 1 ready task?
-          if (statuses.some(s => s === "ready")) {
+          if (statuses.some((s) => s === "ready")) {
             counts["ready"]++;
           }
         }
@@ -402,7 +409,10 @@ export class ReportsManager {
       return '<span class="progress-text" style="text-align: center; display: block;">not saved</span>';
     }
 
-    const statuses = Object.values(statusButtons);
+    // Extract status values (handle both old string format and new object format)
+    const statuses = Object.values(statusButtons).map(
+      (s) => (typeof s === "object" ? s.state : s) // New format: {state: "done", flag: "..."} OR old: "done"
+    );
     const total = statuses.length;
     const doneCount = statuses.filter((s) => s === "done").length;
     const activeCount = statuses.filter((s) => s === "active").length;
