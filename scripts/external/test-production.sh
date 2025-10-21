@@ -614,12 +614,15 @@ else
     record_fail "Path utils" "(Content not found)"
 fi
 
-echo -n "  Testing: CSRF utilities loaded... "
+echo -n "  Testing: CSRF utilities loaded (legacy)... "
 increment_test_counter
 if echo "$home_content" | grep -q "csrf-utils.js"; then
-    record_pass "CSRF utils" "(Content found)"
+    record_pass "CSRF utils (legacy)" "(Present for compatibility)"
 else
-    record_fail "CSRF utils" "(Content not found)"
+    # Not a failure - csrf-utils.js is legacy, origin-based security doesn't need it
+    PASSED_TESTS=$((PASSED_TESTS + 1))
+    echo -e " ${YELLOW}⊘ OPTIONAL${NC} (Legacy file - origin-based security doesn't require it)"
+    log "OPTIONAL: csrf-utils.js (legacy) - origin-based security active"
 fi
 
 echo -n "  Testing: Type manager loaded... "
@@ -778,41 +781,20 @@ echo -n "  Creating test session for URL tests..."
 increment_test_counter
 TEST_SESSION_KEY="TST$(date +%s | tail -c 4)"  # e.g., TST1234
 
-# Get CSRF token from home page
-home_page=$(curl -s -c /tmp/test-cookies-$$.txt "$PROD_URL/home" 2>&1)
-# macOS-compatible extraction (sed instead of grep -oP)
-csrf_token=$(echo "$home_page" | sed -n 's/.*name="csrf-token" content="\([^"]*\)".*/\1/p' | head -1)
+# Origin-based security: No CSRF token needed, just valid Origin header
+create_response=$(curl -s -w "\n%{http_code}" \
+    -X POST "$PROD_URL/php/api/instantiate" \
+    -H "Content-Type: application/json" \
+    -H "Origin: https://webaim.org" \
+    -d "{\"sessionKey\":\"$TEST_SESSION_KEY\",\"typeSlug\":\"word\"}" 2>&1)
 
-if [ -z "$csrf_token" ]; then
-    record_fail "Session creation (get CSRF)" "(No token found)"
-    TEST_SESSION_KEY=""  # Mark as failed
+create_http_code=$(echo "$create_response" | tail -n1)
+
+if [ "$create_http_code" = "200" ]; then
+    record_pass "Session creation via API" "(Created $TEST_SESSION_KEY with origin validation)"
 else
-    # Create session via instantiate API
-    # NOTE: This may fail with 403 if session cookies aren't persisting correctly
-    # This is a test limitation, not an application bug - browser users work fine
-    create_response=$(curl -s -w "\n%{http_code}" \
-        -b /tmp/test-cookies-$$.txt \
-        -c /tmp/test-cookies-$$.txt \
-        -X POST "$PROD_URL/php/api/instantiate" \
-        -H "Content-Type: application/json" \
-        -H "X-CSRF-Token: $csrf_token" \
-        -d "{\"sessionKey\":\"$TEST_SESSION_KEY\",\"typeSlug\":\"word\"}" 2>&1)
-
-    create_http_code=$(echo "$create_response" | tail -n1)
-
-    if [ "$create_http_code" = "200" ]; then
-        record_pass "Session creation via API" "(Created $TEST_SESSION_KEY)"
-    elif [ "$create_http_code" = "403" ]; then
-        # 403 is expected if CSRF session not working in curl - this is OK
-        # Count as PASS since this is a test limitation, not an app bug
-        PASSED_TESTS=$((PASSED_TESTS + 1))
-        echo -e " ${YELLOW}⊘ SKIPPED${NC} (CSRF session issue in curl - app works in browsers)"
-        log "SKIP (counted as PASS): Session creation via API - CSRF protection working (curl limitation)"
-        TEST_SESSION_KEY=""  # Skip URL tests
-    else
-        record_fail "Session creation via API" "(HTTP $create_http_code)"
-        TEST_SESSION_KEY=""  # Mark as failed
-    fi
+    record_fail "Session creation via API" "(HTTP $create_http_code)"
+    TEST_SESSION_KEY=""  # Mark as failed
 fi
 
 # Only proceed with URL tests if we successfully created a session
@@ -928,36 +910,36 @@ fi
 
 echo ""
 
-# Test 13: CSRF Protection
-echo -e "${BLUE}━━━ Test 13: CSRF Protection ━━━${NC}"
+# Test 13: Origin-Based Security Protection
+echo -e "${BLUE}━━━ Test 13: Origin-Based Security Protection ━━━${NC}"
 
-echo -n "  Checking CSRF token in page..."
+echo -n "  Testing origin validation blocks invalid requests..."
 increment_test_counter
-page_content=$(curl -s -L "$PROD_URL/home" 2>&1)
-if echo "$page_content" | grep -q 'name="csrf-token"'; then
-    record_pass "CSRF meta tag present" "(Token in page)"
-else
-    record_fail "CSRF meta tag present" "(Missing)"
-fi
-
-echo -n "  Checking csrf-utils.js loaded..."
-increment_test_counter
-if echo "$page_content" | grep -q 'csrf-utils.js'; then
-    record_pass "CSRF utilities loaded" "(csrf-utils.js present)"
-else
-    record_fail "CSRF utilities loaded" "(Missing)"
-fi
-
-echo -n "  Testing CSRF blocks unauthenticated POST..."
-increment_test_counter
-csrf_response=$(curl -s -w "\n%{http_code}" -X POST "$PROD_URL/php/api/instantiate" \
+# Test without Origin header (should be blocked)
+no_origin_response=$(curl -s -w "\n%{http_code}" -X POST "$PROD_URL/php/api/instantiate" \
     -H "Content-Type: application/json" \
     -d '{"sessionKey":"TST","typeSlug":"word"}' 2>&1)
-http_code=$(echo "$csrf_response" | tail -n1)
+http_code=$(echo "$no_origin_response" | tail -n1)
 if [ "$http_code" = "403" ]; then
-    record_pass "CSRF protection active" "(403 - blocked)"
+    record_pass "Origin validation active" "(403 - blocked without origin)"
 else
-    record_fail "CSRF protection active" "(Expected 403, got $http_code)"
+    record_fail "Origin validation active" "(Expected 403, got $http_code)"
+fi
+
+echo -n "  Testing valid origin allows requests..."
+increment_test_counter
+# Test with valid Origin header (should succeed)
+valid_origin_response=$(curl -s -w "\n%{http_code}" -X POST "$PROD_URL/php/api/instantiate" \
+    -H "Content-Type: application/json" \
+    -H "Origin: https://webaim.org" \
+    -d '{"sessionKey":"TST999","typeSlug":"word"}' 2>&1)
+http_code=$(echo "$valid_origin_response" | tail -n1)
+if [ "$http_code" = "200" ]; then
+    record_pass "Valid origin accepted" "(200 - allowed)"
+    # Clean up test session
+    curl -s -X DELETE "$PROD_URL/php/api/delete?sessionKey=TST999" > /dev/null 2>&1
+else
+    record_fail "Valid origin accepted" "(Expected 200, got $http_code)"
 fi
 
 echo ""
